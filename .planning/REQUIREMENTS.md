@@ -13,7 +13,7 @@
 
 ### Google Sheets
 
-- [ ] **SHEET-01**: System can read product rows from Google Sheets via API (service account auth)
+- [x] **SHEET-01**: System can read product rows from Google Sheets via API (service account auth)
 - [ ] **SHEET-02**: System can write enriched data back to Google Sheets
 - [ ] **SHEET-03**: System automatically merges supplier data into the correct sheet columns per product
 
@@ -75,7 +75,7 @@
 | SUPP-01 | Phase 1 | Complete |
 | SUPP-02 | Phase 1 | Complete |
 | SUPP-03 | Phase 1 | Complete |
-| SHEET-01 | Phase 2 | Pending |
+| SHEET-01 | Phase 2 | Complete |
 | SHEET-02 | Phase 2 | Pending |
 | SHEET-03 | Phase 2 | Pending |
 | DECOR-01 | Phase 3 | Pending |

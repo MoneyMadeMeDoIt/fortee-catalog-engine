@@ -47,7 +47,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md -- Types, column mapping, Sheets client, and row reader (SHEET-01)
+- [x] 02-01-PLAN.md -- Types, column mapping, Sheets client, and row reader (SHEET-01)
 - [ ] 02-02-PLAN.md -- Merge logic, batch writer, and enrichment CLI (SHEET-02, SHEET-03)
 
 ### Phase 3: Decoration Rules and Pricing
@@ -101,7 +101,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Supplier Data Extraction | 4/4 | Complete   | 2026-03-05 |
-| 2. Google Sheets Integration | 0/2 | Not started | - |
+| 2. Google Sheets Integration | 1/2 | In progress | - |
 | 3. Decoration Rules and Pricing | 0/? | Not started | - |
 | 4. Shopify Product Push | 0/? | Not started | - |
 | 5. Scale and Reliability | 0/? | Not started | - |
