@@ -33,7 +33,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 Plans:
 - [ ] 01-01-PLAN.md -- Project setup, types, Zod validation schemas, test fixtures (SUPP-03)
 - [ ] 01-02-PLAN.md -- Canada Sportswear extractor with body_html parsing (SUPP-01)
-- [ ] 01-03-PLAN.md -- S&S Canada API client with rate limiting (SUPP-02)
+- [x] 01-03-PLAN.md -- S&S Canada API client with rate limiting (SUPP-02)
 - [ ] 01-04-PLAN.md -- Unified extraction entry point and CLI script (integration)
 
 ### Phase 2: Google Sheets Integration
