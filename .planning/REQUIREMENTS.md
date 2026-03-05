@@ -9,7 +9,7 @@
 
 - [ ] **SUPP-01**: System can extract product data (images, descriptions, specs, size charts, fabric composition) from Canada Sportswear via Shopify JSON endpoints and HTML parsing
 - [ ] **SUPP-02**: System can fetch product data from S&S Canada via their official REST API (api.ssactivewear.com/V2/)
-- [ ] **SUPP-03**: System validates extracted supplier data and reports missing/invalid fields before enrichment
+- [x] **SUPP-03**: System validates extracted supplier data and reports missing/invalid fields before enrichment
 
 ### Google Sheets
 
@@ -74,7 +74,7 @@
 |-------------|-------|--------|
 | SUPP-01 | Phase 1 | Pending |
 | SUPP-02 | Phase 1 | Pending |
-| SUPP-03 | Phase 1 | Pending |
+| SUPP-03 | Phase 1 | Complete |
 | SHEET-01 | Phase 2 | Pending |
 | SHEET-02 | Phase 2 | Pending |
 | SHEET-03 | Phase 2 | Pending |
