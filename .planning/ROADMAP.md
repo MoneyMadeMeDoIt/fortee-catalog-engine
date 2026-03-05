@@ -44,10 +44,11 @@ Plans:
   1. System connects to Google Sheets via service account and reads all product rows from the master sheet
   2. System can write enriched fields (supplier data, computed values) back to the sheet without corrupting existing data
   3. Running the enrichment merge on a product row populates the correct columns with supplier-extracted data
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 02-01: TBD
+- [ ] 02-01-PLAN.md -- Types, column mapping, Sheets client, and row reader (SHEET-01)
+- [ ] 02-02-PLAN.md -- Merge logic, batch writer, and enrichment CLI (SHEET-02, SHEET-03)
 
 ### Phase 3: Decoration Rules and Pricing
 **Goal**: Every product in the sheet has correct decoration methods, placements, and calculated sell prices based on its garment category
@@ -100,7 +101,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Supplier Data Extraction | 4/4 | Complete   | 2026-03-05 |
-| 2. Google Sheets Integration | 0/? | Not started | - |
+| 2. Google Sheets Integration | 0/2 | Not started | - |
 | 3. Decoration Rules and Pricing | 0/? | Not started | - |
 | 4. Shopify Product Push | 0/? | Not started | - |
 | 5. Scale and Reliability | 0/? | Not started | - |
