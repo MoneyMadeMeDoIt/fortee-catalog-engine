@@ -28,11 +28,13 @@ Decimal phases appear between their surrounding integers in numeric order.
   1. Running the Canada Sportswear extractor returns product images, descriptions, specs, size charts, and fabric composition for a given product
   2. Running the S&S Canada extractor returns equivalent product data via their REST API
   3. Extracted data is validated and any missing/invalid fields are reported before downstream use
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
+- [ ] 01-01-PLAN.md -- Project setup, types, Zod validation schemas, test fixtures (SUPP-03)
+- [ ] 01-02-PLAN.md -- Canada Sportswear extractor with body_html parsing (SUPP-01)
+- [ ] 01-03-PLAN.md -- S&S Canada API client with rate limiting (SUPP-02)
+- [ ] 01-04-PLAN.md -- Unified extraction entry point and CLI script (integration)
 
 ### Phase 2: Google Sheets Integration
 **Goal**: System can read product rows from the master sheet, write enriched data back, and merge supplier data into the correct columns automatically
@@ -97,7 +99,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Supplier Data Extraction | 0/? | Not started | - |
+| 1. Supplier Data Extraction | 0/4 | Planning complete | - |
 | 2. Google Sheets Integration | 0/? | Not started | - |
 | 3. Decoration Rules and Pricing | 0/? | Not started | - |
 | 4. Shopify Product Push | 0/? | Not started | - |
