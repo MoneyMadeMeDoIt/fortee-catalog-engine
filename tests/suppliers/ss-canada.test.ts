@@ -1,126 +1,155 @@
 import { describe, it, expect } from 'vitest';
-import ssStyleSample from './fixtures/ss-style-sample.json';
-import ssProductsSample from './fixtures/ss-products-sample.json';
-import ssSpecsSample from './fixtures/ss-specs-sample.json';
-import {
-  parseFabricFromDescription,
-  extractSSProduct,
-  createSSClient,
-  mergeSSData,
-} from '../../src/suppliers/ss-canada.js';
-import type { SupplierProduct } from '../../src/suppliers/types.js';
+import { mapOneSourceProductToSupplierProduct } from '../../src/suppliers/ss-canada.js';
+import type { ProductImage } from '../../src/suppliers/types.js';
 
-describe('parseFabricFromDescription', () => {
-  it('extracts fabric composition from HTML with percentage pattern', () => {
-    const html = '<p>Classic fit. <b>5.3 oz., 100% cotton</b>. Double-needle collar.</p>';
-    expect(parseFabricFromDescription(html)).toBe('100% cotton');
-  });
+function makeParsedProduct() {
+  return {
+    productId: 'G500',
+    productName: 'Heavy Cotton T-Shirt',
+    description: 'Classic fit, preshrunk jersey knit. 100% cotton.',
+    productBrand: 'Gildan',
+    primaryImageUrl: '',
+    categories: [
+      { category: 'T-Shirts', subCategory: 'Short Sleeve' },
+    ],
+    parts: [
+      {
+        partId: 'G500-BLK-S',
+        description: 'Black Small',
+        primaryMaterial: '100% cotton',
+        colors: [{ colorName: 'Black', hex: '#000000' }],
+        apparelSize: { apparelStyle: 'Unisex', labelSize: 'S' as const },
+        specifications: [
+          { specificationType: 'Chest', uom: 'IN', value: '18' },
+          { specificationType: 'Length', uom: 'IN', value: '28' },
+        ],
+      },
+      {
+        partId: 'G500-BLK-M',
+        description: 'Black Medium',
+        primaryMaterial: '100% cotton',
+        colors: [{ colorName: 'Black', hex: '#000000' }],
+        apparelSize: { apparelStyle: 'Unisex', labelSize: 'M' as const },
+        specifications: [
+          { specificationType: 'Chest', uom: 'IN', value: '20' },
+          { specificationType: 'Length', uom: 'IN', value: '29' },
+        ],
+      },
+      {
+        partId: 'G500-WHT-S',
+        description: 'White Small',
+        primaryMaterial: '100% cotton',
+        colors: [{ colorName: 'White' }],
+        apparelSize: { apparelStyle: 'Unisex', labelSize: 'S' as const },
+        specifications: [
+          { specificationType: 'Chest', uom: 'IN', value: '18' },
+          { specificationType: 'Length', uom: 'IN', value: '28' },
+        ],
+      },
+    ],
+    marketingPoints: [
+      { pointType: 'Highlights', pointCopy: 'Preshrunk jersey knit' },
+    ],
+    keywords: ['t-shirt', 'cotton'],
+    rawXml: '<Product>...</Product>',
+  };
+}
 
-  it('extracts multi-material fabric composition', () => {
-    const html = '<p>Made from <b>60% cotton, 40% polyester</b>. Soft hand feel.</p>';
-    expect(parseFabricFromDescription(html)).toBe('60% cotton, 40% polyester');
-  });
-
-  it('returns empty string for empty input', () => {
-    expect(parseFabricFromDescription('')).toBe('');
-  });
-
-  it('returns empty string when no percentage patterns found', () => {
-    const html = '<p>A great shirt with no fabric info mentioned.</p>';
-    expect(parseFabricFromDescription(html)).toBe('');
-  });
-
-  it('strips HTML tags before parsing', () => {
-    const html = '<div><span>50% cotton</span>, <em>50% polyester</em></div>';
-    expect(parseFabricFromDescription(html)).toBe('50% cotton, 50% polyester');
-  });
-
-  it('extracts from fixture style description', () => {
-    const result = parseFabricFromDescription(ssStyleSample[0].description);
-    expect(result).toBe('100% cotton');
-  });
-});
-
-describe('mergeSSData', () => {
-  it('merges style + products + specs into SupplierProduct', () => {
-    const result = mergeSSData(ssStyleSample[0], ssProductsSample, ssSpecsSample);
+describe('S&S Canada mapOneSourceProductToSupplierProduct', () => {
+  it('maps product fields correctly', () => {
+    const parsed = makeParsedProduct();
+    const result = mapOneSourceProductToSupplierProduct(parsed, []);
 
     expect(result.styleNumber).toBe('G500');
     expect(result.supplier).toBe('ss-canada');
     expect(result.title).toBe('Heavy Cotton T-Shirt');
-    expect(result.category).toBe('T-Shirts');
+  });
+
+  it('extracts fabric composition from primaryMaterial', () => {
+    const parsed = makeParsedProduct();
+    const result = mapOneSourceProductToSupplierProduct(parsed, []);
+
     expect(result.fabricComposition).toBe('100% cotton');
   });
 
-  it('builds correct number of variants from products', () => {
-    const result = mergeSSData(ssStyleSample[0], ssProductsSample, ssSpecsSample);
-    expect(result.variants).toHaveLength(ssProductsSample.length);
+  it('falls back to description for fabric if primaryMaterial is empty', () => {
+    const parsed = makeParsedProduct();
+    for (const part of parsed.parts) {
+      part.primaryMaterial = '';
+    }
+    const result = mapOneSourceProductToSupplierProduct(parsed, []);
+
+    expect(result.fabricComposition).toContain('100% cotton');
   });
 
-  it('maps variant fields correctly', () => {
-    const result = mergeSSData(ssStyleSample[0], ssProductsSample, ssSpecsSample);
-    const firstVariant = result.variants[0];
+  it('builds variants from parts', () => {
+    const parsed = makeParsedProduct();
+    const result = mapOneSourceProductToSupplierProduct(parsed, []);
 
-    expect(firstVariant.color).toBe('Black');
-    expect(firstVariant.size).toBe('S');
-    expect(firstVariant.sku).toBe('G500-BLK-S');
-    // customerPrice is preferred over piecePrice
-    expect(firstVariant.price).toBe(2.45);
-    expect(firstVariant.colorSwatchImage).toBe(
-      'https://www.ssactivewear.com/Images/Color/G500-Black-swatch.jpg'
-    );
-    expect(firstVariant.colorFrontImage).toBe(
-      'https://www.ssactivewear.com/Images/Color/G500-Black-front.jpg'
-    );
-  });
-
-  it('builds sizeChartData from specs', () => {
-    const result = mergeSSData(ssStyleSample[0], ssProductsSample, ssSpecsSample);
-    expect(result.sizeChartData).toHaveLength(ssSpecsSample.length);
-    expect(result.sizeChartData![0]).toEqual({
-      sizeName: 'S',
-      specName: 'Body Width',
-      value: '18',
+    expect(result.variants).toHaveLength(3);
+    expect(result.variants[0]).toEqual({
+      color: 'Black',
+      size: 'S',
+      sku: 'G500-BLK-S',
     });
   });
 
-  it('deduplicates images from products and style', () => {
-    const result = mergeSSData(ssStyleSample[0], ssProductsSample, ssSpecsSample);
-    // 2 unique colorFrontImage (Black, White) + 1 styleImage = 3
-    expect(result.images).toHaveLength(3);
+  it('builds size chart data from specifications', () => {
+    const parsed = makeParsedProduct();
+    const result = mapOneSourceProductToSupplierProduct(parsed, []);
 
-    const urls = result.images.map((img) => img.url);
-    // No duplicates
-    expect(new Set(urls).size).toBe(urls.length);
-    // styleImage included
-    expect(urls).toContain('https://www.ssactivewear.com/Images/Style/G500-front.jpg');
+    expect(result.sizeChartData).not.toBeNull();
+    expect(result.sizeChartData!.length).toBeGreaterThanOrEqual(4);
+
+    const sChest = result.sizeChartData!.find(
+      (s) => s.sizeName === 'S' && s.specName === 'Chest'
+    );
+    expect(sChest).toBeDefined();
+    expect(sChest!.value).toBe('18 IN');
+
+    const mChest = result.sizeChartData!.find(
+      (s) => s.sizeName === 'M' && s.specName === 'Chest'
+    );
+    expect(mChest).toBeDefined();
+    expect(mChest!.value).toBe('20 IN');
   });
 
-  it('stores raw data', () => {
-    const result = mergeSSData(ssStyleSample[0], ssProductsSample, ssSpecsSample);
-    expect(result.rawData).toBeDefined();
-  });
-});
+  it('deduplicates specifications across parts with same size', () => {
+    const parsed = makeParsedProduct();
+    const result = mapOneSourceProductToSupplierProduct(parsed, []);
 
-describe('createSSClient', () => {
-  it('throws error when account number is empty', () => {
-    expect(() => createSSClient('', 'some-key')).toThrow(/credentials/i);
-  });
-
-  it('throws error when API key is empty', () => {
-    expect(() => createSSClient('12345', '')).toThrow(/credentials/i);
+    const sChestEntries = result.sizeChartData!.filter(
+      (s) => s.sizeName === 'S' && s.specName === 'Chest'
+    );
+    expect(sChestEntries).toHaveLength(1);
   });
 
-  it('throws error when both are empty', () => {
-    expect(() => createSSClient('', '')).toThrow(/credentials/i);
+  it('uses media images when no primaryImageUrl', () => {
+    const parsed = makeParsedProduct();
+    const mediaImages: ProductImage[] = [
+      { url: 'https://example.com/G500-black-front.jpg', alt: 'Black front' },
+      { url: 'https://example.com/G500-white-front.jpg', alt: 'White front' },
+    ];
+    const result = mapOneSourceProductToSupplierProduct(parsed, mediaImages);
+
+    expect(result.images).toHaveLength(2);
+    expect(result.images[0].url).toBe('https://example.com/G500-black-front.jpg');
   });
 
-  it('returns client object with valid credentials', () => {
-    const client = createSSClient('12345', 'test-key');
-    expect(client).toBeDefined();
-    expect(typeof client.getStyles).toBe('function');
-    expect(typeof client.getStyle).toBe('function');
-    expect(typeof client.getProducts).toBe('function');
-    expect(typeof client.getSpecs).toBe('function');
+  it('maps category with subcategory', () => {
+    const parsed = makeParsedProduct();
+    const result = mapOneSourceProductToSupplierProduct(parsed, []);
+
+    expect(result.category).toBe('T-Shirts > Short Sleeve');
+  });
+
+  it('returns null sizeChartData when no specifications exist', () => {
+    const parsed = makeParsedProduct();
+    for (const part of parsed.parts) {
+      part.specifications = [];
+    }
+    const result = mapOneSourceProductToSupplierProduct(parsed, []);
+
+    expect(result.sizeChartData).toBeNull();
   });
 });

@@ -17,7 +17,7 @@ function parseArgs(): { supplier?: SupplierName; style?: string } {
 
 Options:
   --supplier <name>   Extract from a single supplier (canada-sportswear | ss-canada)
-  --style <id>        Extract a single product by identifier (handle for CSW, styleID for S&S)
+  --style <id>        Extract a single product by identifier (productId)
   --help, -h          Show this help message
 
 Examples:
@@ -82,7 +82,6 @@ async function main(): Promise<void> {
   const { supplier, style } = parseArgs();
 
   if (style && supplier) {
-    // Single product extraction
     const adapter =
       supplier === 'canada-sportswear'
         ? new CanadaSportswearAdapter()

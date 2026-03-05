@@ -1,152 +1,129 @@
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
-import {
-  parseFabricComposition,
-  parseSizeChartUrl,
-  parseBodyHtml,
-  mapCSWProduct,
-} from '../../src/suppliers/canada-sportswear.js';
+import { mapOneSourceProductToSupplierProduct } from '../../src/suppliers/canada-sportswear.js';
+import type { ProductImage } from '../../src/suppliers/types.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+function makeParsedProduct() {
+  return {
+    productId: 'L00450',
+    productName: 'Weekender Vintage Wash Pullover Hooded Sweatshirt',
+    description: 'Relaxed fit. Attached hood. 280 gsm. 70% cotton, 30% polyester vintage wash fleece.',
+    productBrand: 'Canada Sportswear',
+    primaryImageUrl: 'https://example.com/images/L00450-front.jpg',
+    categories: [
+      { category: 'Hooded Sweatshirts', subCategory: 'Pullover' },
+    ],
+    parts: [
+      {
+        partId: 'L00450-BLK-S',
+        description: 'Black Small',
+        primaryMaterial: '70% cotton, 30% polyester',
+        colors: [{ colorName: 'Black', hex: '#000000' }],
+        apparelSize: { apparelStyle: 'Unisex', labelSize: 'S' as const },
+        specifications: [],
+      },
+      {
+        partId: 'L00450-BLK-M',
+        description: 'Black Medium',
+        primaryMaterial: '70% cotton, 30% polyester',
+        colors: [{ colorName: 'Black', hex: '#000000' }],
+        apparelSize: { apparelStyle: 'Unisex', labelSize: 'M' as const },
+        specifications: [],
+      },
+      {
+        partId: 'L00450-NAV-S',
+        description: 'Navy Small',
+        primaryMaterial: '70% cotton, 30% polyester',
+        colors: [{ colorName: 'Navy', hex: '#000080' }],
+        apparelSize: { apparelStyle: 'Unisex', labelSize: 'S' as const },
+        specifications: [],
+      },
+    ],
+    marketingPoints: [
+      { pointType: 'Highlights', pointCopy: 'Relaxed fit with attached hood' },
+    ],
+    keywords: ['hoodie', 'sweatshirt', 'vintage'],
+    rawXml: '<Product>...</Product>',
+  };
+}
 
-// Load fixtures
-const sampleBodyHtml = readFileSync(
-  join(__dirname, 'fixtures/csw-body-html-sample.html'),
-  'utf-8'
-);
-const sampleProducts = JSON.parse(
-  readFileSync(
-    join(__dirname, 'fixtures/csw-products-sample.json'),
-    'utf-8'
-  )
-);
+describe('mapOneSourceProductToSupplierProduct', () => {
+  it('maps product fields correctly', () => {
+    const parsed = makeParsedProduct();
+    const result = mapOneSourceProductToSupplierProduct(parsed, []);
 
-describe('parseFabricComposition', () => {
-  it('extracts fabric composition from body_html with gsm and percentages', () => {
-    const result = parseFabricComposition(sampleBodyHtml);
-    expect(result).toContain('280 gsm');
-    expect(result).toContain('70% cotton');
-    expect(result).toContain('30% polyester');
+    expect(result.styleNumber).toBe('L00450');
+    expect(result.supplier).toBe('canada-sportswear');
+    expect(result.title).toBe('Weekender Vintage Wash Pullover Hooded Sweatshirt');
+    expect(result.description).toContain('Relaxed fit');
   });
 
-  it('returns empty string when body_html is empty', () => {
-    const result = parseFabricComposition('');
-    expect(result).toBe('');
+  it('extracts fabric composition from primaryMaterial', () => {
+    const parsed = makeParsedProduct();
+    const result = mapOneSourceProductToSupplierProduct(parsed, []);
+
+    expect(result.fabricComposition).toBe('70% cotton, 30% polyester');
   });
 
-  it('returns empty string when body_html has no fabric info', () => {
-    const result = parseFabricComposition(
-      '<p>Just a description with no fabric details.</p>'
-    );
-    expect(result).toBe('');
-  });
-});
+  it('falls back to description for fabric if primaryMaterial is empty', () => {
+    const parsed = makeParsedProduct();
+    for (const part of parsed.parts) {
+      part.primaryMaterial = '';
+    }
+    const result = mapOneSourceProductToSupplierProduct(parsed, []);
 
-describe('parseSizeChartUrl', () => {
-  it('extracts PDF URL from body_html', () => {
-    const result = parseSizeChartUrl(sampleBodyHtml);
-    expect(result).toBe(
-      'https://canadasportswear.com/cdn/size-charts/L00450-size-chart.pdf'
-    );
+    expect(result.fabricComposition).toContain('70% cotton');
   });
 
-  it('returns null when body_html has no PDF links', () => {
-    const result = parseSizeChartUrl(
-      '<p>No links here at all.</p>'
-    );
-    expect(result).toBeNull();
+  it('maps categories correctly', () => {
+    const parsed = makeParsedProduct();
+    const result = mapOneSourceProductToSupplierProduct(parsed, []);
+
+    expect(result.category).toBe('Hooded Sweatshirts > Pullover');
   });
 
-  it('returns null when body_html has non-PDF links', () => {
-    const result = parseSizeChartUrl(
-      '<p><a href="https://example.com/page">Link</a></p>'
-    );
-    expect(result).toBeNull();
-  });
-});
+  it('builds variants from parts with color and size', () => {
+    const parsed = makeParsedProduct();
+    const result = mapOneSourceProductToSupplierProduct(parsed, []);
 
-describe('parseBodyHtml', () => {
-  it('returns both fabricComposition and sizeChartUrl', () => {
-    const result = parseBodyHtml(sampleBodyHtml);
-    expect(result.fabricComposition).toContain('280 gsm');
-    expect(result.sizeChartUrl).toBe(
-      'https://canadasportswear.com/cdn/size-charts/L00450-size-chart.pdf'
-    );
-  });
-});
-
-describe('mapCSWProduct', () => {
-  const rawProduct = sampleProducts[0];
-
-  it('maps styleNumber from handle', () => {
-    const product = mapCSWProduct(rawProduct);
-    expect(product.styleNumber).toBe(rawProduct.handle);
-  });
-
-  it('sets supplier to canada-sportswear', () => {
-    const product = mapCSWProduct(rawProduct);
-    expect(product.supplier).toBe('canada-sportswear');
-  });
-
-  it('maps title from raw title', () => {
-    const product = mapCSWProduct(rawProduct);
-    expect(product.title).toBe(rawProduct.title);
-  });
-
-  it('maps category from product_type', () => {
-    const product = mapCSWProduct(rawProduct);
-    expect(product.category).toBe('Hooded Sweatshirts');
-  });
-
-  it('parses fabric composition from body_html', () => {
-    const product = mapCSWProduct(rawProduct);
-    expect(product.fabricComposition).toContain('280 gsm');
-    expect(product.fabricComposition).toContain('70% cotton');
-  });
-
-  it('extracts size chart URL from body_html', () => {
-    const product = mapCSWProduct(rawProduct);
-    expect(product.sizeChartUrl).toBe(
-      'https://canadasportswear.com/cdn/size-charts/L00450-size-chart.pdf'
-    );
-  });
-
-  it('maps images from images[].src with alt from title', () => {
-    const product = mapCSWProduct(rawProduct);
-    expect(product.images).toHaveLength(2);
-    expect(product.images[0]).toEqual({
-      url: 'https://canadasportswear.com/cdn/images/L00450-black-front.jpg',
-      alt: rawProduct.title,
-    });
-  });
-
-  it('maps variants with color from option1 and size from option2', () => {
-    const product = mapCSWProduct(rawProduct);
-    expect(product.variants).toHaveLength(3);
-    expect(product.variants[0]).toEqual({
+    expect(result.variants).toHaveLength(3);
+    expect(result.variants[0]).toEqual({
       color: 'Black',
       size: 'S',
       sku: 'L00450-BLK-S',
-      price: 32.5,
     });
-    expect(product.variants[2]).toEqual({
-      color: 'Heather Grey',
+    expect(result.variants[2]).toEqual({
+      color: 'Navy',
       size: 'S',
-      sku: 'L00450-HGY-S',
-      price: 32.5,
+      sku: 'L00450-NAV-S',
     });
   });
 
-  it('stores rawData as the original raw product', () => {
-    const product = mapCSWProduct(rawProduct);
-    expect(product.rawData).toBe(rawProduct);
+  it('uses primaryImageUrl and deduplicates media images', () => {
+    const parsed = makeParsedProduct();
+    const mediaImages: ProductImage[] = [
+      { url: 'https://example.com/images/L00450-front.jpg', alt: 'Front' },
+      { url: 'https://example.com/images/L00450-back.jpg', alt: 'Back' },
+    ];
+    const result = mapOneSourceProductToSupplierProduct(parsed, mediaImages);
+
+    expect(result.images).toHaveLength(2);
+    expect(result.images[0].url).toBe('https://example.com/images/L00450-front.jpg');
+    expect(result.images[1].url).toBe('https://example.com/images/L00450-back.jpg');
   });
 
-  it('sets sizeChartData to null', () => {
-    const product = mapCSWProduct(rawProduct);
-    expect(product.sizeChartData).toBeNull();
+  it('works with no images', () => {
+    const parsed = makeParsedProduct();
+    parsed.primaryImageUrl = '';
+    const result = mapOneSourceProductToSupplierProduct(parsed, []);
+
+    expect(result.images).toHaveLength(0);
+  });
+
+  it('sets sizeChartUrl and sizeChartData to null', () => {
+    const parsed = makeParsedProduct();
+    const result = mapOneSourceProductToSupplierProduct(parsed, []);
+
+    expect(result.sizeChartUrl).toBeNull();
+    expect(result.sizeChartData).toBeNull();
   });
 });

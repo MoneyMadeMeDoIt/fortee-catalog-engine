@@ -1,174 +1,166 @@
-import * as cheerio from 'cheerio';
+import 'dotenv/config';
 import { logger } from '../lib/logger.js';
-import type { SupplierProduct, SupplierAdapter, ProductImage, SupplierVariant } from './types.js';
+import {
+  createOneSourceClient,
+  parseProductFromXml,
+  parseMediaContentFromXml,
+  type OneSourceConfig,
+} from '../lib/onesource-client.js';
+import type {
+  SupplierProduct,
+  SupplierAdapter,
+  ProductImage,
+  SupplierVariant,
+} from './types.js';
 
-// --- Raw Shopify types ---
+const PRODUCT_SERVICE_VERSION = '2.0.0';
+const MEDIA_SERVICE_VERSION = '1.1.0';
 
-export interface CSWRawVariant {
-  id: number;
-  title: string;
-  option1: string | null;
-  option2: string | null;
-  sku: string;
-  price: string;
-  available: boolean;
-}
+export function mapOneSourceProductToSupplierProduct(
+  parsed: ReturnType<typeof parseProductFromXml>,
+  mediaImages: ProductImage[]
+): SupplierProduct {
+  const category = parsed.categories.length > 0
+    ? parsed.categories.map((c) => [c.category, c.subCategory].filter(Boolean).join(' > ')).join(', ')
+    : '';
 
-export interface CSWRawImage {
-  id: number;
-  src: string;
-  width: number;
-  height: number;
-  variant_ids: number[];
-}
+  // Extract fabric from primaryMaterial across parts, or from description/marketing points
+  let fabricComposition = '';
+  for (const part of parsed.parts) {
+    if (part.primaryMaterial) {
+      fabricComposition = part.primaryMaterial;
+      break;
+    }
+  }
+  if (!fabricComposition) {
+    // Try marketing points for fabric info
+    for (const mp of parsed.marketingPoints) {
+      if (/\d+%/.test(mp.pointCopy)) {
+        fabricComposition = mp.pointCopy;
+        break;
+      }
+    }
+  }
+  if (!fabricComposition) {
+    // Try description for fabric patterns
+    const fabricMatch = parsed.description.match(
+      /(\d+%\s*[\w\s/]+(?:,\s*\d+%\s*[\w\s/]+)*)/
+    );
+    if (fabricMatch) {
+      fabricComposition = fabricMatch[1].trim();
+    }
+  }
 
-export interface CSWRawProduct {
-  id: number;
-  title: string;
-  handle: string;
-  body_html: string;
-  vendor: string;
-  product_type: string;
-  tags: string[];
-  variants: CSWRawVariant[];
-  images: CSWRawImage[];
-  options: Array<{ name: string; values: string[] }>;
-}
+  // Build variants from ProductParts (each part = one color+size combo)
+  const variants: SupplierVariant[] = parsed.parts.map((part) => {
+    const colorName = part.colors.length > 0 ? part.colors[0].colorName : '';
+    const size = part.apparelSize
+      ? part.apparelSize.customSize || part.apparelSize.labelSize
+      : '';
 
-// --- Body HTML Parsers ---
+    return {
+      color: colorName,
+      size,
+      sku: part.partId,
+    };
+  });
 
-export function parseFabricComposition(bodyHtml: string): string {
-  if (!bodyHtml) return '';
+  // Images: prefer primaryImageUrl (available in 2.0.0), then media content
+  const images: ProductImage[] = [];
+  const seenUrls = new Set<string>();
 
-  const $ = cheerio.load(bodyHtml);
-  const text = $.text();
+  if (parsed.primaryImageUrl) {
+    images.push({ url: parsed.primaryImageUrl, alt: parsed.productName });
+    seenUrls.add(parsed.primaryImageUrl);
+  }
 
-  // Pattern: "XXX gsm ... XX% material, XX% material ..."
-  const match = text.match(
-    /(\d+\s*gsm[\s\S]{0,200}?(?:\d+%\s*[\w\s/]+[,.]?\s*)+)/i
-  );
-
-  if (!match) return '';
-
-  return match[1].trim();
-}
-
-export function parseSizeChartUrl(bodyHtml: string): string | null {
-  if (!bodyHtml) return null;
-
-  const $ = cheerio.load(bodyHtml);
-
-  const pdfLink = $('a[href$=".pdf"]')
-    .filter((_, el) => {
-      const href = $(el).attr('href') || '';
-      return /size|spec/i.test(href);
-    })
-    .first()
-    .attr('href');
-
-  return pdfLink || null;
-}
-
-export function parseBodyHtml(bodyHtml: string): {
-  fabricComposition: string;
-  sizeChartUrl: string | null;
-} {
-  return {
-    fabricComposition: parseFabricComposition(bodyHtml),
-    sizeChartUrl: parseSizeChartUrl(bodyHtml),
-  };
-}
-
-// --- Product Mapping ---
-
-export function mapCSWProduct(raw: CSWRawProduct): SupplierProduct {
-  const { fabricComposition, sizeChartUrl } = parseBodyHtml(raw.body_html || '');
-
-  const $ = cheerio.load(raw.body_html || '');
-  const description = $.text().trim();
-
-  const images: ProductImage[] = raw.images.map((img) => ({
-    url: img.src,
-    alt: raw.title,
-  }));
-
-  const variants: SupplierVariant[] = raw.variants.map((v) => ({
-    color: v.option1 || '',
-    size: v.option2 || '',
-    sku: v.sku,
-    price: parseFloat(v.price),
-  }));
+  for (const img of mediaImages) {
+    if (!seenUrls.has(img.url)) {
+      images.push(img);
+      seenUrls.add(img.url);
+    }
+  }
 
   return {
-    styleNumber: raw.handle,
+    styleNumber: parsed.productId,
     supplier: 'canada-sportswear',
-    title: raw.title,
-    description,
-    category: raw.product_type,
+    title: parsed.productName,
+    description: parsed.description,
+    category,
     fabricComposition,
-    sizeChartUrl,
+    sizeChartUrl: null,
     sizeChartData: null,
     images,
     variants,
-    rawData: raw,
+    rawData: parsed,
   };
 }
 
-// --- Paginated Fetch ---
-
-const CSW_BASE_URL = 'https://canadasportswear.com/collections/all/products.json';
-
-export async function fetchCSWProducts(): Promise<SupplierProduct[]> {
-  const allProducts: SupplierProduct[] = [];
-  let page = 1;
-
-  while (true) {
-    const url = `${CSW_BASE_URL}?limit=250&page=${page}`;
-    logger.info(`Fetching CSW page ${page}: ${url}`);
-
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error(`CSW fetch failed: ${response.status} ${response.statusText}`);
-    }
-
-    const data = (await response.json()) as { products: CSWRawProduct[] };
-
-    if (!data.products || data.products.length === 0) {
-      logger.info(`CSW pagination complete. Total pages: ${page - 1}`);
-      break;
-    }
-
-    const mapped = data.products.map(mapCSWProduct);
-    allProducts.push(...mapped);
-
-    logger.info(`CSW page ${page}: ${data.products.length} products (total: ${allProducts.length})`);
-    page++;
-  }
-
-  return allProducts;
-}
-
-// --- Adapter Class ---
-
 export class CanadaSportswearAdapter implements SupplierAdapter {
   readonly supplier = 'canada-sportswear' as const;
+  private client: ReturnType<typeof createOneSourceClient>;
 
-  async fetchProducts(): Promise<SupplierProduct[]> {
-    return fetchCSWProducts();
+  constructor(config?: Partial<OneSourceConfig>) {
+    this.client = createOneSourceClient({
+      keyId: config?.keyId ?? process.env.ONESOURCE_KEY_ID ?? '',
+      keyPassword: config?.keyPassword ?? process.env.ONESOURCE_KEY_PASSWORD ?? '',
+      supplierCode: config?.supplierCode ?? process.env.CSW_SUPPLIER_CODE ?? 'CANADASPORTSWEAR',
+    });
   }
 
-  async fetchProduct(handle: string): Promise<SupplierProduct> {
-    const url = `https://canadasportswear.com/products/${handle}.json`;
-    logger.info(`Fetching single CSW product: ${url}`);
+  async fetchProducts(): Promise<SupplierProduct[]> {
+    logger.info('Canada Sportswear: Fetching product list via OneSource...');
 
-    const response = await fetch(url);
+    // Get all product IDs (use epoch start to get everything)
+    const productIds = await this.client.getProductDateModified(
+      PRODUCT_SERVICE_VERSION,
+      '2000-01-01T00:00:00'
+    );
 
-    if (!response.ok) {
-      throw new Error(`CSW product fetch failed: ${response.status} ${response.statusText}`);
+    logger.info(`Canada Sportswear: Found ${productIds.length} products. Fetching details...`);
+
+    const products: SupplierProduct[] = [];
+
+    for (const productId of productIds) {
+      try {
+        const product = await this.fetchProduct(productId);
+        products.push(product);
+      } catch (error) {
+        logger.error(
+          `Canada Sportswear: Failed to fetch product ${productId}: ${error}`
+        );
+      }
     }
 
-    const data = (await response.json()) as { product: CSWRawProduct };
-    return mapCSWProduct(data.product);
+    logger.info(
+      `Canada Sportswear: Extracted ${products.length}/${productIds.length} products.`
+    );
+    return products;
+  }
+
+  async fetchProduct(productId: string): Promise<SupplierProduct> {
+    logger.info(`Canada Sportswear: Fetching product ${productId}...`);
+
+    const $ = await this.client.getProduct(PRODUCT_SERVICE_VERSION, productId);
+    const parsed = parseProductFromXml($);
+
+    // Fetch media content for images
+    let mediaImages: ProductImage[] = [];
+    try {
+      const media$ = await this.client.getMediaContent(productId, MEDIA_SERVICE_VERSION);
+      const mediaItems = parseMediaContentFromXml(media$);
+      mediaImages = mediaItems
+        .filter((m) => m.mediaType === 'Image' || m.url.match(/\.(jpg|jpeg|png|gif|webp)/i))
+        .map((m) => ({
+          url: m.url,
+          alt: m.color
+            ? `${parsed.productName} - ${m.color}`
+            : parsed.productName,
+        }));
+    } catch (error) {
+      logger.warn(`Canada Sportswear: Could not fetch media for ${productId}: ${error}`);
+    }
+
+    return mapOneSourceProductToSupplierProduct(parsed, mediaImages);
   }
 }

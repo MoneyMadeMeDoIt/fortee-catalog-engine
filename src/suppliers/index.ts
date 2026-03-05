@@ -56,7 +56,6 @@ export async function extractFromSupplier(
 export async function extractAll(): Promise<ExtractionResult[]> {
   const results: ExtractionResult[] = [];
 
-  // Sequential: CSW first (no rate limits), then S&S
   results.push(await extractFromSupplier('canada-sportswear'));
   results.push(await extractFromSupplier('ss-canada'));
 
