@@ -72,31 +72,31 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SUPP-01 | TBD | Pending |
-| SUPP-02 | TBD | Pending |
-| SUPP-03 | TBD | Pending |
-| SHEET-01 | TBD | Pending |
-| SHEET-02 | TBD | Pending |
-| SHEET-03 | TBD | Pending |
-| DECOR-01 | TBD | Pending |
-| DECOR-02 | TBD | Pending |
-| PRICE-01 | TBD | Pending |
-| SHOP-01 | TBD | Pending |
-| SHOP-02 | TBD | Pending |
-| SHOP-03 | TBD | Pending |
-| SHOP-04 | TBD | Pending |
-| SHOP-05 | TBD | Pending |
-| SHOP-06 | TBD | Pending |
-| SHOP-07 | TBD | Pending |
-| OPS-01 | TBD | Pending |
-| OPS-02 | TBD | Pending |
-| OPS-03 | TBD | Pending |
+| SUPP-01 | Phase 1 | Pending |
+| SUPP-02 | Phase 1 | Pending |
+| SUPP-03 | Phase 1 | Pending |
+| SHEET-01 | Phase 2 | Pending |
+| SHEET-02 | Phase 2 | Pending |
+| SHEET-03 | Phase 2 | Pending |
+| DECOR-01 | Phase 3 | Pending |
+| DECOR-02 | Phase 3 | Pending |
+| PRICE-01 | Phase 3 | Pending |
+| SHOP-01 | Phase 4 | Pending |
+| SHOP-02 | Phase 4 | Pending |
+| SHOP-03 | Phase 4 | Pending |
+| SHOP-04 | Phase 4 | Pending |
+| SHOP-05 | Phase 4 | Pending |
+| SHOP-06 | Phase 4 | Pending |
+| SHOP-07 | Phase 4 | Pending |
+| OPS-01 | Phase 5 | Pending |
+| OPS-02 | Phase 5 | Pending |
+| OPS-03 | Phase 5 | Pending |
 
 **Coverage:**
 - v1 requirements: 19 total
-- Mapped to phases: 0
-- Unmapped: 19
+- Mapped to phases: 19
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-05*
-*Last updated: 2026-03-05 after initial definition*
+*Last updated: 2026-03-05 after roadmap creation*
