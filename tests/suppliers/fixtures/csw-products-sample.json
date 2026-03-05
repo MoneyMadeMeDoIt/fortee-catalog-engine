@@ -1,0 +1,93 @@
+[
+  {
+    "id": 7890123456789,
+    "title": "L00450 - Weekender Vintage Wash Pullover Hooded Sweatshirt",
+    "handle": "l00450-weekender-vintage-wash-pullover-hooded-sweatshirt",
+    "body_html": "<p>280 gsm - 8.3 oz./yd2 - 14 oz./lin. yd 70% cotton, 30% polyester vintage wash fleece</p><p>Relaxed fit. Attached hood with flat drawcord. Rib knit cuffs and hem. Front pouch pocket.</p><p><a href=\"https://canadasportswear.com/cdn/size-charts/L00450-size-chart.pdf\">Size Chart</a></p>",
+    "vendor": "Canada Sportswear",
+    "product_type": "Hooded Sweatshirts",
+    "tags": ["fleece", "hoodie", "vintage-wash"],
+    "variants": [
+      {
+        "id": 43210001,
+        "title": "Black / S",
+        "option1": "Black",
+        "option2": "S",
+        "sku": "L00450-BLK-S",
+        "price": "32.50",
+        "available": true
+      },
+      {
+        "id": 43210002,
+        "title": "Black / M",
+        "option1": "Black",
+        "option2": "M",
+        "sku": "L00450-BLK-M",
+        "price": "32.50",
+        "available": true
+      },
+      {
+        "id": 43210003,
+        "title": "Heather Grey / S",
+        "option1": "Heather Grey",
+        "option2": "S",
+        "sku": "L00450-HGY-S",
+        "price": "32.50",
+        "available": true
+      }
+    ],
+    "images": [
+      {
+        "id": 98760001,
+        "src": "https://canadasportswear.com/cdn/images/L00450-black-front.jpg",
+        "width": 1200,
+        "height": 1200,
+        "variant_ids": [43210001, 43210002]
+      },
+      {
+        "id": 98760002,
+        "src": "https://canadasportswear.com/cdn/images/L00450-heather-grey-front.jpg",
+        "width": 1200,
+        "height": 1200,
+        "variant_ids": [43210003]
+      }
+    ],
+    "options": [
+      { "name": "Color", "values": ["Black", "Heather Grey"] },
+      { "name": "Size", "values": ["S", "M"] }
+    ]
+  },
+  {
+    "id": 7890123456790,
+    "title": "L00550 - Premium Crewneck Sweatshirt",
+    "handle": "l00550-premium-crewneck-sweatshirt",
+    "body_html": "<p>320 gsm - 9.4 oz./yd2 80% cotton, 20% polyester brushed fleece</p><p>Classic fit. Rib knit crewneck, cuffs, and hem.</p><p><a href=\"https://canadasportswear.com/cdn/size-charts/L00550-size-chart.pdf\">Size Chart</a></p>",
+    "vendor": "Canada Sportswear",
+    "product_type": "Crewneck Sweatshirts",
+    "tags": ["fleece", "crewneck"],
+    "variants": [
+      {
+        "id": 43210010,
+        "title": "Navy / M",
+        "option1": "Navy",
+        "option2": "M",
+        "sku": "L00550-NVY-M",
+        "price": "28.00",
+        "available": true
+      }
+    ],
+    "images": [
+      {
+        "id": 98760010,
+        "src": "https://canadasportswear.com/cdn/images/L00550-navy-front.jpg",
+        "width": 1200,
+        "height": 1200,
+        "variant_ids": [43210010]
+      }
+    ],
+    "options": [
+      { "name": "Color", "values": ["Navy"] },
+      { "name": "Size", "values": ["M"] }
+    ]
+  }
+]

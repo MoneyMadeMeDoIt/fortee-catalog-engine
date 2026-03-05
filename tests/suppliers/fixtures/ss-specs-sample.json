@@ -1,0 +1,22 @@
+[
+  {
+    "sizeName": "S",
+    "specName": "Body Width",
+    "value": "18"
+  },
+  {
+    "sizeName": "S",
+    "specName": "Body Length",
+    "value": "28"
+  },
+  {
+    "sizeName": "M",
+    "specName": "Body Width",
+    "value": "20"
+  },
+  {
+    "sizeName": "M",
+    "specName": "Body Length",
+    "value": "29"
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "sku": "G500-BLK-S",
+    "styleID": 12345,
+    "colorName": "Black",
+    "sizeName": "S",
+    "piecePrice": 2.67,
+    "customerPrice": 2.45,
+    "colorSwatchImage": "https://www.ssactivewear.com/Images/Color/G500-Black-swatch.jpg",
+    "colorFrontImage": "https://www.ssactivewear.com/Images/Color/G500-Black-front.jpg"
+  },
+  {
+    "sku": "G500-BLK-M",
+    "styleID": 12345,
+    "colorName": "Black",
+    "sizeName": "M",
+    "piecePrice": 2.67,
+    "customerPrice": 2.45,
+    "colorSwatchImage": "https://www.ssactivewear.com/Images/Color/G500-Black-swatch.jpg",
+    "colorFrontImage": "https://www.ssactivewear.com/Images/Color/G500-Black-front.jpg"
+  },
+  {
+    "sku": "G500-WHT-S",
+    "styleID": 12345,
+    "colorName": "White",
+    "sizeName": "S",
+    "piecePrice": 2.67,
+    "customerPrice": 2.45,
+    "colorSwatchImage": "https://www.ssactivewear.com/Images/Color/G500-White-swatch.jpg",
+    "colorFrontImage": "https://www.ssactivewear.com/Images/Color/G500-White-front.jpg"
+  },
+  {
+    "sku": "G500-WHT-M",
+    "styleID": 12345,
+    "colorName": "White",
+    "sizeName": "M",
+    "piecePrice": 2.67,
+    "customerPrice": 2.45,
+    "colorSwatchImage": "https://www.ssactivewear.com/Images/Color/G500-White-swatch.jpg",
+    "colorFrontImage": "https://www.ssactivewear.com/Images/Color/G500-White-front.jpg"
+  }
+]
