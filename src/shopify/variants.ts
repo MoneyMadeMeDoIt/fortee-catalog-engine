@@ -23,7 +23,7 @@ export function buildVariants(rows: SheetRow[]): ProductVariantSetInput[] {
       { optionName: 'Color', name: row.colorName },
       { optionName: 'Size', name: row.sizeName },
     ],
-    price: parseFloat(row.sellPrice) || 0,
+    price: parseFloat(row.sellPrice1Area) || 0,
     sku: row.partNumber,
     barcode: row.PartID,
   }));

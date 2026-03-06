@@ -25,8 +25,8 @@ describe('columnToLetter', () => {
 });
 
 describe('SHEET_COLUMNS', () => {
-  it('has exactly 38 entries matching the master sheet columns', () => {
-    expect(SHEET_COLUMNS).toHaveLength(38);
+  it('has exactly 39 entries matching the master sheet columns', () => {
+    expect(SHEET_COLUMNS).toHaveLength(39);
   });
 });
 

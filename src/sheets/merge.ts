@@ -5,7 +5,7 @@
  */
 import type { SizeSpec, SupplierProduct } from '../suppliers/types.js';
 import type { SheetRow, EnrichmentUpdate } from './types.js';
-import { columnToLetter, FIELD_MAPPING } from './column-map.js';
+import { columnToLetter, FIELD_MAPPING, HEADER_ALIASES } from './column-map.js';
 import { SHEET_COLUMNS } from './types.js';
 
 /**
@@ -90,12 +90,11 @@ export function buildUpdates(
     // Skip if cell already has data (never overwrite)
     if (currentValue.trim() !== '') continue;
 
-    // Find column index: use SHEET_COLUMNS (code names) since actual headers may differ
-    let colIndex = SHEET_COLUMNS.indexOf(field as typeof SHEET_COLUMNS[number]);
-    if (colIndex === -1) {
-      // Fallback to actual headers
-      colIndex = headers.indexOf(field);
-    }
+    // Find column index: try actual headers first (exact match or alias), then SHEET_COLUMNS position
+    const alias = HEADER_ALIASES[field];
+    let colIndex = headers.indexOf(field);
+    if (colIndex === -1 && alias) colIndex = headers.indexOf(alias);
+    if (colIndex === -1) colIndex = SHEET_COLUMNS.indexOf(field as typeof SHEET_COLUMNS[number]);
     if (colIndex === -1) continue;
 
     const colLetter = columnToLetter(colIndex);

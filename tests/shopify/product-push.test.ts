@@ -40,7 +40,8 @@ function makeRow(overrides: Partial<SheetRow> = {}): SheetRow {
     sizeChart: '',
     embroideryAvailable: 'true',
     dtfAvailable: 'true',
-    sellPrice: '25.99',
+    sellPrice1Area: '25.99',
+    sellPrice2Area: '31.99',
     decorationPlacements: '',
     ...overrides,
   };

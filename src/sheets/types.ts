@@ -39,7 +39,8 @@ export interface SheetRow {
   sizeChart: string;
   embroideryAvailable: string;
   dtfAvailable: string;
-  sellPrice: string;
+  sellPrice1Area: string;
+  sellPrice2Area: string;
   decorationPlacements: string;
 }
 
@@ -84,7 +85,8 @@ export const SHEET_COLUMNS = [
   'sizeChart',
   'embroideryAvailable',
   'dtfAvailable',
-  'sellPrice',
+  'sellPrice1Area',
+  'sellPrice2Area',
   'decorationPlacements',
 ] as const;
 

@@ -5,6 +5,7 @@
 import type { sheets_v4 } from 'googleapis';
 import type { SheetRow } from './types.js';
 import { SHEET_COLUMNS } from './types.js';
+import { HEADER_ALIASES } from './column-map.js';
 
 /**
  * Read all rows from the specified Google Sheet tab.
@@ -58,11 +59,15 @@ export async function readAllRows(
     });
 
     // Map padded array to SheetRow using header positions
+    // Try code name first, then aliased sheet header name
     const sheetRow: Record<string, string> = {};
     for (const col of SHEET_COLUMNS) {
-      const idx = headerIndex.get(col);
+      const idx = headerIndex.get(col) ?? headerIndex.get(HEADER_ALIASES[col] ?? '');
       sheetRow[col] = idx !== undefined ? padded[idx] : '';
     }
+
+    // Normalize supplierCode: trim whitespace and default empty to SSCANADA
+    sheetRow.supplierCode = sheetRow.supplierCode.trim() || 'SSCANADA';
 
     return sheetRow as unknown as SheetRow;
   });

@@ -40,7 +40,8 @@ function makeRow(overrides: Partial<SheetRow> = {}): SheetRow {
     sizeChart: '',
     embroideryAvailable: 'true',
     dtfAvailable: 'true',
-    sellPrice: '25.99',
+    sellPrice1Area: '25.99',
+    sellPrice2Area: '31.99',
     decorationPlacements: '',
     ...overrides,
   };
@@ -49,9 +50,9 @@ function makeRow(overrides: Partial<SheetRow> = {}): SheetRow {
 describe('buildVariants', () => {
   it('produces correct variant count from rows', () => {
     const rows = [
-      makeRow({ colorName: 'Red', sizeName: 'S', partNumber: 'PN-S', PartID: 'P-S', sellPrice: '20.00' }),
-      makeRow({ colorName: 'Red', sizeName: 'M', partNumber: 'PN-M', PartID: 'P-M', sellPrice: '21.00' }),
-      makeRow({ colorName: 'Blue', sizeName: 'L', partNumber: 'PN-L', PartID: 'P-L', sellPrice: '22.00' }),
+      makeRow({ colorName: 'Red', sizeName: 'S', partNumber: 'PN-S', PartID: 'P-S', sellPrice1Area: '20.00', sellPrice2Area: '26.00' }),
+      makeRow({ colorName: 'Red', sizeName: 'M', partNumber: 'PN-M', PartID: 'P-M', sellPrice1Area: '21.00', sellPrice2Area: '27.00' }),
+      makeRow({ colorName: 'Blue', sizeName: 'L', partNumber: 'PN-L', PartID: 'P-L', sellPrice1Area: '22.00', sellPrice2Area: '28.00' }),
     ];
     const variants = buildVariants(rows);
     expect(variants).toHaveLength(3);
@@ -66,8 +67,8 @@ describe('buildVariants', () => {
     ]);
   });
 
-  it('maps sellPrice to price', () => {
-    const rows = [makeRow({ sellPrice: '29.99' })];
+  it('maps sellPrice1Area to price', () => {
+    const rows = [makeRow({ sellPrice1Area: '29.99' })];
     const [v] = buildVariants(rows);
     expect(v.price).toBe(29.99);
   });
@@ -84,14 +85,14 @@ describe('buildVariants', () => {
     expect(v.barcode).toBe('BAR-123');
   });
 
-  it('defaults price to 0 for empty sellPrice', () => {
-    const rows = [makeRow({ sellPrice: '' })];
+  it('defaults price to 0 for empty sellPrice1Area', () => {
+    const rows = [makeRow({ sellPrice1Area: '' })];
     const [v] = buildVariants(rows);
     expect(v.price).toBe(0);
   });
 
-  it('defaults price to 0 for non-numeric sellPrice', () => {
-    const rows = [makeRow({ sellPrice: 'abc' })];
+  it('defaults price to 0 for non-numeric sellPrice1Area', () => {
+    const rows = [makeRow({ sellPrice1Area: 'abc' })];
     const [v] = buildVariants(rows);
     expect(v.price).toBe(0);
   });

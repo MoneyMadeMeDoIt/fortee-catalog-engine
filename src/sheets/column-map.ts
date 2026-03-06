@@ -33,6 +33,17 @@ export const FIELD_MAPPING: Record<string, string> = {
 } as const;
 
 /**
+ * Maps code column names to actual sheet header names where they differ.
+ * The code uses camelCase; the sheet may use spaces or different casing.
+ */
+export const HEADER_ALIASES: Record<string, string> = {
+  col14Empty: 'Column 1',
+  sizeChart: 'Size Chart',
+  embroideryAvailable: 'Embroidery available',
+  dtfAvailable: 'DTF available',
+};
+
+/**
  * Maps sheet supplierCode values to Phase 1 adapter names.
  * The sheet uses PromoStandards supplier codes; the adapters use kebab-case names.
  */

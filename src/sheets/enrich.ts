@@ -12,6 +12,8 @@ import { extractProductsByIds } from '../suppliers/index.js';
 import type { SupplierProduct } from '../suppliers/types.js';
 import type { EnrichmentReport, EnrichmentUpdate } from './types.js';
 import { logger } from '../lib/logger.js';
+import { existsSync, readFileSync } from 'fs';
+import path from 'path';
 
 type SupplierName = 'canada-sportswear' | 'ss-canada';
 
@@ -108,17 +110,20 @@ export async function enrichSheet(
       }
 
       const product = productsByProductId.get(`${adapterName}:${row.productId}`);
-      if (!product) {
-        report.skippedNoMatch++;
-        continue;
-      }
 
-      const supplierData = mapSupplierToSheetFields(product);
+      // Start with API data if available, otherwise empty
+      const supplierData = product ? mapSupplierToSheetFields(product) : {};
 
-      // Override sizeChart with spec sheet data if available (higher quality than API)
+      // Override sizeChart with spec sheet data regardless of API match
       const specChart = sizeChartByProduct.get(row.productId);
       if (specChart) {
         supplierData.sizeChart = specChart;
+      }
+
+      // Skip if no data to write at all
+      if (Object.keys(supplierData).length === 0) {
+        report.skippedNoMatch++;
+        continue;
       }
 
       const updates = buildUpdates(row, supplierData, headers, i, sheetName);
