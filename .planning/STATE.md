@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Completed 02-02-PLAN.md
-last_updated: "2026-03-05T15:10:53.349Z"
-last_activity: 2026-03-05 -- Completed 02-02-PLAN.md (Merge, writer, enrichment CLI)
+status: in-progress
+stopped_at: Completed 03-01-PLAN.md
+last_updated: "2026-03-06T11:13:00Z"
+last_activity: 2026-03-06 -- Completed 03-01-PLAN.md (Decoration rules, category map, pricing calculator)
 progress:
   total_phases: 5
   completed_phases: 2
-  total_plans: 6
-  completed_plans: 6
-  percent: 100
+  total_plans: 8
+  completed_plans: 7
+  percent: 88
 ---
 
 # Project State
@@ -21,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-05)
 
 **Core value:** One command turns an enriched sheet row into a live Shopify product with correct decoration options, placements, pricing, and all customer-facing content.
-**Current focus:** Phase 2 complete. Next: Phase 3
+**Current focus:** Phase 3 in progress. Plan 01 complete, Plan 02 next.
 
 ## Current Position
 
-Phase: 2 of 5 (Google Sheets Integration) -- COMPLETE
-Plan: 2 of 2 in current phase
-Status: Phase Complete
-Last activity: 2026-03-05 -- Completed 02-02-PLAN.md (Merge, writer, enrichment CLI)
+Phase: 3 of 5 (Decoration Rules and Pricing)
+Plan: 1 of 2 in current phase -- COMPLETE
+Status: In Progress
+Last activity: 2026-03-06 -- Completed 03-01-PLAN.md (Decoration rules, category map, pricing calculator)
 
-Progress: [██████████] 100%
+Progress: [█████████░] 88%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
-- Average duration: 2.7min
-- Total execution time: 0.27 hours
+- Total plans completed: 7
+- Average duration: 2.9min
+- Total execution time: 0.33 hours
 
 **By Phase:**
 
@@ -45,13 +45,14 @@ Progress: [██████████] 100%
 |-------|-------|-------|----------|
 | 1. Supplier Data Extraction | 4 | 10min | 2.5min |
 | 2. Google Sheets Integration | 2 | 6min | 3min |
+| 3. Decoration Rules & Pricing | 1 | 4min | 4min |
 
 **Recent Trend:**
 - Last 5 plans: -
 - Trend: -
 
 *Updated after each plan completion*
-| Phase 02 P02 | 3min | 2 tasks | 6 files |
+| Phase 03 P01 | 4min | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -74,6 +75,9 @@ Recent decisions affecting current work:
 - [Phase 02]: Image fields map positionally: images[0]=Front, images[1]=Back, images[2]=Side
 - [Phase 02]: Size chart stored as structured text not URLs
 - [Phase 02]: Supplier product lookup keyed by adapter:styleNumber for cross-supplier uniqueness
+- [Phase 03]: 38 placements codified from Print Areas Placement Guide as typed constants
+- [Phase 03]: Body location mapping: garment categories -> body location groups (Front/Back/Sleeve/Hoodie/Pants/Headwear)
+- [Phase 03]: Embroidery cost threshold at 8000 stitches (flat $20 below, formula-based above)
 
 ### Pending Todos
 
@@ -87,6 +91,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T15:08:01.483Z
-Stopped at: Completed 02-02-PLAN.md
+Last session: 2026-03-06T11:13:00Z
+Stopped at: Completed 03-01-PLAN.md
 Resume file: None

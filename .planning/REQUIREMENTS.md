@@ -19,9 +19,9 @@
 
 ### Decoration & Pricing
 
-- [ ] **DECOR-01**: System defines allowed decoration methods and placements per garment category (hoodies, t-shirts, caps, etc.)
-- [ ] **DECOR-02**: Decoration rules are sourced from the Print Areas Placement Guide
-- [ ] **PRICE-01**: System calculates full sell price per product (garment cost + decoration cost + margin) based on the pricing calculator model
+- [x] **DECOR-01**: System defines allowed decoration methods and placements per garment category (hoodies, t-shirts, caps, etc.)
+- [x] **DECOR-02**: Decoration rules are sourced from the Print Areas Placement Guide
+- [x] **PRICE-01**: System calculates full sell price per product (garment cost + decoration cost + margin) based on the pricing calculator model
 
 ### Shopify Product Push
 
@@ -78,9 +78,9 @@
 | SHEET-01 | Phase 2 | Complete |
 | SHEET-02 | Phase 2 | Complete |
 | SHEET-03 | Phase 2 | Complete |
-| DECOR-01 | Phase 3 | Pending |
-| DECOR-02 | Phase 3 | Pending |
-| PRICE-01 | Phase 3 | Pending |
+| DECOR-01 | Phase 3 | Complete |
+| DECOR-02 | Phase 3 | Complete |
+| PRICE-01 | Phase 3 | Complete |
 | SHOP-01 | Phase 4 | Pending |
 | SHOP-02 | Phase 4 | Pending |
 | SHOP-03 | Phase 4 | Pending |
