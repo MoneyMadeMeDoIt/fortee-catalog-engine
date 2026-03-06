@@ -71,7 +71,7 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. Running the push command on an enriched product creates it in Shopify via GraphQL with Color x Size variants and correct base pricing
   2. Print Area metaobjects are created with the correct decoration method, placement, and pricing data, and linked to the product via metafields
-  3. Supplier images are downloaded and uploaded to Shopify via staged uploads, appearing on the product
+  3. Supplier images are attached to Shopify products via external URL pass-through (staged uploads as fallback if CDN blocks Shopify), appearing on the product
   4. The correct Dawn builder template is assigned based on the product's garment category
   5. Re-running the push on an existing product updates it instead of creating a duplicate
 **Plans**: 3 plans

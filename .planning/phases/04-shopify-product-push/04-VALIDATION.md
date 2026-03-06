@@ -2,8 +2,8 @@
 phase: 04
 slug: shopify-product-push
 status: draft
-nyquist_compliant: false
-wave_0_complete: false
+nyquist_compliant: true
+wave_0_complete: true
 created: 2026-03-06
 ---
 
@@ -36,14 +36,14 @@ created: 2026-03-06
 
 ## Per-Task Verification Map
 
-| Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
-|---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 04-01-01 | 01 | 1 | SHOP-01 | unit | `npx vitest run tests/shopify/client.test.ts` | ❌ W0 | ⬜ pending |
-| 04-01-02 | 01 | 1 | SHOP-02 | unit | `npx vitest run tests/shopify/variants.test.ts` | ❌ W0 | ⬜ pending |
-| 04-02-01 | 02 | 1 | SHOP-03, SHOP-04 | unit | `npx vitest run tests/shopify/metaobjects.test.ts` | ❌ W0 | ⬜ pending |
-| 04-03-01 | 03 | 2 | SHOP-05 | unit | `npx vitest run tests/shopify/images.test.ts` | ❌ W0 | ⬜ pending |
-| 04-03-02 | 03 | 2 | SHOP-06 | unit | `npx vitest run tests/shopify/template.test.ts` | ❌ W0 | ⬜ pending |
-| 04-03-03 | 03 | 2 | SHOP-07 | integration | `npx vitest run tests/shopify/idempotent.test.ts` | ❌ W0 | ⬜ pending |
+| Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Created By | Status |
+|---------|------|------|-------------|-----------|-------------------|-----------------|--------|
+| 04-01-01 | 01 | 1 | SHOP-01, SHOP-06 | unit | `npx vitest run tests/shopify/template-map.test.ts` | Plan 01 Task 1 | ⬜ pending |
+| 04-01-02 | 01 | 1 | SHOP-02, SHOP-07 | unit | `npx vitest run tests/shopify/variants.test.ts tests/shopify/handles.test.ts` | Plan 01 Task 2 | ⬜ pending |
+| 04-02-01 | 02 | 1 | SHOP-03, SHOP-04 | unit | `npx vitest run tests/shopify/metaobjects.test.ts` | Plan 02 Task 1 | ⬜ pending |
+| 04-03-01 | 03 | 2 | SHOP-01, SHOP-02, SHOP-05 | unit | `npx vitest run tests/shopify/product-push.test.ts` | Plan 03 Task 1 | ⬜ pending |
+| 04-03-02 | 03 | 2 | ALL | integration | `npx tsx scripts/push-product.ts --help` | Plan 03 Task 2 | ⬜ pending |
+| 04-03-03 | 03 | 2 | ALL | manual | Human verifies in Shopify admin | Plan 03 Task 3 | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -51,12 +51,13 @@ created: 2026-03-06
 
 ## Wave 0 Requirements
 
-- [ ] `tests/shopify/client.test.ts` — Shopify GraphQL client tests (SHOP-01)
-- [ ] `tests/shopify/variants.test.ts` — variant generation tests (SHOP-02)
-- [ ] `tests/shopify/metaobjects.test.ts` — metaobject creation and linking tests (SHOP-03, SHOP-04)
-- [ ] `tests/shopify/images.test.ts` — image upload tests (SHOP-05)
-- [ ] `tests/shopify/template.test.ts` — template assignment tests (SHOP-06)
-- [ ] `tests/shopify/idempotent.test.ts` — idempotent push tests (SHOP-07)
+All test files are created inline by their respective plan tasks (TDD pattern). No separate Wave 0 scaffold needed.
+
+- [ ] `tests/shopify/template-map.test.ts` — template suffix mapping tests (SHOP-06) — created by Plan 01 Task 1
+- [ ] `tests/shopify/variants.test.ts` — variant generation tests (SHOP-02) — created by Plan 01 Task 2
+- [ ] `tests/shopify/handles.test.ts` — handle determinism tests (SHOP-07) — created by Plan 01 Task 2
+- [ ] `tests/shopify/metaobjects.test.ts` — metaobject handle/input/metafield tests (SHOP-03, SHOP-04) — created by Plan 02 Task 1
+- [ ] `tests/shopify/product-push.test.ts` — product input building tests (SHOP-01, SHOP-02, SHOP-05) — created by Plan 03 Task 1
 
 ---
 
@@ -72,11 +73,11 @@ created: 2026-03-06
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 5s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references
+- [x] No watch-mode flags
+- [x] Feedback latency < 5s
+- [x] `nyquist_compliant: true` set in frontmatter
 
 **Approval:** pending
