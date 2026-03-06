@@ -58,10 +58,11 @@ Plans:
   1. Each garment category (hoodies, t-shirts, caps, etc.) has defined allowed decoration methods and placements sourced from the Print Areas Placement Guide
   2. Running the pricing calculator on a product produces the correct sell price (garment cost + decoration cost + margin) matching the pricing calculator spreadsheet
   3. Decoration rules and pricing are written to the sheet alongside supplier data for each product
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 03-01: TBD
+- [ ] 03-01-PLAN.md -- Decoration types, rules from Print Areas guide, category map, and pricing calculator (DECOR-01, DECOR-02, PRICE-01)
+- [ ] 03-02-PLAN.md -- Sheet integration: write decoration and pricing data to the master sheet (DECOR-01, DECOR-02, PRICE-01)
 
 ### Phase 4: Shopify Product Push
 **Goal**: One command creates a complete Shopify product from an enriched sheet row -- with variants, images, metafields, metaobjects, and template assignment
@@ -102,6 +103,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 |-------|----------------|--------|-----------|
 | 1. Supplier Data Extraction | 4/4 | Complete   | 2026-03-05 |
 | 2. Google Sheets Integration | 1/2 | In progress | - |
-| 3. Decoration Rules and Pricing | 0/? | Not started | - |
+| 3. Decoration Rules and Pricing | 0/2 | Not started | - |
 | 4. Shopify Product Push | 0/? | Not started | - |
 | 5. Scale and Reliability | 0/? | Not started | - |
