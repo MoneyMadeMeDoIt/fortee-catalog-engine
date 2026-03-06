@@ -74,12 +74,12 @@ Plans:
   3. Supplier images are downloaded and uploaded to Shopify via staged uploads, appearing on the product
   4. The correct Dawn builder template is assigned based on the product's garment category
   5. Re-running the push on an existing product updates it instead of creating a duplicate
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
-- [ ] 04-03: TBD
+- [ ] 04-01-PLAN.md -- Shopify client, types, mutations, template map, variant builder, handle generator (SHOP-01, SHOP-02, SHOP-06, SHOP-07)
+- [ ] 04-02-PLAN.md -- Print Area metaobject setup, upsert, and product metafield linking (SHOP-03, SHOP-04)
+- [ ] 04-03-PLAN.md -- Product push orchestrator, CLI entry point, and end-to-end verification (SHOP-01 through SHOP-07)
 
 ### Phase 5: Scale and Reliability
 **Goal**: The full pipeline handles 100+ products in a single batch run with visibility into what will happen, what is happening, and what went wrong
@@ -104,5 +104,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 1. Supplier Data Extraction | 4/4 | Complete   | 2026-03-05 |
 | 2. Google Sheets Integration | 1/2 | In progress | - |
 | 3. Decoration Rules and Pricing | 2/2 | Complete   | 2026-03-06 |
-| 4. Shopify Product Push | 0/? | Not started | - |
+| 4. Shopify Product Push | 0/3 | Not started | - |
 | 5. Scale and Reliability | 0/? | Not started | - |
