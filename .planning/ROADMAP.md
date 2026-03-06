@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Supplier Data Extraction** - Build API clients for Canada Sportswear and S&S Canada that reliably pull product data (completed 2026-03-05)
 - [ ] **Phase 2: Google Sheets Integration** - Read, write, and merge supplier data into the master Google Sheet
-- [ ] **Phase 3: Decoration Rules and Pricing** - Define decoration methods/placements per category and calculate sell prices
+- [x] **Phase 3: Decoration Rules and Pricing** - Define decoration methods/placements per category and calculate sell prices (completed 2026-03-06)
 - [ ] **Phase 4: Shopify Product Push** - Create complete Shopify products from enriched sheet data via GraphQL API
 - [ ] **Phase 5: Scale and Reliability** - Handle 100+ products with dry-run mode, batch processing, and error reporting
 
@@ -103,6 +103,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 |-------|----------------|--------|-----------|
 | 1. Supplier Data Extraction | 4/4 | Complete   | 2026-03-05 |
 | 2. Google Sheets Integration | 1/2 | In progress | - |
-| 3. Decoration Rules and Pricing | 0/2 | Not started | - |
+| 3. Decoration Rules and Pricing | 2/2 | Complete   | 2026-03-06 |
 | 4. Shopify Product Push | 0/? | Not started | - |
 | 5. Scale and Reliability | 0/? | Not started | - |
