@@ -1,6 +1,6 @@
 /**
  * Typed representation of a single row in the master product sheet.
- * Each property corresponds to one of the 35 columns in order.
+ * Each property corresponds to one of the 38 columns in order.
  */
 export interface SheetRow {
   supplierCode: string;
@@ -39,6 +39,8 @@ export interface SheetRow {
   sizeChart: string;
   embroideryAvailable: string;
   dtfAvailable: string;
+  sellPrice: string;
+  decorationPlacements: string;
 }
 
 /**
@@ -82,6 +84,8 @@ export const SHEET_COLUMNS = [
   'sizeChart',
   'embroideryAvailable',
   'dtfAvailable',
+  'sellPrice',
+  'decorationPlacements',
 ] as const;
 
 /** A cell-level update targeting a specific range in the sheet. */
