@@ -25,13 +25,13 @@
 
 ### Shopify Product Push
 
-- [ ] **SHOP-01**: System creates products in Shopify via GraphQL productSet mutation
-- [ ] **SHOP-02**: System generates Color x Size variants (~98 per product) with correct base pricing
+- [x] **SHOP-01**: System creates products in Shopify via GraphQL productSet mutation
+- [x] **SHOP-02**: System generates Color x Size variants (~98 per product) with correct base pricing
 - [ ] **SHOP-03**: System creates Print Area metaobjects with decoration method, placement, and pricing data
 - [ ] **SHOP-04**: System assigns metafields to products referencing the correct Print Area metaobjects
 - [ ] **SHOP-05**: System attaches supplier images to Shopify products via external URL pass-through (staged uploads as fallback if CDN blocks Shopify fetcher)
-- [ ] **SHOP-06**: System assigns the correct Dawn builder template to each product based on category
-- [ ] **SHOP-07**: System is idempotent — re-running updates existing products instead of creating duplicates
+- [x] **SHOP-06**: System assigns the correct Dawn builder template to each product based on category
+- [x] **SHOP-07**: System is idempotent — re-running updates existing products instead of creating duplicates
 
 ### Operational
 
@@ -81,13 +81,13 @@
 | DECOR-01 | Phase 3 | Complete |
 | DECOR-02 | Phase 3 | Complete |
 | PRICE-01 | Phase 3 | Complete |
-| SHOP-01 | Phase 4 | Pending |
-| SHOP-02 | Phase 4 | Pending |
+| SHOP-01 | Phase 4 | Complete |
+| SHOP-02 | Phase 4 | Complete |
 | SHOP-03 | Phase 4 | Pending |
 | SHOP-04 | Phase 4 | Pending |
 | SHOP-05 | Phase 4 | Pending |
-| SHOP-06 | Phase 4 | Pending |
-| SHOP-07 | Phase 4 | Pending |
+| SHOP-06 | Phase 4 | Complete |
+| SHOP-07 | Phase 4 | Complete |
 | OPS-01 | Phase 5 | Pending |
 | OPS-02 | Phase 5 | Pending |
 | OPS-03 | Phase 5 | Pending |

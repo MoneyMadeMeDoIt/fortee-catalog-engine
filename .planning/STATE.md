@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Completed 03-02-PLAN.md
-last_updated: "2026-03-06T11:22:08.276Z"
-last_activity: 2026-03-06 -- Completed 03-02-PLAN.md (Sheet decoration enrichment pipeline)
+status: in-progress
+stopped_at: Completed 04-02-PLAN.md
+last_updated: "2026-03-06T11:56:23Z"
+last_activity: 2026-03-06 -- Completed 04-02-PLAN.md (Print Area metaobjects)
 progress:
   total_phases: 5
   completed_phases: 3
-  total_plans: 8
-  completed_plans: 8
+  total_plans: 11
+  completed_plans: 10
   percent: 100
 ---
 
@@ -21,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-05)
 
 **Core value:** One command turns an enriched sheet row into a live Shopify product with correct decoration options, placements, pricing, and all customer-facing content.
-**Current focus:** Phase 3 complete. All decoration rules and pricing implemented. Ready for Phase 4.
+**Current focus:** Phase 4 in progress. Shopify foundation + Print Area metaobjects complete. Plan 03 next.
 
 ## Current Position
 
-Phase: 3 of 5 (Decoration Rules and Pricing) -- COMPLETE
-Plan: 2 of 2 in current phase -- COMPLETE
-Status: Phase Complete
-Last activity: 2026-03-06 -- Completed 03-02-PLAN.md (Sheet decoration enrichment pipeline)
+Phase: 4 of 5 (Shopify Product Push)
+Plan: 2 of 3 in current phase -- COMPLETE
+Status: In Progress
+Last activity: 2026-03-06 -- Completed 04-02-PLAN.md (Print Area metaobjects)
 
-Progress: [██████████] 100%
+Progress: [█████████░] 91%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
-- Average duration: 2.9min
-- Total execution time: 0.38 hours
+- Total plans completed: 9
+- Average duration: 2.8min
+- Total execution time: 0.42 hours
 
 **By Phase:**
 
@@ -46,6 +46,7 @@ Progress: [██████████] 100%
 | 1. Supplier Data Extraction | 4 | 10min | 2.5min |
 | 2. Google Sheets Integration | 2 | 6min | 3min |
 | 3. Decoration Rules & Pricing | 2 | 7min | 3.5min |
+| 4. Shopify Product Push | 2 | 4min | 2min |
 
 **Recent Trend:**
 - Last 5 plans: -
@@ -54,6 +55,7 @@ Progress: [██████████] 100%
 *Updated after each plan completion*
 | Phase 03 P01 | 4min | 2 tasks | 8 files |
 | Phase 03 P02 | 3min | 2 tasks | 5 files |
+| Phase 04 P01 | 2min | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -82,6 +84,9 @@ Recent decisions affecting current work:
 - [Phase 03]: Print areas default to 1 for base pricing (most common single-area decoration)
 - [Phase 03]: Embroidery areas set to 0 for base pricing (order-specific, not pre-calculated)
 - [Phase 03]: Default discount 45% matching business pricing model
+- [Phase 04]: API version 2025-01 for Shopify Admin API client
+- [Phase 04]: Pure function builders with no API calls for independent testability
+- [Phase 04]: URL deduplication via Set in buildFiles for cross-row image collection
 
 ### Pending Todos
 
