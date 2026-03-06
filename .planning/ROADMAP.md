@@ -104,5 +104,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 1. Supplier Data Extraction | 4/4 | Complete   | 2026-03-05 |
 | 2. Google Sheets Integration | 1/2 | In progress | - |
 | 3. Decoration Rules and Pricing | 2/2 | Complete   | 2026-03-06 |
-| 4. Shopify Product Push | 0/3 | Not started | - |
+| 4. Shopify Product Push | 2/3 | In Progress|  |
 | 5. Scale and Reliability | 0/? | Not started | - |

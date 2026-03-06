@@ -56,6 +56,7 @@ Progress: [█████████░] 91%
 | Phase 03 P01 | 4min | 2 tasks | 8 files |
 | Phase 03 P02 | 3min | 2 tasks | 5 files |
 | Phase 04 P01 | 2min | 2 tasks | 10 files |
+| Phase 04 P02 | 2min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -87,6 +88,9 @@ Recent decisions affecting current work:
 - [Phase 04]: API version 2025-01 for Shopify Admin API client
 - [Phase 04]: Pure function builders with no API calls for independent testability
 - [Phase 04]: URL deduplication via Set in buildFiles for cross-row image collection
+- [Phase 04]: Deterministic metaobject handles via category-method-placement concatenation
+- [Phase 04]: Partial success acceptable for upsertPrintAreas (log errors, continue)
+- [Phase 04]: Already-exists errors handled gracefully in setup for idempotent re-runs
 
 ### Pending Todos
 
@@ -100,6 +104,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-06T11:18:02Z
-Stopped at: Completed 03-02-PLAN.md
+Last session: 2026-03-06T11:56:23Z
+Stopped at: Completed 04-02-PLAN.md
 Resume file: None
