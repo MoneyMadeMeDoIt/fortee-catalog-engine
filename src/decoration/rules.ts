@@ -1,8 +1,432 @@
-// Stub - to be implemented
 import type { GarmentCategory, DecorationPlacement } from './types.js';
 
-export const ALL_PLACEMENTS: DecorationPlacement[] = [];
+/**
+ * Maps each garment category to the body location groups from the Print Areas guide
+ * that apply to it. The guide organizes placements by body location (Front, Back,
+ * Sleeve, Hoodie, Pants, Headwear), not by garment type.
+ */
+export const CATEGORY_TO_BODY_LOCATIONS: Record<GarmentCategory, string[]> = {
+  'T-Shirt': ['Front', 'Back', 'Sleeve'],
+  'Hoodie': ['Front', 'Back', 'Sleeve', 'Hoodie'],
+  'Long Sleeve': ['Front', 'Back', 'Sleeve'],
+  'Cap': ['Headwear'],
+  'Beanie': ['Headwear'],
+  'Pants': ['Pants'],
+  'Jacket': ['Front', 'Back', 'Sleeve'],
+};
 
-export function getDecorationRulesForCategory(_category: GarmentCategory): DecorationPlacement[] {
-  return [];
+/**
+ * All 38 decoration placements from the Print Areas Placement Guide.
+ * Each placement is tagged with its body location category and decoration method.
+ */
+export const ALL_PLACEMENTS: DecorationPlacement[] = [
+  // === PRINT - Front (4) ===
+  {
+    method: 'Print',
+    bodyCategory: 'Front',
+    placementName: 'Left Chest',
+    commonSizes: '3.5x3.5',
+    maxSize: '4.5x4.5',
+    verticalRef: 'Center 4in below collar seam',
+    horizontalRef: '3.5-4 in from centerline',
+    notes: 'Primary brand logo',
+  },
+  {
+    method: 'Print',
+    bodyCategory: 'Front',
+    placementName: 'Right Chest',
+    commonSizes: '3.5x3.5',
+    maxSize: '4.5x4.5',
+    verticalRef: 'Center 4in below and Left collar seam',
+    horizontalRef: '4 in from centerline',
+    notes: 'Mirrored left chest',
+  },
+  {
+    method: 'Print',
+    bodyCategory: 'Front',
+    placementName: 'Center Chest (Small)',
+    commonSizes: '6x6 | 8x8 | 8x10',
+    maxSize: '8x10',
+    verticalRef: 'Top 3.5-4 in below collar seam',
+    horizontalRef: 'Centered',
+    notes: 'Secondary graphic',
+  },
+  {
+    method: 'Print',
+    bodyCategory: 'Front',
+    placementName: 'Full Front',
+    commonSizes: '12x14 | 13x15',
+    maxSize: '14x19',
+    verticalRef: 'Top 2.5-3 in below collar seam',
+    horizontalRef: 'Centered',
+    notes: 'Main statement print',
+  },
+
+  // === PRINT - Back (4) ===
+  {
+    method: 'Print',
+    bodyCategory: 'Back',
+    placementName: 'Full Back',
+    commonSizes: '12x14 | 13x15',
+    maxSize: '14x19',
+    verticalRef: 'Top 2.5-3 in below collar seam',
+    horizontalRef: 'Centered',
+    notes: 'Primary back print',
+  },
+  {
+    method: 'Print',
+    bodyCategory: 'Back',
+    placementName: 'Upper Back',
+    commonSizes: '10x2 | 11x3 | 12x3.5',
+    maxSize: '12x3.5',
+    verticalRef: 'Top 1-2 in below collar seam',
+    horizontalRef: 'Centered',
+    notes: 'Brand name or slogan',
+  },
+  {
+    method: 'Print',
+    bodyCategory: 'Back',
+    placementName: 'Back Collar',
+    commonSizes: '3x1.5 | 3.5x2',
+    maxSize: '4x2.5',
+    verticalRef: 'Top 1 in below collar seam',
+    horizontalRef: 'Centered',
+    notes: 'Mini logo',
+  },
+  {
+    method: 'Print',
+    bodyCategory: 'Back',
+    placementName: 'Lower Back',
+    commonSizes: '10x2.5 | 12x3',
+    maxSize: '12x3',
+    verticalRef: 'Bottom 3-4 in above hem bottom',
+    horizontalRef: 'Centered',
+    notes: 'URL or tagline',
+  },
+
+  // === PRINT - Sleeve (4) ===
+  {
+    method: 'Print',
+    bodyCategory: 'Sleeve',
+    placementName: 'Short Sleeve',
+    commonSizes: '2.5x2.5 | 3.5x3.5 | 3x4',
+    maxSize: '3.5x4',
+    verticalRef: 'Top 1.5-2 in below shoulder seam',
+    horizontalRef: 'Centered',
+    notes: 'Flags, badges',
+  },
+  {
+    method: 'Print',
+    bodyCategory: 'Sleeve',
+    placementName: 'Long Sleeve Vertical',
+    commonSizes: '3x14 | 3.5x16 | 4x18',
+    maxSize: '4x18',
+    verticalRef: 'Top 2-3 in below shoulder seam',
+    horizontalRef: 'Outer or centered',
+    notes: 'Text down sleeve',
+  },
+  {
+    method: 'Print',
+    bodyCategory: 'Sleeve',
+    placementName: 'Forearm (Horizontal)',
+    commonSizes: '8x3 | 9x3.5',
+    maxSize: '9x3.5',
+    verticalRef: 'Centered between elbow and wrist from wrist',
+    horizontalRef: 'Centered',
+    notes: 'Secondary branding',
+  },
+  {
+    method: 'Print',
+    bodyCategory: 'Sleeve',
+    placementName: 'Cuff / Wrist',
+    commonSizes: '2x2 | 2.5x2.5',
+    maxSize: '2.5x2.5',
+    verticalRef: 'Top 1-1.5 in above cuff seam',
+    horizontalRef: 'Centered',
+    notes: 'Minimal mark',
+  },
+
+  // === PRINT - Hoodie (6) ===
+  {
+    method: 'Print',
+    bodyCategory: 'Hoodie',
+    placementName: 'Left Chest',
+    commonSizes: '4x4 | 4.5x4.5',
+    maxSize: '4.5x4.5',
+    verticalRef: '3-3.5 in below collar seam',
+    horizontalRef: 'Left chest alignment',
+    notes: 'Avoid pocket seam',
+  },
+  {
+    method: 'Print',
+    bodyCategory: 'Hoodie',
+    placementName: 'Full Front',
+    commonSizes: '12x14 | 13x15',
+    maxSize: '14x19',
+    verticalRef: '2.5-3 in below collar seam',
+    horizontalRef: 'Centered',
+    notes: 'Large hoodie print',
+  },
+  {
+    method: 'Print',
+    bodyCategory: 'Hoodie',
+    placementName: 'Full Back',
+    commonSizes: '12x14 | 13x15',
+    maxSize: '14x19',
+    verticalRef: '2.5-3 in below collar seam',
+    horizontalRef: 'Centered',
+    notes: 'Back hoodie print',
+  },
+  {
+    method: 'Print',
+    bodyCategory: 'Hoodie',
+    placementName: 'Pouch Pocket Center',
+    commonSizes: '8x4 | 10x5',
+    maxSize: '10x5',
+    verticalRef: 'Centered on pocket',
+    horizontalRef: 'Centered',
+    notes: 'Most requested hoodie option',
+  },
+  {
+    method: 'Print',
+    bodyCategory: 'Hoodie',
+    placementName: 'Split Pocket (Each Side)',
+    commonSizes: '4x4 | 4.5x4.5',
+    maxSize: '4.5x4.5',
+    verticalRef: 'Centered on each pocket half',
+    horizontalRef: 'Pocket half',
+    notes: 'Streetwear look',
+  },
+  {
+    method: 'Print',
+    bodyCategory: 'Hoodie',
+    placementName: 'Hood Print',
+    commonSizes: '8x2.5 | 10x3',
+    maxSize: '10x3',
+    verticalRef: '1-2 in above hood face seam',
+    horizontalRef: 'Centered on hood',
+    notes: 'Side or back hood',
+  },
+
+  // === PRINT - Pants (5) ===
+  {
+    method: 'Print',
+    bodyCategory: 'Pants',
+    placementName: 'Front Thigh',
+    commonSizes: '4x4 | 5x5 | 4x6',
+    maxSize: '5x6',
+    verticalRef: 'Top 3-4 in below pocket',
+    horizontalRef: 'Aligned with leg',
+    notes: 'Workwear logo',
+  },
+  {
+    method: 'Print',
+    bodyCategory: 'Pants',
+    placementName: 'Side Thigh (Vertical)',
+    commonSizes: '3x8 | 3.5x10',
+    maxSize: '3.5x10',
+    verticalRef: 'Centered on thigh',
+    horizontalRef: 'Outer seam',
+    notes: 'Utility branding',
+  },
+  {
+    method: 'Print',
+    bodyCategory: 'Pants',
+    placementName: 'Back Pocket Area',
+    commonSizes: '4x4 | 5x5',
+    maxSize: '5x5',
+    verticalRef: 'Centered on pocket',
+    horizontalRef: 'Centered',
+    notes: 'Classic placement',
+  },
+  {
+    method: 'Print',
+    bodyCategory: 'Pants',
+    placementName: 'Lower Leg / Calf',
+    commonSizes: '3x10 | 3.5x12 | 4x14',
+    maxSize: '4x14',
+    verticalRef: 'Centered on calf',
+    horizontalRef: 'Outer seam',
+    notes: 'Joggers/work pants',
+  },
+  {
+    method: 'Print',
+    bodyCategory: 'Pants',
+    placementName: 'Ankle / Hem',
+    commonSizes: '2x2 | 3x2',
+    maxSize: '3x2',
+    verticalRef: 'Top 1-1.5 in above hem',
+    horizontalRef: 'Centered',
+    notes: 'Minimal detail',
+  },
+
+  // === PRINT - Headwear (3) ===
+  {
+    method: 'Print',
+    bodyCategory: 'Headwear',
+    placementName: 'Cap Front Panel',
+    commonSizes: '3x2 | 3.5x2.25',
+    maxSize: '3.5x2.25',
+    verticalRef: 'Bottom just above bill seam',
+    horizontalRef: 'Centered',
+    notes: 'DTF or patch base',
+  },
+  {
+    method: 'Print',
+    bodyCategory: 'Headwear',
+    placementName: 'Cap Left Front Panel',
+    commonSizes: '2.5x1.5 | 3x2',
+    maxSize: '3x2',
+    verticalRef: 'Centered vertically on panel',
+    horizontalRef: 'Between seams',
+    notes: 'Secondary logo',
+  },
+  {
+    method: 'Print',
+    bodyCategory: 'Headwear',
+    placementName: 'Cap Right Front Panel',
+    commonSizes: '2.5x1.5 | 3x2',
+    maxSize: '3x2',
+    verticalRef: 'Centered vertically on panel',
+    horizontalRef: 'Between seams',
+    notes: 'Secondary logo',
+  },
+
+  // === EMBROIDERY - Front (4) ===
+  {
+    method: 'Embroidery',
+    bodyCategory: 'Front',
+    placementName: 'Left Chest',
+    commonSizes: '3.5x3.5 | 4x4',
+    maxSize: '4.5x4.5',
+    verticalRef: 'Center 4 in below collar seam',
+    horizontalRef: '3.5-4 in from centerline',
+    notes: '0.5 in safety margin applied',
+  },
+  {
+    method: 'Embroidery',
+    bodyCategory: 'Front',
+    placementName: 'Right Chest',
+    commonSizes: '3.5x3.5 | 4x4',
+    maxSize: '4.5x4.5',
+    verticalRef: 'Center 4 in below collar seam',
+    horizontalRef: '3.5-4 in from centerline',
+    notes: 'Mirrored left chest',
+  },
+  {
+    method: 'Embroidery',
+    bodyCategory: 'Front',
+    placementName: 'Center Chest (Small)',
+    commonSizes: '4x4 | 4.5x4.5',
+    maxSize: '4.5x4.5',
+    verticalRef: 'Top 3.5-4 in below collar seam',
+    horizontalRef: 'Centered',
+    notes: 'Compact logos only',
+  },
+  {
+    method: 'Embroidery',
+    bodyCategory: 'Front',
+    placementName: 'Center Chest (Large)',
+    commonSizes: '6x6 | 7x7 | 8x8',
+    maxSize: '9x9',
+    verticalRef: 'Top 3.5-4 in below collar seam',
+    horizontalRef: 'Centered',
+    notes: 'Flat, stable garments only',
+  },
+
+  // === EMBROIDERY - Back (1) ===
+  {
+    method: 'Embroidery',
+    bodyCategory: 'Back',
+    placementName: 'Upper Back',
+    commonSizes: '8x2 | 9x3',
+    maxSize: '9x9',
+    verticalRef: 'Top 1-1.5 in below collar seam',
+    horizontalRef: 'Centered',
+    notes: 'Text only recommended',
+  },
+
+  // === EMBROIDERY - Sleeve (2) ===
+  {
+    method: 'Embroidery',
+    bodyCategory: 'Sleeve',
+    placementName: 'Short Sleeve',
+    commonSizes: '2.5x2.5 | 3x3',
+    maxSize: '4.5x4.5',
+    verticalRef: 'Top 1.5-2 in below shoulder seam',
+    horizontalRef: 'Centered on sleeve',
+    notes: 'Avoid thick seams',
+  },
+  {
+    method: 'Embroidery',
+    bodyCategory: 'Sleeve',
+    placementName: 'Long Sleeve (Vertical)',
+    commonSizes: '2.5x6 | 3x8',
+    maxSize: '9x9',
+    verticalRef: 'Top 2-3 in below shoulder seam',
+    horizontalRef: 'Aligned to sleeve edge',
+    notes: 'Split hooping required',
+  },
+
+  // === EMBROIDERY - Headwear (5) ===
+  {
+    method: 'Embroidery',
+    bodyCategory: 'Headwear',
+    placementName: 'Cap Front',
+    commonSizes: '3x2 | 3.5x2.25',
+    maxSize: '4.5x4.5',
+    verticalRef: 'Centered just above bill seam',
+    horizontalRef: 'Centered',
+    notes: 'Structured caps preferred',
+  },
+  {
+    method: 'Embroidery',
+    bodyCategory: 'Headwear',
+    placementName: 'Cap Left Front Panel',
+    commonSizes: '2.5x1.3',
+    maxSize: '3x2',
+    verticalRef: 'Centered vertically on panel',
+    horizontalRef: 'Between seams',
+    notes: 'Secondary logo',
+  },
+  {
+    method: 'Embroidery',
+    bodyCategory: 'Headwear',
+    placementName: 'Cap Right Front Panel',
+    commonSizes: '2.5x1.4',
+    maxSize: '3x2',
+    verticalRef: 'Centered vertically on panel',
+    horizontalRef: 'Between seams',
+    notes: 'Secondary logo',
+  },
+  {
+    method: 'Embroidery',
+    bodyCategory: 'Headwear',
+    placementName: 'Cap Side Panel',
+    commonSizes: '2.5x1.5',
+    maxSize: '3x2',
+    verticalRef: 'Centered vertically on panel',
+    horizontalRef: 'Between seams',
+    notes: 'Secondary logo',
+  },
+  {
+    method: 'Embroidery',
+    bodyCategory: 'Headwear',
+    placementName: 'Beanie Front',
+    commonSizes: '3x1.75 | 3.5x2.5',
+    maxSize: '4.5x2.5',
+    verticalRef: 'Centered',
+    horizontalRef: 'Centered',
+    notes: 'Flat embroidery only',
+  },
+];
+
+/**
+ * Returns all decoration placements applicable to the given garment category.
+ * Filters ALL_PLACEMENTS by body location groups mapped to the category.
+ */
+export function getDecorationRulesForCategory(category: GarmentCategory): DecorationPlacement[] {
+  const bodyLocations = CATEGORY_TO_BODY_LOCATIONS[category];
+  if (!bodyLocations) return [];
+  return ALL_PLACEMENTS.filter((p) => bodyLocations.includes(p.bodyCategory));
 }
