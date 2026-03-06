@@ -42,6 +42,7 @@ function makeParsedProduct() {
       { pointType: 'Highlights', pointCopy: 'Relaxed fit with attached hood' },
     ],
     keywords: ['hoodie', 'sweatshirt', 'vintage'],
+    isCloseout: false,
     rawXml: '<Product>...</Product>',
   };
 }

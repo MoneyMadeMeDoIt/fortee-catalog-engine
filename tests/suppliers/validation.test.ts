@@ -18,6 +18,7 @@ function makeValidCSWProduct(): SupplierProduct {
       { color: 'Black', size: 'S', sku: 'L00450-BLK-S' },
       { color: 'Black', size: 'M', sku: 'L00450-BLK-M' },
     ],
+    isCloseout: false,
     rawData: {},
   };
 }
@@ -42,6 +43,7 @@ function makeValidSSProduct(): SupplierProduct {
       { color: 'Black', size: 'S', sku: 'G500-BLK-S', price: 2.45 },
       { color: 'White', size: 'M', sku: 'G500-WHT-M', price: 2.45 },
     ],
+    isCloseout: false,
     rawData: {},
   };
 }

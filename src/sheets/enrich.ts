@@ -7,7 +7,7 @@ import { readAllRows } from './reader.js';
 import { mapSupplierToSheetFields, buildUpdates } from './merge.js';
 import { writeUpdates } from './writer.js';
 import { SUPPLIER_CODE_MAP } from './column-map.js';
-import { extractFromSupplier } from '../suppliers/index.js';
+import { extractProductsByIds } from '../suppliers/index.js';
 import type { SupplierProduct } from '../suppliers/types.js';
 import type { EnrichmentReport, EnrichmentUpdate } from './types.js';
 import { logger } from '../lib/logger.js';
@@ -46,29 +46,30 @@ export async function enrichSheet(
   logger.info('Reading sheet...');
   const { headers, rows } = await readAllRows(sheets, spreadsheetId, sheetName);
 
-  // Step 2: Determine which suppliers to extract
-  const suppliersToExtract = new Set<SupplierName>();
+  // Step 2: Collect unique productIds per supplier from the sheet
+  // The OneSource API uses productId (e.g. "029HBM"), not styleID (e.g. "6128")
+  const productIdsBySupplier = new Map<SupplierName, Set<string>>();
 
-  if (options.supplier) {
-    suppliersToExtract.add(options.supplier);
-  } else {
-    // Find unique suppliers from sheet rows
-    for (const row of rows) {
-      const adapterName = SUPPLIER_CODE_MAP[row.supplierCode as keyof typeof SUPPLIER_CODE_MAP];
-      if (adapterName) {
-        suppliersToExtract.add(adapterName);
-      }
+  for (const row of rows) {
+    const adapterName = SUPPLIER_CODE_MAP[row.supplierCode as keyof typeof SUPPLIER_CODE_MAP];
+    if (!adapterName) continue;
+    if (options.supplier && adapterName !== options.supplier) continue;
+    if (!row.productId) continue;
+
+    if (!productIdsBySupplier.has(adapterName)) {
+      productIdsBySupplier.set(adapterName, new Set());
     }
+    productIdsBySupplier.get(adapterName)!.add(row.productId);
   }
 
-  // Step 3: Extract supplier data and build lookup map
-  const productsByStyle = new Map<string, SupplierProduct>();
+  // Step 3: Fetch only the products that exist in the sheet
+  const productsByProductId = new Map<string, SupplierProduct>();
 
-  for (const supplier of suppliersToExtract) {
-    logger.info(`Extracting from ${supplier}...`);
-    const result = await extractFromSupplier(supplier);
+  for (const [supplier, productIds] of productIdsBySupplier) {
+    logger.info(`Fetching ${productIds.size} products from ${supplier}...`);
+    const result = await extractProductsByIds(supplier, [...productIds], { skipValidation: true });
     for (const product of result.products) {
-      productsByStyle.set(`${supplier}:${product.styleNumber}`, product);
+      productsByProductId.set(`${supplier}:${product.styleNumber}`, product);
     }
   }
 
@@ -98,7 +99,7 @@ export async function enrichSheet(
         continue;
       }
 
-      const product = productsByStyle.get(`${adapterName}:${row.styleID}`);
+      const product = productsByProductId.get(`${adapterName}:${row.productId}`);
       if (!product) {
         report.skippedNoMatch++;
         continue;
@@ -120,7 +121,9 @@ export async function enrichSheet(
   // Step 5: Write updates
   if (allUpdates.length > 0) {
     if (options.dryRun) {
-      logger.info(`[DRY RUN] Would write ${allUpdates.length} cell updates`);
+      const affectedRows = [...new Set(allUpdates.map(u => u.range.replace(/.*?([A-Z]+)(\d+)/, '$2')))].sort((a, b) => Number(a) - Number(b));
+      logger.info(`[DRY RUN] Would write ${allUpdates.length} cell updates across ${affectedRows.length} rows`);
+      logger.info(`[DRY RUN] Affected rows: ${affectedRows.join(', ')}`);
       for (const update of allUpdates.slice(0, 10)) {
         logger.info(`  ${update.range} = ${update.values[0][0]}`);
       }

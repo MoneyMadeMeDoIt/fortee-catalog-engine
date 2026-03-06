@@ -33,6 +33,7 @@ export interface SupplierProduct {
   sizeChartData: SizeSpec[] | null;
   images: ProductImage[];
   variants: SupplierVariant[];
+  isCloseout: boolean;
   rawData: unknown;
 }
 
@@ -75,6 +76,7 @@ export const SupplierProductSchema = z.object({
   sizeChartData: z.array(SizeSpecSchema).nullable(),
   images: z.array(ProductImageSchema).min(1),
   variants: z.array(SupplierVariantSchema).min(1),
+  isCloseout: z.boolean(),
   rawData: z.unknown(),
 });
 

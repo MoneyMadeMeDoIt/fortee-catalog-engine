@@ -26,8 +26,20 @@ function buildSoapEnvelope(namespace: string, body: string): string {
 </soap:Envelope>`;
 }
 
+/** Match elements by local name, ignoring namespace prefixes (e.g. ns1:Product matches "Product") */
+function findByLocal($: cheerio.CheerioAPI, context: cheerio.Cheerio<any>, localName: string): cheerio.Cheerio<any> {
+  let found = context.find(localName);
+  if (!found.length) {
+    found = context.find('*').filter((_, e) => {
+      const name = (e as any).tagName || (e as any).name || '';
+      return name === localName || name.endsWith(`:${localName}`);
+    });
+  }
+  return found;
+}
+
 function extractText($: cheerio.CheerioAPI, el: cheerio.Element, tag: string): string {
-  const found = $(el).find(tag).first();
+  const found = findByLocal($, $(el), tag).first();
   return found.length ? found.text().trim() : '';
 }
 
@@ -82,12 +94,25 @@ export function createOneSourceClient(config: OneSourceConfig) {
 
     // Check for errors in response
     const errorMessages: ServiceMessageError[] = [];
-    $('ServiceMessage, ErrorMessage').each((_, el) => {
+    // ServiceMessage elements require severity === 'Error'
+    findByLocal($, $.root(), 'ServiceMessage').each((_, el) => {
       const severity = extractText($, el, 'severity');
       if (severity === 'Error') {
         errorMessages.push({
           code: parseInt(extractText($, el, 'code'), 10),
           description: extractText($, el, 'description'),
+          severity,
+        });
+      }
+    });
+    // ErrorMessage elements are always errors (may lack severity field)
+    findByLocal($, $.root(), 'ErrorMessage').each((_, el) => {
+      const severity = extractText($, el, 'severity') || 'Error';
+      const description = extractText($, el, 'description') || $(el).text().trim();
+      if (description) {
+        errorMessages.push({
+          code: parseInt(extractText($, el, 'code'), 10) || 0,
+          description,
           severity,
         });
       }
@@ -118,7 +143,7 @@ export function createOneSourceClient(config: OneSourceConfig) {
     const $ = await soapRequest('Product', productServiceVersion, 'getProductDateModified', body, ns);
 
     const productIds: string[] = [];
-    $('ProductDateModified').each((_, el) => {
+    findByLocal($, $.root(), 'ProductDateModified').each((_, el) => {
       const productId = extractText($, el, 'productId');
       if (productId && !productIds.includes(productId)) {
         productIds.push(productId);
@@ -192,25 +217,30 @@ export function parseProductFromXml($: cheerio.CheerioAPI): {
   }>;
   marketingPoints: Array<{ pointType?: string; pointCopy: string }>;
   keywords: string[];
+  isCloseout: boolean;
   rawXml: string;
 } {
-  const product = $('Product').first();
+  const product = findByLocal($, $.root(), 'Product').first();
 
   const productId = extractText($, product[0]!, 'productId');
   const productName = extractText($, product[0]!, 'productName');
   const primaryImageUrl = extractText($, product[0]!, 'primaryImageUrl');
   const productBrand = extractText($, product[0]!, 'productBrand');
+  const isCloseout = extractBool($, product[0]!, 'isCloseout');
 
   // Description - can be multiple
   const descriptions: string[] = [];
-  product.children('description').each((_, el) => {
-    descriptions.push($(el).text().trim());
+  findByLocal($, product, 'description').each((_, el) => {
+    // Only direct child descriptions (not nested part descriptions)
+    if ($(el).parent()[0] === product[0]) {
+      descriptions.push($(el).text().trim());
+    }
   });
   const description = descriptions.join(' ');
 
   // Categories
   const categories: Array<{ category: string; subCategory?: string }> = [];
-  product.find('ProductCategory').each((_, el) => {
+  findByLocal($, product, 'ProductCategory').each((_, el) => {
     const cat = extractText($, el, 'category');
     const sub = extractText($, el, 'subCategory') || undefined;
     if (cat) categories.push({ category: cat, subCategory: sub });
@@ -218,7 +248,7 @@ export function parseProductFromXml($: cheerio.CheerioAPI): {
 
   // Marketing points
   const marketingPoints: Array<{ pointType?: string; pointCopy: string }> = [];
-  product.find('ProductMarketingPoint').each((_, el) => {
+  findByLocal($, product, 'ProductMarketingPoint').each((_, el) => {
     const pointType = extractText($, el, 'pointType') || undefined;
     const pointCopy = extractText($, el, 'pointCopy');
     if (pointCopy) marketingPoints.push({ pointType, pointCopy });
@@ -226,7 +256,7 @@ export function parseProductFromXml($: cheerio.CheerioAPI): {
 
   // Keywords
   const keywords: string[] = [];
-  product.find('ProductKeyword').each((_, el) => {
+  findByLocal($, product, 'ProductKeyword').each((_, el) => {
     const kw = extractText($, el, 'keyword');
     if (kw) keywords.push(kw);
   });
@@ -241,27 +271,29 @@ export function parseProductFromXml($: cheerio.CheerioAPI): {
     specifications: Array<{ specificationType: string; uom: string; value: string }>;
   }> = [];
 
-  product.find('ProductPart').each((_, el) => {
+  findByLocal($, product, 'ProductPart').each((_, el) => {
     const partId = extractText($, el, 'partId');
 
     // Part description
     const partDescs: string[] = [];
-    $(el).children('description').each((_, d) => {
-      partDescs.push($(d).text().trim());
+    findByLocal($, $(el), 'description').each((_, d) => {
+      if ($(d).parent()[0] === el) {
+        partDescs.push($(d).text().trim());
+      }
     });
 
     const primaryMaterial = extractText($, el, 'primaryMaterial');
 
     // Colors
     const colors: Array<{ colorName: string; hex?: string }> = [];
-    $(el).find('Color').each((_, c) => {
+    findByLocal($, $(el), 'Color').each((_, c) => {
       const colorName = extractText($, c, 'colorName');
       const hex = extractText($, c, 'hex') || undefined;
       if (colorName) colors.push({ colorName, hex });
     });
 
     // Apparel size
-    const apparelSizeEl = $(el).find('ApparelSize').first();
+    const apparelSizeEl = findByLocal($, $(el), 'ApparelSize').first();
     let apparelSize: { apparelStyle: string; labelSize: string; customSize?: string } | undefined;
     if (apparelSizeEl.length) {
       apparelSize = {
@@ -273,7 +305,7 @@ export function parseProductFromXml($: cheerio.CheerioAPI): {
 
     // Specifications
     const specifications: Array<{ specificationType: string; uom: string; value: string }> = [];
-    $(el).find('Specification').each((_, s) => {
+    findByLocal($, $(el), 'Specification').each((_, s) => {
       specifications.push({
         specificationType: extractText($, s, 'specificationType'),
         uom: extractText($, s, 'SpecificationUom'),
@@ -301,6 +333,7 @@ export function parseProductFromXml($: cheerio.CheerioAPI): {
     parts,
     marketingPoints,
     keywords,
+    isCloseout,
     rawXml: $.xml(),
   };
 }
@@ -324,7 +357,7 @@ export function parseMediaContentFromXml($: cheerio.CheerioAPI): Array<{
     description?: string;
   }> = [];
 
-  $('MediaContent').each((_, el) => {
+  findByLocal($, $.root(), 'MediaContent').each((_, el) => {
     const productId = extractText($, el, 'productId');
     const partId = extractText($, el, 'partId') || undefined;
     const url = extractText($, el, 'url');
@@ -333,7 +366,7 @@ export function parseMediaContentFromXml($: cheerio.CheerioAPI): Array<{
     const description = extractText($, el, 'description') || undefined;
 
     const classTypes: Array<{ id: number; name: string }> = [];
-    $(el).find('ClassType').each((_, ct) => {
+    findByLocal($, $(el), 'ClassType').each((_, ct) => {
       classTypes.push({
         id: parseInt(extractText($, ct, 'classTypeId'), 10),
         name: extractText($, ct, 'classTypeName'),
@@ -348,4 +381,4 @@ export function parseMediaContentFromXml($: cheerio.CheerioAPI): Array<{
   return media;
 }
 
-export { extractText, extractBool };
+export { extractText, extractBool, findByLocal };

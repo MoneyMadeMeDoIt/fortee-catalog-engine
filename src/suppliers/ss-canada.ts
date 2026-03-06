@@ -1,9 +1,11 @@
 import 'dotenv/config';
+import * as cheerio from 'cheerio';
 import { logger } from '../lib/logger.js';
 import {
   createOneSourceClient,
   parseProductFromXml,
   parseMediaContentFromXml,
+  extractBool,
   type OneSourceConfig,
 } from '../lib/onesource-client.js';
 import type {
@@ -17,9 +19,66 @@ import type {
 const PRODUCT_SERVICE_VERSION = '1.0.0';
 const MEDIA_SERVICE_VERSION = '1.1.0';
 
+/**
+ * Scrape size chart data from S&S Activewear spec sheet page.
+ * URL: https://en-ca.ssactivewear.com/ShopNow/ItemSpecSheet.aspx?ID={styleID}
+ * Parses the specTable HTML table into SizeSpec entries.
+ */
+export async function fetchSizeChartFromWeb(styleId: string): Promise<SizeSpec[]> {
+  const url = `https://en-ca.ssactivewear.com/ShopNow/ItemSpecSheet.aspx?ID=${encodeURIComponent(styleId)}`;
+  try {
+    const response = await fetch(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; ProductEnrichBot/1.0)' },
+    });
+    if (!response.ok) {
+      logger.warn(`Size chart fetch failed for styleId ${styleId}: HTTP ${response.status}`);
+      return [];
+    }
+    const html = await response.text();
+    return parseSizeChartHtml(html);
+  } catch (error) {
+    logger.warn(`Size chart fetch error for styleId ${styleId}: ${error}`);
+    return [];
+  }
+}
+
+export function parseSizeChartHtml(html: string): SizeSpec[] {
+  const $ = cheerio.load(html);
+  const specs: SizeSpec[] = [];
+
+  // Find the spec table (class="specTable" or id containing "spec")
+  const table = $('table.specTable, table[id*="spec"], table[id*="Spec"]').first();
+  if (!table.length) return specs;
+
+  // First row is headers (measurement names), first column is size names
+  const headerCells = table.find('tr').first().find('th, td');
+  const headers: string[] = [];
+  headerCells.each((i, el) => {
+    headers.push($(el).text().trim());
+  });
+
+  // Remaining rows: first cell is size, rest are measurements
+  table.find('tr').slice(1).each((_, row) => {
+    const cells = $(row).find('th, td');
+    const sizeName = cells.first().text().trim();
+    if (!sizeName) return;
+
+    cells.slice(1).each((colIdx, cell) => {
+      const value = $(cell).text().trim();
+      const specName = headers[colIdx + 1] || `spec${colIdx}`;
+      if (value) {
+        specs.push({ sizeName, specName, value });
+      }
+    });
+  });
+
+  return specs;
+}
+
 export function mapOneSourceProductToSupplierProduct(
   parsed: ReturnType<typeof parseProductFromXml>,
-  mediaImages: ProductImage[]
+  mediaImages: ProductImage[],
+  options?: { isCloseout?: boolean; webSizeChart?: SizeSpec[] },
 ): SupplierProduct {
   const category = parsed.categories.length > 0
     ? parsed.categories.map((c) => [c.category, c.subCategory].filter(Boolean).join(' > ')).join(', ')
@@ -101,6 +160,10 @@ export function mapOneSourceProductToSupplierProduct(
     }
   }
 
+  // Merge web-scraped size chart if API had no spec data
+  const webSpecs = options?.webSizeChart ?? [];
+  const finalSizeChart = sizeChartData.length > 0 ? sizeChartData : webSpecs.length > 0 ? webSpecs : null;
+
   return {
     styleNumber: parsed.productId,
     supplier: 'ss-canada',
@@ -109,9 +172,10 @@ export function mapOneSourceProductToSupplierProduct(
     category,
     fabricComposition,
     sizeChartUrl: null,
-    sizeChartData: sizeChartData.length > 0 ? sizeChartData : null,
+    sizeChartData: finalSizeChart,
     images,
     variants,
+    isCloseout: options?.isCloseout ?? false,
     rawData: parsed,
   };
 }
@@ -163,23 +227,31 @@ export class SSCanadaAdapter implements SupplierAdapter {
     const $ = await this.client.getProduct(PRODUCT_SERVICE_VERSION, productId);
     const parsed = parseProductFromXml($);
 
-    // Fetch media content for images
-    let mediaImages: ProductImage[] = [];
-    try {
-      const media$ = await this.client.getMediaContent(productId, MEDIA_SERVICE_VERSION);
-      const mediaItems = parseMediaContentFromXml(media$);
-      mediaImages = mediaItems
-        .filter((m) => m.mediaType === 'Image' || m.url.match(/\.(jpg|jpeg|png|gif|webp)/i))
-        .map((m) => ({
-          url: m.url,
-          alt: m.color
-            ? `${parsed.productName} - ${m.color}`
-            : parsed.productName,
-        }));
-    } catch (error) {
-      logger.warn(`S&S Canada: Could not fetch media for ${productId}: ${error}`);
-    }
+    // Fetch media content and web size chart in parallel
+    const [mediaImages, webSizeChart] = await Promise.all([
+      (async (): Promise<ProductImage[]> => {
+        try {
+          const media$ = await this.client.getMediaContent(productId, MEDIA_SERVICE_VERSION);
+          const mediaItems = parseMediaContentFromXml(media$);
+          return mediaItems
+            .filter((m) => m.mediaType === 'Image' || m.url.match(/\.(jpg|jpeg|png|gif|webp)/i))
+            .map((m) => ({
+              url: m.url,
+              alt: m.color
+                ? `${parsed.productName} - ${m.color}`
+                : parsed.productName,
+            }));
+        } catch (error) {
+          logger.warn(`S&S Canada: Could not fetch media for ${productId}: ${error}`);
+          return [];
+        }
+      })(),
+      fetchSizeChartFromWeb(productId),
+    ]);
 
-    return mapOneSourceProductToSupplierProduct(parsed, mediaImages);
+    return mapOneSourceProductToSupplierProduct(parsed, mediaImages, {
+      isCloseout: parsed.isCloseout,
+      webSizeChart,
+    });
   }
 }

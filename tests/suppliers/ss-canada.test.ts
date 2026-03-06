@@ -51,6 +51,7 @@ function makeParsedProduct() {
       { pointType: 'Highlights', pointCopy: 'Preshrunk jersey knit' },
     ],
     keywords: ['t-shirt', 'cotton'],
+    isCloseout: false,
     rawXml: '<Product>...</Product>',
   };
 }

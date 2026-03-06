@@ -92,6 +92,7 @@ export function mapOneSourceProductToSupplierProduct(
     sizeChartData: null,
     images,
     variants,
+    isCloseout: parsed.isCloseout,
     rawData: parsed,
   };
 }

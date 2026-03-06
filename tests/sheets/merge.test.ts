@@ -40,6 +40,7 @@ describe('mapSupplierToSheetFields', () => {
       { url: 'https://example.com/side.jpg' },
     ],
     variants: [{ color: 'Black', size: 'S' }],
+    isCloseout: false,
     rawData: {},
   };
 
