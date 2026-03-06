@@ -6,6 +6,7 @@
 import type { SizeSpec, SupplierProduct } from '../suppliers/types.js';
 import type { SheetRow, EnrichmentUpdate } from './types.js';
 import { columnToLetter, FIELD_MAPPING } from './column-map.js';
+import { SHEET_COLUMNS } from './types.js';
 
 /**
  * Convert SizeSpec[] to structured text.
@@ -89,8 +90,12 @@ export function buildUpdates(
     // Skip if cell already has data (never overwrite)
     if (currentValue.trim() !== '') continue;
 
-    // Find column index from headers
-    const colIndex = headers.indexOf(field);
+    // Find column index: use SHEET_COLUMNS (code names) since actual headers may differ
+    let colIndex = SHEET_COLUMNS.indexOf(field as typeof SHEET_COLUMNS[number]);
+    if (colIndex === -1) {
+      // Fallback to actual headers
+      colIndex = headers.indexOf(field);
+    }
     if (colIndex === -1) continue;
 
     const colLetter = columnToLetter(colIndex);

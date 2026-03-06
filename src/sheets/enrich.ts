@@ -7,6 +7,7 @@ import { readAllRows } from './reader.js';
 import { mapSupplierToSheetFields, buildUpdates } from './merge.js';
 import { writeUpdates } from './writer.js';
 import { SUPPLIER_CODE_MAP } from './column-map.js';
+import { readSpecSheet } from './spec-sheet.js';
 import { extractProductsByIds } from '../suppliers/index.js';
 import type { SupplierProduct } from '../suppliers/types.js';
 import type { EnrichmentReport, EnrichmentUpdate } from './types.js';
@@ -42,9 +43,16 @@ export async function enrichSheet(
 
   const sheetName = process.env.GOOGLE_SHEET_NAME ?? 'Sheet1';
 
-  // Step 1: Read current sheet state
+  // Step 1: Read current sheet state and spec sheet in parallel
   logger.info('Reading sheet...');
-  const { headers, rows } = await readAllRows(sheets, spreadsheetId, sheetName);
+  const specSheetId = process.env.SPEC_SHEET_GOOGLE_SPREADSHEET_ID;
+
+  const [{ headers, rows }, sizeChartByProduct] = await Promise.all([
+    readAllRows(sheets, spreadsheetId, sheetName),
+    specSheetId
+      ? readSpecSheet(sheets, specSheetId)
+      : Promise.resolve(new Map<string, string>()),
+  ]);
 
   // Step 2: Collect unique productIds per supplier from the sheet
   // The OneSource API uses productId (e.g. "029HBM"), not styleID (e.g. "6128")
@@ -106,6 +114,13 @@ export async function enrichSheet(
       }
 
       const supplierData = mapSupplierToSheetFields(product);
+
+      // Override sizeChart with spec sheet data if available (higher quality than API)
+      const specChart = sizeChartByProduct.get(row.productId);
+      if (specChart) {
+        supplierData.sizeChart = specChart;
+      }
+
       const updates = buildUpdates(row, supplierData, headers, i, sheetName);
 
       if (updates.length > 0) {

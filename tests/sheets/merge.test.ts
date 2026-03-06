@@ -44,13 +44,13 @@ describe('mapSupplierToSheetFields', () => {
     rawData: {},
   };
 
-  it('maps images, description, careInstructions, sizeChart correctly', () => {
+  it('maps images, description, sizeChart correctly', () => {
     const result = mapSupplierToSheetFields(baseProduct);
     expect(result.FrontImage).toBe('https://example.com/front.jpg');
     expect(result.BackImage).toBe('https://example.com/back.jpg');
     expect(result.DirectSideImage).toBe('https://example.com/side.jpg');
     expect(result.description).toBe('A warm jacket for winter');
-    expect(result.careInstructions).toBe('100% Polyester');
+    expect(result.careInstructions).toBeUndefined();
     expect(result.sizeChart).toBe('S: Chest 36 | M: Chest 38');
     expect(result.productName).toBe('Premium Jacket');
     expect(result.baseCategory).toBe('Outerwear');

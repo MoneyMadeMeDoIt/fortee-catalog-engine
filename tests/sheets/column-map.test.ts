@@ -57,7 +57,7 @@ describe('FIELD_MAPPING', () => {
     expect(FIELD_MAPPING).toHaveProperty('sizeChart');
   });
 
-  it('contains careInstructions mapping', () => {
-    expect(FIELD_MAPPING).toHaveProperty('careInstructions');
+  it('does not contain careInstructions mapping (handled separately)', () => {
+    expect(FIELD_MAPPING).not.toHaveProperty('careInstructions');
   });
 });

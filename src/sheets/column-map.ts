@@ -27,7 +27,6 @@ export const FIELD_MAPPING: Record<string, string> = {
   BackImage: 'images[1].url',
   DirectSideImage: 'images[2].url',
   description: 'description',
-  careInstructions: 'fabricComposition',
   sizeChart: 'sizeChartData',
   productName: 'title',
   baseCategory: 'category',
