@@ -1,17 +1,5 @@
-import { createLogger } from 'winston';
-import { UPSERT_PRINT_AREA, METAFIELDS_SET } from './mutations.js';
-import type { DecorationPlacement } from '../decoration/types.js';
-
-const logger = createLogger({ level: 'info' });
-
-export interface MetaobjectField {
-  key: string;
-  value: string;
-}
-
-export interface MetaobjectUpsertInput {
-  fields: MetaobjectField[];
-}
+import { METAOBJECT_BY_HANDLE, METAFIELDS_SET } from './mutations.js';
+import { logger } from '../lib/logger.js';
 
 export interface MetafieldSetInput {
   ownerId: string;
@@ -21,32 +9,9 @@ export interface MetafieldSetInput {
   value: string;
 }
 
-/**
- * Build a deterministic, URL-safe handle for a Print Area metaobject.
- * Format: {category}-{method}-{placement}, lowercased, non-alphanumeric replaced with hyphens.
- */
-export function buildPrintAreaHandle(category: string, method: string, placement: string): string {
-  return `${category}-${method}-${placement}`
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
-}
-
-/**
- * Build the metaobject upsert input fields from a DecorationPlacement.
- */
-export function buildPrintAreaInput(placement: DecorationPlacement): MetaobjectUpsertInput {
-  return {
-    fields: [
-      { key: 'method', value: placement.method },
-      { key: 'placement', value: placement.placementName },
-      { key: 'max_size', value: placement.maxSize },
-      { key: 'common_sizes', value: placement.commonSizes },
-      { key: 'notes', value: placement.notes },
-    ],
-  };
-}
+type ShopifyClient = {
+  request: (query: string, options: { variables: Record<string, unknown> }) => Promise<unknown>;
+};
 
 /**
  * Build the metafield input for linking Print Area metaobjects to a product.
@@ -66,42 +31,39 @@ export function buildPrintAreaMetafieldInput(
 }
 
 /**
- * Upsert Print Area metaobjects for all placements of a garment category.
- * Returns array of successfully created/updated metaobject GIDs.
- * Logs errors but continues (partial success is acceptable).
+ * Look up existing Print Area metaobjects by handle.
+ * Queries for 'front-dtf' and 'back-print' metaobjects (must already exist in the store).
+ * Returns [frontGid, backGid] array.
+ * Throws if either metaobject is not found.
  */
-export async function upsertPrintAreas(
-  client: { request: (query: string, options: { variables: Record<string, unknown> }) => Promise<unknown> },
-  category: string,
-  placements: DecorationPlacement[],
+export async function getExistingPrintAreaGids(
+  client: ShopifyClient,
 ): Promise<string[]> {
+  const handles = [
+    { type: 'print_area', handle: 'front-dtf' },
+    { type: 'print_area', handle: 'back-print' },
+  ];
+
   const gids: string[] = [];
 
-  for (const placement of placements) {
-    const handle = buildPrintAreaHandle(category, placement.method, placement.placementName);
-    const input = buildPrintAreaInput(placement);
+  for (const handle of handles) {
+    const response = await client.request(METAOBJECT_BY_HANDLE, {
+      variables: { handle },
+    }) as {
+      data: {
+        metaobjectByHandle: { id: string; handle: string } | null;
+      };
+    };
 
-    try {
-      const response = await client.request(UPSERT_PRINT_AREA, {
-        variables: {
-          handle: { handle, type: 'print_area' },
-          metaobject: input,
-        },
-      }) as { data: { metaobjectUpsert: { metaobject: { id: string } | null; userErrors: { message: string }[] } } };
-
-      const { metaobject, userErrors } = response.data.metaobjectUpsert;
-
-      if (userErrors.length > 0) {
-        logger.error(`Failed to upsert Print Area "${handle}": ${userErrors.map((e) => e.message).join(', ')}`);
-        continue;
-      }
-
-      if (metaobject) {
-        gids.push(metaobject.id);
-      }
-    } catch (error) {
-      logger.error(`Error upserting Print Area "${handle}":`, error);
+    const metaobject = response.data.metaobjectByHandle;
+    if (!metaobject) {
+      throw new Error(
+        `Print Area metaobject "${handle.handle}" not found in the store. ` +
+        `Ensure the "${handle.handle}" metaobject exists before pushing products.`
+      );
     }
+
+    gids.push(metaobject.id);
   }
 
   return gids;
@@ -112,7 +74,7 @@ export async function upsertPrintAreas(
  * Throws on userErrors from the METAFIELDS_SET mutation.
  */
 export async function linkPrintAreasToProduct(
-  client: { request: (query: string, options: { variables: Record<string, unknown> }) => Promise<unknown> },
+  client: ShopifyClient,
   productGid: string,
   metaobjectGids: string[],
 ): Promise<void> {

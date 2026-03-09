@@ -1,32 +1,34 @@
-import { createLogger, transports, format } from 'winston';
 import { google } from 'googleapis';
-import { buildHandle, buildVariants, buildFiles, getCategoryGroup } from './variants.js';
+import { buildHandle, buildVariants, getCategoryGroup, SUPPORTED_CATEGORIES } from './variants.js';
 import { getTemplateSuffix } from './template-map.js';
+import { processProductImages } from './image-standardizer.js';
 import { createShopifyClient } from './client.js';
-import { PRODUCT_SET } from './mutations.js';
-import { upsertPrintAreas, linkPrintAreasToProduct } from './metaobjects.js';
-import { resolveCategory, getDecorationRulesForCategory } from '../decoration/index.js';
+import { PRODUCT_SET, METAFIELDS_SET } from './mutations.js';
+import { getExistingPrintAreaGids } from './metaobjects.js';
 import { readAllRows } from '../sheets/reader.js';
+import { logger } from '../lib/logger.js';
 import type { SheetRow } from '../sheets/types.js';
 import type { ProductSetInput, FileSetInput } from './types.js';
-
-const logger = createLogger({
-  level: 'info',
-  format: format.combine(format.timestamp(), format.simple()),
-  transports: [new transports.Console()],
-});
 
 /**
  * Build a complete ProductSetInput from a group of sheet rows sharing the same styleID.
  * Uses first row for product-level fields; aggregates options and images from all rows.
  *
- * When isUpdate=true, files are omitted to avoid Shopify deleting existing images on re-push.
+ * Returns null for unsupported categories (e.g., Cap, Beanie).
+ * Uses the files parameter directly (from processProductImages or empty array).
  */
 export function buildProductSetInput(
   rows: SheetRow[],
-  isUpdate: boolean,
-): { input: ProductSetInput & { files?: FileSetInput[] }; identifier: { handle: string } } {
+  files: FileSetInput[],
+): { input: ProductSetInput; identifier: { handle: string } } | null {
   const first = rows[0];
+
+  // Check category support -- return null if unsupported
+  const categoryGroup = getCategoryGroup(first.baseCategory);
+  if (!categoryGroup) {
+    return null;
+  }
+
   const handle = buildHandle(first.productName, first.styleID);
 
   // Extract unique color and size values preserving insertion order
@@ -48,11 +50,9 @@ export function buildProductSetInput(
 
   const tags = [first.brandName, first.baseCategory, first.gender].filter(Boolean);
   const templateSuffix = getTemplateSuffix(first.baseCategory);
-  const categoryGroup = getCategoryGroup(first.baseCategory) ?? 'tops';
   const variants = buildVariants(rows, categoryGroup);
-  const files = isUpdate ? undefined : buildFiles(rows);
 
-  const input: ProductSetInput & { files?: FileSetInput[] } = {
+  const input: ProductSetInput = {
     title: first.productName,
     handle,
     descriptionHtml: first.description,
@@ -78,16 +78,11 @@ export function buildProductSetInput(
       },
     ],
     variants,
-    files: files ?? [],
+    files,
   };
 
   if (templateSuffix) {
     input.templateSuffix = templateSuffix;
-  }
-
-  // Omit files entirely on update to avoid Shopify deleting existing images
-  if (isUpdate) {
-    delete input.files;
   }
 
   return { input, identifier: { handle } };
@@ -96,12 +91,12 @@ export function buildProductSetInput(
 /**
  * Push a single product (by styleID) from the enriched Google Sheet to Shopify.
  *
- * Orchestrates: sheet read -> productSet mutation -> metaobject upsert -> metafield link.
+ * Orchestrates: category check -> image processing -> productSet -> metafieldsSet.
  * Uses handle-based upsert so re-running updates instead of duplicating.
  */
 export async function pushProduct(
   styleID: string,
-): Promise<{ productGid: string; variantCount: number; metaobjectCount: number }> {
+): Promise<{ productGid: string; variantCount: number }> {
   logger.info(`Starting product push for styleID: ${styleID}`);
 
   // 1. Create Shopify client
@@ -126,10 +121,40 @@ export async function pushProduct(
 
   logger.info(`Found ${rows.length} rows for styleID ${styleID}`);
 
-  // 3. Build productSet input (handle-based upsert makes this idempotent)
-  const { input } = buildProductSetInput(rows, false);
+  // 3. Check category support
+  const categoryGroup = getCategoryGroup(rows[0].baseCategory);
+  if (!categoryGroup) {
+    const supported = [...SUPPORTED_CATEGORIES].join(', ');
+    throw new Error(
+      `Unsupported category "${rows[0].baseCategory}" for styleID "${styleID}". ` +
+      `Supported categories: ${supported}`
+    );
+  }
 
-  // 4. Call productSet mutation
+  // 4. Look up existing metaobject GIDs (front-dtf and back-print)
+  const metaobjectGids = await getExistingPrintAreaGids(client);
+
+  // 5. Process images via staged uploads
+  const files = await processProductImages(
+    client,
+    {
+      front: rows[0].FrontImage || undefined,
+      back: rows[0].BackImage || undefined,
+      side: rows[0].DirectSideImage || undefined,
+    },
+    rows[0].productName,
+    rows[0].colorName,
+  );
+
+  // 6. Build productSet input
+  const result = buildProductSetInput(rows, files);
+  if (!result) {
+    throw new Error(`buildProductSetInput returned null for category "${rows[0].baseCategory}".`);
+  }
+
+  const { input } = result;
+
+  // 7. Call productSet mutation (handle-based upsert makes this idempotent)
   logger.info('Creating/updating product in Shopify...');
   const response = (await client.request(PRODUCT_SET, {
     variables: { input, synchronous: true },
@@ -144,6 +169,7 @@ export async function pushProduct(
 
   const { product, userErrors } = response.data.productSet;
 
+  // 8. Handle userErrors
   if (userErrors.length > 0) {
     const messages = userErrors.map((e) => `[${e.field?.join('.')}] ${e.message}`).join('\n');
     throw new Error(`Shopify productSet errors:\n${messages}`);
@@ -157,26 +183,44 @@ export async function pushProduct(
   const variantCount = product.variants.edges.length;
   logger.info(`Product created/updated: ${productGid} with ${variantCount} variants`);
 
-  // 5. Handle decoration metaobjects
-  let metaobjectCount = 0;
-  const category = resolveCategory(rows[0].baseCategory);
+  // 9. Set product-level metafields via METAFIELDS_SET
+  logger.info('Setting product-level metafields (Print Areas + MOQ)...');
+  const metafieldsResponse = (await client.request(METAFIELDS_SET, {
+    variables: {
+      metafields: [
+        {
+          ownerId: productGid,
+          namespace: 'custom',
+          key: 'print_areas',
+          type: 'list.metaobject_reference',
+          value: JSON.stringify(metaobjectGids),
+        },
+        {
+          ownerId: productGid,
+          namespace: 'custom',
+          key: 'minimum_order_quantity',
+          type: 'number_integer',
+          value: '0',
+        },
+      ],
+    },
+  })) as {
+    data: {
+      metafieldsSet: {
+        metafields: unknown[] | null;
+        userErrors: { message: string }[];
+      };
+    };
+  };
 
-  if (category) {
-    const placements = getDecorationRulesForCategory(category);
-    if (placements.length > 0) {
-      logger.info(`Creating ${placements.length} Print Area metaobjects for category "${category}"...`);
-      const metaobjectGids = await upsertPrintAreas(client, category, placements);
-      metaobjectCount = metaobjectGids.length;
-
-      if (metaobjectGids.length > 0) {
-        logger.info(`Linking ${metaobjectGids.length} Print Areas to product...`);
-        await linkPrintAreasToProduct(client, productGid, metaobjectGids);
-      }
-    }
-  } else {
-    logger.warn(`No decoration category found for "${rows[0].baseCategory}" -- skipping metaobjects`);
+  const metafieldErrors = metafieldsResponse.data.metafieldsSet.userErrors;
+  if (metafieldErrors.length > 0) {
+    throw new Error(
+      `Metafield errors: ${metafieldErrors.map((e) => e.message).join(', ')}`
+    );
   }
 
-  logger.info(`Product push complete: ${productGid}, ${variantCount} variants, ${metaobjectCount} print areas`);
-  return { productGid, variantCount, metaobjectCount };
+  // 10. Log success
+  logger.info(`Product push complete: ${productGid}, ${variantCount} variants`);
+  return { productGid, variantCount };
 }
