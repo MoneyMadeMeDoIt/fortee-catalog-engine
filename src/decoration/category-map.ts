@@ -26,6 +26,10 @@ export const CATEGORY_ALIASES: Record<string, GarmentCategory> = {
   'henleys': 'Long Sleeve',
   'henley': 'Long Sleeve',
 
+  // Crewneck variants
+  'crewneck': 'Crewneck',
+  'crewnecks': 'Crewneck',
+
   // Cap variants
   'cap': 'Cap',
   'caps': 'Cap',

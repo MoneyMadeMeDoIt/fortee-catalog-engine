@@ -15,11 +15,19 @@ export interface VariantOptionValueInput {
   name: string;
 }
 
+export interface MetafieldInput {
+  namespace: string;
+  key: string;
+  type: string;
+  value: string;
+}
+
 export interface ProductVariantSetInput {
   optionValues: VariantOptionValueInput[];
   price: number;
   sku: string;
   barcode: string;
+  metafields?: MetafieldInput[];
 }
 
 export interface FileSetInput {
@@ -65,3 +73,22 @@ export interface MetafieldSetInput {
   type: string;
   value: string;
 }
+
+/** Staged upload types for image processing pipeline. */
+
+export interface StagedUploadInput {
+  resource: string;
+  filename: string;
+  mimeType: string;
+  fileSize: string;
+  httpMethod: string;
+}
+
+export interface StagedTarget {
+  url: string;
+  resourceUrl: string;
+  parameters: { name: string; value: string }[];
+}
+
+/** Category group for print area coordinate mapping. */
+export type CategoryGroup = 'tops' | 'hoodies';

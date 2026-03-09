@@ -6,7 +6,7 @@ export const PRODUCT_SET = `
       product {
         id
         handle
-        variants(first: 100) {
+        variants(first: 250) {
           edges {
             node {
               id
@@ -71,6 +71,29 @@ export const UPSERT_PRINT_AREA = `
         message
         code
       }
+    }
+  }
+`;
+
+export const STAGED_UPLOADS_CREATE = `
+  mutation stagedUploadsCreate($input: [StagedUploadInput!]!) {
+    stagedUploadsCreate(input: $input) {
+      stagedTargets {
+        url
+        resourceUrl
+        parameters { name value }
+      }
+      userErrors { field message }
+    }
+  }
+`;
+
+export const METAOBJECT_BY_HANDLE = `
+  query MetaobjectByHandle($handle: MetaobjectHandleInput!) {
+    metaobjectByHandle(handle: $handle) {
+      id
+      handle
+      displayName
     }
   }
 `;

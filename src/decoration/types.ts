@@ -9,6 +9,7 @@ export type GarmentCategory =
   | 'Beanie'
   | 'Pants'
   | 'Long Sleeve'
+  | 'Crewneck'
   | 'Jacket';
 
 export interface DecorationPlacement {

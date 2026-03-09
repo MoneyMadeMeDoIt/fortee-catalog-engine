@@ -1,23 +1,19 @@
-import type { GarmentCategory } from '../decoration/types.js';
-
 /**
- * Maps garment categories to Dawn theme template suffixes.
- * Template suffixes determine which product template Shopify uses.
+ * Supported garment categories for the old store format.
+ * All use the same product.quick-order template.
  */
-const TEMPLATE_SUFFIX_MAP: Record<GarmentCategory, string> = {
-  'T-Shirt': 't-shirt',
-  'Hoodie': 'hoodie',
-  'Cap': 'cap',
-  'Beanie': 'beanie',
-  'Pants': 'pants',
-  'Long Sleeve': 'long-sleeve',
-  'Jacket': 'jacket',
-};
+const SUPPORTED_CATEGORIES = new Set([
+  'T-Shirt',
+  'Long Sleeve',
+  'Crewneck',
+  'Hoodie',
+]);
 
 /**
  * Returns the template suffix for a garment category.
- * Returns undefined if the category is not recognized.
+ * All supported categories use 'quick-order' in the old store.
+ * Returns undefined for unsupported categories.
  */
-export function getTemplateSuffix(baseCategory: string): string | undefined {
-  return TEMPLATE_SUFFIX_MAP[baseCategory as GarmentCategory];
+export function getTemplateSuffix(category: string): string | undefined {
+  return SUPPORTED_CATEGORIES.has(category) ? 'quick-order' : undefined;
 }
