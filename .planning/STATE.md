@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-02-PLAN.md (Image Standardization Pipeline)
-last_updated: "2026-03-09T13:53:36.083Z"
-last_activity: 2026-03-06 -- Completed 04-02-PLAN.md (Print Area metaobjects)
+stopped_at: Completed 04-01-PLAN.md (Shopify foundation rework)
+last_updated: "2026-03-09T13:55:28.788Z"
+last_activity: 2026-03-09 -- Completed 04-01-PLAN.md (Shopify foundation rework)
 progress:
   total_phases: 5
   completed_phases: 3
   total_plans: 11
-  completed_plans: 9
+  completed_plans: 10
   percent: 91
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-05)
 
 **Core value:** One command turns an enriched sheet row into a live Shopify product with correct decoration options, placements, pricing, and all customer-facing content.
-**Current focus:** Phase 4 in progress. Shopify foundation + Print Area metaobjects complete. Plan 03 next.
+**Current focus:** Phase 4 in progress. Foundation rework + image pipeline complete. Plan 03 (orchestrator) next.
 
 ## Current Position
 
 Phase: 4 of 5 (Shopify Product Push)
 Plan: 2 of 3 in current phase -- COMPLETE
 Status: In Progress
-Last activity: 2026-03-06 -- Completed 04-02-PLAN.md (Print Area metaobjects)
+Last activity: 2026-03-09 -- Completed 04-01-PLAN.md (Shopify foundation rework)
 
 Progress: [█████████░] 91%
 
@@ -58,6 +58,7 @@ Progress: [█████████░] 91%
 | Phase 04 P01 | 2min | 2 tasks | 10 files |
 | Phase 04 P02 | 2min | 2 tasks | 3 files |
 | Phase 04 P02 | 2min | 1 tasks | 4 files |
+| Phase 04 P01 | 4min | 2 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -94,6 +95,9 @@ Recent decisions affecting current work:
 - [Phase 04]: Already-exists errors handled gracefully in setup for idempotent re-runs
 - [Phase 04]: sharp with fit:contain and white background for consistent 2000x2000 output
 - [Phase 04]: Individual image failures skip gracefully without failing entire product push
+- [Phase 04]: Crewneck as standalone GarmentCategory mapping to tops coordinate group
+- [Phase 04]: Same SKU for 1-area and 2-area variants (ProductId-Color-Size)
+- [Phase 04]: Front Print / Back Print alt text matches print_area_position JSON keys
 
 ### Pending Todos
 
@@ -107,6 +111,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-09T13:53:36.080Z
-Stopped at: Completed 04-02-PLAN.md (Image Standardization Pipeline)
+Last session: 2026-03-09T13:55:27.548Z
+Stopped at: Completed 04-01-PLAN.md (Shopify foundation rework)
 Resume file: None
