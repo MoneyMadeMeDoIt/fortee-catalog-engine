@@ -2,18 +2,20 @@ import { describe, it, expect } from 'vitest';
 import { buildHandle } from '../../src/shopify/variants.js';
 
 describe('buildHandle', () => {
-  it('produces lowercase hyphenated handle from name and styleID', () => {
-    expect(buildHandle('Gildan Heavy Cotton', 'ST550')).toBe('gildan-heavy-cotton-st550');
+  it('produces deterministic output for same inputs', () => {
+    const a = buildHandle('Test Product', 'ST100');
+    const b = buildHandle('Test Product', 'ST100');
+    expect(a).toBe(b);
+  });
+
+  it('produces URL-safe handle (lowercase, hyphenated)', () => {
+    const handle = buildHandle('Test Product', 'ST100');
+    expect(handle).toBe('test-product-st100');
+    expect(handle).toMatch(/^[a-z0-9-]+$/);
   });
 
   it('strips special characters', () => {
     expect(buildHandle('Product Name!@#', 'ABC-123')).toBe('product-name-abc-123');
-  });
-
-  it('is deterministic (same inputs always return same output)', () => {
-    const a = buildHandle('Test Product', 'XYZ-99');
-    const b = buildHandle('Test Product', 'XYZ-99');
-    expect(a).toBe(b);
   });
 
   it('deduplicates consecutive hyphens', () => {
