@@ -1,6 +1,6 @@
 import { createLogger, transports, format } from 'winston';
 import { google } from 'googleapis';
-import { buildHandle, buildVariants, buildFiles } from './variants.js';
+import { buildHandle, buildVariants, buildFiles, getCategoryGroup } from './variants.js';
 import { getTemplateSuffix } from './template-map.js';
 import { createShopifyClient } from './client.js';
 import { PRODUCT_SET } from './mutations.js';
@@ -48,7 +48,8 @@ export function buildProductSetInput(
 
   const tags = [first.brandName, first.baseCategory, first.gender].filter(Boolean);
   const templateSuffix = getTemplateSuffix(first.baseCategory);
-  const variants = buildVariants(rows);
+  const categoryGroup = getCategoryGroup(first.baseCategory) ?? 'tops';
+  const variants = buildVariants(rows, categoryGroup);
   const files = isUpdate ? undefined : buildFiles(rows);
 
   const input: ProductSetInput & { files?: FileSetInput[] } = {
@@ -69,6 +70,11 @@ export function buildProductSetInput(
         name: 'Size',
         position: 2,
         values: uniqueSizes.map((name) => ({ name })),
+      },
+      {
+        name: '# of Print Areas',
+        position: 3,
+        values: [{ name: '1' }, { name: '2' }],
       },
     ],
     variants,

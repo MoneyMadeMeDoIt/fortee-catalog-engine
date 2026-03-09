@@ -72,10 +72,10 @@ describe('buildProductSetInput', () => {
     expect(input.status).toBe('ACTIVE');
   });
 
-  it('sets templateSuffix from category', () => {
+  it('sets templateSuffix to quick-order for supported categories', () => {
     const rows = [makeRow({ baseCategory: 'Hoodie' })];
     const { input } = buildProductSetInput(rows, false);
-    expect(input.templateSuffix).toBe('hoodie');
+    expect(input.templateSuffix).toBe('quick-order');
   });
 
   it('includes brandName, baseCategory, and gender in tags', () => {
@@ -116,14 +116,14 @@ describe('buildProductSetInput', () => {
     expect(sizeOption!.values.map((v) => v.name)).toEqual(['S', 'M']);
   });
 
-  it('variants count matches row count', () => {
+  it('variants count is double the row count (1-area + 2-area per row)', () => {
     const rows = [
       makeRow({ colorName: 'Red', sizeName: 'S' }),
       makeRow({ colorName: 'Red', sizeName: 'M' }),
       makeRow({ colorName: 'Blue', sizeName: 'L' }),
     ];
     const { input } = buildProductSetInput(rows, false);
-    expect(input.variants).toHaveLength(3);
+    expect(input.variants).toHaveLength(6);
   });
 
   it('includes files when isUpdate=false', () => {
