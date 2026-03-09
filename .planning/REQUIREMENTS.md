@@ -29,7 +29,7 @@
 - [x] **SHOP-02**: System generates Color x Size variants (~98 per product) with correct base pricing
 - [x] **SHOP-03**: System creates Print Area metaobjects with decoration method, placement, and pricing data
 - [x] **SHOP-04**: System assigns metafields to products referencing the correct Print Area metaobjects
-- [ ] **SHOP-05**: System attaches supplier images to Shopify products via external URL pass-through (staged uploads as fallback if CDN blocks Shopify fetcher)
+- [x] **SHOP-05**: System attaches supplier images to Shopify products via external URL pass-through (staged uploads as fallback if CDN blocks Shopify fetcher)
 - [x] **SHOP-06**: System assigns the correct Dawn builder template to each product based on category
 - [x] **SHOP-07**: System is idempotent — re-running updates existing products instead of creating duplicates
 
@@ -85,7 +85,7 @@
 | SHOP-02 | Phase 4 | Complete |
 | SHOP-03 | Phase 4 | Complete |
 | SHOP-04 | Phase 4 | Complete |
-| SHOP-05 | Phase 4 | Pending |
+| SHOP-05 | Phase 4 | Complete |
 | SHOP-06 | Phase 4 | Complete |
 | SHOP-07 | Phase 4 | Complete |
 | OPS-01 | Phase 5 | Pending |
