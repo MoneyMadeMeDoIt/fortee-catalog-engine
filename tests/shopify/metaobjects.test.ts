@@ -1,60 +1,9 @@
 import { describe, it, expect, vi } from 'vitest';
 import {
-  buildPrintAreaHandle,
-  buildPrintAreaInput,
   buildPrintAreaMetafieldInput,
-  upsertPrintAreas,
+  getExistingPrintAreaGids,
   linkPrintAreasToProduct,
 } from '../../src/shopify/metaobjects.js';
-import type { DecorationPlacement } from '../../src/decoration/types.js';
-
-const samplePlacement: DecorationPlacement = {
-  method: 'Print',
-  bodyCategory: 'Front',
-  placementName: 'Left Chest',
-  commonSizes: '3.5x3.5',
-  maxSize: '4.5x4.5',
-  verticalRef: 'Center 4in below collar seam',
-  horizontalRef: '3.5-4 in from centerline',
-  notes: 'Primary brand logo',
-};
-
-describe('buildPrintAreaHandle', () => {
-  it('produces lowercase hyphenated handle from category, method, placement', () => {
-    expect(buildPrintAreaHandle('T-Shirt', 'Print', 'Left Chest')).toBe(
-      't-shirt-print-left-chest',
-    );
-  });
-
-  it('handles Cap + Embroidery + Front Center', () => {
-    expect(buildPrintAreaHandle('Cap', 'Embroidery', 'Front Center')).toBe(
-      'cap-embroidery-front-center',
-    );
-  });
-
-  it('converts special characters to hyphens and deduplicates', () => {
-    expect(buildPrintAreaHandle('Long Sleeve', 'Print', 'Cuff / Wrist')).toBe(
-      'long-sleeve-print-cuff-wrist',
-    );
-  });
-
-  it('trims leading and trailing hyphens', () => {
-    expect(buildPrintAreaHandle(' Cap ', 'Print', ' Front ')).toBe('cap-print-front');
-  });
-});
-
-describe('buildPrintAreaInput', () => {
-  it('maps DecorationPlacement fields to metaobject fields array', () => {
-    const input = buildPrintAreaInput(samplePlacement);
-    expect(input.fields).toEqual([
-      { key: 'method', value: 'Print' },
-      { key: 'placement', value: 'Left Chest' },
-      { key: 'max_size', value: '4.5x4.5' },
-      { key: 'common_sizes', value: '3.5x3.5' },
-      { key: 'notes', value: 'Primary brand logo' },
-    ]);
-  });
-});
 
 describe('buildPrintAreaMetafieldInput', () => {
   it('creates JSON-stringified array of GIDs', () => {
@@ -77,53 +26,76 @@ describe('buildPrintAreaMetafieldInput', () => {
   });
 });
 
-describe('upsertPrintAreas', () => {
-  it('calls mutation for each placement and returns GIDs', async () => {
-    const mockClient = {
-      request: vi.fn().mockResolvedValue({
-        data: {
-          metaobjectUpsert: {
-            metaobject: { id: 'gid://shopify/Metaobject/111' },
-            userErrors: [],
-          },
-        },
-      }),
-    };
-
-    const gids = await upsertPrintAreas(mockClient, 'T-Shirt', [samplePlacement]);
-    expect(gids).toEqual(['gid://shopify/Metaobject/111']);
-    expect(mockClient.request).toHaveBeenCalledTimes(1);
-  });
-
-  it('logs errors but continues on failure', async () => {
+describe('getExistingPrintAreaGids', () => {
+  it('calls metaobjectByHandle for front-dtf and back-print with type print_area', async () => {
     const mockClient = {
       request: vi.fn()
         .mockResolvedValueOnce({
           data: {
-            metaobjectUpsert: {
-              metaobject: null,
-              userErrors: [{ message: 'Something went wrong' }],
-            },
+            metaobjectByHandle: { id: 'gid://shopify/Metaobject/100', handle: 'front-dtf' },
           },
         })
         .mockResolvedValueOnce({
           data: {
-            metaobjectUpsert: {
-              metaobject: { id: 'gid://shopify/Metaobject/222' },
-              userErrors: [],
-            },
+            metaobjectByHandle: { id: 'gid://shopify/Metaobject/200', handle: 'back-print' },
           },
         }),
     };
 
-    const secondPlacement: DecorationPlacement = {
-      ...samplePlacement,
-      placementName: 'Right Chest',
+    await getExistingPrintAreaGids(mockClient);
+
+    expect(mockClient.request).toHaveBeenCalledTimes(2);
+    // First call: front-dtf
+    const firstCall = mockClient.request.mock.calls[0];
+    expect(firstCall[1].variables.handle).toEqual({ type: 'print_area', handle: 'front-dtf' });
+    // Second call: back-print
+    const secondCall = mockClient.request.mock.calls[1];
+    expect(secondCall[1].variables.handle).toEqual({ type: 'print_area', handle: 'back-print' });
+  });
+
+  it('returns array of GIDs when both found', async () => {
+    const mockClient = {
+      request: vi.fn()
+        .mockResolvedValueOnce({
+          data: {
+            metaobjectByHandle: { id: 'gid://shopify/Metaobject/100' },
+          },
+        })
+        .mockResolvedValueOnce({
+          data: {
+            metaobjectByHandle: { id: 'gid://shopify/Metaobject/200' },
+          },
+        }),
     };
 
-    const gids = await upsertPrintAreas(mockClient, 'T-Shirt', [samplePlacement, secondPlacement]);
-    expect(gids).toEqual(['gid://shopify/Metaobject/222']);
-    expect(mockClient.request).toHaveBeenCalledTimes(2);
+    const gids = await getExistingPrintAreaGids(mockClient);
+    expect(gids).toEqual(['gid://shopify/Metaobject/100', 'gid://shopify/Metaobject/200']);
+  });
+
+  it('throws when front-dtf metaobject is not found', async () => {
+    const mockClient = {
+      request: vi.fn().mockResolvedValue({
+        data: { metaobjectByHandle: null },
+      }),
+    };
+
+    await expect(getExistingPrintAreaGids(mockClient)).rejects.toThrow('front-dtf');
+  });
+
+  it('throws when back-print metaobject is not found', async () => {
+    const mockClient = {
+      request: vi.fn()
+        .mockResolvedValueOnce({
+          data: {
+            metaobjectByHandle: { id: 'gid://shopify/Metaobject/100' },
+          },
+        })
+        .mockResolvedValueOnce({
+          data: { metaobjectByHandle: null },
+        }),
+    };
+
+    await expect(getExistingPrintAreaGids(mockClient)).rejects.toThrow('back-print');
   });
 });
 

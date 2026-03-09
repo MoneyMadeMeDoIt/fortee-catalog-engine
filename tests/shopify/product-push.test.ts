@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { buildProductSetInput } from '../../src/shopify/product-push.js';
 import type { SheetRow } from '../../src/sheets/types.js';
+import type { FileSetInput } from '../../src/shopify/types.js';
 
 function makeRow(overrides: Partial<SheetRow> = {}): SheetRow {
   return {
@@ -48,72 +49,79 @@ function makeRow(overrides: Partial<SheetRow> = {}): SheetRow {
 }
 
 describe('buildProductSetInput', () => {
+  it('creates 3 productOptions: Color, Size, # of Print Areas', () => {
+    const rows = [makeRow()];
+    const files: FileSetInput[] = [];
+    const result = buildProductSetInput(rows, files);
+    expect(result).not.toBeNull();
+    const { input } = result!;
+    expect(input.productOptions).toHaveLength(3);
+    expect(input.productOptions[0].name).toBe('Color');
+    expect(input.productOptions[0].position).toBe(1);
+    expect(input.productOptions[1].name).toBe('Size');
+    expect(input.productOptions[1].position).toBe(2);
+    expect(input.productOptions[2].name).toBe('# of Print Areas');
+    expect(input.productOptions[2].position).toBe(3);
+  });
+
+  it('includes # of Print Areas option with values 1 and 2', () => {
+    const rows = [makeRow()];
+    const result = buildProductSetInput(rows, []);
+    const printAreasOpt = result!.input.productOptions[2];
+    expect(printAreasOpt.values).toEqual([{ name: '1' }, { name: '2' }]);
+  });
+
+  it('uses getCategoryGroup and passes it to buildVariants', () => {
+    const rows = [makeRow({ baseCategory: 'T-Shirt' })];
+    const result = buildProductSetInput(rows, []);
+    expect(result).not.toBeNull();
+    // Variants should exist (T-Shirt is supported)
+    expect(result!.input.variants.length).toBeGreaterThan(0);
+  });
+
+  it('sets templateSuffix to quick-order for supported categories', () => {
+    const rows = [makeRow({ baseCategory: 'Hoodie' })];
+    const result = buildProductSetInput(rows, []);
+    expect(result).not.toBeNull();
+    expect(result!.input.templateSuffix).toBe('quick-order');
+  });
+
+  it('returns null for unsupported categories (e.g., Cap)', () => {
+    const rows = [makeRow({ baseCategory: 'Cap' })];
+    const result = buildProductSetInput(rows, []);
+    expect(result).toBeNull();
+  });
+
+  it('returns null for unknown categories', () => {
+    const rows = [makeRow({ baseCategory: 'Pants' })];
+    const result = buildProductSetInput(rows, []);
+    expect(result).toBeNull();
+  });
+
+  it('uses files parameter directly', () => {
+    const rows = [makeRow()];
+    const files: FileSetInput[] = [
+      { originalSource: 'https://staged/front.png', alt: 'Front Print', contentType: 'IMAGE' },
+    ];
+    const result = buildProductSetInput(rows, files);
+    expect(result!.input.files).toEqual(files);
+  });
+
   it('uses first row for product-level fields', () => {
     const rows = [
-      makeRow({ productName: 'Cool Tee', styleID: 'CT100', brandName: 'Acme', baseCategory: 'T-Shirt', description: 'A cool tee' }),
+      makeRow({ productName: 'Cool Tee', styleID: 'CT100', brandName: 'Acme', description: 'A cool tee' }),
     ];
-    const { input } = buildProductSetInput(rows, false);
+    const { input } = buildProductSetInput(rows, [])!;
     expect(input.title).toBe('Cool Tee');
     expect(input.vendor).toBe('Acme');
-    expect(input.productType).toBe('T-Shirt');
     expect(input.descriptionHtml).toBe('A cool tee');
   });
 
   it('generates correct handle', () => {
     const rows = [makeRow({ productName: 'Cool Tee', styleID: 'CT100' })];
-    const { input, identifier } = buildProductSetInput(rows, false);
+    const { input, identifier } = buildProductSetInput(rows, [])!;
     expect(input.handle).toBe('cool-tee-ct100');
     expect(identifier.handle).toBe('cool-tee-ct100');
-  });
-
-  it('sets status to ACTIVE', () => {
-    const rows = [makeRow()];
-    const { input } = buildProductSetInput(rows, false);
-    expect(input.status).toBe('ACTIVE');
-  });
-
-  it('sets templateSuffix to quick-order for supported categories', () => {
-    const rows = [makeRow({ baseCategory: 'Hoodie' })];
-    const { input } = buildProductSetInput(rows, false);
-    expect(input.templateSuffix).toBe('quick-order');
-  });
-
-  it('includes brandName, baseCategory, and gender in tags', () => {
-    const rows = [makeRow({ brandName: 'Acme', baseCategory: 'Cap', gender: 'Men' })];
-    const { input } = buildProductSetInput(rows, false);
-    expect(input.tags).toContain('Acme');
-    expect(input.tags).toContain('Cap');
-    expect(input.tags).toContain('Men');
-  });
-
-  it('filters empty values from tags', () => {
-    const rows = [makeRow({ brandName: 'Acme', baseCategory: '', gender: 'Unisex' })];
-    const { input } = buildProductSetInput(rows, false);
-    expect(input.tags).toEqual(['Acme', 'Unisex']);
-  });
-
-  it('extracts unique colors for productOptions', () => {
-    const rows = [
-      makeRow({ colorName: 'Red', sizeName: 'S' }),
-      makeRow({ colorName: 'Red', sizeName: 'M' }),
-      makeRow({ colorName: 'Blue', sizeName: 'S' }),
-    ];
-    const { input } = buildProductSetInput(rows, false);
-    const colorOption = input.productOptions.find((o) => o.name === 'Color');
-    expect(colorOption).toBeDefined();
-    expect(colorOption!.values.map((v) => v.name)).toEqual(['Red', 'Blue']);
-  });
-
-  it('extracts unique sizes for productOptions', () => {
-    const rows = [
-      makeRow({ colorName: 'Red', sizeName: 'S' }),
-      makeRow({ colorName: 'Blue', sizeName: 'S' }),
-      makeRow({ colorName: 'Red', sizeName: 'M' }),
-    ];
-    const { input } = buildProductSetInput(rows, false);
-    const sizeOption = input.productOptions.find((o) => o.name === 'Size');
-    expect(sizeOption).toBeDefined();
-    expect(sizeOption!.values.map((v) => v.name)).toEqual(['S', 'M']);
   });
 
   it('variants count is double the row count (1-area + 2-area per row)', () => {
@@ -122,54 +130,20 @@ describe('buildProductSetInput', () => {
       makeRow({ colorName: 'Red', sizeName: 'M' }),
       makeRow({ colorName: 'Blue', sizeName: 'L' }),
     ];
-    const { input } = buildProductSetInput(rows, false);
+    const { input } = buildProductSetInput(rows, [])!;
     expect(input.variants).toHaveLength(6);
   });
 
-  it('includes files when isUpdate=false', () => {
+  it('extracts unique colors and sizes for productOptions', () => {
     const rows = [
-      makeRow({ FrontImage: 'https://img/front.jpg' }),
+      makeRow({ colorName: 'Red', sizeName: 'S' }),
+      makeRow({ colorName: 'Red', sizeName: 'M' }),
+      makeRow({ colorName: 'Blue', sizeName: 'S' }),
     ];
-    const { input } = buildProductSetInput(rows, false);
-    expect(input.files).toBeDefined();
-    expect(input.files!.length).toBeGreaterThan(0);
-  });
-
-  it('omits files when isUpdate=true', () => {
-    const rows = [
-      makeRow({ FrontImage: 'https://img/front.jpg' }),
-    ];
-    const { input } = buildProductSetInput(rows, true);
-    expect(input.files).toBeUndefined();
-  });
-
-  it('collects files from ALL rows across colors', () => {
-    const rows = [
-      makeRow({ colorName: 'Red', sizeName: 'S', FrontImage: 'https://img/red-front.jpg' }),
-      makeRow({ colorName: 'Red', sizeName: 'M', FrontImage: 'https://img/red-front.jpg' }),
-      makeRow({ colorName: 'Blue', sizeName: 'S', FrontImage: 'https://img/blue-front.jpg' }),
-    ];
-    const { input } = buildProductSetInput(rows, false);
-    // 2 unique front images (Red deduped, Blue unique)
-    expect(input.files).toHaveLength(2);
-  });
-
-  it('deduplicates identical URLs across rows', () => {
-    const rows = [
-      makeRow({ sizeName: 'S', FrontImage: 'https://img/same.jpg' }),
-      makeRow({ sizeName: 'M', FrontImage: 'https://img/same.jpg' }),
-      makeRow({ sizeName: 'L', FrontImage: 'https://img/same.jpg' }),
-    ];
-    const { input } = buildProductSetInput(rows, false);
-    expect(input.files).toHaveLength(1);
-  });
-
-  it('sets Color option at position 1 and Size at position 2', () => {
-    const rows = [makeRow()];
-    const { input } = buildProductSetInput(rows, false);
+    const { input } = buildProductSetInput(rows, [])!;
     const colorOpt = input.productOptions.find((o) => o.name === 'Color');
     const sizeOpt = input.productOptions.find((o) => o.name === 'Size');
-    expect(colorOpt!.position).toBe(1);
-    expect(sizeOpt!.position).toBe(2);
+    expect(colorOpt!.values.map((v) => v.name)).toEqual(['Red', 'Blue']);
+    expect(sizeOpt!.values.map((v) => v.name)).toEqual(['S', 'M']);
   });
 });
