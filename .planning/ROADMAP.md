@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Supplier Data Extraction** - Build API clients for Canada Sportswear and S&S Canada that reliably pull product data (completed 2026-03-05)
 - [ ] **Phase 2: Google Sheets Integration** - Read, write, and merge supplier data into the master Google Sheet
 - [x] **Phase 3: Decoration Rules and Pricing** - Define decoration methods/placements per category and calculate sell prices (completed 2026-03-06)
-- [ ] **Phase 4: Shopify Product Push** - Create complete Shopify products from enriched sheet data via GraphQL API
+- [ ] **Phase 4: Shopify Product Push** - Create complete Shopify products from enriched sheet data via GraphQL API (old store format)
 - [ ] **Phase 5: Scale and Reliability** - Handle 100+ products with dry-run mode, batch processing, and error reporting
 
 ## Phase Details
@@ -65,21 +65,21 @@ Plans:
 - [ ] 03-02-PLAN.md -- Sheet integration: write decoration and pricing data to the master sheet (DECOR-01, DECOR-02, PRICE-01)
 
 ### Phase 4: Shopify Product Push
-**Goal**: One command creates a complete Shopify product from an enriched sheet row -- with variants, images, metafields, metaobjects, and template assignment
+**Goal**: One command creates a complete Shopify product for the old store -- with Color x Size x # of Print Areas variants, standardized 2000x2000 images, print area metafields, existing metaobject linking, and quick-order template
 **Depends on**: Phase 3
 **Requirements**: SHOP-01, SHOP-02, SHOP-03, SHOP-04, SHOP-05, SHOP-06, SHOP-07
 **Success Criteria** (what must be TRUE):
-  1. Running the push command on an enriched product creates it in Shopify via GraphQL with Color x Size variants and correct base pricing
-  2. Print Area metaobjects are created with the correct decoration method, placement, and pricing data, and linked to the product via metafields
-  3. Supplier images are attached to Shopify products via external URL pass-through (staged uploads as fallback if CDN blocks Shopify), appearing on the product
-  4. The correct Dawn builder template is assigned based on the product's garment category
+  1. Running the push command creates a Shopify product with Color x Size x # of Print Areas variants (3 options) and correct pricing per area count
+  2. Products link to existing Print Area metaobjects (front-dtf, back-print) and have Minimum Order Quantity metafield set to "0"
+  3. Supplier images are standardized to 2000x2000px and uploaded via staged uploads with correct alt text ("Front Print" / "Back Print")
+  4. product.quick-order template is assigned to all supported categories (T-Shirt, Long Sleeve, Crewneck, Hoodie)
   5. Re-running the push on an existing product updates it instead of creating a duplicate
 **Plans**: 3 plans
 
 Plans:
-- [ ] 04-01-PLAN.md -- Shopify client, types, mutations, template map, variant builder, handle generator (SHOP-01, SHOP-02, SHOP-06, SHOP-07)
-- [ ] 04-02-PLAN.md -- Print Area metaobject setup, upsert, and product metafield linking (SHOP-03, SHOP-04)
-- [ ] 04-03-PLAN.md -- Product push orchestrator, CLI entry point, and end-to-end verification (SHOP-01 through SHOP-07)
+- [ ] 04-01-PLAN.md -- Types, mutations, template-map, category-map, variant builder with 3-option support (SHOP-01, SHOP-02, SHOP-06, SHOP-07)
+- [ ] 04-02-PLAN.md -- Image standardizer: sharp resize to 2000x2000 + staged uploads (SHOP-05)
+- [ ] 04-03-PLAN.md -- Metaobject lookup, product push orchestrator, CLI update (SHOP-01 through SHOP-07)
 
 ### Phase 5: Scale and Reliability
 **Goal**: The full pipeline handles 100+ products in a single batch run with visibility into what will happen, what is happening, and what went wrong
@@ -104,5 +104,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 1. Supplier Data Extraction | 4/4 | Complete   | 2026-03-05 |
 | 2. Google Sheets Integration | 1/2 | In progress | - |
 | 3. Decoration Rules and Pricing | 2/2 | Complete   | 2026-03-06 |
-| 4. Shopify Product Push | 2/3 | In Progress|  |
+| 4. Shopify Product Push | 0/3 | In Progress (replanned) |  |
 | 5. Scale and Reliability | 0/? | Not started | - |
