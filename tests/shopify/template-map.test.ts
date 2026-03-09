@@ -1,40 +1,43 @@
 import { describe, it, expect } from 'vitest';
 import { getTemplateSuffix } from '../../src/shopify/template-map.js';
+import { resolveCategory } from '../../src/decoration/category-map.js';
 
 describe('getTemplateSuffix', () => {
-  it('maps T-Shirt to t-shirt', () => {
-    expect(getTemplateSuffix('T-Shirt')).toBe('t-shirt');
+  it('returns quick-order for T-Shirt', () => {
+    expect(getTemplateSuffix('T-Shirt')).toBe('quick-order');
   });
 
-  it('maps Hoodie to hoodie', () => {
-    expect(getTemplateSuffix('Hoodie')).toBe('hoodie');
+  it('returns quick-order for Long Sleeve', () => {
+    expect(getTemplateSuffix('Long Sleeve')).toBe('quick-order');
   });
 
-  it('maps Cap to cap', () => {
-    expect(getTemplateSuffix('Cap')).toBe('cap');
+  it('returns quick-order for Crewneck', () => {
+    expect(getTemplateSuffix('Crewneck')).toBe('quick-order');
   });
 
-  it('maps Beanie to beanie', () => {
-    expect(getTemplateSuffix('Beanie')).toBe('beanie');
+  it('returns quick-order for Hoodie', () => {
+    expect(getTemplateSuffix('Hoodie')).toBe('quick-order');
   });
 
-  it('maps Pants to pants', () => {
-    expect(getTemplateSuffix('Pants')).toBe('pants');
+  it('returns undefined for Cap (unsupported)', () => {
+    expect(getTemplateSuffix('Cap')).toBeUndefined();
   });
 
-  it('maps Long Sleeve to long-sleeve', () => {
-    expect(getTemplateSuffix('Long Sleeve')).toBe('long-sleeve');
-  });
-
-  it('maps Jacket to jacket', () => {
-    expect(getTemplateSuffix('Jacket')).toBe('jacket');
+  it('returns undefined for Beanie (unsupported)', () => {
+    expect(getTemplateSuffix('Beanie')).toBeUndefined();
   });
 
   it('returns undefined for unknown category', () => {
     expect(getTemplateSuffix('Unknown')).toBeUndefined();
   });
+});
 
-  it('returns undefined for empty string', () => {
-    expect(getTemplateSuffix('')).toBeUndefined();
+describe('resolveCategory - Crewneck', () => {
+  it('resolves crewneck to Crewneck', () => {
+    expect(resolveCategory('crewneck')).toBe('Crewneck');
+  });
+
+  it('resolves crewnecks to Crewneck', () => {
+    expect(resolveCategory('crewnecks')).toBe('Crewneck');
   });
 });
