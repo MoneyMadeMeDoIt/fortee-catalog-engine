@@ -3,7 +3,8 @@ import { getTemplateSuffix } from './template-map.js';
 import { processProductImages } from './image-standardizer.js';
 import { createShopifyClient } from './client.js';
 import { PRODUCT_SET, METAFIELDS_SET, PRODUCT_MEDIA } from './mutations.js';
-import { getExistingPrintAreaGids } from './metaobjects.js';
+import { getExistingPrintAreaGids, upsertSizeGuideMetaobject, linkSizeGuideToProduct } from './metaobjects.js';
+import { readSpecSheetStructured } from '../sheets/spec-sheet.js';
 import {
   getOrCreateColorMetaobjects,
   addLinkedColorOption,
@@ -318,6 +319,29 @@ export async function pushProduct(
     throw new Error(
       `Metafield errors: ${metafieldErrors.map((e) => e.message).join(', ')}`
     );
+  }
+
+  // 13b. Upsert size guide metaobject and link to product
+  const specSpreadsheetId = process.env.SPEC_SHEET_GOOGLE_SPREADSHEET_ID;
+  if (specSpreadsheetId) {
+    try {
+      const specMap = await readSpecSheetStructured(sheets, specSpreadsheetId);
+      const productSpecs = specMap.get(rows[0].productId);
+      if (productSpecs && productSpecs.length > 0) {
+        const sizeGuideGid = await upsertSizeGuideMetaobject(
+          client,
+          rows[0].productId,
+          rows[0].productName,
+          productSpecs,
+        );
+        await linkSizeGuideToProduct(client, productGid, sizeGuideGid);
+        logger.info(`Linked size guide to product: ${sizeGuideGid}`);
+      } else {
+        logger.warn(`No spec data for productId "${rows[0].productId}" -- skipping size guide`);
+      }
+    } catch (err) {
+      logger.warn(`Size guide creation failed (non-fatal): ${err instanceof Error ? err.message : err}`);
+    }
   }
 
   // 14. Query product media to get image GIDs by alt text

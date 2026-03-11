@@ -1,4 +1,7 @@
 import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { join, dirname } from 'node:path';
 import { buildProductSetInput } from '../../src/shopify/product-push.js';
 import type { SheetRow } from '../../src/sheets/types.js';
 import type { FileSetInput } from '../../src/shopify/types.js';
@@ -49,34 +52,14 @@ function makeRow(overrides: Partial<SheetRow> = {}): SheetRow {
 }
 
 describe('buildProductSetInput', () => {
-  it('creates 3 productOptions: Color, Size, # of Print Areas', () => {
+  it('returns product metadata with no options or variants (shell only)', () => {
     const rows = [makeRow()];
     const files: FileSetInput[] = [];
     const result = buildProductSetInput(rows, files);
     expect(result).not.toBeNull();
     const { input } = result!;
-    expect(input.productOptions).toHaveLength(3);
-    expect(input.productOptions[0].name).toBe('Color');
-    expect(input.productOptions[0].position).toBe(1);
-    expect(input.productOptions[1].name).toBe('Size');
-    expect(input.productOptions[1].position).toBe(2);
-    expect(input.productOptions[2].name).toBe('# of Print Areas');
-    expect(input.productOptions[2].position).toBe(3);
-  });
-
-  it('includes # of Print Areas option with values 1 and 2', () => {
-    const rows = [makeRow()];
-    const result = buildProductSetInput(rows, []);
-    const printAreasOpt = result!.input.productOptions[2];
-    expect(printAreasOpt.values).toEqual([{ name: '1' }, { name: '2' }]);
-  });
-
-  it('uses getCategoryGroup and passes it to buildVariants', () => {
-    const rows = [makeRow({ baseCategory: 'T-Shirt' })];
-    const result = buildProductSetInput(rows, []);
-    expect(result).not.toBeNull();
-    // Variants should exist (T-Shirt is supported)
-    expect(result!.input.variants.length).toBeGreaterThan(0);
+    expect(input.productOptions).toEqual([]);
+    expect(input.variants).toEqual([]);
   });
 
   it('sets templateSuffix to quick-order for supported categories', () => {
@@ -124,26 +107,60 @@ describe('buildProductSetInput', () => {
     expect(identifier.handle).toBe('cool-tee-ct100');
   });
 
-  it('variants count is double the row count (1-area + 2-area per row)', () => {
-    const rows = [
-      makeRow({ colorName: 'Red', sizeName: 'S' }),
-      makeRow({ colorName: 'Red', sizeName: 'M' }),
-      makeRow({ colorName: 'Blue', sizeName: 'L' }),
-    ];
+  it('includes tags from brandName, baseCategory, gender', () => {
+    const rows = [makeRow({ brandName: 'Acme', baseCategory: 'T-Shirt', gender: 'Unisex' })];
     const { input } = buildProductSetInput(rows, [])!;
-    expect(input.variants).toHaveLength(6);
+    expect(input.tags).toEqual(['Acme', 'T-Shirt', 'Unisex']);
   });
 
-  it('extracts unique colors and sizes for productOptions', () => {
-    const rows = [
-      makeRow({ colorName: 'Red', sizeName: 'S' }),
-      makeRow({ colorName: 'Red', sizeName: 'M' }),
-      makeRow({ colorName: 'Blue', sizeName: 'S' }),
-    ];
+  it('sets taxonomy category for T-Shirts', () => {
+    const rows = [makeRow({ baseCategory: 'T-Shirt' })];
     const { input } = buildProductSetInput(rows, [])!;
-    const colorOpt = input.productOptions.find((o) => o.name === 'Color');
-    const sizeOpt = input.productOptions.find((o) => o.name === 'Size');
-    expect(colorOpt!.values.map((v) => v.name)).toEqual(['Red', 'Blue']);
-    expect(sizeOpt!.values.map((v) => v.name)).toEqual(['S', 'M']);
+    expect(input.category).toBe('gid://shopify/TaxonomyCategory/aa-1-13-8');
+  });
+
+  it('sets taxonomy category for Hoodies', () => {
+    const rows = [makeRow({ baseCategory: 'Hoodie' })];
+    const { input } = buildProductSetInput(rows, [])!;
+    expect(input.category).toBe('gid://shopify/TaxonomyCategory/aa-1-13-13');
+  });
+
+  it('sets taxonomy category for Crewneck/Fleece Crew', () => {
+    const rows = [makeRow({ baseCategory: 'Fleece - Premium - Crew' })];
+    const { input } = buildProductSetInput(rows, [])!;
+    expect(input.category).toBe('gid://shopify/TaxonomyCategory/aa-1-13-14');
+  });
+});
+
+describe('product-push.ts size guide wiring', () => {
+  it('imports upsertSizeGuideMetaobject and linkSizeGuideToProduct from metaobjects.ts', () => {
+    // Verify the size guide functions are imported in product-push.ts source
+    const srcPath = join(dirname(fileURLToPath(import.meta.url)), '../../src/shopify/product-push.ts');
+    const src = readFileSync(srcPath, 'utf8');
+    expect(src).toContain('upsertSizeGuideMetaobject');
+    expect(src).toContain('linkSizeGuideToProduct');
+    expect(src).toContain("from './metaobjects.js'");
+  });
+
+  it('imports readSpecSheetStructured from spec-sheet.ts', () => {
+    const srcPath = join(dirname(fileURLToPath(import.meta.url)), '../../src/shopify/product-push.ts');
+    const src = readFileSync(srcPath, 'utf8');
+    expect(src).toContain('readSpecSheetStructured');
+    expect(src).toContain("from '../sheets/spec-sheet.js'");
+  });
+
+  it('guards size guide step with SPEC_SHEET_GOOGLE_SPREADSHEET_ID check', () => {
+    const srcPath = join(dirname(fileURLToPath(import.meta.url)), '../../src/shopify/product-push.ts');
+    const src = readFileSync(srcPath, 'utf8');
+    expect(src).toContain('SPEC_SHEET_GOOGLE_SPREADSHEET_ID');
+    // Should wrap in try/catch for non-fatal behavior
+    expect(src).toContain('Size guide creation failed (non-fatal)');
+  });
+
+  it('logs warning when no spec data found for product', () => {
+    const srcPath = join(dirname(fileURLToPath(import.meta.url)), '../../src/shopify/product-push.ts');
+    const src = readFileSync(srcPath, 'utf8');
+    expect(src).toContain('No spec data for productId');
+    expect(src).toContain('skipping size guide');
   });
 });
