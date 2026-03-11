@@ -5,38 +5,192 @@ import {
   downloadImage,
   uploadStagedImage,
   processProductImages,
+  detectGarmentBounds,
+  placeGarmentOnCanvas,
+  derivePrintAreaCoords,
+  REFERENCE_RATIOS,
+  GARMENT_RELATIVE_PRINT_FRACTIONS,
 } from '../../src/shopify/image-standardizer.js';
 
 describe('standardizeImage', () => {
-  it('resizes to 2000x2000 PNG with white background', async () => {
-    // Create a small 100x100 red PNG as input
-    const input = await sharp({
-      create: { width: 100, height: 100, channels: 3, background: { r: 255, g: 0, b: 0 } },
-    })
+  it('returns 2000x2000 PNG buffer and garmentPlacement for tops', async () => {
+    // Create a garment-like image: colored rectangle on white background
+    const canvas = await sharp({
+      create: { width: 1000, height: 1000, channels: 4, background: { r: 255, g: 255, b: 255, alpha: 255 } },
+    }).png().toBuffer();
+    const garmentPng = await sharp(canvas)
+      .composite([{
+        input: await sharp({
+          create: { width: 500, height: 800, channels: 3, background: { r: 200, g: 50, b: 50 } },
+        }).png().toBuffer(),
+        left: 250,
+        top: 100,
+      }])
       .png()
       .toBuffer();
 
-    const output = await standardizeImage(input);
-    const meta = await sharp(output).metadata();
+    const result = await standardizeImage(garmentPng, 'tops');
+    const meta = await sharp(result.buffer).metadata();
 
     expect(meta.width).toBe(2000);
     expect(meta.height).toBe(2000);
     expect(meta.format).toBe('png');
+    expect(result.garmentPlacement).toBeDefined();
+    expect(result.garmentPlacement).toHaveProperty('left');
+    expect(result.garmentPlacement).toHaveProperty('top');
+    expect(result.garmentPlacement).toHaveProperty('width');
+    expect(result.garmentPlacement).toHaveProperty('height');
   });
 
-  it('preserves aspect ratio with contain fit', async () => {
-    // A wide 200x100 image should be contained, not stretched
+  it('returns 2000x2000 PNG for hoodies', async () => {
     const input = await sharp({
       create: { width: 200, height: 100, channels: 3, background: { r: 0, g: 0, b: 255 } },
     })
       .png()
       .toBuffer();
 
-    const output = await standardizeImage(input);
-    const meta = await sharp(output).metadata();
+    const result = await standardizeImage(input, 'hoodies');
+    const meta = await sharp(result.buffer).metadata();
 
     expect(meta.width).toBe(2000);
     expect(meta.height).toBe(2000);
+  });
+});
+
+describe('detectGarmentBounds', () => {
+  it('returns correct bounding box for a garment on a white background', async () => {
+    // Create a 1000x1000 white canvas with a 500x800 red rectangle at (250, 100)
+    const whiteCanvas = await sharp({
+      create: { width: 1000, height: 1000, channels: 4, background: { r: 255, g: 255, b: 255, alpha: 255 } },
+    }).png().toBuffer();
+    const image = await sharp(whiteCanvas)
+      .composite([{
+        input: await sharp({
+          create: { width: 500, height: 800, channels: 3, background: { r: 255, g: 0, b: 0 } },
+        }).png().toBuffer(),
+        left: 250,
+        top: 100,
+      }])
+      .png()
+      .toBuffer();
+
+    const bounds = await detectGarmentBounds(image);
+
+    expect(bounds.originalWidth).toBe(1000);
+    expect(bounds.originalHeight).toBe(1000);
+    // Trim should detect the garment roughly at x=250, y=100, w=500, h=800
+    // Allow ±5px tolerance for edge effects
+    expect(bounds.offsetLeft).toBeGreaterThanOrEqual(245);
+    expect(bounds.offsetLeft).toBeLessThanOrEqual(255);
+    expect(bounds.offsetTop).toBeGreaterThanOrEqual(95);
+    expect(bounds.offsetTop).toBeLessThanOrEqual(105);
+    expect(bounds.width).toBeGreaterThanOrEqual(495);
+    expect(bounds.width).toBeLessThanOrEqual(505);
+    expect(bounds.height).toBeGreaterThanOrEqual(795);
+    expect(bounds.height).toBeLessThanOrEqual(805);
+  });
+
+  it('returns fallback bounds (full dimensions) when trim removes >70% of image', async () => {
+    // Create an image where the colored pixel is only in a tiny corner (< 30% of image)
+    const whiteCanvas = await sharp({
+      create: { width: 1000, height: 1000, channels: 4, background: { r: 255, g: 255, b: 255, alpha: 255 } },
+    }).png().toBuffer();
+    const tinyGarment = await sharp(whiteCanvas)
+      .composite([{
+        input: await sharp({
+          create: { width: 50, height: 50, channels: 3, background: { r: 255, g: 0, b: 0 } },
+        }).png().toBuffer(),
+        left: 0,
+        top: 0,
+      }])
+      .png()
+      .toBuffer();
+
+    const bounds = await detectGarmentBounds(tinyGarment);
+
+    // Garment is only 50x50 on 1000x1000 — trim removes >95%, triggers fallback
+    expect(bounds.offsetLeft).toBe(0);
+    expect(bounds.offsetTop).toBe(0);
+    expect(bounds.width).toBe(1000);
+    expect(bounds.height).toBe(1000);
+  });
+});
+
+describe('placeGarmentOnCanvas', () => {
+  it('always outputs exactly 2000x2000 PNG', async () => {
+    const garmentBuffer = await sharp({
+      create: { width: 300, height: 500, channels: 3, background: { r: 100, g: 100, b: 200 } },
+    }).png().toBuffer();
+
+    const result = await placeGarmentOnCanvas(garmentBuffer, 1460, 120);
+    const meta = await sharp(result).metadata();
+
+    expect(meta.width).toBe(2000);
+    expect(meta.height).toBe(2000);
+    expect(meta.format).toBe('png');
+  });
+
+  it('places garment at approximately the specified top offset', async () => {
+    const garmentBuffer = await sharp({
+      create: { width: 400, height: 600, channels: 3, background: { r: 255, g: 0, b: 0 } },
+    }).png().toBuffer();
+
+    const targetTop = 120;
+    const result = await placeGarmentOnCanvas(garmentBuffer, 1460, targetTop);
+
+    // Check pixel just above the garment is white and pixel at garment position is non-white
+    const topPixel = await sharp(result)
+      .extract({ left: 1000, top: targetTop - 10, width: 1, height: 1 })
+      .raw()
+      .toBuffer();
+    // Should be white (255, 255, 255)
+    expect(topPixel[0]).toBe(255);
+    expect(topPixel[1]).toBe(255);
+    expect(topPixel[2]).toBe(255);
+  });
+});
+
+describe('derivePrintAreaCoords', () => {
+  it('returns Front Print and Back Print for tops', () => {
+    const coords = derivePrintAreaCoords(87, 120, 1826, 1460, 'tops');
+
+    expect(coords).toHaveProperty('Front Print');
+    expect(coords).toHaveProperty('Back Print');
+
+    const fractions = GARMENT_RELATIVE_PRINT_FRACTIONS.tops['Front Print'];
+    const expectedX = ((87 + fractions.xFrac * 1826) / 2000) * 100;
+    const expectedY = ((120 + fractions.yFrac * 1460) / 2000) * 100;
+
+    expect(parseFloat(coords['Front Print'].x)).toBeCloseTo(expectedX, 1);
+    expect(parseFloat(coords['Front Print'].y)).toBeCloseTo(expectedY, 1);
+  });
+
+  it('returns Front Print and Back Print for hoodies', () => {
+    const coords = derivePrintAreaCoords(87, 100, 1826, 1560, 'hoodies');
+
+    expect(coords).toHaveProperty('Front Print');
+    expect(coords).toHaveProperty('Back Print');
+
+    const fractions = GARMENT_RELATIVE_PRINT_FRACTIONS.hoodies['Back Print'];
+    const expectedX = ((87 + fractions.xFrac * 1826) / 2000) * 100;
+
+    expect(parseFloat(coords['Back Print'].x)).toBeCloseTo(expectedX, 1);
+  });
+
+  it('computes width and height as percentages of canvas', () => {
+    const coords = derivePrintAreaCoords(0, 0, 2000, 2000, 'tops');
+    const fractions = GARMENT_RELATIVE_PRINT_FRACTIONS.tops['Front Print'];
+
+    // Width = (fractions.wFrac * garmentWidth / canvasSize) * 100
+    const expectedWidth = (fractions.wFrac * 2000 / 2000) * 100;
+    expect(parseFloat(coords['Front Print'].width)).toBeCloseTo(expectedWidth, 1);
+  });
+
+  it('REFERENCE_RATIOS has tops and hoodies keys', () => {
+    expect(REFERENCE_RATIOS).toHaveProperty('tops');
+    expect(REFERENCE_RATIOS).toHaveProperty('hoodies');
+    expect(REFERENCE_RATIOS.tops).toHaveProperty('targetHeightFrac');
+    expect(REFERENCE_RATIOS.tops).toHaveProperty('topOffsetFrac');
   });
 });
 

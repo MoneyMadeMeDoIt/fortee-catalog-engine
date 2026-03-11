@@ -7,12 +7,18 @@ export interface ProductOptionValueInput {
 export interface ProductOptionInput {
   name: string;
   position: number;
-  values: ProductOptionValueInput[];
+  values?: ProductOptionValueInput[];
+  linkedMetafield?: {
+    namespace: string;
+    key: string;
+    values: string[];
+  };
 }
 
 export interface VariantOptionValueInput {
   optionName: string;
   name: string;
+  linkedMetafieldValue?: string;
 }
 
 export interface MetafieldInput {
@@ -37,17 +43,19 @@ export interface FileSetInput {
 }
 
 export interface ProductSetInput {
+  id?: string;
   title: string;
   handle: string;
   descriptionHtml: string;
   vendor: string;
   productType: string;
+  category?: string;
   status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED';
   templateSuffix?: string;
   tags: string[];
-  productOptions: ProductOptionInput[];
-  variants: ProductVariantSetInput[];
-  files: FileSetInput[];
+  productOptions?: ProductOptionInput[];
+  variants?: ProductVariantSetInput[];
+  files?: FileSetInput[];
 }
 
 /** Metaobject types for print area decoration data. */
@@ -92,3 +100,22 @@ export interface StagedTarget {
 
 /** Category group for print area coordinate mapping. */
 export type CategoryGroup = 'tops' | 'hoodies';
+
+/** Bounding box of the garment within its source image. */
+export interface GarmentBounds {
+  offsetLeft: number;
+  offsetTop: number;
+  width: number;
+  height: number;
+  originalWidth: number;
+  originalHeight: number;
+}
+
+/** Print area coordinates as percentage strings (relative to 2000x2000 canvas). */
+export type PrintAreaCoords = Record<string, { x: string; y: string; width: string; height: string }>;
+
+/** Result from processProductImages — files for Shopify + computed print coords. */
+export interface ImageProcessResult {
+  files: FileSetInput[];
+  printAreaCoords: PrintAreaCoords | null;
+}
