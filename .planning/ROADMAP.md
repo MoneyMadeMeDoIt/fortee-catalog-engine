@@ -89,10 +89,11 @@ Plans:
   1. Dry-run mode outputs exactly what would be created/updated in Shopify without making any changes
   2. Batch processing handles 100+ products with a progress indicator showing current product and completion percentage
   3. Each product reports success or failure with actionable error messages, and failures do not halt the entire batch
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 05-01: TBD
+- [ ] 05-01-PLAN.md -- Dry-run preview module and pushProduct refactor for batch use (OPS-01)
+- [ ] 05-02-PLAN.md -- Batch push orchestrator with error isolation, progress reporting, and CLI (OPS-02, OPS-03)
 
 ## Progress
 
@@ -105,4 +106,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 2. Google Sheets Integration | 1/2 | In progress | - |
 | 3. Decoration Rules and Pricing | 2/2 | Complete   | 2026-03-06 |
 | 4. Shopify Product Push | 0/3 | In Progress (replanned) |  |
-| 5. Scale and Reliability | 0/? | Not started | - |
+| 5. Scale and Reliability | 0/2 | Not started | - |
