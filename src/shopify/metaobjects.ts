@@ -151,8 +151,27 @@ export function buildSizeGuideMetaobjectFields(
 }
 
 /**
+ * Parse a measurement string that may contain fractions.
+ * Examples: "24 1/2" → 24.5, "17" → 17, "3/4" → 0.75, "+/- 3/4" → NaN
+ */
+function parseMeasurement(value: string): number {
+  const trimmed = value.trim();
+  // Match "whole fraction" like "24 1/2" or just "1/2"
+  const mixedMatch = trimmed.match(/^(\d+)\s+(\d+)\/(\d+)$/);
+  if (mixedMatch) {
+    return parseInt(mixedMatch[1]) + parseInt(mixedMatch[2]) / parseInt(mixedMatch[3]);
+  }
+  const fractionMatch = trimmed.match(/^(\d+)\/(\d+)$/);
+  if (fractionMatch) {
+    return parseInt(fractionMatch[1]) / parseInt(fractionMatch[2]);
+  }
+  return parseFloat(trimmed);
+}
+
+/**
  * Transform raw SizeSpec[] into SizeGuideFields.
  * Groups by sizeName to get unique sizes, by specName to get variables.
+ * Filters out specs with non-numeric values (e.g. tolerance specs like "+/- 3/4").
  * Preserves the order of first appearance for both sizes and variables.
  * Values in each variable are parallel to the sizes array.
  */
@@ -161,10 +180,16 @@ export function transformSpecsToSizeGuide(
   productName: string,
   specs: SizeSpec[],
 ): SizeGuideFields {
+  // Filter out specs whose values can't be parsed to valid numbers
+  const numericSpecs = specs.filter((s) => {
+    const parsed = parseMeasurement(s.value);
+    return !isNaN(parsed) && parsed >= 0;
+  });
+
   // Collect unique sizes in first-appearance order
   const sizeOrder: string[] = [];
   const sizeSet = new Set<string>();
-  for (const spec of specs) {
+  for (const spec of numericSpecs) {
     if (!sizeSet.has(spec.sizeName)) {
       sizeOrder.push(spec.sizeName);
       sizeSet.add(spec.sizeName);
@@ -174,7 +199,7 @@ export function transformSpecsToSizeGuide(
   // Collect unique variables in first-appearance order
   const variableOrder: string[] = [];
   const variableSet = new Set<string>();
-  for (const spec of specs) {
+  for (const spec of numericSpecs) {
     if (!variableSet.has(spec.specName)) {
       variableOrder.push(spec.specName);
       variableSet.add(spec.specName);
@@ -183,11 +208,11 @@ export function transformSpecsToSizeGuide(
 
   // Build lookup: specName -> sizeName -> value
   const lookup = new Map<string, Map<string, number>>();
-  for (const spec of specs) {
+  for (const spec of numericSpecs) {
     if (!lookup.has(spec.specName)) {
       lookup.set(spec.specName, new Map());
     }
-    lookup.get(spec.specName)!.set(spec.sizeName, parseFloat(spec.value));
+    lookup.get(spec.specName)!.set(spec.sizeName, parseMeasurement(spec.value));
   }
 
   const variables = variableOrder.map((specName) => {

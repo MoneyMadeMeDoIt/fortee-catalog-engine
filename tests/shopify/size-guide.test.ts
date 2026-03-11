@@ -284,6 +284,41 @@ describe('transformSpecsToSizeGuide', () => {
     expect(guide.variables[0].values[1]).toBe(36.25);
   });
 
+  it('parses fractional values like "24 1/2" to 24.5', () => {
+    const specs: SizeSpec[] = [
+      { sizeName: 'S', specName: 'Chest', value: '17 1/2' },
+      { sizeName: 'M', specName: 'Chest', value: '19 1/2' },
+      { sizeName: 'S', specName: 'Body Length', value: '24 1/2' },
+      { sizeName: 'M', specName: 'Body Length', value: '25' },
+    ];
+
+    const guide = transformSpecsToSizeGuide('A230', 'Style A230', specs);
+    const chestVar = guide.variables.find(v => v.label === 'Chest')!;
+    expect(chestVar.values).toEqual([17.5, 19.5]);
+    const bodyVar = guide.variables.find(v => v.label === 'Body Length')!;
+    expect(bodyVar.values).toEqual([24.5, 25]);
+  });
+
+  it('filters out non-numeric specs like tolerance values', () => {
+    const specs: SizeSpec[] = [
+      { sizeName: 'S', specName: 'Chest Width', value: '17 1/2' },
+      { sizeName: 'S', specName: 'Chest Tolerance', value: '+/- 1/2' },
+      { sizeName: 'S', specName: 'Body Length', value: '24 1/2' },
+      { sizeName: 'S', specName: 'Body Length Tolerance', value: '+/- 3/4' },
+      { sizeName: 'M', specName: 'Chest Width', value: '19 1/2' },
+      { sizeName: 'M', specName: 'Chest Tolerance', value: '+/- 1/2' },
+      { sizeName: 'M', specName: 'Body Length', value: '25' },
+      { sizeName: 'M', specName: 'Body Length Tolerance', value: '+/- 3/4' },
+    ];
+
+    const guide = transformSpecsToSizeGuide('A230', 'Style A230', specs);
+    // Tolerance specs should be filtered out
+    expect(guide.variables).toHaveLength(2);
+    expect(guide.variables.map(v => v.label)).toEqual(['Chest Width', 'Body Length']);
+    expect(guide.variables[0].values).toEqual([17.5, 19.5]);
+    expect(guide.variables[1].values).toEqual([24.5, 25]);
+  });
+
   it('preserves size order from input specs (caller is responsible for ordering)', () => {
     // Input is already sorted (S, M, L) — function should preserve this order
     const specs: SizeSpec[] = [
