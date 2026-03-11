@@ -91,7 +91,7 @@ Plans:
   1. Garment boundaries are detected in supplier images and the garment is scaled to a consistent proportion within the 2000x2000 canvas
   2. Print area coordinates are derived from the detected garment shape (not hardcoded) and accurately position the decoration zone
   3. The standardized images and derived coordinates integrate with the existing pushProduct flow
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 - [ ] 04.1-01-PLAN.md -- Core image pipeline: garment detection, canvas placement, coordinate derivation (TDD) (SHOP-05)
@@ -122,5 +122,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 4.1 -> 5
 | 2. Google Sheets Integration | 1/2 | In progress | - |
 | 3. Decoration Rules and Pricing | 2/2 | Complete   | 2026-03-06 |
 | 4. Shopify Product Push | 0/3 | In Progress (replanned) |  |
-| 4.1. Image Standardization & Print Area Detection | 0/2 | Not started | - |
+| 4.1. Image Standardization & Print Area Detection | 1/2 | In Progress|  |
 | 5. Scale and Reliability | 0/2 | Not started | - |

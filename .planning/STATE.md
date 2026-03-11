@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 04-03-PLAN.md (Product push orchestrator)
-last_updated: "2026-03-09T14:04:46.160Z"
+stopped_at: Completed 04.1-01-PLAN.md (Core image pipeline)
+last_updated: "2026-03-11T10:51:25.431Z"
 last_activity: 2026-03-09 -- Completed 04-03-PLAN.md (Product push orchestrator)
 progress:
-  total_phases: 5
+  total_phases: 6
   completed_phases: 4
-  total_plans: 11
-  completed_plans: 11
+  total_plans: 15
+  completed_plans: 12
   percent: 100
 ---
 
@@ -60,6 +60,7 @@ Progress: [██████████] 100%
 | Phase 04 P02 | 2min | 1 tasks | 4 files |
 | Phase 04 P01 | 4min | 2 tasks | 11 files |
 | Phase 04 P03 | 4min | 2 tasks | 7 files |
+| Phase 04.1 P01 | 3min | 1 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -102,6 +103,9 @@ Recent decisions affecting current work:
 - [Phase 04]: Metaobjects looked up by handle (front-dtf, back-print) instead of created per-push
 - [Phase 04]: buildProductSetInput returns null for unsupported categories, pushProduct throws
 - [Phase 04]: Print Areas and MOQ metafields set via separate metafieldsSet call after productSet
+- [Phase 04.1-01]: detectGarmentBounds falls back to full image dimensions when trim removes >70% (safety threshold)
+- [Phase 04.1-01]: standardizeImage categoryGroup param defaults to 'tops' for backward compat; processProductImages wiring deferred to Plan 02
+- [Phase 04.1-01]: Print area coords use garment-relative fractions (not fixed canvas coords) enabling per-product dynamic derivation
 
 ### Pending Todos
 
@@ -119,6 +123,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-10T23:10:00Z
-Stopped at: Color swatch implementation — API requires product category taxonomy before linked options work
-Resume file: .planning/phases/04-shopify-product-push/.continue-here.md
+Last session: 2026-03-11T10:51:25.428Z
+Stopped at: Completed 04.1-01-PLAN.md (Core image pipeline)
+Resume file: None
