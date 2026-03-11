@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 04.1-01-PLAN.md (Core image pipeline)
-last_updated: "2026-03-11T10:51:25.431Z"
+stopped_at: Completed 04.1-02-PLAN.md (Image pipeline integration)
+last_updated: "2026-03-11T10:57:13.953Z"
 last_activity: 2026-03-09 -- Completed 04-03-PLAN.md (Product push orchestrator)
 progress:
   total_phases: 6
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 15
-  completed_plans: 12
+  completed_plans: 13
   percent: 100
 ---
 
@@ -61,6 +61,7 @@ Progress: [██████████] 100%
 | Phase 04 P01 | 4min | 2 tasks | 11 files |
 | Phase 04 P03 | 4min | 2 tasks | 7 files |
 | Phase 04.1 P01 | 3min | 1 tasks | 3 files |
+| Phase 04.1 P02 | 4min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -106,6 +107,10 @@ Recent decisions affecting current work:
 - [Phase 04.1-01]: detectGarmentBounds falls back to full image dimensions when trim removes >70% (safety threshold)
 - [Phase 04.1-01]: standardizeImage categoryGroup param defaults to 'tops' for backward compat; processProductImages wiring deferred to Plan 02
 - [Phase 04.1-01]: Print area coords use garment-relative fractions (not fixed canvas coords) enabling per-product dynamic derivation
+- [Phase 04.1]: processProductImages categoryGroup is now required (not optional) — wired from pushProduct
+- [Phase 04.1]: PRINT_AREA_COORDINATES removed — coords computed dynamically per garment image via derivePrintAreaCoords
+- [Phase 04.1]: buildVariants removed from variants.ts — was dead code, replaced by buildLinkedVariants in color-swatches.ts
+- [Phase 04.1]: Side images use contain-resize only — no garment detection needed for non-print-area images
 
 ### Pending Todos
 
@@ -123,6 +128,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-11T10:51:25.428Z
-Stopped at: Completed 04.1-01-PLAN.md (Core image pipeline)
+Last session: 2026-03-11T10:57:13.949Z
+Stopped at: Completed 04.1-02-PLAN.md (Image pipeline integration)
 Resume file: None
