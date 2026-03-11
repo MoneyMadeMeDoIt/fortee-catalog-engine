@@ -124,3 +124,28 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 4.1 -> 5
 | 4. Shopify Product Push | 0/3 | In Progress (replanned) |  |
 | 4.1. Image Standardization & Print Area Detection | 1/2 | In Progress|  |
 | 5. Scale and Reliability | 0/2 | Not started | - |
+
+### Phase 6: Live Inventory Sync — Pull daily inventory from suppliers via OneSource API and sync stock levels to Shopify
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 5
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 6 to break down)
+
+### Phase 7: Size Guide Upload — Create size_guides metaobjects from spec sheet data and link to products via custom.size_guide metafield
+
+**Goal:** Running pushProduct automatically creates a size_guides metaobject from spec sheet data and links it to the product via custom.size_guide metafield
+**Requirements**: SG-01, SG-02, SG-03, SG-04, SG-05, SG-06
+**Depends on:** Phase 4
+**Success Criteria** (what must be TRUE):
+  1. buildSizeGuideMetaobjectFields correctly encodes sizes, dimensions, and rich text fields per Shopify's type requirements
+  2. upsertSizeGuideMetaobject creates or updates a size_guides metaobject with deterministic handle per product
+  3. pushProduct links the size guide to the product and gracefully skips when no spec data exists
+**Plans:** 2 plans
+
+Plans:
+- [ ] 07-01-PLAN.md -- Size guide functions: spec sheet reader, field builder, upsert, link (SG-01 through SG-06)
+- [ ] 07-02-PLAN.md -- Wire size guide into pushProduct flow (SG-01 through SG-06)
