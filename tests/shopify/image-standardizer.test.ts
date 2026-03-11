@@ -369,17 +369,21 @@ describe('processProductImages', () => {
       return { ok: true } as Response;
     });
 
-    const files = await processProductImages(
+    const result = await processProductImages(
       mockClient,
       { front: 'https://img.com/front.jpg', back: 'https://img.com/back.jpg' },
       'Test Tee',
-      'Red'
+      'Red',
+      'tops',
     );
 
-    expect(files).toHaveLength(2);
-    expect(files[0].alt).toBe('Front Print');
-    expect(files[1].alt).toBe('Back Print');
-    expect(files[0].contentType).toBe('IMAGE');
+    expect(result.files).toHaveLength(2);
+    expect(result.files[0].alt).toBe('Front Print');
+    expect(result.files[1].alt).toBe('Back Print');
+    expect(result.files[0].contentType).toBe('IMAGE');
+    expect(result.printAreaCoords).not.toBeNull();
+    expect(result.printAreaCoords).toHaveProperty('Front Print');
+    expect(result.printAreaCoords).toHaveProperty('Back Print');
   });
 
   it('assigns correct alt text for side images', async () => {
@@ -418,15 +422,18 @@ describe('processProductImages', () => {
       return { ok: true } as Response;
     });
 
-    const files = await processProductImages(
+    const result = await processProductImages(
       mockClient,
       { side: 'https://img.com/side.jpg' },
       'Cool Hoodie',
-      'Blue'
+      'Blue',
+      'hoodies',
     );
 
-    expect(files).toHaveLength(1);
-    expect(files[0].alt).toBe('Cool Hoodie - Blue Side');
+    expect(result.files).toHaveLength(1);
+    expect(result.files[0].alt).toBe('Cool Hoodie - Blue Side');
+    // Side-only: no front image processed, so printAreaCoords is null
+    expect(result.printAreaCoords).toBeNull();
   });
 
   it('skips failed image downloads gracefully', async () => {
@@ -471,16 +478,19 @@ describe('processProductImages', () => {
       } as Response;
     });
 
-    const files = await processProductImages(
+    const result = await processProductImages(
       mockClient,
       { front: 'https://img.com/front.jpg', back: 'https://img.com/back.jpg' },
       'Test Tee',
-      'Red'
+      'Red',
+      'tops',
     );
 
     // Front failed, only back should be present
-    expect(files).toHaveLength(1);
-    expect(files[0].alt).toBe('Back Print');
+    expect(result.files).toHaveLength(1);
+    expect(result.files[0].alt).toBe('Back Print');
+    // Front image failed, so no coords could be derived
+    expect(result.printAreaCoords).toBeNull();
   });
 
   it('returns empty array when all images fail', async () => {
@@ -492,22 +502,25 @@ describe('processProductImages', () => {
 
     const mockClient = { request: vi.fn() };
 
-    const files = await processProductImages(
+    const result = await processProductImages(
       mockClient,
       { front: 'https://img.com/front.jpg' },
       'Test Tee',
-      'Red'
+      'Red',
+      'tops',
     );
 
-    expect(files).toHaveLength(0);
+    expect(result.files).toHaveLength(0);
+    expect(result.printAreaCoords).toBeNull();
   });
 
   it('handles empty imageUrls', async () => {
     const mockClient = { request: vi.fn() };
 
-    const files = await processProductImages(mockClient, {}, 'Test', 'Red');
+    const result = await processProductImages(mockClient, {}, 'Test', 'Red', 'tops');
 
-    expect(files).toHaveLength(0);
+    expect(result.files).toHaveLength(0);
+    expect(result.printAreaCoords).toBeNull();
     expect(mockClient.request).not.toHaveBeenCalled();
   });
 });

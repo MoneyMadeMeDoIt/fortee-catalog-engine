@@ -1,7 +1,7 @@
 import sharp from 'sharp';
 import { logger } from '../lib/logger.js';
 import { STAGED_UPLOADS_CREATE } from './mutations.js';
-import type { FileSetInput, CategoryGroup, GarmentBounds, PrintAreaCoords } from './types.js';
+import type { FileSetInput, CategoryGroup, GarmentBounds, PrintAreaCoords, ImageProcessResult } from './types.js';
 
 /** Client interface matching the Shopify Admin API client pattern. */
 export interface ShopifyClient {
@@ -314,57 +314,87 @@ export async function uploadStagedImage(
  * Download, standardize, and upload all product images.
  * Failed individual images are skipped with a warning.
  *
- * NOTE: categoryGroup will be wired in Plan 02. Defaults to 'tops' as a transitional measure.
+ * Front and back images go through the full garment detection pipeline.
+ * Side images use simple contain-resize (no garment detection needed).
+ *
+ * Returns both the uploaded file inputs and computed print area coords
+ * (derived from the front image's garment placement, or null if no front image succeeded).
  */
 export async function processProductImages(
   client: ShopifyClient,
   imageUrls: { front?: string; back?: string; side?: string },
   productName: string,
   colorName: string,
-  categoryGroup: CategoryGroup = 'tops',
-): Promise<FileSetInput[]> {
-  const entries: Array<{
-    key: 'front' | 'back' | 'side';
-    url: string;
-    alt: string;
-  }> = [];
-
-  if (imageUrls.front) {
-    entries.push({ key: 'front', url: imageUrls.front, alt: 'Front Print' });
-  }
-  if (imageUrls.back) {
-    entries.push({ key: 'back', url: imageUrls.back, alt: 'Back Print' });
-  }
-  if (imageUrls.side) {
-    entries.push({
-      key: 'side',
-      url: imageUrls.side,
-      alt: `${productName} - ${colorName} Side`,
-    });
-  }
-
+  categoryGroup: CategoryGroup,
+): Promise<ImageProcessResult> {
   const files: FileSetInput[] = [];
+  let printAreaCoords: PrintAreaCoords | null = null;
 
-  for (const entry of entries) {
+  // Process front image — full garment detection pipeline
+  if (imageUrls.front) {
     try {
-      const raw = await downloadImage(entry.url);
-      const { buffer: standardized } = await standardizeImage(raw, categoryGroup);
-      const filename = `${productName}-${colorName}-${entry.key}.png`
+      const raw = await downloadImage(imageUrls.front);
+      const { buffer: standardized, garmentPlacement } = await standardizeImage(raw, categoryGroup);
+      const filename = `${productName}-${colorName}-front.png`
         .replace(/\s+/g, '-')
         .toLowerCase();
       const resourceUrl = await uploadStagedImage(client, standardized, filename);
-
-      files.push({
-        originalSource: resourceUrl,
-        alt: entry.alt,
-        contentType: 'IMAGE',
-      });
+      files.push({ originalSource: resourceUrl, alt: 'Front Print', contentType: 'IMAGE' });
+      // Derive print area coords from front image's garment placement
+      printAreaCoords = derivePrintAreaCoords(
+        garmentPlacement.left,
+        garmentPlacement.top,
+        garmentPlacement.width,
+        garmentPlacement.height,
+        categoryGroup,
+      );
     } catch (err) {
       logger.warn(
-        `Skipping ${entry.key} image for ${productName} ${colorName}: ${(err as Error).message}`
+        `Skipping front image for ${productName} ${colorName}: ${(err as Error).message}`
       );
     }
   }
 
-  return files;
+  // Process back image — full garment detection pipeline
+  if (imageUrls.back) {
+    try {
+      const raw = await downloadImage(imageUrls.back);
+      const { buffer: standardized } = await standardizeImage(raw, categoryGroup);
+      const filename = `${productName}-${colorName}-back.png`
+        .replace(/\s+/g, '-')
+        .toLowerCase();
+      const resourceUrl = await uploadStagedImage(client, standardized, filename);
+      files.push({ originalSource: resourceUrl, alt: 'Back Print', contentType: 'IMAGE' });
+    } catch (err) {
+      logger.warn(
+        `Skipping back image for ${productName} ${colorName}: ${(err as Error).message}`
+      );
+    }
+  }
+
+  // Process side image — simple contain-resize (no garment detection)
+  if (imageUrls.side) {
+    try {
+      const raw = await downloadImage(imageUrls.side);
+      const standardized = await sharp(raw)
+        .resize(2000, 2000, { fit: 'contain', background: { r: 255, g: 255, b: 255, alpha: 1 } })
+        .png()
+        .toBuffer();
+      const filename = `${productName}-${colorName}-side.png`
+        .replace(/\s+/g, '-')
+        .toLowerCase();
+      const resourceUrl = await uploadStagedImage(client, standardized, filename);
+      files.push({
+        originalSource: resourceUrl,
+        alt: `${productName} - ${colorName} Side`,
+        contentType: 'IMAGE',
+      });
+    } catch (err) {
+      logger.warn(
+        `Skipping side image for ${productName} ${colorName}: ${(err as Error).message}`
+      );
+    }
+  }
+
+  return { files, printAreaCoords };
 }

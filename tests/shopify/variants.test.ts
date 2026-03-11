@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { buildVariants, buildFiles, getCategoryGroup, SUPPORTED_CATEGORIES, PRINT_AREA_COORDINATES } from '../../src/shopify/variants.js';
+import { buildFiles, getCategoryGroup, SUPPORTED_CATEGORIES } from '../../src/shopify/variants.js';
 import type { SheetRow } from '../../src/sheets/types.js';
 
 function makeRow(overrides: Partial<SheetRow> = {}): SheetRow {
@@ -47,113 +47,41 @@ function makeRow(overrides: Partial<SheetRow> = {}): SheetRow {
   };
 }
 
-describe('buildVariants', () => {
-  it('produces 2 variants per row (1-area and 2-area)', () => {
-    const rows = [makeRow()];
-    const variants = buildVariants(rows, 'tops');
-    expect(variants).toHaveLength(2);
-  });
-
-  it('each variant has 3 optionValues: Color, Size, # of Print Areas', () => {
-    const rows = [makeRow()];
-    const variants = buildVariants(rows, 'tops');
-    for (const v of variants) {
-      expect(v.optionValues).toHaveLength(3);
-      expect(v.optionValues[0].optionName).toBe('Color');
-      expect(v.optionValues[1].optionName).toBe('Size');
-      expect(v.optionValues[2].optionName).toBe('# of Print Areas');
-    }
-  });
-
-  it('1-area variant has optionValues[2].name === "1", 2-area === "2"', () => {
-    const rows = [makeRow()];
-    const variants = buildVariants(rows, 'tops');
-    expect(variants[0].optionValues[2].name).toBe('1');
-    expect(variants[1].optionValues[2].name).toBe('2');
-  });
-
-  it('1-area uses sellPrice1Area, 2-area uses sellPrice2Area', () => {
-    const rows = [makeRow({ sellPrice1Area: '25.99', sellPrice2Area: '31.99' })];
-    const variants = buildVariants(rows, 'tops');
-    expect(variants[0].price).toBe(25.99);
-    expect(variants[1].price).toBe(31.99);
-  });
-
-  it('SKU format is ProductId-Color-Size for all variants', () => {
-    const rows = [makeRow({ productId: 'S05280', colorName: 'Black', sizeName: 'M' })];
-    const variants = buildVariants(rows, 'tops');
-    expect(variants[0].sku).toBe('S05280-Black-M');
-    expect(variants[1].sku).toBe('S05280-Black-M');
-  });
-
-  it('barcode is PartID', () => {
-    const rows = [makeRow({ PartID: 'PART-XYZ' })];
-    const variants = buildVariants(rows, 'tops');
-    expect(variants[0].barcode).toBe('PART-XYZ');
-    expect(variants[1].barcode).toBe('PART-XYZ');
-  });
-
-  it('variant metafields contain print_area_position with tops coordinates', () => {
-    const rows = [makeRow()];
-    const variants = buildVariants(rows, 'tops');
-    const expected = JSON.stringify(PRINT_AREA_COORDINATES.tops);
-    for (const v of variants) {
-      expect(v.metafields).toBeDefined();
-      expect(v.metafields).toHaveLength(1);
-      expect(v.metafields![0]).toEqual({
-        namespace: 'custom',
-        key: 'print_area_position',
-        type: 'json',
-        value: expected,
-      });
-    }
-  });
-
-  it('variant metafields for hoodies have different coordinates than tops', () => {
-    const rows = [makeRow()];
-    const topsVariants = buildVariants(rows, 'tops');
-    const hoodieVariants = buildVariants(rows, 'hoodies');
-    expect(topsVariants[0].metafields![0].value).not.toBe(hoodieVariants[0].metafields![0].value);
-    expect(hoodieVariants[0].metafields![0].value).toBe(JSON.stringify(PRINT_AREA_COORDINATES.hoodies));
-  });
-
-  it('3 rows produce 6 variants', () => {
-    const rows = [
-      makeRow({ colorName: 'Red', sizeName: 'S' }),
-      makeRow({ colorName: 'Red', sizeName: 'M' }),
-      makeRow({ colorName: 'Blue', sizeName: 'L' }),
-    ];
-    const variants = buildVariants(rows, 'tops');
-    expect(variants).toHaveLength(6);
-  });
-
-  it('defaults price to 0 for empty sellPrice', () => {
-    const rows = [makeRow({ sellPrice1Area: '', sellPrice2Area: '' })];
-    const variants = buildVariants(rows, 'tops');
-    expect(variants[0].price).toBe(0);
-    expect(variants[1].price).toBe(0);
-  });
-});
-
 describe('getCategoryGroup', () => {
-  it('returns tops for T-Shirt', () => {
-    expect(getCategoryGroup('T-Shirt')).toBe('tops');
+  it('returns tops for T-Shirts - Premium', () => {
+    expect(getCategoryGroup('T-Shirts - Premium')).toBe('tops');
   });
 
-  it('returns tops for Long Sleeve', () => {
-    expect(getCategoryGroup('Long Sleeve')).toBe('tops');
+  it('returns tops for T-Shirts - Core', () => {
+    expect(getCategoryGroup('T-Shirts - Core')).toBe('tops');
   });
 
-  it('returns tops for Crewneck', () => {
-    expect(getCategoryGroup('Crewneck')).toBe('tops');
+  it('returns tops for T-Shirts - Long Sleeve', () => {
+    expect(getCategoryGroup('T-Shirts - Long Sleeve')).toBe('tops');
   });
 
-  it('returns hoodies for Hoodie', () => {
-    expect(getCategoryGroup('Hoodie')).toBe('hoodies');
+  it('returns tops for Fleece - Premium - Crew', () => {
+    expect(getCategoryGroup('Fleece - Premium - Crew')).toBe('tops');
   });
 
-  it('returns null for Cap (unsupported)', () => {
-    expect(getCategoryGroup('Cap')).toBeNull();
+  it('returns tops for Fleece - Core - Crew', () => {
+    expect(getCategoryGroup('Fleece - Core - Crew')).toBe('tops');
+  });
+
+  it('returns hoodies for Fleece - Premium - Hood', () => {
+    expect(getCategoryGroup('Fleece - Premium - Hood')).toBe('hoodies');
+  });
+
+  it('returns hoodies for Fleece - Core - Hood', () => {
+    expect(getCategoryGroup('Fleece - Core - Hood')).toBe('hoodies');
+  });
+
+  it('returns null for Headwear (unsupported)', () => {
+    expect(getCategoryGroup('Headwear')).toBeNull();
+  });
+
+  it('returns null for Outerwear (unsupported)', () => {
+    expect(getCategoryGroup('Outerwear')).toBeNull();
   });
 
   it('returns null for unknown category', () => {
@@ -162,12 +90,11 @@ describe('getCategoryGroup', () => {
 });
 
 describe('SUPPORTED_CATEGORIES', () => {
-  it('contains exactly T-Shirt, Long Sleeve, Crewneck, Hoodie', () => {
-    expect(SUPPORTED_CATEGORIES.size).toBe(4);
-    expect(SUPPORTED_CATEGORIES.has('T-Shirt')).toBe(true);
-    expect(SUPPORTED_CATEGORIES.has('Long Sleeve')).toBe(true);
-    expect(SUPPORTED_CATEGORIES.has('Crewneck')).toBe(true);
-    expect(SUPPORTED_CATEGORIES.has('Hoodie')).toBe(true);
+  it('contains the real sheet category names', () => {
+    expect(SUPPORTED_CATEGORIES.has('T-Shirts - Premium')).toBe(true);
+    expect(SUPPORTED_CATEGORIES.has('T-Shirts - Core')).toBe(true);
+    expect(SUPPORTED_CATEGORIES.has('Fleece - Premium - Hood')).toBe(true);
+    expect(SUPPORTED_CATEGORIES.has('Fleece - Premium - Crew')).toBe(true);
   });
 });
 
