@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 04.1-02-PLAN.md (Image pipeline integration)
-last_updated: "2026-03-11T11:00:34.744Z"
+stopped_at: Completed 07-01-PLAN.md (Size guide functions)
+last_updated: "2026-03-11T13:06:25.952Z"
 last_activity: 2026-03-09 -- Completed 04-03-PLAN.md (Product push orchestrator)
 progress:
-  total_phases: 6
+  total_phases: 8
   completed_phases: 5
-  total_plans: 15
-  completed_plans: 13
+  total_plans: 17
+  completed_plans: 14
   percent: 100
 ---
 
@@ -62,6 +62,7 @@ Progress: [██████████] 100%
 | Phase 04 P03 | 4min | 2 tasks | 7 files |
 | Phase 04.1 P01 | 3min | 1 tasks | 3 files |
 | Phase 04.1 P02 | 4min | 2 tasks | 7 files |
+| Phase 07 P01 | 3 | 1 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -111,6 +112,8 @@ Recent decisions affecting current work:
 - [Phase 04.1]: PRINT_AREA_COORDINATES removed — coords computed dynamically per garment image via derivePrintAreaCoords
 - [Phase 04.1]: buildVariants removed from variants.ts — was dead code, replaced by buildLinkedVariants in color-swatches.ts
 - [Phase 04.1]: Side images use contain-resize only — no garment detection needed for non-print-area images
+- [Phase 07]: linkSizeGuideToProduct uses metaobject_reference (single) with raw GID string — size_guide is a single reference, not a list
+- [Phase 07]: readSpecSheetStructured sorts by sizeOrder column when present, falls back to standard XS/S/M/L/XL/2XL/3XL/4XL/5XL/6XL order
 
 ### Pending Todos
 
@@ -119,6 +122,8 @@ None yet.
 ### Roadmap Evolution
 
 - Phase 04.1 inserted after Phase 4: Image Standardization & Print Area Detection (URGENT) — simple resize doesn't match garment proportions, fixed coordinates misaligned on different garment shapes
+- Phase 6 added: Live Inventory Sync — Pull daily inventory from suppliers via OneSource API and sync stock levels to Shopify
+- Phase 7 added: Size Guide Upload — Create size_guides metaobjects from spec sheet data and link to products via custom.size_guide metafield
 
 ### Blockers/Concerns
 
@@ -128,6 +133,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-11T10:57:13.949Z
-Stopped at: Completed 04.1-02-PLAN.md (Image pipeline integration)
+Last session: 2026-03-11T13:06:25.948Z
+Stopped at: Completed 07-01-PLAN.md (Size guide functions)
 Resume file: None
