@@ -107,6 +107,10 @@ Recent decisions affecting current work:
 
 None yet.
 
+### Roadmap Evolution
+
+- Phase 04.1 inserted after Phase 4: Image Standardization & Print Area Detection (URGENT) — simple resize doesn't match garment proportions, fixed coordinates misaligned on different garment shapes
+
 ### Blockers/Concerns
 
 - S&S Canada adapter implemented -- requires SS_ACCOUNT_NUMBER and SS_API_KEY in .env for live API testing
@@ -115,6 +119,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-09T14:01:15.059Z
-Stopped at: Completed 04-03-PLAN.md (Product push orchestrator)
-Resume file: None
+Last session: 2026-03-10T23:10:00Z
+Stopped at: Color swatch implementation — API requires product category taxonomy before linked options work
+Resume file: .planning/phases/04-shopify-product-push/.continue-here.md

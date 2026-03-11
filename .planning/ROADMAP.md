@@ -16,6 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 2: Google Sheets Integration** - Read, write, and merge supplier data into the master Google Sheet
 - [x] **Phase 3: Decoration Rules and Pricing** - Define decoration methods/placements per category and calculate sell prices (completed 2026-03-06)
 - [ ] **Phase 4: Shopify Product Push** - Create complete Shopify products from enriched sheet data via GraphQL API (old store format)
+- [ ] **Phase 4.1: Image Standardization & Print Area Detection** - Detect garment boundaries, standardize images, derive print area coordinates (INSERTED)
 - [ ] **Phase 5: Scale and Reliability** - Handle 100+ products with dry-run mode, batch processing, and error reporting
 
 ## Phase Details
@@ -81,6 +82,20 @@ Plans:
 - [ ] 04-02-PLAN.md -- Image standardizer: sharp resize to 2000x2000 + staged uploads (SHOP-05)
 - [ ] 04-03-PLAN.md -- Metaobject lookup, product push orchestrator, CLI update (SHOP-01 through SHOP-07)
 
+### Phase 4.1: Image Standardization & Print Area Detection (INSERTED)
+
+**Goal:** Automatically detect garment boundaries in supplier images, standardize to 2000x2000px with consistent garment-to-canvas ratio, and derive accurate print area coordinates from detected garment shape
+**Requirements**: SHOP-05
+**Depends on:** Phase 4
+**Success Criteria** (what must be TRUE):
+  1. Garment boundaries are detected in supplier images and the garment is scaled to a consistent proportion within the 2000x2000 canvas
+  2. Print area coordinates are derived from the detected garment shape (not hardcoded) and accurately position the decoration zone
+  3. The standardized images and derived coordinates integrate with the existing pushProduct flow
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 04.1 to break down)
+
 ### Phase 5: Scale and Reliability
 **Goal**: The full pipeline handles 100+ products in a single batch run with visibility into what will happen, what is happening, and what went wrong
 **Depends on**: Phase 4
@@ -98,7 +113,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 4.1 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -106,4 +121,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 2. Google Sheets Integration | 1/2 | In progress | - |
 | 3. Decoration Rules and Pricing | 2/2 | Complete   | 2026-03-06 |
 | 4. Shopify Product Push | 0/3 | In Progress (replanned) |  |
+| 4.1. Image Standardization & Print Area Detection | 0/0 | Not started | - |
 | 5. Scale and Reliability | 0/2 | Not started | - |
