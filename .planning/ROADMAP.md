@@ -78,7 +78,10 @@ Plans:
   2. The generator produces 3 candidates per view and returns the one with the highest quality score — never the raw first output
   3. Generated images where mean garment hue drifts more than 15 degrees from the front image are rejected and regenerated
   4. A product whose existing front image fails quality scoring gets an AI-generated replacement that passes scoring before it is accepted
-**Plans**: TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 10-01-PLAN.md — Types, hue utilities, cost tracker, prompt templates with tests
+- [ ] 10-02-PLAN.md — generateGarmentView and enhanceFrontImage with mocked OpenAI tests
 
 ### Phase 11: Image Standardization & Safe Upload
 **Goal**: All accepted images (sourced or generated) are standardized to 2000x2000px with the garment scaled to a fixed target proportion of the canvas (uniform max height/width across all products), then uploaded to Shopify by merging with existing media GIDs
@@ -125,7 +128,7 @@ Plans:
 | 07. Size Guide Upload | v1.0 | 2/2 | Complete | 2026-03-11 |
 | 08. Image Quality Scorer | v2.0 | 0/2 | Complete    | 2026-03-26 |
 | 09. Image Sourcing | v2.0 | 0/1 | Complete    | 2026-03-26 |
-| 10. AI Image Generation | v2.0 | 0/TBD | Not started | - |
+| 10. AI Image Generation | v2.0 | 0/2 | Planned | - |
 | 11. Image Standardization & Safe Upload | v2.0 | 0/TBD | Not started | - |
 | 12. Audit Runner | v2.0 | 0/TBD | Not started | - |
 | 13. CLI Entry Point | v2.0 | 0/TBD | Not started | - |
