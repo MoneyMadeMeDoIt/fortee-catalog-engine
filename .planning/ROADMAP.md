@@ -31,7 +31,7 @@
 
 ## Phases
 
-- [ ] **Phase 08: Image Quality Scorer** - Sharp-based blur/resolution scoring on trimmed garment region with calibrated thresholds
+- [x] **Phase 08: Image Quality Scorer** - Sharp-based blur/resolution scoring on trimmed garment region with calibrated thresholds (completed 2026-03-26)
 - [ ] **Phase 09: Image Sourcing** - Fallback chain fetching front/back/side images from OMG, CSW, and S&S Canada before AI
 - [ ] **Phase 10: AI Image Generation** - OpenAI images.edit() generates missing back/side views with quality-gated candidate selection
 - [ ] **Phase 11: Image Standardization & Safe Upload** - Standardize all accepted images to 2000x2000 and replace Shopify media using existing GIDs
@@ -51,7 +51,7 @@
   4. The scorer operates on the trimmed garment region (not full white canvas) — a white-background supplier image does not produce a false reject
   5. Images flagged as unsuitable for mockup use (low contrast, heavy watermark, non-blank garment) receive a `fail` verdict with a descriptive reason
   6. Scorer flags images where garment proportion within the canvas is outside the target range (too small or too large relative to the standard garment-to-canvas ratio)
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 Plans:
 - [x] 08-01-PLAN.md — Scorer function with types, tests, and all 4 dimension checks
 - [x] 08-02-PLAN.md — Calibration script and threshold tuning with user review
@@ -121,7 +121,7 @@ Plans:
 | 04. Shopify Product Push | v1.0 | 3/3 | Complete | 2026-03-09 |
 | 04.1. Image Standardization & Print Area Detection | v1.0 | 2/2 | Complete | 2026-03-10 |
 | 07. Size Guide Upload | v1.0 | 2/2 | Complete | 2026-03-11 |
-| 08. Image Quality Scorer | v2.0 | 0/2 | Planning | - |
+| 08. Image Quality Scorer | v2.0 | 0/2 | Complete    | 2026-03-26 |
 | 09. Image Sourcing | v2.0 | 0/TBD | Not started | - |
 | 10. AI Image Generation | v2.0 | 0/TBD | Not started | - |
 | 11. Image Standardization & Safe Upload | v2.0 | 0/TBD | Not started | - |
