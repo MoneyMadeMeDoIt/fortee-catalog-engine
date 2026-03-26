@@ -119,3 +119,19 @@ export interface ImageProcessResult {
   files: FileSetInput[];
   printAreaCoords: PrintAreaCoords | null;
 }
+
+/** Per-dimension score results from image quality analysis. */
+export interface ImageQualityDimensions {
+  blur: number;       // 0-100
+  resolution: number; // 0-100
+  proportion: number; // 0 or 100
+  content: number;    // 0 or 100
+}
+
+/** Result from scoreImageQuality() — used by Phase 10 (ranking) and Phase 12 (gating). */
+export interface ImageQualityResult {
+  score: number;             // 0-100 composite
+  verdict: 'pass' | 'fail';
+  reasons: string[];         // empty array if pass
+  dimensions: ImageQualityDimensions;
+}
