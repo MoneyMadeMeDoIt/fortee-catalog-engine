@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Image Automation
-status: Ready to plan
-stopped_at: Phase 11 context gathered
-last_updated: "2026-03-26T23:37:57.666Z"
+status: Ready to execute
+stopped_at: Completed 11-01-PLAN.md
+last_updated: "2026-03-26T23:55:56.821Z"
 progress:
   total_phases: 6
   completed_phases: 3
-  total_plans: 5
-  completed_plans: 5
+  total_plans: 7
+  completed_plans: 6
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-26)
 
 **Core value:** One command turns an enriched sheet row into a live Shopify product with correct decoration options, placements, pricing, standardized images, and all customer-facing content.
-**Current focus:** Phase 10 — ai-image-generation
+**Current focus:** Phase 11 — image-standardization-safe-upload
 
 ## Current Position
 
-Phase: 11
-Plan: Not started
+Phase: 11 (image-standardization-safe-upload) — EXECUTING
+Plan: 2 of 2
 
 ## Accumulated Context
 
@@ -50,6 +50,7 @@ Key decisions for v2.0:
 - [Phase 10-ai-image-generation]: CostTracker.estimateCost(n) returns n * CANDIDATES_PER_CALL * COST_PER_IMAGE (D-08 minimum estimate, excludes retry cost)
 - [Phase 10]: vitest 4.x clearAllMocks clears call history but NOT mockResolvedValueOnce queue; achromatic bypass test must not set candidate Once items since candidates skip extractDominantHue
 - [Phase 10]: callImagesEdit uses optional client param for dependency injection; avoids mocking createOpenAIClient factory
+- [Phase 11-image-standardization-safe-upload]: FIXED_GARMENT_HEIGHT_FRAC=0.85 replaces per-category REFERENCE_RATIOS in standardizeImage() — uniform 1700px garment height on 2000px canvas for all categories per D-01
 
 ### Pending Todos
 
@@ -63,6 +64,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-26T23:37:57.663Z
-Stopped at: Phase 11 context gathered
-Resume file: .planning/phases/11-image-standardization-safe-upload/11-CONTEXT.md
+Last session: 2026-03-26T23:55:56.817Z
+Stopped at: Completed 11-01-PLAN.md
+Resume file: None

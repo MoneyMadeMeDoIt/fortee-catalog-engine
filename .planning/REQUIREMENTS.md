@@ -29,7 +29,7 @@
 
 ### Image Standardization
 
-- [ ] **STD-01**: All final images (sourced or generated) are standardized to uniform 2000x2000px dimensions with the garment scaled to a fixed target proportion of the canvas (uniform max height/width across all products)
+- [x] **STD-01**: All final images (sourced or generated) are standardized to uniform 2000x2000px dimensions with the garment scaled to a fixed target proportion of the canvas (uniform max height/width across all products)
 - [ ] **STD-02**: Standardized images are uploaded to Shopify via staged uploads, replacing existing product media without breaking references
 
 ### Output
@@ -70,7 +70,7 @@
 | AIGEN-02 | Phase 10 | Complete |
 | AIGEN-03 | Phase 10 | Complete |
 | AIGEN-04 | Phase 10 | Complete |
-| STD-01 | Phase 11 | Pending |
+| STD-01 | Phase 11 | Complete |
 | STD-02 | Phase 11 | Pending |
 | OUT-02 | Phase 11 | Pending |
 | OUT-01 | Phase 13 | Pending |

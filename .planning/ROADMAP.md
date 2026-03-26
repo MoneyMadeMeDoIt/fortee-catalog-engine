@@ -92,9 +92,9 @@ Plans:
   2. Standardized images are uploaded via Shopify staged uploads for CDN URL generation, but NOT attached to any product
   3. Google Sheets FrontImage/BackImage/DirectSideImage columns are overwritten with standardized CDN URLs
   4. Side-by-side comparison of any two standardized product images shows garments at uniform scale — no product appears visually larger or smaller than another
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 Plans:
-- [ ] 11-01-PLAN.md — Refactor standardizeImage() to fixed 85% garment height target
+- [x] 11-01-PLAN.md — Refactor standardizeImage() to fixed 85% garment height target
 - [ ] 11-02-PLAN.md — standardizeImagesToSheets() with staged upload URLs and sheet write
 
 ### Phase 12: Audit Runner
@@ -132,6 +132,6 @@ Plans:
 | 08. Image Quality Scorer | v2.0 | 0/2 | Complete    | 2026-03-26 |
 | 09. Image Sourcing | v2.0 | 0/1 | Complete    | 2026-03-26 |
 | 10. AI Image Generation | v2.0 | 2/2 | Complete    | 2026-03-26 |
-| 11. Image Standardization & Safe Upload | v2.0 | 0/2 | In progress | - |
+| 11. Image Standardization & Safe Upload | v2.0 | 1/2 | In Progress|  |
 | 12. Audit Runner | v2.0 | 0/TBD | Not started | - |
 | 13. CLI Entry Point | v2.0 | 0/TBD | Not started | - |
