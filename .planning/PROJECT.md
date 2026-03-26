@@ -54,6 +54,19 @@ Tech stack: TypeScript ESM, Shopify GraphQL Admin API (2025-01), Google Sheets A
 - **Scale**: Single-product push in v1.0; batch mode deferred
 - **Execution**: Manual script trigger, not automated sync
 
+## Current Milestone: v2.0 Image Automation
+
+**Goal:** Every product gets uniform, e-commerce-ready front/back/side images — audit existing for quality, replace bad ones, generate missing views, standardize all, and track status in Google Sheet.
+
+**Target features:**
+- Audit & standardize existing images (uniform size, ratio, quality)
+- AI quality scoring — flag ugly/unusable images for replacement
+- Source front images from OrderMyGear API or scrape supplier sites
+- AI-generate missing AND replacement back/side views from front image
+- Verify generated image quality before accepting
+- Standardize all final images to uniform dimensions/ratio
+- Classify and update image status back into Google Sheet
+
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
@@ -65,5 +78,22 @@ Tech stack: TypeScript ESM, Shopify GraphQL Admin API (2025-01), Google Sheets A
 | Non-fatal size guide enrichment | Missing spec data shouldn't block product push | ✓ Good — graceful skip with warning |
 | Defer batch/dry-run to v2.0 | Prioritize image automation workflow | — Pending |
 
+## Evolution
+
+This document evolves at phase transitions and milestone boundaries.
+
+**After each phase transition** (via `/gsd:transition`):
+1. Requirements invalidated? → Move to Out of Scope with reason
+2. Requirements validated? → Move to Validated with phase reference
+3. New requirements emerged? → Add to Active
+4. Decisions to log? → Add to Key Decisions
+5. "What This Is" still accurate? → Update if drifted
+
+**After each milestone** (via `/gsd:complete-milestone`):
+1. Full review of all sections
+2. Core Value check — still the right priority?
+3. Audit Out of Scope — reasons still valid?
+4. Update Context with current state
+
 ---
-*Last updated: 2026-03-26 after v1.0 milestone*
+*Last updated: 2026-03-26 after v2.0 milestone start*
