@@ -135,3 +135,13 @@ None — all thresholds are wired to real calibration data.
 ---
 *Phase: 08-image-quality-scorer*
 *Completed: 2026-03-26*
+
+## Self-Check: PASSED
+
+- FOUND: `src/shopify/image-scorer.ts`
+- FOUND: `tests/shopify/image-scorer.test.ts`
+- FOUND: `scripts/calibrate-scorer.ts`
+- FOUND: `.planning/phases/08-image-quality-scorer/08-02-SUMMARY.md`
+- FOUND commit: `433dc22` (feat: calibrate QUALITY_THRESHOLDS)
+- FOUND commit: `0badb7a` (feat: calibration script)
+- Tests: 9/9 pass
