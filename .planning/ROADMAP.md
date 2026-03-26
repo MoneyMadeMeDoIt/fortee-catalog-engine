@@ -54,7 +54,7 @@
 **Plans:** 2 plans
 Plans:
 - [x] 08-01-PLAN.md — Scorer function with types, tests, and all 4 dimension checks
-- [ ] 08-02-PLAN.md — Calibration script and threshold tuning with user review
+- [x] 08-02-PLAN.md — Calibration script and threshold tuning with user review
 
 ### Phase 09: Image Sourcing
 **Goal**: The system fetches front, back, and side images from supplier APIs (OMG, S&S Canada, CSW) following a cheapest-first fallback chain before any AI generation is attempted
