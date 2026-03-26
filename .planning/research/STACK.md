@@ -1,135 +1,201 @@
-# Stack Research
+# Technology Stack — v2.0 Image Automation Additions
 
-**Domain:** Product catalog enrichment pipeline (scraping + Google Sheets + Shopify)
-**Researched:** 2026-03-05
-**Confidence:** HIGH
+**Project:** Fortee Catalog Engine (v2.0 Image Automation milestone)
+**Researched:** 2026-03-26
+**Scope:** NEW additions only. Do not re-add what already exists.
 
-## Recommended Stack
+---
 
-### Core Technologies
+## Existing Stack (Do NOT Re-add)
 
-| Technology | Version | Purpose | Why Recommended |
-|------------|---------|---------|-----------------|
-| Node.js | 20 LTS | Runtime | LTS stability, native fetch, good async I/O for scraping + API work |
-| TypeScript | 5.x | Type safety | Catches shape mismatches between supplier data, sheet schema, and Shopify API payloads before runtime |
-| shopify-api-node | 3.x | Shopify Admin API client | Simpler than official @shopify/shopify-api for script-based workflows (no OAuth dance needed). Direct REST calls with access token. Battle-tested with 87k+ GitHub stars ecosystem |
-| google-spreadsheet | 4.1.5 | Google Sheets read/write | Clean row-based API (`addRow`, `getRows`, `updateRow`). Service account auth. Wraps Sheets API v4 without the verbose googleapis SDK |
-| Cheerio | 1.x | HTML parsing (Canada Sportswear) | Canada Sportswear runs on Shopify, pages are server-rendered. Cheerio is 70% faster than browser-based scrapers for static HTML. No headless browser overhead |
-| Playwright | 1.x | Browser automation (S&S Canada fallback) | Only needed if any supplier pages require JavaScript rendering or login-gated content. Keep as optional dependency |
+These are already in `package.json` and working. The new stack builds on top of them:
 
-### Supplier Data Access
+| Already Present | Version | Relevant to v2.0 |
+|----------------|---------|------------------|
+| `sharp` | ^0.34.5 | Core of blur detection and image scoring |
+| `cheerio` | ^1.2.0 | Already used in `onesource-client.ts` for SOAP XML parsing |
+| `dotenv` | ^17.3.1 | Will hold new API keys (OpenAI, Sightengine) |
+| `zod` | ^4.3.6 | Schema-validate AI API responses and image metadata |
+| `googleapis` | ^171.4.0 | Write image status back to Google Sheet |
+| `p-queue` | — (not in package.json but used) | Rate-limit AI generation calls |
+| `@shopify/admin-api-client` | ^1.1.1 | Upload standardized images to Shopify |
+| `tsx` | ^4.21.0 | Run new pipeline scripts |
+| `winston` | ^3.19.0 | Already in place for pipeline logging |
 
-| Supplier | Method | Technology | Notes |
-|----------|--------|-----------|-------|
-| Canada Sportswear | Shopify JSON endpoints | fetch + Cheerio | Site is Shopify-based (`canada-sportswear-corp.myshopify.com`). Use `/products.json` and `/collections/*.json` endpoints for structured data. Fall back to HTML scraping with Cheerio for specs/size charts not in JSON |
-| S&S Canada | Official API | fetch (REST) | S&S Activewear has an official REST API at `api.ssactivewear.com/V2/`. Returns JSON with SKUs, pricing, inventory, images. Requires account number + API key auth. **Do NOT scrape their website** -- S&S has sued scrapers (CFAA violations). Use the API |
+Note: `p-queue` is used in the codebase but not in `package.json` — confirm it is installed before building new features against it.
 
-### Supporting Libraries
+---
 
-| Library | Version | Purpose | When to Use |
-|---------|---------|---------|-------------|
-| dotenv | 16.x | Environment variable loading | Always -- store Shopify access token, S&S API key, Google service account path |
-| zod | 3.x | Runtime schema validation | Validate scraped data shapes before writing to sheets or Shopify. Catches malformed supplier data early |
-| p-queue | 8.x | Concurrency control | Rate-limit Shopify API calls (50 points/sec standard). Queue scraping requests to avoid overwhelming suppliers |
-| sharp | 0.33.x | Image processing | Resize/optimize supplier images before uploading to Shopify if needed |
-| winston | 3.x | Structured logging | Log pipeline stages (scrape, enrich, push) with enough context to debug failures in 100+ product runs |
-| tsx | 4.x | TypeScript execution | Run .ts scripts directly without build step. Simpler than ts-node for script-based workflows |
+## New Additions Required
 
-### Development Tools
+### AI Image Generation
 
-| Tool | Purpose | Notes |
-|------|---------|-------|
-| tsx | Run TypeScript scripts directly | `npx tsx scripts/scrape.ts` -- no compile step needed |
-| vitest | Unit/integration testing | Fast, TypeScript-native, good for testing data transformations |
-| eslint + prettier | Code quality | Standard tooling |
+| Package | Version | Purpose | Why |
+|---------|---------|---------|-----|
+| `openai` | ^6.x (latest 6.33.0) | GPT Image 1.5 generation and editing | Official OpenAI Node.js SDK. Handles multipart form-data for `images.edit()` automatically via `toFile()`. Supports ESM. Dual CJS/ESM build, TypeScript-native. No other option provides equivalent quality for garment view synthesis. |
 
-## Key Architecture Decision: Script-Based, Not App-Based
+**Model to use:** `gpt-image-1.5` (current production model, 20% cheaper than `gpt-image-1`).
+**Cost baseline:** ~$0.034–$0.063 per generated image at medium quality, 1024×1024. Use `gpt-image-1-mini` at ~$0.005–$0.011 for bulk triage; upgrade to `gpt-image-1.5` for final accepted views.
 
-This project is a **CLI pipeline triggered manually**, not a Shopify embedded app. This means:
+**API pattern for back/side view generation:**
+```typescript
+import OpenAI, { toFile } from 'openai';
+const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-- **No OAuth flow needed** -- use a Custom App access token from Shopify Admin
-- **No web server needed** -- just TypeScript scripts run from terminal
-- **shopify-api-node > @shopify/shopify-api** -- the official library is designed for embedded apps with OAuth, sessions, webhooks. Overkill for script-based access. `shopify-api-node` gives direct REST client with access token auth
-- **No database needed** -- Google Sheets IS the database
+// Generate a back view from front image
+const result = await client.images.edit({
+  model: 'gpt-image-1.5',
+  image: await toFile(fs.createReadStream(frontImagePath), null, { type: 'image/png' }),
+  prompt: 'Generate the back view of this blank garment product on white background. ...',
+  size: '1024x1024',
+  quality: 'medium',
+  response_format: 'b64_json',
+});
+```
 
-## Shopify API Strategy
+**Known limitations (verified):**
+- Model does NOT do pixel-level view rotation — it performs whole-image recreation from prompt + reference
+- Latency up to 2 minutes for complex prompts
+- No guaranteed geometric consistency between front and generated back (fabric details may drift)
+- Hallucination risk: model may invent details not present in the original (e.g. graphics on a blank back)
+- Rate limits: enforced per-account; queue all generation calls through `p-queue`
 
-Use **GraphQL Admin API** (not REST) for product creation because:
+### Image Quality Scoring
 
-1. **Bulk operations** -- create product + variants + metafields in fewer API calls
-2. **No rate limit on bulk operations** -- bulk queries/mutations bypass the 50 pts/sec limit
-3. **Better metafield support** -- can set metafields inline with `productCreate` mutation
-4. **API version**: Use `2025-01` or later (supports 5 concurrent bulk operations per shop)
+**Strategy: implement in-process using `sharp` (already installed) — no new API dependency needed for core scoring.**
 
-However, use `shopify-api-node` for making these GraphQL calls -- it handles auth and request formatting while allowing raw GraphQL queries.
+`sharp` supports Laplacian convolution directly. The blur detection approach is:
+1. Convolve with Laplacian kernel `[0,1,0, 1,-4,1, 0,1,0]` via `sharp().convolve()`
+2. Get pixel stats via `sharp().stats()`
+3. Calculate variance of the output — low variance = blurry image
+
+This gives blur score with zero external API calls and zero cost.
+
+For brightness/exposure, `sharp().stats()` returns per-channel mean, std, min, max — sufficient to detect underexposed or overexposed images.
+
+**When to use Sightengine instead:**
+
+If the team needs a managed quality API with a single 0–1 score (blur + exposure + noise combined), Sightengine provides this as `quality.score` via a GET request. There is a Node.js client library (`sightengine` npm package). However:
+- Minimum paid plan is $29/month
+- For a catalog of ~100–500 products, the `sharp`-based approach is sufficient and free
+- Sightengine is worth adding only if the team wants to avoid maintaining the Laplacian threshold calibration
+
+**Recommendation:** Use `sharp` for blur/brightness scoring. Add Sightengine only if in-process scoring proves unreliable after testing.
+
+No new npm package required for image quality scoring if using sharp-based approach.
+
+### Image Sourcing — S&S Canada (already available, no new package)
+
+The S&S Activewear V2 REST API already exists in `src/suppliers/ss-canada.ts` and returns these image fields per color:
+
+| Field | Description |
+|-------|-------------|
+| `colorFrontImage` | Medium front view (`_fm` suffix) |
+| `colorBackImage` | Medium back view |
+| `colorSideImage` | Medium side view |
+| `colorDirectSideImage` | Medium direct side view |
+| `colorOnModelFrontImage` | On-model front |
+| `colorOnModelBackImage` | On-model back |
+| `colorOnModelSideImage` | On-model side |
+
+Full URL: `https://www.ssactivewear.com/{imageField}`. Swap `_fm` → `_fl` for large.
+
+**No new package needed.** Extend `src/suppliers/ss-canada.ts` to extract and return the additional view fields. These are available without any additional API calls — they come back in the existing products endpoint.
+
+### Image Sourcing — Canada Sportswear (OneSource SOAP, already implemented)
+
+`src/lib/onesource-client.ts` already implements `getMediaContent()` via PromoStandards Media Content Service. The `parseMediaContentFromXml()` function returns URLs with `classTypes` that identify front/back/side views.
+
+**No new package needed.** The PromoStandards `classTypeId` values distinguish view types:
+- Typically classTypeId 1 = Front, 2 = Back, 3 = Side (verify against live response)
+- Parse `classTypes` array in `parseMediaContentFromXml()` result to select view-specific images
+
+### Image Sourcing — OrderMyGear / OneSource
+
+OrderMyGear's OneSource API is the same PromoStandards SOAP endpoint already implemented in `onesource-client.ts`. The `supplierCode` parameter routes to different suppliers. No new library is needed — configure a new `supplierCode` and credentials.
+
+**OneSource API format:** SOAP XML (already handled). REST/JSON versions are planned by OrderMyGear but not yet available as of March 2026. Do NOT add a REST SDK for OneSource — it does not exist yet.
+
+---
+
+## No-Install Notes (What NOT to Add)
+
+| Do Not Add | Reason |
+|-----------|--------|
+| `axios` or `axios-retry` | Already using native `fetch` throughout. Adding axios creates a mixed HTTP client situation. For retry logic, implement a thin wrapper around `fetch` using a retry loop. |
+| `node-soap` / `strong-soap` | OneSource SOAP is already handled by hand-rolled `fetch` + cheerio XML parsing in `onesource-client.ts`. Adding a SOAP library would require rewriting working code. |
+| `opencv4nodejs` | Native binding, requires OpenCV system install, complex build chain on Windows/CI. `sharp` convolution covers all needed quality detection without it. |
+| `jimp` | Redundant with `sharp`. Much slower (pure JS). Already have sharp. |
+| `ssim.js` | Only useful for comparing two images of the same scene. Not needed for quality auditing of supplier images. |
+| `playwright` or `puppeteer` | Neither Canada Sportswear nor S&S pages are JavaScript-gated for product data. Both suppliers have structured data endpoints. |
+| `sightengine` | External paid API for what `sharp` can do in-process. Add only if sharp-based scoring is validated as insufficient. |
+| `replicate` SDK | Replicate hosts gpt-image-1.5 but at higher cost and with an extra vendor dependency. Use OpenAI direct API. |
+
+---
 
 ## Installation
 
 ```bash
-# Core
-npm install shopify-api-node google-spreadsheet@4.1.5 cheerio zod dotenv p-queue winston sharp
-
-# Dev dependencies
-npm install -D typescript tsx vitest @types/node eslint prettier
-
-# Optional (only if supplier pages need JS rendering)
-npm install playwright
+# Only new addition required
+npm install openai
 ```
 
-## Alternatives Considered
+Everything else is either already installed or implemented using existing dependencies.
 
-| Recommended | Alternative | Why Not |
-|-------------|-------------|---------|
-| shopify-api-node | @shopify/shopify-api (official) | Official lib is designed for embedded apps with OAuth. Adds complexity (session management, webhook handlers) we don't need for a script-based pipeline |
-| google-spreadsheet 4.x | googleapis (raw SDK) | Verbose, requires manual pagination, no row abstraction. google-spreadsheet wraps it cleanly |
-| Cheerio | Puppeteer | Puppeteer launches a full Chromium browser. Canada Sportswear is static Shopify HTML -- no JS rendering needed. Cheerio is faster and lighter |
-| Cheerio | Playwright | Same reasoning as Puppeteer. Keep Playwright as optional fallback only |
-| zod | joi / yup | zod has better TypeScript inference. Validates and infers types from one schema definition |
-| p-queue | bottleneck | p-queue is simpler, promise-native, actively maintained. bottleneck has more features but more complexity than we need |
-| tsx | ts-node | tsx is faster (uses esbuild), zero-config, better for script execution |
-| vitest | jest | vitest is faster, TypeScript-native without additional config, compatible Jest API |
+---
 
-## What NOT to Use
+## Environment Variables to Add
 
-| Avoid | Why | Use Instead |
-|-------|-----|-------------|
-| Selenium / WebDriver | Massive overhead for static page scraping. Slow, fragile, resource-heavy | Cheerio for static HTML, Playwright only if JS rendering required |
-| axios | Node.js 18+ has native `fetch`. No need for a third-party HTTP client | Built-in `fetch` or `node-fetch` for older Node versions |
-| MongoDB / PostgreSQL | Over-engineered for this use case. Google Sheets is the data store by design | Google Sheets via google-spreadsheet |
-| Shopify CSV import | No support for metafields, metaobjects, or print area configuration. Limited variant control | Shopify Admin API (GraphQL) |
-| Python (Scrapy, BeautifulSoup) | Adds a second language to the stack. Node.js handles scraping + API calls + sheets in one runtime | Node.js + Cheerio |
-| @shopify/shopify-api | Session management, OAuth flows, webhook registration -- none needed for manual script execution | shopify-api-node for simpler access-token auth |
+```bash
+# .env additions for v2.0
+OPENAI_API_KEY=sk-...            # GPT Image generation and editing
+# Optional if Sightengine path is chosen:
+SIGHTENGINE_API_USER=...
+SIGHTENGINE_API_SECRET=...
+```
 
-## Version Compatibility
+---
 
-| Package | Compatible With | Notes |
-|---------|-----------------|-------|
-| shopify-api-node@3.x | Shopify API 2025-01+ | Supports both REST and GraphQL. Access token auth |
-| google-spreadsheet@4.1.5 | Google Sheets API v4 | Requires google-auth-library for service account auth |
-| cheerio@1.x | Node.js 18+ | ESM and CJS both supported |
-| zod@3.x | TypeScript 5.x | Full type inference from schemas |
+## Integration Points with Existing Stack
 
-## Google Sheets Authentication
+| New Feature | Integrates With | How |
+|-------------|----------------|-----|
+| Blur detection | `sharp` (existing) | `sharp().convolve()` + `sharp().stats()` on the existing image buffer flow in `image-standardizer.ts` |
+| AI generation | `openai` (new) + `sharp` (existing) | Feed OpenAI output buffer back into `image-standardizer.ts` for standardization (2000×2000 canvas, print area coords) |
+| S&S image sourcing | `src/suppliers/ss-canada.ts` (existing) | Extend to return `colorBackImage`, `colorSideImage` fields already in API response |
+| OneSource image sourcing | `src/lib/onesource-client.ts` (existing) | `parseMediaContentFromXml()` already returns URLs; add view-type classification by `classTypeId` |
+| Sheet status writeback | `googleapis` (existing) | Write image status column (audit pass/fail/generated) using existing Sheets API integration |
+| Shopify upload | `@shopify/admin-api-client` (existing) | `image-standardizer.ts` already handles staged uploads |
 
-Use a **Google Cloud Service Account** (not OAuth):
-1. Create service account in Google Cloud Console
-2. Download JSON key file
-3. Share the Google Sheet with the service account email
-4. Load credentials from environment variable pointing to key file path
+---
 
-This avoids OAuth consent screens and refresh token management -- ideal for automated scripts.
+## Confidence Assessment
+
+| Area | Confidence | Notes |
+|------|------------|-------|
+| OpenAI SDK version | HIGH | Confirmed v6.33.0 on GitHub releases page (March 25, 2026) |
+| GPT Image 1.5 pricing | HIGH | Multiple pricing sources agree as of March 2026 |
+| S&S API image fields | HIGH | Verified directly from api.ssactivewear.com/V2/Products.aspx |
+| OneSource SOAP integration | HIGH | Code already works in production (onesource-client.ts) |
+| sharp blur detection via Laplacian | HIGH | Well-documented approach; sharp convolution API confirmed |
+| GPT Image view generation accuracy | MEDIUM | Model can generate views but geometric consistency not guaranteed — needs empirical threshold validation |
+| OrderMyGear REST API timeline | LOW | Claims "REST/JSON coming" but no release date found |
+
+---
 
 ## Sources
 
-- [Shopify Admin API documentation](https://shopify.dev/docs/api/admin-graphql/latest) -- GraphQL product creation, rate limits (HIGH confidence)
-- [Shopify API rate limits](https://shopify.dev/docs/api/usage/limits) -- bulk operations bypass rate limits (HIGH confidence)
-- [S&S Activewear API documentation](https://api.ssactivewear.com/V2/Products.aspx) -- official REST API with JSON/XML responses (HIGH confidence)
-- [S&S Activewear lawsuit against scraping](https://members.asicentral.com/news/industry-news/september-2025/ss-activewear-files-lawsuit-accuses-promohunt-of-illegally-accessing-data/) -- legal risk of scraping S&S (HIGH confidence)
-- [Canada Sportswear website](https://canadasportswear.com/) -- confirmed Shopify platform via page source inspection (HIGH confidence)
-- [google-spreadsheet npm](https://www.npmjs.com/package/google-spreadsheet) -- v4.1.5 latest in 4.x line (MEDIUM confidence)
-- [Cheerio vs Playwright comparison](https://blog.apify.com/playwright-vs-puppeteer/) -- Cheerio 70% faster for static HTML (MEDIUM confidence)
-- [shopify-api-node npm](https://www.npmjs.com/package/shopify-api-node) -- community-maintained but simpler for scripts (MEDIUM confidence)
+- [OpenAI Node.js SDK GitHub releases](https://github.com/openai/openai-node/releases) — v6.33.0 confirmed March 25, 2026 (HIGH)
+- [OpenAI Image Generation Docs](https://platform.openai.com/docs/guides/image-generation) — gpt-image-1.5 model, `images.edit()` API (HIGH)
+- [GPT Image 1.5 API pricing, March 2026](https://costgoat.com/pricing/openai-images) — $0.034–$0.063 medium quality (HIGH)
+- [S&S Activewear API Products endpoint](https://api.ssactivewear.com/V2/Products.aspx) — image field names confirmed (HIGH)
+- [Sightengine Image Quality Detection](https://sightengine.com/docs/image-quality-detection) — quality score 0–1, Node.js GET API (MEDIUM)
+- [LinkedIn: Pinpointing Blurry Images Node.js Way](https://www.linkedin.com/pulse/pinpointing-blurry-images-simple-nodejs-way-pablo-schaffner-bofill) — sharp Laplacian convolution approach (MEDIUM)
+- [OpenAI gpt-image-1.5 Prompting Guide](https://developers.openai.com/cookbook/examples/multimodal/image-gen-1.5-prompting_guide) — edit API pattern, garment try-on approach (HIGH)
+- [OneSource API Documentation](https://apidocs.distributorcentral.com/docs/onesource-api/b2edb775739e6-one-source-api-documentation) — SOAP format confirmed, REST not yet available (MEDIUM)
+- [OrderMyGear OneSource API](https://www.ordermygear.com/onesource-api/) — single integration point for PromoStandards suppliers (MEDIUM)
 
 ---
-*Stack research for: Fortee Catalog Engine*
-*Researched: 2026-03-05*
+
+*Stack research for: Fortee Catalog Engine v2.0 Image Automation*
+*Researched: 2026-03-26*

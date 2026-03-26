@@ -1,93 +1,184 @@
 # Feature Landscape
 
-**Domain:** Product catalog enrichment pipeline for custom apparel
-**Researched:** 2026-03-05
-**Confidence:** HIGH
+**Domain:** Automated product image pipeline for custom apparel e-commerce
+**Researched:** 2026-03-26
+**Milestone:** v2.0 Image Automation (subsequent milestone — v1.0 catalog engine is complete)
+**Confidence:** MEDIUM-HIGH
+
+---
+
+## Context: What Already Exists
+
+The v1.0 pipeline (complete) provides:
+- `standardizeImage()` — sharp.trim() garment detection, 2000x2000 canvas placement
+- `processProductImages()` — download → standardize → staged upload → `FileSetInput[]`
+- `derivePrintAreaCoords()` — garment-placement-relative print area coordinates
+- `uploadStagedImage()` — Shopify GraphQL `stagedUploadsCreate` + PUT
+- `SheetRow` — fields `FrontImage`, `BackImage`, `DirectSideImage` already exist
+- `downloadImage()` — URL fetch with 30s timeout
+
+v2.0 builds on top of these. New features must integrate cleanly with `processProductImages()` and the sheet write-back pattern already established in `enrich.ts`.
+
+---
 
 ## Table Stakes
 
-Features the operator expects. Missing these = the system is not usable.
+Features the operator requires for v2.0 to deliver value. Missing any of these = the milestone goal is unmet.
 
-| Feature | Why Expected | Complexity | Notes |
-|---------|--------------|------------|-------|
-| Canada Sportswear data extraction | Primary supplier -- need images, descriptions, specs, size charts | Med | Site is Shopify-based. Use `/products.json` for structured data, Cheerio for HTML specs |
-| S&S Canada data fetching | Second supplier -- need same data categories | Low | Official REST API at `api.ssactivewear.com/V2/`. JSON format. Requires account+API key |
-| Google Sheets read/write | The sheet IS the product database; system is useless without it | Low | google-spreadsheet 4.x with service account auth |
-| Sheet row enrichment with supplier data | Core pipeline function -- merge supplier data into sheet columns | Med | Map supplier fields to sheet columns, handle missing data gracefully |
-| Decoration rules by garment category | Determines which print methods/placements each product gets | Med | Category-based (hoodies, t-shirts, etc.) from Print_Areas_Placement_Guide_FULL.xlsx |
-| Pricing calculation per product | Sell price = garment cost + decoration cost + margin | Med | Must implement the pricing calculator logic from Calculateur pour IA.xlsx |
-| Shopify product creation via GraphQL API | The output of the entire system | High | `productSet` mutation for product + variants + metafields in one call |
-| Variant generation (Color x Size only) | New variant model per project constraints (~98 per product) | Med | Must match the new system structure, not the old 196-variant model |
-| Metafield and metaobject creation | Decoration pricing lives in Print Area metaobjects, not variants | High | Create metaobjects before products. Reference via metafields |
-| Image download and upload | Products need supplier images in Shopify CDN, not external URLs | Med | Download from supplier, upload via Shopify staged uploads |
-| Idempotent product push | Running script twice must not create duplicates | Med | Match on handle. Use `productSet` create-or-update semantics |
-| Error reporting with per-product status | Operator must know what failed and why across 100+ products | Low | Structured logging with product-level success/failure |
+| Feature | Why Expected | Complexity | Dependency on Existing Code |
+|---------|--------------|------------|----------------------------|
+| Image quality audit across all sheet rows | Must know which products have bad/missing images before sourcing or generating | Med | Reads `FrontImage`, `BackImage`, `DirectSideImage` from sheet. Calls `downloadImage()` + quality scoring |
+| Blur / low-resolution detection | White-background garment photos from suppliers are often blurry or too small | Med | Uses `sharp` metadata (width, height). Laplacian variance or `@bstrickl/blurriness` for blur score |
+| Missing-image detection | Many products lack back or side views entirely | Low | `SheetRow` fields are empty strings when missing. Already handled as skip in `processProductImages()` |
+| Image status write-back to Google Sheet | Operator must track audit results, sourcing status, and generation status in the sheet | Med | Uses existing `writer.ts` / `EnrichmentUpdate` pattern. Needs new status columns |
+| Source front images from supplier sites | Canada Sportswear and S&S Canada have hi-res images; scraping/API is more reliable than stored URLs | Med | Canada Sportswear: existing cheerio scraper. S&S Canada: existing REST API (`/V2/Products` returns `ColorArray[].colorFrontImage`) |
+| AI-generate missing back/side views | Many products have front-only images; back and side needed for e-commerce completeness | High | Calls fal.ai FLUX.1 Kontext or similar. Input: front image buffer. Output: back/side buffer fed into existing `standardizeImage()` |
+| Quality gate on generated images | AI-generated views must pass the same blur/resolution checks before acceptance | Med | Same quality scoring as audit step. Reject and log if below threshold |
+| Re-standardize all accepted images | All sourced or generated images must go through the existing 2000x2000 pipeline | Low | Already exists: `standardizeImage()`. Just needs to be called on sourced/generated buffers |
+| Upload replacements to Shopify | Accepted images must replace or supplement the existing product images in Shopify | Med | Uses existing `uploadStagedImage()`. Needs `productMedia` update or re-push via `productSet` |
+
+---
 
 ## Differentiators
 
-Features that add significant value beyond basic functionality.
+Features that make the pipeline meaningfully better than manually handling images.
 
 | Feature | Value Proposition | Complexity | Notes |
 |---------|-------------------|------------|-------|
-| Category-based decoration rule engine | One rule set per garment category instead of per-product config -- massive time savings | Med | Define once: "hoodies get Front, Back, Left Chest with DTF and Embroidery." Apply to all hoodies |
-| Pricing calculator as code | Translating Excel model into deterministic code means prices are always correct | Med | Eliminates manual price entry errors. Can validate before push |
-| Dry-run / preview mode | See exactly what would be created in Shopify before pushing | Low | JSON output of planned API calls. Catches errors before production |
-| Batch processing with progress | Process 100+ products with clear progress and per-product status | Low | Show which products succeeded, failed, and why |
-| Data validation layer | Catch missing images, invalid prices, incomplete specs before Shopify API calls | Med | zod schemas at each pipeline boundary |
-| Product template auto-assignment | Assign correct Dawn builder wizard template based on category | Low | No manual template selection in Shopify admin |
+| Perceptual hash deduplication | Detect when a "new" sourced image is identical to what's already in the sheet — skip re-upload | Low | `sharp` exposes pHash. Hamming distance comparison in nanoseconds. Saves Shopify API calls and CDN storage |
+| Confidence score on AI-generated images | Don't silently accept low-quality AI outputs. Log confidence so operator can spot-check | Med | Quality score (blur + white-area ratio + edge density) on generated output. Write score to sheet alongside status |
+| Category-aware generation prompts | Prompt the AI with category context ("back view of a hoodie with front zipper, white background") rather than generic instructions — dramatically better results | Med | Uses existing `CategoryGroup` type (`tops` / `hoodies`). Prompt templates per category |
+| Dry-run mode for audit | Show what would be flagged/replaced without writing to sheet or Shopify | Low | `--dry-run` flag pattern already implicit in the existing codebase ethos. JSON output of planned actions |
+| Incremental processing | Skip rows where image status column is already "OK" — don't re-audit or re-generate on every run | Low | Check status column before downloading. Saves time on 100+ product runs |
+| Parallel processing with rate limiting | Process multiple products concurrently without hammering supplier sites or fal.ai rate limits | Med | `p-queue` already in the stack. Add concurrency limits for each external service separately |
+
+---
 
 ## Anti-Features
 
-Features to explicitly NOT build.
+Features to explicitly NOT build in v2.0.
 
 | Anti-Feature | Why Avoid | What to Do Instead |
 |--------------|-----------|-------------------|
-| Real-time auto-sync | Creates race conditions, unpredictable product states, makes review impossible | Manual script trigger with dry-run preview |
-| Web UI / Dashboard | Single operator system. CLI with good logging is faster to build and sufficient | CLI scripts with structured logging |
-| Database (PostgreSQL, MongoDB) | Google Sheets IS the database by design. Adding another creates sync issues | Keep Sheets as single source of truth |
-| Per-product decoration rules (v1) | Too granular for 100+ products. Category-based covers 90% of cases | Category-based with per-product overrides later |
-| S&S Canada web scraping | S&S has sued scrapers under CFAA. Legal risk is real and documented | Use their official REST API |
-| AI-generated descriptions | Supplier descriptions exist. AI adds review burden and LLM dependency for v1 | Use supplier descriptions as-is. Add AI rewriting in v2 |
-| Multi-channel publishing | Scope creep. Fortee uses Shopify only | Build for Shopify. Architecture shouldn't preclude multi-channel later |
-| Webhook-driven updates | Inverts data flow. Sheet is source of truth, not Shopify | One-way: Sheet -> Script -> Shopify |
+| On-model AI visualization | Requires training or carefully prompting for consistent model appearance across dozens of SKUs. Cost is high ($0.04+/image × many SKUs × retries). Not what Fortee sells — they sell blank garments for decoration | Flat lay / ghost mannequin style (pure garment on white) matches supplier photography standard and decoration builder UX |
+| Background replacement / lifestyle scenes | Fortee's Dawn builder requires clean white-background images for print area overlay to work. Background scenes break the canvas pipeline entirely | Keep white background. The print area metaobject system depends on garment-on-white |
+| Custom LoRA fine-tuning | Training a custom model on Fortee garments requires hundreds of images per style, weeks of iteration, and $200-400+/run. Overkill for a sourcing fallback | Use FLUX.1 Kontext image-to-image (front image as reference) — good enough for back/side view generation without training |
+| Automated Shopify product image reorder | Image position in Shopify matters for variant-image association. Reordering programmatically is fragile and undocumented in GraphQL | Push images in the correct order at creation time (front first). Don't reorder post-hoc |
+| Human review UI / approval queue | Single operator. CLI with quality scores and a CSV/sheet summary is faster to build and sufficient | Write scores + status to sheet. Operator reviews the sheet and triggers re-runs manually |
+| Video generation | Video product demos are a differentiator for fashion, but Fortee's use case is decoration ordering. No video needed in v2 | Static images only |
+| Multi-view consistency enforcement via ControlNet | Ensuring the AI-generated back view has the exact same collar rib, hemline, and pocket position as the front requires ControlNet + custom setup. Complex and brittle | Accept "plausible same garment" quality. If AI back view is clearly wrong, flag for manual replacement |
+
+---
 
 ## Feature Dependencies
 
 ```
-S&S API Client ──────────────┐
-                              v
-Canada Sportswear Scraper ──> Sheet Enrichment ──> Data Validation ──> Shopify Product Push
-                              ^                                        |
-Sheet Schema Design ──────────┘                                        ├── Image Upload
-                                                                       ├── Metafield Assignment
-Decoration Rules ──> Sheet Enrichment                                  ├── Variant Generation
-                                                                       └── Template Assignment
-Pricing Calculator ──> Sheet Enrichment
+Existing v1.0 pipeline
+  └── downloadImage()
+  └── standardizeImage()
+  └── uploadStagedImage()
+  └── SheetRow (FrontImage / BackImage / DirectSideImage columns)
+  └── writer.ts (EnrichmentUpdate pattern)
+  └── p-queue (rate limiting)
 
-Metaobject Setup ──> Shopify Product Push (metaobjects must exist before products reference them)
+New v2.0 features:
+
+[1] Quality Scorer
+    Inputs:  image buffer (from downloadImage)
+    Outputs: { blur: number, resolution: {w,h}, white_ratio: number, score: 'OK'|'POOR'|'MISSING' }
+    Depends: sharp (metadata + stats), @bstrickl/blurriness OR Laplacian impl
+
+[2] Audit Runner
+    Inputs:  SheetRow[] (FrontImage, BackImage, DirectSideImage)
+    Outputs: AuditReport[] written to sheet via EnrichmentUpdate
+    Depends: [1] Quality Scorer, downloadImage(), writer.ts
+
+[3] Image Sourcer (supplier re-fetch)
+    Inputs:  SheetRow (supplierCode, partNumber, colorName)
+    Outputs: { front?: Buffer, back?: Buffer, side?: Buffer }
+    Depends: canada-sportswear.ts (existing cheerio scraper)
+             ss-canada.ts (existing REST client, colorFrontImage/colorBackImage fields)
+
+[4] AI View Generator
+    Inputs:  front image Buffer, CategoryGroup, target view ('back'|'side')
+    Outputs: generated image Buffer
+    Depends: fal.ai FLUX.1 Kontext API (@fal-ai/client npm package)
+             CategoryGroup type (existing in shopify/types.ts)
+             Prompt template per CategoryGroup + view
+
+[5] Quality Gate
+    Inputs:  generated Buffer from [4]
+    Outputs: accepted Buffer OR rejection with reason
+    Depends: [1] Quality Scorer (same thresholds)
+
+[6] Image Replace/Supplement Pipeline
+    Inputs:  accepted Buffer (from [3] or [5])
+    Outputs: Shopify media GID, updated SheetRow image URL
+    Depends: standardizeImage() (existing)
+             uploadStagedImage() (existing)
+             Shopify productMediaUpdate OR productSet re-push
+
+[7] Status Write-back
+    Inputs:  AuditReport + sourcing/generation outcomes
+    Outputs: Sheet columns updated (imageStatus, imageSource, imageScore)
+    Depends: writer.ts (existing EnrichmentUpdate)
+
+Execution order:
+  [2] Audit → [3] Source (if POOR/MISSING) → [4] Generate (if source fails) → [5] Gate → [6] Upload → [7] Write-back
 ```
+
+---
 
 ## MVP Recommendation
 
-Prioritize:
-1. **Supplier data extraction** (both suppliers) -- unlocks everything downstream
-2. **Sheet enrichment** with decoration rules + pricing -- the core value transformation
-3. **Shopify product creation** with variants, metafields, and metaobjects -- the output
-4. **Batch processing** for 100+ products -- the scale requirement
+Prioritize (in order):
 
-Defer:
-- **Incremental updates**: First version can recreate products. Optimize later
-- **Dry-run mode**: Valuable but not blocking for first 10 product test
-- **Image optimization**: Push supplier images directly first, optimize later
+1. **Quality audit + status write-back** ([1] + [2] + [7]) — establishes ground truth. Operator sees exactly what the catalog looks like before any generation runs. Low risk, high immediate value.
+
+2. **Supplier re-fetch for front images** ([3]) — Canada Sportswear and S&S Canada are the most reliable source for high-quality front images. Should be attempted before AI generation. Reuses existing scrapers.
+
+3. **AI back/side generation with quality gate** ([4] + [5]) — fills the most common gap (missing back/side views). Use FLUX.1 Kontext with the front image as reference input. Gate on blur + white-background ratio.
+
+4. **Upload + sheet write-back** ([6] + [7] combined) — closes the loop. Replaces or adds images in Shopify and records the final status.
+
+Defer to v2.1 or later:
+- Perceptual hash deduplication (nice to have, not blocking)
+- Category-aware prompt tuning (start with generic prompts, refine based on real output quality)
+- Parallel processing optimization (start sequential, add p-queue concurrency once pipeline is proven)
+
+---
+
+## Complexity Assessment for Phase Planning
+
+| Feature Group | Effort | Risk | Notes |
+|---------------|--------|------|-------|
+| Quality scorer (blur + resolution) | 1-2 days | LOW | Sharp metadata is straightforward. Laplacian requires a small custom impl or `@bstrickl/blurriness` |
+| Audit runner + sheet write-back | 1 day | LOW | Pattern is identical to existing `enrich.ts`. New status columns needed |
+| Supplier re-fetch (CSW + S&S) | 1-2 days | LOW | Scrapers exist. May need adjustment for image-specific endpoints |
+| fal.ai API integration | 1 day | MEDIUM | API is simple. Risk is prompt quality: first outputs for back/side may need prompt iteration |
+| AI quality gate | 0.5 days | LOW | Reuse scorer from audit step |
+| Shopify image replacement | 1-2 days | MEDIUM | `productMediaUpdate` mutation needs testing. Ordering matters. Consider re-push via `productSet` instead |
+| End-to-end pipeline orchestration | 1 day | MEDIUM | Error handling across 5 steps with partial success / retry logic |
+
+Total estimate: 7-10 days for full v2.0 feature set.
+
+---
 
 ## Sources
 
-- [PROJECT.md](../../.planning/PROJECT.md) -- project requirements and constraints (HIGH confidence)
-- [S&S Activewear API](https://api.ssactivewear.com/V2/Products.aspx) -- official API for supplier data (HIGH confidence)
-- [S&S Activewear lawsuit](https://members.asicentral.com/news/industry-news/september-2025/ss-activewear-files-lawsuit-accuses-promohunt-of-illegally-accessing-data/) -- legal risk of scraping (HIGH confidence)
-- [Canada Sportswear](https://canadasportswear.com/) -- confirmed Shopify platform (HIGH confidence)
-- [Shopify productSet mutation](https://shopify.dev/docs/api/admin-graphql/latest/mutations/productSet) -- product creation (HIGH confidence)
+- [PROJECT.md](../../.planning/PROJECT.md) — project requirements and v2.0 goal definition (HIGH confidence)
+- [FLUX.1 Kontext fal.ai API](https://fal.ai/models/fal-ai/flux-pro/kontext) — $0.04/image, image-to-image editing with context preservation (HIGH confidence)
+- [fal.ai FLUX API overview](https://fal.ai/flux) — full model lineup (HIGH confidence)
+- [sharp image operations](https://sharp.pixelplumbing.com/api-operation/) — trim, metadata, stats for quality scoring (HIGH confidence)
+- [@bstrickl/blurriness npm](https://www.npmjs.com/package/@bstrickl/blurriness) — blur score 0-1 for Node.js (MEDIUM confidence — small package, needs threshold calibration)
+- [Shopify stagedUploadsCreate](https://shopify.dev/docs/api/admin-graphql/latest/mutations/stageduploadscreate) — existing upload mechanism, already in use (HIGH confidence)
+- [Shopify manage media for products](https://shopify.dev/docs/apps/build/online-store/product-media) — how to add/replace product media (HIGH confidence)
+- [S&S Activewear REST API](https://api.ssactivewear.com/V2/Products.aspx) — colorFrontImage / colorBackImage fields (HIGH confidence)
+- [Perceptual hashing in Node.js with sharp](https://www.brand.dev/blog/perceptual-hashing-in-node-js-with-sharp-phash-for-developers) — pHash deduplication (MEDIUM confidence)
+- [AI product photography tools 2026](https://claid.ai/blog/article/ai-product-photo-tools) — ecosystem overview (MEDIUM confidence — WebSearch)
+- [Scenario Turnaround Studio](https://www.scenario.com/apps/turnaround-studio) — multi-view generation reference (MEDIUM confidence — WebSearch)
+- [PromoStandards media service](https://promostandards.org/) — supplier image API standard for promotional products (MEDIUM confidence)
 
 ---
-*Feature research for: Fortee Catalog Engine*
-*Researched: 2026-03-05*
+*Feature research for: Fortee Catalog Engine v2.0 Image Automation*
+*Researched: 2026-03-26*
