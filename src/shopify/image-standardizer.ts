@@ -2,6 +2,9 @@ import sharp from 'sharp';
 import { logger } from '../lib/logger.js';
 import { STAGED_UPLOADS_CREATE } from './mutations.js';
 import type { FileSetInput, CategoryGroup, GarmentBounds, PrintAreaCoords, ImageProcessResult } from './types.js';
+import type { sheets_v4 } from 'googleapis';
+import type { EnrichmentUpdate } from '../sheets/types.js';
+import { writeUpdates } from '../sheets/writer.js';
 
 /** Client interface matching the Shopify Admin API client pattern. */
 export interface ShopifyClient {
@@ -409,4 +412,103 @@ export async function processProductImages(
   }
 
   return { files, printAreaCoords };
+}
+
+/**
+ * Build EnrichmentUpdate objects for standardized image URLs.
+ * Targets FrontImage (col K, index 10), BackImage (col L, index 11), DirectSideImage (col M, index 12).
+ * INTENTIONALLY bypasses buildUpdates() skip-if-nonempty logic — standardization MUST overwrite existing URLs.
+ */
+export function buildStandardizationUpdates(
+  sheetName: string,
+  rowIndex: number,  // 0-based data row index
+  urls: { front?: string; back?: string; side?: string },
+): EnrichmentUpdate[] {
+  const sheetRowNumber = rowIndex + 2;  // row 1 = headers, data starts row 2
+  const updates: EnrichmentUpdate[] = [];
+  if (urls.front) updates.push({ range: `${sheetName}!K${sheetRowNumber}`, values: [[urls.front]] });
+  if (urls.back)  updates.push({ range: `${sheetName}!L${sheetRowNumber}`, values: [[urls.back]] });
+  if (urls.side)  updates.push({ range: `${sheetName}!M${sheetRowNumber}`, values: [[urls.side]] });
+  return updates;
+}
+
+/**
+ * Download, standardize, and upload images via Shopify staged uploads for CDN URLs,
+ * then write those URLs to Google Sheets image columns.
+ *
+ * Per D-03: does NOT attach images to Shopify products. Uses staged uploads ONLY for URL generation.
+ * Per D-04: CDN URLs from staged uploads are written to sheets for future use.
+ *
+ * Front and back images go through the garment detection pipeline.
+ * Side images use contain-resize (no garment detection, matching processProductImages behavior).
+ */
+export async function standardizeImagesToSheets(
+  client: ShopifyClient,
+  sheets: sheets_v4.Sheets,
+  spreadsheetId: string,
+  sheetName: string,
+  imageUrls: { front?: string; back?: string; side?: string },
+  rowIndex: number,
+  productName: string,
+  colorName: string,
+  categoryGroup: CategoryGroup,
+): Promise<{ cellsWritten: number; printAreaCoords: PrintAreaCoords | null }> {
+  const cdnUrls: { front?: string; back?: string; side?: string } = {};
+  let printAreaCoords: PrintAreaCoords | null = null;
+
+  // Process front image — full garment detection pipeline
+  if (imageUrls.front) {
+    try {
+      const raw = await downloadImage(imageUrls.front);
+      const { buffer: standardized, garmentPlacement } = await standardizeImage(raw, categoryGroup);
+      const filename = `${productName}-${colorName}-front-std.png`.replace(/\s+/g, '-').toLowerCase();
+      cdnUrls.front = await uploadStagedImage(client, standardized, filename);
+      printAreaCoords = derivePrintAreaCoords(
+        garmentPlacement.left, garmentPlacement.top,
+        garmentPlacement.width, garmentPlacement.height,
+        categoryGroup,
+      );
+    } catch (err) {
+      logger.warn(`Skipping front standardization for ${productName} ${colorName}: ${(err as Error).message}`);
+    }
+  }
+
+  // Process back image — full garment detection pipeline
+  if (imageUrls.back) {
+    try {
+      const raw = await downloadImage(imageUrls.back);
+      const { buffer: standardized } = await standardizeImage(raw, categoryGroup);
+      const filename = `${productName}-${colorName}-back-std.png`.replace(/\s+/g, '-').toLowerCase();
+      cdnUrls.back = await uploadStagedImage(client, standardized, filename);
+    } catch (err) {
+      logger.warn(`Skipping back standardization for ${productName} ${colorName}: ${(err as Error).message}`);
+    }
+  }
+
+  // Process side image — contain-resize only (no garment detection)
+  if (imageUrls.side) {
+    try {
+      const raw = await downloadImage(imageUrls.side);
+      const standardized = await sharp(raw)
+        .resize(2000, 2000, { fit: 'contain', background: { r: 255, g: 255, b: 255, alpha: 1 } })
+        .png()
+        .toBuffer();
+      const filename = `${productName}-${colorName}-side-std.png`.replace(/\s+/g, '-').toLowerCase();
+      cdnUrls.side = await uploadStagedImage(client, standardized, filename);
+    } catch (err) {
+      logger.warn(`Skipping side standardization for ${productName} ${colorName}: ${(err as Error).message}`);
+    }
+  }
+
+  // Build sheet updates — overwrite existing URLs (not skip-if-nonempty)
+  const updates = buildStandardizationUpdates(sheetName, rowIndex, cdnUrls);
+
+  if (updates.length === 0) {
+    return { cellsWritten: 0, printAreaCoords };
+  }
+
+  const cellsWritten = await writeUpdates(sheets, spreadsheetId, updates);
+  logger.info(`Wrote ${cellsWritten} standardized image URL(s) for ${productName} ${colorName} to row ${rowIndex + 2}`);
+
+  return { cellsWritten, printAreaCoords };
 }

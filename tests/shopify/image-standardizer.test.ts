@@ -8,11 +8,18 @@ import {
   detectGarmentBounds,
   placeGarmentOnCanvas,
   derivePrintAreaCoords,
+  buildStandardizationUpdates,
+  standardizeImagesToSheets,
   REFERENCE_RATIOS,
   GARMENT_RELATIVE_PRINT_FRACTIONS,
   FIXED_GARMENT_HEIGHT_FRAC,
   FIXED_TOP_OFFSET_FRAC,
 } from '../../src/shopify/image-standardizer.js';
+import { writeUpdates } from '../../src/sheets/writer.js';
+
+vi.mock('../../src/sheets/writer.js', () => ({
+  writeUpdates: vi.fn().mockResolvedValue(1),
+}));
 
 describe('standardizeImage', () => {
   it('returns 2000x2000 PNG buffer and garmentPlacement for tops', async () => {
@@ -570,5 +577,254 @@ describe('processProductImages', () => {
     expect(result.files).toHaveLength(0);
     expect(result.printAreaCoords).toBeNull();
     expect(mockClient.request).not.toHaveBeenCalled();
+  });
+});
+
+describe('buildStandardizationUpdates', () => {
+  it('builds K column update for front image at row 2 (rowIndex 0)', () => {
+    const updates = buildStandardizationUpdates('Sheet1', 0, { front: 'url1' });
+    expect(updates).toHaveLength(1);
+    expect(updates[0].range).toBe('Sheet1!K2');
+    expect(updates[0].values).toEqual([['url1']]);
+  });
+
+  it('builds K, L, M updates for all three views', () => {
+    const updates = buildStandardizationUpdates('Sheet1', 0, { front: 'url1', back: 'url2', side: 'url3' });
+    expect(updates).toHaveLength(3);
+    expect(updates[0].range).toBe('Sheet1!K2');
+    expect(updates[0].values).toEqual([['url1']]);
+    expect(updates[1].range).toBe('Sheet1!L2');
+    expect(updates[1].values).toEqual([['url2']]);
+    expect(updates[2].range).toBe('Sheet1!M2');
+    expect(updates[2].values).toEqual([['url3']]);
+  });
+
+  it('targets correct row number (rowIndex + 2)', () => {
+    const updates = buildStandardizationUpdates('Sheet1', 5, { back: 'url2' });
+    expect(updates).toHaveLength(1);
+    expect(updates[0].range).toBe('Sheet1!L7');
+    expect(updates[0].values).toEqual([['url2']]);
+  });
+
+  it('returns empty array when no urls provided', () => {
+    const updates = buildStandardizationUpdates('Sheet1', 0, {});
+    expect(updates).toHaveLength(0);
+  });
+
+  it('skips views with undefined urls', () => {
+    const updates = buildStandardizationUpdates('Sheet1', 0, { front: undefined, back: 'url2' });
+    expect(updates).toHaveLength(1);
+    expect(updates[0].range).toBe('Sheet1!L2');
+  });
+});
+
+describe('standardizeImagesToSheets', () => {
+  beforeEach(() => {
+    vi.restoreAllMocks();
+    vi.clearAllMocks();
+    vi.mocked(writeUpdates).mockResolvedValue(1);
+  });
+
+  it('calls downloadImage -> standardizeImage -> uploadStagedImage for front view, then writeUpdates with K column', async () => {
+    const smallImage = await sharp({
+      create: { width: 100, height: 100, channels: 3, background: { r: 200, g: 50, b: 50 } },
+    }).png().toBuffer();
+
+    const mockClient = {
+      request: vi.fn().mockResolvedValue({
+        data: {
+          stagedUploadsCreate: {
+            stagedTargets: [
+              {
+                url: 'https://upload.shopify.com/staged',
+                resourceUrl: 'https://cdn.shopify.com/front-std.png',
+                parameters: [],
+              },
+            ],
+            userErrors: [],
+          },
+        },
+      }),
+    };
+
+    const mockSheets = {} as never;
+
+    let callCount = 0;
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async () => {
+      callCount++;
+      if (callCount % 2 === 1) {
+        // Download call
+        return {
+          ok: true,
+          arrayBuffer: async () => smallImage.buffer.slice(smallImage.byteOffset, smallImage.byteOffset + smallImage.byteLength),
+        } as Response;
+      }
+      // PUT call
+      return { ok: true } as Response;
+    });
+
+    const result = await standardizeImagesToSheets(
+      mockClient,
+      mockSheets,
+      'spreadsheet-id',
+      'Sheet1',
+      { front: 'https://img.com/front.jpg' },
+      0,
+      'Test Tee',
+      'Red',
+      'tops',
+    );
+
+    expect(result.cellsWritten).toBe(1);
+    expect(result.printAreaCoords).not.toBeNull();
+    expect(writeUpdates).toHaveBeenCalledWith(
+      mockSheets,
+      'spreadsheet-id',
+      expect.arrayContaining([
+        expect.objectContaining({ range: 'Sheet1!K2' }),
+      ]),
+    );
+  });
+
+  it('returns printAreaCoords as null when only back image provided', async () => {
+    const smallImage = await sharp({
+      create: { width: 100, height: 100, channels: 3, background: { r: 200, g: 50, b: 50 } },
+    }).png().toBuffer();
+
+    const mockClient = {
+      request: vi.fn().mockResolvedValue({
+        data: {
+          stagedUploadsCreate: {
+            stagedTargets: [
+              {
+                url: 'https://upload.shopify.com/staged',
+                resourceUrl: 'https://cdn.shopify.com/back-std.png',
+                parameters: [],
+              },
+            ],
+            userErrors: [],
+          },
+        },
+      }),
+    };
+
+    const mockSheets = {} as never;
+
+    let callCount = 0;
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async () => {
+      callCount++;
+      if (callCount % 2 === 1) {
+        return {
+          ok: true,
+          arrayBuffer: async () => smallImage.buffer.slice(smallImage.byteOffset, smallImage.byteOffset + smallImage.byteLength),
+        } as Response;
+      }
+      return { ok: true } as Response;
+    });
+
+    const result = await standardizeImagesToSheets(
+      mockClient,
+      mockSheets,
+      'spreadsheet-id',
+      'Sheet1',
+      { back: 'https://img.com/back.jpg' },
+      0,
+      'Test Tee',
+      'Red',
+      'tops',
+    );
+
+    expect(result.printAreaCoords).toBeNull();
+    expect(result.cellsWritten).toBe(1);
+    expect(writeUpdates).toHaveBeenCalledWith(
+      mockSheets,
+      'spreadsheet-id',
+      expect.arrayContaining([
+        expect.objectContaining({ range: 'Sheet1!L2' }),
+      ]),
+    );
+  });
+
+  it('handles download failure gracefully — skips failed view, writes remaining', async () => {
+    const smallImage = await sharp({
+      create: { width: 100, height: 100, channels: 3, background: { r: 200, g: 50, b: 50 } },
+    }).png().toBuffer();
+
+    const mockClient = {
+      request: vi.fn().mockResolvedValue({
+        data: {
+          stagedUploadsCreate: {
+            stagedTargets: [
+              {
+                url: 'https://upload.shopify.com/staged',
+                resourceUrl: 'https://cdn.shopify.com/back-std.png',
+                parameters: [],
+              },
+            ],
+            userErrors: [],
+          },
+        },
+      }),
+    };
+
+    const mockSheets = {} as never;
+
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async (url) => {
+      const urlStr = typeof url === 'string' ? url : url.toString();
+      if (urlStr.includes('front')) {
+        return { ok: false, status: 404, statusText: 'Not Found' } as Response;
+      }
+      if (urlStr.includes('upload.shopify.com')) {
+        return { ok: true } as Response;
+      }
+      // back image download
+      return {
+        ok: true,
+        arrayBuffer: async () => smallImage.buffer.slice(smallImage.byteOffset, smallImage.byteOffset + smallImage.byteLength),
+      } as Response;
+    });
+
+    const result = await standardizeImagesToSheets(
+      mockClient,
+      mockSheets,
+      'spreadsheet-id',
+      'Sheet1',
+      { front: 'https://img.com/front.jpg', back: 'https://img.com/back.jpg' },
+      0,
+      'Test Tee',
+      'Red',
+      'tops',
+    );
+
+    // Front failed — no printAreaCoords, only back written
+    expect(result.printAreaCoords).toBeNull();
+    expect(writeUpdates).toHaveBeenCalledWith(
+      mockSheets,
+      'spreadsheet-id',
+      expect.arrayContaining([
+        expect.objectContaining({ range: 'Sheet1!L2' }),
+      ]),
+    );
+  });
+
+  it('returns cellsWritten 0 and no coords when no images provided', async () => {
+    const mockClient = { request: vi.fn() };
+    const mockSheets = {} as never;
+
+    const result = await standardizeImagesToSheets(
+      mockClient,
+      mockSheets,
+      'spreadsheet-id',
+      'Sheet1',
+      {},
+      0,
+      'Test Tee',
+      'Red',
+      'tops',
+    );
+
+    expect(result.cellsWritten).toBe(0);
+    expect(result.printAreaCoords).toBeNull();
+    expect(writeUpdates).not.toHaveBeenCalled();
   });
 });
