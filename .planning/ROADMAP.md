@@ -32,7 +32,7 @@
 ## Phases
 
 - [x] **Phase 08: Image Quality Scorer** - Sharp-based blur/resolution scoring on trimmed garment region with calibrated thresholds (completed 2026-03-26)
-- [ ] **Phase 09: Image Sourcing** - Fallback chain fetching front/back/side images from OMG, CSW, and S&S Canada before AI
+- [x] **Phase 09: Image Sourcing** - Fallback chain fetching front/back/side images from OMG, CSW, and S&S Canada before AI (completed 2026-03-26)
 - [ ] **Phase 10: AI Image Generation** - OpenAI images.edit() generates missing back/side views with quality-gated candidate selection
 - [ ] **Phase 11: Image Standardization & Safe Upload** - Standardize all accepted images to 2000x2000 and replace Shopify media using existing GIDs
 - [ ] **Phase 12: Audit Runner** - Per-product orchestrator wiring scorer → source → generate → standardize → upload into a single end-to-end function
@@ -65,7 +65,7 @@ Plans:
   2. Back and side image URLs from S&S Canada's `colorBackImage` / `colorSideImage` fields are retrieved and returned for applicable styles
   3. CSW scraper returns additional image angle URLs when available for a given style
   4. When OMG returns no result for a style, the system falls back to CSW, then S&S, then the existing sheet URL — without throwing
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 Plans:
 - [x] 09-01-PLAN.md — Types, supplier fetchers, sourceImages orchestrator, and tests
 
@@ -124,7 +124,7 @@ Plans:
 | 04.1. Image Standardization & Print Area Detection | v1.0 | 2/2 | Complete | 2026-03-10 |
 | 07. Size Guide Upload | v1.0 | 2/2 | Complete | 2026-03-11 |
 | 08. Image Quality Scorer | v2.0 | 0/2 | Complete    | 2026-03-26 |
-| 09. Image Sourcing | v2.0 | 0/1 | Not started | - |
+| 09. Image Sourcing | v2.0 | 0/1 | Complete    | 2026-03-26 |
 | 10. AI Image Generation | v2.0 | 0/TBD | Not started | - |
 | 11. Image Standardization & Safe Upload | v2.0 | 0/TBD | Not started | - |
 | 12. Audit Runner | v2.0 | 0/TBD | Not started | - |
