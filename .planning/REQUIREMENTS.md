@@ -22,9 +22,9 @@
 
 ### AI Image Generation
 
-- [ ] **AIGEN-01**: System generates missing back and side views from a front image using OpenAI images.edit API
-- [ ] **AIGEN-02**: System generates 2-3 candidates per view and selects the best match via color-distance and quality scoring
-- [ ] **AIGEN-03**: System replaces existing images that fail quality scoring with AI-generated alternatives
+- [x] **AIGEN-01**: System generates missing back and side views from a front image using OpenAI images.edit API
+- [x] **AIGEN-02**: System generates 2-3 candidates per view and selects the best match via color-distance and quality scoring
+- [x] **AIGEN-03**: System replaces existing images that fail quality scoring with AI-generated alternatives
 - [x] **AIGEN-04**: Generated images maintain color fidelity and garment proportions consistent with the source front image
 
 ### Image Standardization
@@ -66,9 +66,9 @@
 | SRC-02 | Phase 09 | Complete |
 | SRC-03 | Phase 09 | Complete |
 | SRC-04 | Phase 09 | Complete |
-| AIGEN-01 | Phase 10 | Pending |
-| AIGEN-02 | Phase 10 | Pending |
-| AIGEN-03 | Phase 10 | Pending |
+| AIGEN-01 | Phase 10 | Complete |
+| AIGEN-02 | Phase 10 | Complete |
+| AIGEN-03 | Phase 10 | Complete |
 | AIGEN-04 | Phase 10 | Complete |
 | STD-01 | Phase 11 | Pending |
 | STD-02 | Phase 11 | Pending |

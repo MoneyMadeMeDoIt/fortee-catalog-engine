@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Image Automation
-status: Ready to execute
-stopped_at: Completed 10-01-PLAN.md
-last_updated: "2026-03-26T23:07:34.465Z"
+status: Phase complete — ready for verification
+stopped_at: Completed 10-02-PLAN.md
+last_updated: "2026-03-26T23:24:17.985Z"
 progress:
   total_phases: 6
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 5
-  completed_plans: 4
+  completed_plans: 5
 ---
 
 # Project State
@@ -48,6 +48,8 @@ Key decisions for v2.0:
 - [Phase 09]: colorName param threaded to fetchOMGImages for Phase 12 per-color image fetching
 - [Phase 10-ai-image-generation]: sharp.stats().dominant bins colors in 4096-bin histogram; test assertions for dominant RGB must use range checks, not exact equality
 - [Phase 10-ai-image-generation]: CostTracker.estimateCost(n) returns n * CANDIDATES_PER_CALL * COST_PER_IMAGE (D-08 minimum estimate, excludes retry cost)
+- [Phase 10]: vitest 4.x clearAllMocks clears call history but NOT mockResolvedValueOnce queue; achromatic bypass test must not set candidate Once items since candidates skip extractDominantHue
+- [Phase 10]: callImagesEdit uses optional client param for dependency injection; avoids mocking createOpenAIClient factory
 
 ### Pending Todos
 
@@ -61,6 +63,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-26T23:07:34.461Z
-Stopped at: Completed 10-01-PLAN.md
+Last session: 2026-03-26T23:24:17.981Z
+Stopped at: Completed 10-02-PLAN.md
 Resume file: None

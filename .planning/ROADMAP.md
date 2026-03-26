@@ -33,7 +33,7 @@
 
 - [x] **Phase 08: Image Quality Scorer** - Sharp-based blur/resolution scoring on trimmed garment region with calibrated thresholds (completed 2026-03-26)
 - [x] **Phase 09: Image Sourcing** - Fallback chain fetching front/back/side images from OMG, CSW, and S&S Canada before AI (completed 2026-03-26)
-- [ ] **Phase 10: AI Image Generation** - OpenAI images.edit() generates missing back/side views with quality-gated candidate selection
+- [x] **Phase 10: AI Image Generation** - OpenAI images.edit() generates missing back/side views with quality-gated candidate selection (completed 2026-03-26)
 - [ ] **Phase 11: Image Standardization & Safe Upload** - Standardize all accepted images to 2000x2000 and replace Shopify media using existing GIDs
 - [ ] **Phase 12: Audit Runner** - Per-product orchestrator wiring scorer → source → generate → standardize → upload into a single end-to-end function
 - [ ] **Phase 13: CLI Entry Point** - audit-images.ts CLI exposing the audit runner with --style-id, --all, and --dry-run flags
@@ -78,10 +78,10 @@ Plans:
   2. The generator produces 3 candidates per view and returns the one with the highest quality score — never the raw first output
   3. Generated images where mean garment hue drifts more than 15 degrees from the front image are rejected and regenerated
   4. A product whose existing front image fails quality scoring gets an AI-generated replacement that passes scoring before it is accepted
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 Plans:
 - [x] 10-01-PLAN.md — Types, hue utilities, cost tracker, prompt templates with tests
-- [ ] 10-02-PLAN.md — generateGarmentView and enhanceFrontImage with mocked OpenAI tests
+- [x] 10-02-PLAN.md — generateGarmentView and enhanceFrontImage with mocked OpenAI tests
 
 ### Phase 11: Image Standardization & Safe Upload
 **Goal**: All accepted images (sourced or generated) are standardized to 2000x2000px with the garment scaled to a fixed target proportion of the canvas (uniform max height/width across all products), then uploaded to Shopify by merging with existing media GIDs
@@ -128,7 +128,7 @@ Plans:
 | 07. Size Guide Upload | v1.0 | 2/2 | Complete | 2026-03-11 |
 | 08. Image Quality Scorer | v2.0 | 0/2 | Complete    | 2026-03-26 |
 | 09. Image Sourcing | v2.0 | 0/1 | Complete    | 2026-03-26 |
-| 10. AI Image Generation | v2.0 | 1/2 | In Progress|  |
+| 10. AI Image Generation | v2.0 | 2/2 | Complete   | 2026-03-26 |
 | 11. Image Standardization & Safe Upload | v2.0 | 0/TBD | Not started | - |
 | 12. Audit Runner | v2.0 | 0/TBD | Not started | - |
 | 13. CLI Entry Point | v2.0 | 0/TBD | Not started | - |
