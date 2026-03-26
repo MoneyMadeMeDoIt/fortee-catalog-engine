@@ -7,12 +7,33 @@ import { scoreImageQuality } from '../../src/shopify/image-scorer.js';
 // ---------------------------------------------------------------------------
 
 /**
- * Create a sharp 1000x1000 white-background image with a 500x500 red garment
- * centered in the canvas.
+ * Create a garment image with wide vertical stripes on a 1000x1000 white canvas.
+ *
+ * 50px vertical stripes simulate fabric texture:
+ * - Sharp image: inset stdev ~25 → passes blur detection (>20 threshold)
+ * - Center stdev ~25 → passes print check (<30 threshold)
+ * - On white background → passes background check
+ *
+ * Used as the baseline "good quality" test image.
  */
 async function makeSharpGarmentImage(): Promise<Buffer> {
-  const garment = await sharp({
-    create: { width: 500, height: 500, channels: 3, background: { r: 200, g: 50, b: 50 } },
+  const stripeWidth = 50;
+  const garmentW = 500;
+  const garmentH = 600; // taller garment for realistic proportion (~60% of 1000px canvas)
+
+  const garmentData = Buffer.alloc(garmentW * garmentH * 3);
+  for (let y = 0; y < garmentH; y++) {
+    for (let x = 0; x < garmentW; x++) {
+      const isLight = Math.floor(x / stripeWidth) % 2 === 0;
+      const idx = (y * garmentW + x) * 3;
+      garmentData[idx] = isLight ? 200 : 155;      // R
+      garmentData[idx + 1] = isLight ? 50 : 42;    // G
+      garmentData[idx + 2] = isLight ? 50 : 42;    // B
+    }
+  }
+
+  const garment = await sharp(garmentData, {
+    raw: { width: garmentW, height: garmentH, channels: 3 },
   })
     .png()
     .toBuffer();
@@ -26,7 +47,8 @@ async function makeSharpGarmentImage(): Promise<Buffer> {
 }
 
 /**
- * Same as makeSharpGarmentImage but with blur(20) applied to simulate a blurry image.
+ * Create a blurry garment image by applying sigma=20 Gaussian blur to a striped garment.
+ * After blur(20), the 50px stripe's inner region stdev drops below the 20-threshold → FAIL.
  */
 async function makeBlurryGarmentImage(): Promise<Buffer> {
   const base = await makeSharpGarmentImage();
@@ -53,32 +75,49 @@ async function makeTinyGarmentImage(): Promise<Buffer> {
 }
 
 /**
- * A 1000x1000 white canvas with a 500x500 red garment that has a 200x200 white
- * rectangle composited in the center, simulating an existing print or logo.
+ * A 1000x1000 white canvas with a 500x600 red garment that has a bold checkered
+ * print pattern (100x100 black/white tiles) in the center region, simulating an
+ * existing logo. The high-contrast checkered pattern creates center stdev well above
+ * the PRINT_CENTER_STDEV threshold (30).
  */
 async function makePrintGarmentImage(): Promise<Buffer> {
-  const garment = await sharp({
-    create: { width: 500, height: 500, channels: 3, background: { r: 200, g: 50, b: 50 } },
-  })
-    .png()
-    .toBuffer();
+  const garmentW = 500;
+  const garmentH = 600;
 
-  // Composite a bright white rectangle in the center of the garment
-  const logo = await sharp({
-    create: { width: 200, height: 200, channels: 3, background: { r: 255, g: 255, b: 255 } },
-  })
-    .png()
-    .toBuffer();
+  // Create garment with a checkered print in the center (rows 200-400, cols 150-350)
+  const garmentData = Buffer.alloc(garmentW * garmentH * 3);
+  const tileSize = 25;
+  for (let y = 0; y < garmentH; y++) {
+    for (let x = 0; x < garmentW; x++) {
+      const idx = (y * garmentW + x) * 3;
+      // Check if pixel is in the print area (center region)
+      if (x >= 125 && x < 375 && y >= 150 && y < 450) {
+        // Checkered print: black or white tiles
+        const tileX = Math.floor((x - 125) / tileSize) % 2;
+        const tileY = Math.floor((y - 150) / tileSize) % 2;
+        const isWhiteTile = (tileX + tileY) % 2 === 0;
+        garmentData[idx] = isWhiteTile ? 240 : 20;
+        garmentData[idx + 1] = isWhiteTile ? 240 : 20;
+        garmentData[idx + 2] = isWhiteTile ? 240 : 20;
+      } else {
+        // Plain red garment body
+        garmentData[idx] = 200;
+        garmentData[idx + 1] = 50;
+        garmentData[idx + 2] = 50;
+      }
+    }
+  }
 
-  const garmentWithPrint = await sharp(garment)
-    .composite([{ input: logo, left: 150, top: 150 }])
+  const garment = await sharp(garmentData, {
+    raw: { width: garmentW, height: garmentH, channels: 3 },
+  })
     .png()
     .toBuffer();
 
   return sharp({
     create: { width: 1000, height: 1000, channels: 3, background: { r: 255, g: 255, b: 255 } },
   })
-    .composite([{ input: garmentWithPrint, left: 250, top: 100 }])
+    .composite([{ input: garment, left: 250, top: 100 }])
     .png()
     .toBuffer();
 }
@@ -95,11 +134,11 @@ async function makeSkinToneImage(): Promise<Buffer> {
 }
 
 /**
- * A 1000x1000 gray-background image (RGB 150,150,150) with a 500x500 red garment.
+ * A 1000x1000 gray-background image (RGB 150,150,150) with a 500x600 red garment.
  */
 async function makeGrayBackgroundImage(): Promise<Buffer> {
   const garment = await sharp({
-    create: { width: 500, height: 500, channels: 3, background: { r: 200, g: 50, b: 50 } },
+    create: { width: 500, height: 600, channels: 3, background: { r: 200, g: 50, b: 50 } },
   })
     .png()
     .toBuffer();
@@ -157,7 +196,7 @@ describe('scoreImageQuality', () => {
     expect(result.dimensions).toHaveProperty('content');
   });
 
-  it('a sharp 500x500 garment on 1000x1000 white canvas scores pass', async () => {
+  it('a sharp striped garment on 1000x1000 white canvas scores pass', async () => {
     const buffer = await makeSharpGarmentImage();
     const result = await scoreImageQuality(buffer);
 
