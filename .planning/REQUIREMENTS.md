@@ -7,11 +7,11 @@
 
 ### Image Quality Assessment
 
-- [ ] **QUAL-01**: System scores each product image for blur, exposure, and resolution using sharp-based analysis on the trimmed garment region
-- [ ] **QUAL-02**: System flags images below minimum quality thresholds as needing replacement (not just missing images)
+- [x] **QUAL-01**: System scores each product image for blur, exposure, and resolution using sharp-based analysis on the trimmed garment region
+- [x] **QUAL-02**: System flags images below minimum quality thresholds as needing replacement (not just missing images)
 - [ ] **QUAL-03**: Quality thresholds are calibrated against 50+ real supplier images before production use
-- [ ] **QUAL-04**: Quality criteria account for mockup/visual generation use case — images must be clean blank garments suitable for client design overlays
-- [ ] **QUAL-05**: Scorer flags images where garment proportion within the canvas is outside the target range (too small/large vs the uniform standard)
+- [x] **QUAL-04**: Quality criteria account for mockup/visual generation use case — images must be clean blank garments suitable for client design overlays
+- [x] **QUAL-05**: Scorer flags images where garment proportion within the canvas is outside the target range (too small/large vs the uniform standard)
 
 ### Image Sourcing
 
@@ -57,11 +57,11 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| QUAL-01 | Phase 08 | Pending |
-| QUAL-02 | Phase 08 | Pending |
+| QUAL-01 | Phase 08 | Complete |
+| QUAL-02 | Phase 08 | Complete |
 | QUAL-03 | Phase 08 | Pending |
-| QUAL-04 | Phase 08 | Pending |
-| QUAL-05 | Phase 08 | Pending |
+| QUAL-04 | Phase 08 | Complete |
+| QUAL-05 | Phase 08 | Complete |
 | SRC-01 | Phase 09 | Pending |
 | SRC-02 | Phase 09 | Pending |
 | SRC-03 | Phase 09 | Pending |

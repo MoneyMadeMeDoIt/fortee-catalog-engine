@@ -53,7 +53,7 @@
   6. Scorer flags images where garment proportion within the canvas is outside the target range (too small or too large relative to the standard garment-to-canvas ratio)
 **Plans:** 2 plans
 Plans:
-- [ ] 08-01-PLAN.md — Scorer function with types, tests, and all 4 dimension checks
+- [x] 08-01-PLAN.md — Scorer function with types, tests, and all 4 dimension checks
 - [ ] 08-02-PLAN.md — Calibration script and threshold tuning with user review
 
 ### Phase 09: Image Sourcing
