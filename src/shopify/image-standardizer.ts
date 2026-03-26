@@ -11,17 +11,26 @@ export interface ShopifyClient {
   ) => Promise<unknown>;
 }
 
-/** Reference garment-to-canvas ratios measured from reference images (S05280 tops, L00550 hoodies). */
+/** Fixed garment height as fraction of canvas size. All garments use this (D-01). */
+export const FIXED_GARMENT_HEIGHT_FRAC = 0.85;    // 1700px on 2000px canvas
+
+/** Fixed top offset fraction — centers remaining whitespace equally top and bottom. */
+export const FIXED_TOP_OFFSET_FRAC = 0.075;       // 150px top, 150px bottom on 2000px canvas
+
+/** @deprecated Use FIXED_GARMENT_HEIGHT_FRAC instead. Kept for image-scorer.ts backward compatibility. */
 export const REFERENCE_RATIOS = {
   tops: { targetHeightFrac: 0.73, topOffsetFrac: 0.06 },
   hoodies: { targetHeightFrac: 0.78, topOffsetFrac: 0.05 },
 } as const;
 
-/** Print area fractions relative to garment bounding box (not canvas). */
+/** Print area fractions relative to garment bounding box (not canvas).
+ * Derived from known-good canvas coordinates on reference images (S05280 tops, L00550 hoodies).
+ * Note: garment width includes sleeves, so wFrac is relative to full garment width.
+ */
 export const GARMENT_RELATIVE_PRINT_FRACTIONS = {
   tops: {
-    'Front Print': { xFrac: 0.15, yFrac: 0.10, wFrac: 0.70, hFrac: 0.55 },
-    'Back Print':  { xFrac: 0.13, yFrac: 0.10, wFrac: 0.74, hFrac: 0.53 },
+    'Front Print': { xFrac: 0.239, yFrac: 0.178, wFrac: 0.506, hFrac: 0.630 },
+    'Back Print':  { xFrac: 0.224, yFrac: 0.178, wFrac: 0.537, hFrac: 0.603 },
   },
   hoodies: {
     'Front Print': { xFrac: 0.20, yFrac: 0.28, wFrac: 0.60, hFrac: 0.40 },
@@ -182,9 +191,12 @@ export async function standardizeImage(
       .png()
       .toBuffer();
 
-    const ratios = REFERENCE_RATIOS[categoryGroup];
-    const targetHeightPx = Math.round(canvasSize * ratios.targetHeightFrac);
-    const targetTopOffsetPx = Math.round(canvasSize * ratios.topOffsetFrac);
+    const targetHeightPx = Math.round(canvasSize * FIXED_GARMENT_HEIGHT_FRAC);
+    const targetTopOffsetPx = Math.round(canvasSize * FIXED_TOP_OFFSET_FRAC);
+
+    if (targetTopOffsetPx + targetHeightPx > canvasSize) {
+      throw new Error(`Garment overflow: top(${targetTopOffsetPx}) + height(${targetHeightPx}) > canvas(${canvasSize})`);
+    }
 
     const garmentAspect = bounds.width / bounds.height;
     const scaledWidth = Math.round(targetHeightPx * garmentAspect);

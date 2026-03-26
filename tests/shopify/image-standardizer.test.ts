@@ -10,6 +10,8 @@ import {
   derivePrintAreaCoords,
   REFERENCE_RATIOS,
   GARMENT_RELATIVE_PRINT_FRACTIONS,
+  FIXED_GARMENT_HEIGHT_FRAC,
+  FIXED_TOP_OFFSET_FRAC,
 } from '../../src/shopify/image-standardizer.js';
 
 describe('standardizeImage', () => {
@@ -54,6 +56,52 @@ describe('standardizeImage', () => {
 
     expect(meta.width).toBe(2000);
     expect(meta.height).toBe(2000);
+  });
+
+  it('places garment at 85% height (1700px) with centered offset (150px) per D-01', async () => {
+    const canvas = await sharp({
+      create: { width: 1000, height: 1000, channels: 4, background: { r: 255, g: 255, b: 255, alpha: 255 } },
+    }).png().toBuffer();
+    const garmentPng = await sharp(canvas)
+      .composite([{
+        input: await sharp({
+          create: { width: 500, height: 800, channels: 3, background: { r: 200, g: 50, b: 50 } },
+        }).png().toBuffer(),
+        left: 250,
+        top: 100,
+      }])
+      .png()
+      .toBuffer();
+
+    const result = await standardizeImage(garmentPng);
+    expect(result.garmentPlacement.height).toBe(1700);
+    expect(result.garmentPlacement.top).toBe(150);
+  });
+
+  it('uses same 85% height for hoodies as for tops (uniform scale)', async () => {
+    const canvas = await sharp({
+      create: { width: 1000, height: 1000, channels: 4, background: { r: 255, g: 255, b: 255, alpha: 255 } },
+    }).png().toBuffer();
+    const garmentPng = await sharp(canvas)
+      .composite([{
+        input: await sharp({
+          create: { width: 500, height: 800, channels: 3, background: { r: 200, g: 50, b: 50 } },
+        }).png().toBuffer(),
+        left: 250,
+        top: 100,
+      }])
+      .png()
+      .toBuffer();
+
+    const topsResult = await standardizeImage(garmentPng, 'tops');
+    const hoodiesResult = await standardizeImage(garmentPng, 'hoodies');
+    expect(topsResult.garmentPlacement.height).toBe(hoodiesResult.garmentPlacement.height);
+    expect(topsResult.garmentPlacement.height).toBe(1700);
+  });
+
+  it('exports correct fixed garment constants', () => {
+    expect(FIXED_GARMENT_HEIGHT_FRAC).toBe(0.85);
+    expect(FIXED_TOP_OFFSET_FRAC).toBe(0.075);
   });
 });
 
@@ -122,7 +170,7 @@ describe('placeGarmentOnCanvas', () => {
       create: { width: 300, height: 500, channels: 3, background: { r: 100, g: 100, b: 200 } },
     }).png().toBuffer();
 
-    const result = await placeGarmentOnCanvas(garmentBuffer, 1460, 120);
+    const result = await placeGarmentOnCanvas(garmentBuffer, 1700, 150);
     const meta = await sharp(result).metadata();
 
     expect(meta.width).toBe(2000);
@@ -135,8 +183,8 @@ describe('placeGarmentOnCanvas', () => {
       create: { width: 400, height: 600, channels: 3, background: { r: 255, g: 0, b: 0 } },
     }).png().toBuffer();
 
-    const targetTop = 120;
-    const result = await placeGarmentOnCanvas(garmentBuffer, 1460, targetTop);
+    const targetTop = 150;
+    const result = await placeGarmentOnCanvas(garmentBuffer, 1700, targetTop);
 
     // Check pixel just above the garment is white and pixel at garment position is non-white
     const topPixel = await sharp(result)
