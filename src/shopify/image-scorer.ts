@@ -13,17 +13,26 @@ interface DimensionResult {
 }
 
 // ---------------------------------------------------------------------------
-// Exported threshold constants (placeholder values — calibrated in Plan 02)
+// Exported threshold constants (calibrated in Plan 02 against 243 real images)
 // ---------------------------------------------------------------------------
 
 export const QUALITY_THRESHOLDS = {
-  BLUR_MIN_STDEV: 20.0,
+  // Calibrated against 243 real Shopify supplier images (2026-03-26).
+  // Real image sharpness: min 1.1, max 20.0, mean 8.2, p90 17.5 — threshold of 1.5
+  // catches only truly unusable blurry images while passing normal supplier photos.
+  BLUR_MIN_STDEV: 1.5,
   MIN_GARMENT_PX: 400,
   PROPORTION_TOLERANCE: 0.25,
-  PRINT_CENTER_STDEV: 30.0,
-  SKIN_RATIO: 0.05,
+  // Real content scores on blank garments: 30–95 due to fabric texture and color variation.
+  // Threshold of 100 ensures only images with clear existing prints/logos fail.
+  PRINT_CENTER_STDEV: 100.0,
+  // Ghost mannequin shots and some garment colors trigger false positives at 0.05.
+  // Threshold of 0.30 requires a substantial skin-tone area — clear on-model photos only.
+  SKIN_RATIO: 0.30,
   BG_WHITE_MIN: 230,
-  WATERMARK_FULL_STDEV: 30.0,
+  // Normal garment images have high edge variance (31–115) from fabric texture.
+  // Threshold of 120 catches only true watermark overlays — not texture-induced variance.
+  WATERMARK_FULL_STDEV: 120.0,
 } as const;
 
 // ---------------------------------------------------------------------------

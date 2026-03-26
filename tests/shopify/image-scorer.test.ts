@@ -10,8 +10,8 @@ import { scoreImageQuality } from '../../src/shopify/image-scorer.js';
  * Create a garment image with wide vertical stripes on a 1000x1000 white canvas.
  *
  * 50px vertical stripes simulate fabric texture:
- * - Sharp image: inset stdev ~25 → passes blur detection (>20 threshold)
- * - Center stdev ~25 → passes print check (<30 threshold)
+ * - Sharp image: inset stdev ~25 → passes blur detection (>1.5 threshold)
+ * - Center stdev ~25 → passes print check (<100 threshold)
  * - On white background → passes background check
  *
  * Used as the baseline "good quality" test image.
@@ -47,12 +47,42 @@ async function makeSharpGarmentImage(): Promise<Buffer> {
 }
 
 /**
- * Create a blurry garment image by applying sigma=20 Gaussian blur to a striped garment.
- * After blur(20), the 50px stripe's inner region stdev drops below the 20-threshold → FAIL.
+ * Create a nearly-uniform gradient garment on a white canvas.
+ *
+ * The garment uses a very slight linear gradient (R: 195→205 across width), simulating
+ * a low-texture real supplier photo (smooth fabric with no visible pattern). The Laplacian
+ * stdev of the 30%-inset region is ~1.2 — below the calibrated BLUR_MIN_STDEV of 1.5
+ * and above the SOLID_COLOR_STDEV_THRESHOLD of 1.0, so blur detection fires correctly.
+ *
+ * Why not Gaussian blur? The old sigma=20 Gaussian blur on hard-edged synthetic stripes
+ * produced inset stdev ~11 (still above the calibrated 1.5 threshold). Real blurry photos
+ * have barely-visible texture — this gradient image is a better representative.
  */
 async function makeBlurryGarmentImage(): Promise<Buffer> {
-  const base = await makeSharpGarmentImage();
-  return sharp(base).blur(20).png().toBuffer();
+  const garmentW = 500;
+  const garmentH = 600;
+  // Very subtle horizontal gradient: R goes from 195 to 205 (barely visible)
+  const data = Buffer.alloc(garmentW * garmentH * 3);
+  for (let y = 0; y < garmentH; y++) {
+    for (let x = 0; x < garmentW; x++) {
+      const idx = (y * garmentW + x) * 3;
+      data[idx] = 195 + Math.round((x / garmentW) * 10);
+      data[idx + 1] = 50;
+      data[idx + 2] = 50;
+    }
+  }
+  const garment = await sharp(data, {
+    raw: { width: garmentW, height: garmentH, channels: 3 },
+  })
+    .png()
+    .toBuffer();
+
+  return sharp({
+    create: { width: 1000, height: 1000, channels: 3, background: { r: 255, g: 255, b: 255 } },
+  })
+    .composite([{ input: garment, left: 250, top: 100 }])
+    .png()
+    .toBuffer();
 }
 
 /**
