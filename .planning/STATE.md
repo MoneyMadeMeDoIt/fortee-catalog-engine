@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Image Automation
-status: Ready to plan
-stopped_at: Phase 09 context gathered
-last_updated: "2026-03-26T21:47:47.696Z"
+status: Phase complete — ready for verification
+stopped_at: Completed 09-01-PLAN.md
+last_updated: "2026-03-26T22:10:22.586Z"
 progress:
   total_phases: 6
-  completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  completed_phases: 2
+  total_plans: 3
+  completed_plans: 3
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-26)
 
 **Core value:** One command turns an enriched sheet row into a live Shopify product with correct decoration options, placements, pricing, standardized images, and all customer-facing content.
-**Current focus:** Phase 08 — image-quality-scorer
+**Current focus:** Phase 09 — image-sourcing
 
 ## Current Position
 
-Phase: 09
-Plan: Not started
+Phase: 09 (image-sourcing) — EXECUTING
+Plan: 1 of 1
 
 ## Accumulated Context
 
@@ -44,6 +44,8 @@ Key decisions for v2.0:
 - [Phase 08]: QUALITY_THRESHOLDS placeholders (BLUR_MIN_STDEV=20, PRINT_CENTER_STDEV=30) — calibrated in Plan 02
 - [Phase 08-image-quality-scorer]: BLUR_MIN_STDEV set to 1.5 — calibrated against 243 real images (stdev range 1.1–20.0, mean 8.2); old value of 20.0 was rejecting 71% of normal supplier photos
 - [Phase 08-image-quality-scorer]: WATERMARK_FULL_STDEV set to 120.0, PRINT_CENTER_STDEV to 100.0, SKIN_RATIO to 0.30 — all calibrated from real image data to eliminate false rejects
+- [Phase 09]: pickBest returns best-scoring regardless of verdict — failed images retained for Phase 10 AI enhancement (D-03)
+- [Phase 09]: colorName param threaded to fetchOMGImages for Phase 12 per-color image fetching
 
 ### Pending Todos
 
@@ -57,6 +59,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-26T21:47:47.681Z
-Stopped at: Phase 09 context gathered
-Resume file: .planning/phases/09-image-sourcing/09-CONTEXT.md
+Last session: 2026-03-26T22:10:22.581Z
+Stopped at: Completed 09-01-PLAN.md
+Resume file: None

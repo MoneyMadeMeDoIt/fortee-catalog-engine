@@ -67,7 +67,7 @@ Plans:
   4. When OMG returns no result for a style, the system falls back to CSW, then S&S, then the existing sheet URL — without throwing
 **Plans:** 1 plan
 Plans:
-- [ ] 09-01-PLAN.md — Types, supplier fetchers, sourceImages orchestrator, and tests
+- [x] 09-01-PLAN.md — Types, supplier fetchers, sourceImages orchestrator, and tests
 
 ### Phase 10: AI Image Generation
 **Goal**: The system generates back and side garment views from a front image using OpenAI images.edit(), selects the best of multiple candidates via quality scoring, and rejects outputs with color or proportion drift

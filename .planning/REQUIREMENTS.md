@@ -15,10 +15,10 @@
 
 ### Image Sourcing
 
-- [ ] **SRC-01**: System fetches product images from OrderMyGear OneSource API as a sourcing channel
-- [ ] **SRC-02**: System re-fetches back and side images from S&S Canada API fields (colorBackImage, colorSideImage) not captured in v1.0
-- [ ] **SRC-03**: System re-scrapes Canada Sportswear for additional image angles when available
-- [ ] **SRC-04**: System implements a fallback chain (OMG → CSW → S&S → existing URL → AI generation) prioritizing cheapest sources first
+- [x] **SRC-01**: System fetches product images from OrderMyGear OneSource API as a sourcing channel
+- [x] **SRC-02**: System re-fetches back and side images from S&S Canada API fields (colorBackImage, colorSideImage) not captured in v1.0
+- [x] **SRC-03**: System re-scrapes Canada Sportswear for additional image angles when available
+- [x] **SRC-04**: System implements a fallback chain (OMG → CSW → S&S → existing URL → AI generation) prioritizing cheapest sources first
 
 ### AI Image Generation
 
@@ -62,10 +62,10 @@
 | QUAL-03 | Phase 08 | Complete |
 | QUAL-04 | Phase 08 | Complete |
 | QUAL-05 | Phase 08 | Complete |
-| SRC-01 | Phase 09 | Pending |
-| SRC-02 | Phase 09 | Pending |
-| SRC-03 | Phase 09 | Pending |
-| SRC-04 | Phase 09 | Pending |
+| SRC-01 | Phase 09 | Complete |
+| SRC-02 | Phase 09 | Complete |
+| SRC-03 | Phase 09 | Complete |
+| SRC-04 | Phase 09 | Complete |
 | AIGEN-01 | Phase 10 | Pending |
 | AIGEN-02 | Phase 10 | Pending |
 | AIGEN-03 | Phase 10 | Pending |
