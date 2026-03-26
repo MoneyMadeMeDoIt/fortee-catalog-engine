@@ -19,7 +19,7 @@ created: 2026-03-26
 |----------|-------|
 | **Framework** | vitest (existing project test runner) |
 | **Config file** | vitest.config.ts |
-| **Quick run command** | `npx vitest run tests/suppliers/image-sourcing.test.ts` |
+| **Quick run command** | `npx vitest run tests/suppliers/image-sourcer.test.ts` |
 | **Full suite command** | `npx vitest run` |
 | **Estimated runtime** | ~15 seconds |
 
@@ -27,7 +27,7 @@ created: 2026-03-26
 
 ## Sampling Rate
 
-- **After every task commit:** Run `npx vitest run tests/suppliers/image-sourcing.test.ts`
+- **After every task commit:** Run `npx vitest run tests/suppliers/image-sourcer.test.ts`
 - **After every plan wave:** Run `npx vitest run`
 - **Before `/gsd:verify-work`:** Full suite must be green
 - **Max feedback latency:** 15 seconds
@@ -38,10 +38,10 @@ created: 2026-03-26
 
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 09-01-01 | 01 | 1 | SRC-01 | unit | `npx vitest run tests/suppliers/image-sourcing.test.ts` | ❌ W0 | ⬜ pending |
-| 09-01-02 | 01 | 1 | SRC-02 | unit | `npx vitest run tests/suppliers/image-sourcing.test.ts` | ❌ W0 | ⬜ pending |
-| 09-01-03 | 01 | 1 | SRC-03 | unit | `npx vitest run tests/suppliers/image-sourcing.test.ts` | ❌ W0 | ⬜ pending |
-| 09-02-01 | 02 | 2 | SRC-04 | integration | `npx vitest run tests/suppliers/image-sourcing.test.ts` | ❌ W0 | ⬜ pending |
+| 09-01-01 | 01 | 1 | SRC-01 | unit | `npx vitest run tests/suppliers/image-sourcer.test.ts` | ❌ W0 | ⬜ pending |
+| 09-01-02 | 01 | 1 | SRC-02 | unit | `npx vitest run tests/suppliers/image-sourcer.test.ts` | ❌ W0 | ⬜ pending |
+| 09-01-03 | 01 | 1 | SRC-03 | unit | `npx vitest run tests/suppliers/image-sourcer.test.ts` | ❌ W0 | ⬜ pending |
+| 09-02-01 | 02 | 2 | SRC-04 | integration | `npx vitest run tests/suppliers/image-sourcer.test.ts` | ❌ W0 | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -49,7 +49,7 @@ created: 2026-03-26
 
 ## Wave 0 Requirements
 
-- [ ] `tests/suppliers/image-sourcing.test.ts` — test stubs for SRC-01 through SRC-04
+- [ ] `tests/suppliers/image-sourcer.test.ts` — test stubs for SRC-01 through SRC-04
 - [ ] Mock fixtures for OMG, CSW, and S&S API responses
 
 *Existing vitest infrastructure covers framework needs.*
