@@ -19,7 +19,7 @@ created: 2026-03-26
 |----------|-------|
 | **Framework** | vitest (existing project test runner) |
 | **Config file** | vitest.config.ts |
-| **Quick run command** | `npx vitest run tests/lib/image-generator.test.ts` |
+| **Quick run command** | `npx vitest run tests/lib/ai-image-generator.test.ts` |
 | **Full suite command** | `npx vitest run` |
 | **Estimated runtime** | ~15 seconds (mocked OpenAI calls) |
 
@@ -27,7 +27,7 @@ created: 2026-03-26
 
 ## Sampling Rate
 
-- **After every task commit:** Run `npx vitest run tests/lib/image-generator.test.ts`
+- **After every task commit:** Run `npx vitest run tests/lib/ai-image-generator.test.ts`
 - **After every plan wave:** Run `npx vitest run`
 - **Before `/gsd:verify-work`:** Full suite must be green
 - **Max feedback latency:** 15 seconds
@@ -38,10 +38,9 @@ created: 2026-03-26
 
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 10-01-01 | 01 | 1 | AIGEN-01 | unit | `npx vitest run tests/lib/image-generator.test.ts` | ❌ W0 | ⬜ pending |
-| 10-01-02 | 01 | 1 | AIGEN-02 | unit | `npx vitest run tests/lib/image-generator.test.ts` | ❌ W0 | ⬜ pending |
-| 10-02-01 | 02 | 2 | AIGEN-03 | unit | `npx vitest run tests/lib/image-generator.test.ts` | ❌ W0 | ⬜ pending |
-| 10-02-02 | 02 | 2 | AIGEN-04 | integration | `npx vitest run tests/lib/image-generator.test.ts` | ❌ W0 | ⬜ pending |
+| 10-01-01 | 01 | 1 | AIGEN-04 | unit | `npx vitest run tests/lib/hue-utils.test.ts tests/lib/cost-tracker.test.ts` | ❌ W0 | ⬜ pending |
+| 10-01-02 | 01 | 1 | AIGEN-04 | unit | `npx vitest run tests/lib/prompt-templates.test.ts` | ❌ W0 | ⬜ pending |
+| 10-02-01 | 02 | 2 | AIGEN-01, AIGEN-02, AIGEN-03, AIGEN-04 | unit | `npx vitest run tests/lib/ai-image-generator.test.ts` | ❌ W0 | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -49,7 +48,10 @@ created: 2026-03-26
 
 ## Wave 0 Requirements
 
-- [ ] `tests/lib/image-generator.test.ts` — test stubs for AIGEN-01 through AIGEN-04
+- [ ] `tests/lib/hue-utils.test.ts` — unit tests for hue utilities
+- [ ] `tests/lib/cost-tracker.test.ts` — unit tests for cost tracker including estimateCost (D-08)
+- [ ] `tests/lib/prompt-templates.test.ts` — unit tests for prompt template builders
+- [ ] `tests/lib/ai-image-generator.test.ts` — test stubs for AIGEN-01 through AIGEN-04
 - [ ] Mock fixtures for OpenAI API responses (base64 encoded test images)
 
 *Existing vitest infrastructure covers framework needs. `openai` SDK must be installed.*
