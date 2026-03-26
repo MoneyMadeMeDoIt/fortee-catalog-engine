@@ -11,6 +11,7 @@
 - [ ] **QUAL-02**: System flags images below minimum quality thresholds as needing replacement (not just missing images)
 - [ ] **QUAL-03**: Quality thresholds are calibrated against 50+ real supplier images before production use
 - [ ] **QUAL-04**: Quality criteria account for mockup/visual generation use case — images must be clean blank garments suitable for client design overlays
+- [ ] **QUAL-05**: Scorer flags images where garment proportion within the canvas is outside the target range (too small/large vs the uniform standard)
 
 ### Image Sourcing
 
@@ -28,7 +29,7 @@
 
 ### Image Standardization
 
-- [ ] **STD-01**: All final images (sourced or generated) are standardized to uniform 2000x2000px dimensions with consistent garment-to-canvas ratio
+- [ ] **STD-01**: All final images (sourced or generated) are standardized to uniform 2000x2000px dimensions with the garment scaled to a fixed target proportion of the canvas (uniform max height/width across all products)
 - [ ] **STD-02**: Standardized images are uploaded to Shopify via staged uploads, replacing existing product media without breaking references
 
 ### Output
@@ -56,27 +57,29 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| QUAL-01 | TBD | Pending |
-| QUAL-02 | TBD | Pending |
-| QUAL-03 | TBD | Pending |
-| QUAL-04 | TBD | Pending |
-| SRC-01 | TBD | Pending |
-| SRC-02 | TBD | Pending |
-| SRC-03 | TBD | Pending |
-| SRC-04 | TBD | Pending |
-| AIGEN-01 | TBD | Pending |
-| AIGEN-02 | TBD | Pending |
-| AIGEN-03 | TBD | Pending |
-| AIGEN-04 | TBD | Pending |
-| STD-01 | TBD | Pending |
-| STD-02 | TBD | Pending |
-| OUT-01 | TBD | Pending |
-| OUT-02 | TBD | Pending |
+| QUAL-01 | Phase 08 | Pending |
+| QUAL-02 | Phase 08 | Pending |
+| QUAL-03 | Phase 08 | Pending |
+| QUAL-04 | Phase 08 | Pending |
+| QUAL-05 | Phase 08 | Pending |
+| SRC-01 | Phase 09 | Pending |
+| SRC-02 | Phase 09 | Pending |
+| SRC-03 | Phase 09 | Pending |
+| SRC-04 | Phase 09 | Pending |
+| AIGEN-01 | Phase 10 | Pending |
+| AIGEN-02 | Phase 10 | Pending |
+| AIGEN-03 | Phase 10 | Pending |
+| AIGEN-04 | Phase 10 | Pending |
+| STD-01 | Phase 11 | Pending |
+| STD-02 | Phase 11 | Pending |
+| OUT-02 | Phase 11 | Pending |
+| OUT-01 | Phase 13 | Pending |
 
 **Coverage:**
-- v2.0 requirements: 16 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 16
+- v2.0 requirements: 17 total
+- Mapped to phases: 17
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-26*
+*Traceability updated: 2026-03-26*
