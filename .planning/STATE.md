@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Image Automation
-status: active
-stopped_at: "Roadmap created — ready to plan Phase 08"
-last_updated: "2026-03-26"
-last_activity: 2026-03-26
+status: planning
+stopped_at: Phase 08 context gathered
+last_updated: "2026-03-26T13:17:24.792Z"
+last_activity: 2026-03-26 — v2.0 roadmap created, 6 phases defined
 progress:
   total_phases: 6
   completed_phases: 0
@@ -39,6 +39,7 @@ Progress: [░░░░░░░░░░] 0%
 Decisions are logged in PROJECT.md Key Decisions table.
 
 Key decisions for v2.0:
+
 - Quality scorer operates on trimmed garment region (not full canvas) — mandatory to avoid false rejects on white-background images
 - Supplier re-fetch before AI generation — OMG → CSW → S&S fallback chain exhausted before spending AI budget
 - AI generation produces 3 candidates per view; quality scorer selects best — never auto-accept first output
@@ -57,6 +58,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-26
-Stopped at: Roadmap written — all 16 v2.0 requirements mapped across Phases 08-13
-Resume file: None
+Last session: 2026-03-26T13:17:24.786Z
+Stopped at: Phase 08 context gathered
+Resume file: .planning/phases/08-image-quality-scorer/08-CONTEXT.md
