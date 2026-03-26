@@ -78,9 +78,9 @@ Plans:
   2. The generator produces 3 candidates per view and returns the one with the highest quality score — never the raw first output
   3. Generated images where mean garment hue drifts more than 15 degrees from the front image are rejected and regenerated
   4. A product whose existing front image fails quality scoring gets an AI-generated replacement that passes scoring before it is accepted
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 Plans:
-- [ ] 10-01-PLAN.md — Types, hue utilities, cost tracker, prompt templates with tests
+- [x] 10-01-PLAN.md — Types, hue utilities, cost tracker, prompt templates with tests
 - [ ] 10-02-PLAN.md — generateGarmentView and enhanceFrontImage with mocked OpenAI tests
 
 ### Phase 11: Image Standardization & Safe Upload
@@ -128,7 +128,7 @@ Plans:
 | 07. Size Guide Upload | v1.0 | 2/2 | Complete | 2026-03-11 |
 | 08. Image Quality Scorer | v2.0 | 0/2 | Complete    | 2026-03-26 |
 | 09. Image Sourcing | v2.0 | 0/1 | Complete    | 2026-03-26 |
-| 10. AI Image Generation | v2.0 | 0/2 | Planned | - |
+| 10. AI Image Generation | v2.0 | 1/2 | In Progress|  |
 | 11. Image Standardization & Safe Upload | v2.0 | 0/TBD | Not started | - |
 | 12. Audit Runner | v2.0 | 0/TBD | Not started | - |
 | 13. CLI Entry Point | v2.0 | 0/TBD | Not started | - |

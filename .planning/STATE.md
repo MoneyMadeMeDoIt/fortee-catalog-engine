@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Image Automation
-status: Ready to plan
-stopped_at: Phase 10 context gathered
-last_updated: "2026-03-26T22:24:10.063Z"
+status: Ready to execute
+stopped_at: Completed 10-01-PLAN.md
+last_updated: "2026-03-26T23:07:34.465Z"
 progress:
   total_phases: 6
   completed_phases: 2
-  total_plans: 3
-  completed_plans: 3
+  total_plans: 5
+  completed_plans: 4
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-26)
 
 **Core value:** One command turns an enriched sheet row into a live Shopify product with correct decoration options, placements, pricing, standardized images, and all customer-facing content.
-**Current focus:** Phase 09 — image-sourcing
+**Current focus:** Phase 10 — ai-image-generation
 
 ## Current Position
 
-Phase: 10
-Plan: Not started
+Phase: 10 (ai-image-generation) — EXECUTING
+Plan: 2 of 2
 
 ## Accumulated Context
 
@@ -46,6 +46,8 @@ Key decisions for v2.0:
 - [Phase 08-image-quality-scorer]: WATERMARK_FULL_STDEV set to 120.0, PRINT_CENTER_STDEV to 100.0, SKIN_RATIO to 0.30 — all calibrated from real image data to eliminate false rejects
 - [Phase 09]: pickBest returns best-scoring regardless of verdict — failed images retained for Phase 10 AI enhancement (D-03)
 - [Phase 09]: colorName param threaded to fetchOMGImages for Phase 12 per-color image fetching
+- [Phase 10-ai-image-generation]: sharp.stats().dominant bins colors in 4096-bin histogram; test assertions for dominant RGB must use range checks, not exact equality
+- [Phase 10-ai-image-generation]: CostTracker.estimateCost(n) returns n * CANDIDATES_PER_CALL * COST_PER_IMAGE (D-08 minimum estimate, excludes retry cost)
 
 ### Pending Todos
 
@@ -59,6 +61,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-26T22:24:10.060Z
-Stopped at: Phase 10 context gathered
-Resume file: .planning/phases/10-ai-image-generation/10-CONTEXT.md
+Last session: 2026-03-26T23:07:34.461Z
+Stopped at: Completed 10-01-PLAN.md
+Resume file: None
