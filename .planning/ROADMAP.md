@@ -51,7 +51,10 @@
   4. The scorer operates on the trimmed garment region (not full white canvas) — a white-background supplier image does not produce a false reject
   5. Images flagged as unsuitable for mockup use (low contrast, heavy watermark, non-blank garment) receive a `fail` verdict with a descriptive reason
   6. Scorer flags images where garment proportion within the canvas is outside the target range (too small or too large relative to the standard garment-to-canvas ratio)
-**Plans**: TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 08-01-PLAN.md — Scorer function with types, tests, and all 4 dimension checks
+- [ ] 08-02-PLAN.md — Calibration script and threshold tuning with user review
 
 ### Phase 09: Image Sourcing
 **Goal**: The system fetches front, back, and side images from supplier APIs (OMG, S&S Canada, CSW) following a cheapest-first fallback chain before any AI generation is attempted
@@ -118,7 +121,7 @@
 | 04. Shopify Product Push | v1.0 | 3/3 | Complete | 2026-03-09 |
 | 04.1. Image Standardization & Print Area Detection | v1.0 | 2/2 | Complete | 2026-03-10 |
 | 07. Size Guide Upload | v1.0 | 2/2 | Complete | 2026-03-11 |
-| 08. Image Quality Scorer | v2.0 | 0/TBD | Not started | - |
+| 08. Image Quality Scorer | v2.0 | 0/2 | Planning | - |
 | 09. Image Sourcing | v2.0 | 0/TBD | Not started | - |
 | 10. AI Image Generation | v2.0 | 0/TBD | Not started | - |
 | 11. Image Standardization & Safe Upload | v2.0 | 0/TBD | Not started | - |
