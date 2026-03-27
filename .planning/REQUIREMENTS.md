@@ -34,7 +34,7 @@
 
 ### Output
 
-- [ ] **OUT-01**: Running the image pipeline produces e-commerce-ready front/back/side images for each product, uploaded to Shopify
+- [x] **OUT-01**: Running the image pipeline produces e-commerce-ready front/back/side images for each product, uploaded to Shopify
 - [x] **OUT-02**: Existing Shopify product image GIDs are fetched before replacement to avoid accidental deletion via productSet
 
 ## Future Requirements (Deferred)
@@ -73,7 +73,7 @@
 | STD-01 | Phase 11 | Complete |
 | STD-02 | Phase 11 | Complete |
 | OUT-02 | Phase 11 | Complete |
-| OUT-01 | Phase 13 | Pending |
+| OUT-01 | Phase 13 | Complete |
 
 **Coverage:**
 - v2.0 requirements: 17 total

@@ -36,7 +36,7 @@
 - [x] **Phase 10: AI Image Generation** - OpenAI images.edit() generates missing back/side views with quality-gated candidate selection (completed 2026-03-26)
 - [x] **Phase 11: Image Standardization & Safe Upload** - Standardize all accepted images to 2000x2000 with uniform 85% garment height, write CDN URLs to Google Sheets (completed 2026-03-27)
 - [x] **Phase 12: Audit Runner** - Per-product orchestrator wiring scorer → source → generate → standardize → upload into a single end-to-end function (completed 2026-03-27)
-- [ ] **Phase 13: CLI Entry Point** - audit-images.ts CLI exposing the audit runner with --style-id, --all, and --dry-run flags
+- [x] **Phase 13: CLI Entry Point** - audit-images.ts CLI exposing the audit runner with --style-id, --all, and --dry-run flags (completed 2026-03-27)
 
 ## Phase Details
 
@@ -119,9 +119,9 @@ Plans:
   2. `npx tsx scripts/audit-images.ts --all` iterates all sheet rows and processes each through the audit runner
   3. `npx tsx scripts/audit-images.ts --dry-run --style-id CSW-12345` scores and logs what would happen without writing to Shopify or Sheets
   4. After a successful `--style-id` run, the target product's Shopify listing shows updated front/back/side images with correct 2000x2000px dimensions
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 Plans:
-- [ ] 13-01-PLAN.md — CLI script with --style-id, --all, --dry-run flags and unit tests
+- [x] 13-01-PLAN.md — CLI script with --style-id, --all, --dry-run flags and unit tests
 
 ## Progress
 
@@ -138,4 +138,4 @@ Plans:
 | 10. AI Image Generation | v2.0 | 2/2 | Complete    | 2026-03-26 |
 | 11. Image Standardization & Safe Upload | v2.0 | 2/2 | Complete    | 2026-03-27 |
 | 12. Audit Runner | v2.0 | 1/1 | Complete    | 2026-03-27 |
-| 13. CLI Entry Point | v2.0 | 0/1 | Not started | - |
+| 13. CLI Entry Point | v2.0 | 1/1 | Complete   | 2026-03-27 |
