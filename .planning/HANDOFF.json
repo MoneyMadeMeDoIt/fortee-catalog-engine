@@ -1,0 +1,43 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-03-27T01:08:02.393Z",
+  "phase": "13",
+  "phase_name": "cli-entry-point",
+  "phase_dir": ".planning/phases/13-cli-entry-point",
+  "plan": 1,
+  "task": 0,
+  "total_tasks": 2,
+  "status": "paused",
+  "completed_tasks": [],
+  "remaining_tasks": [
+    {"id": 1, "name": "Create CLI script + tests (TDD)", "status": "not_started"},
+    {"id": 2, "name": "Human verify CLI works against real environment", "status": "not_started"}
+  ],
+  "blockers": [],
+  "human_actions_pending": [
+    {
+      "action": "Share Google Drive folder with service account email",
+      "context": "The service account (GOOGLE_SERVICE_ACCOUNT_EMAIL) needs Editor access to the Drive folder 1xIjATpaEdqJYHRiuy0Iy6wIYUcNCXC8k for uploadToDrive() to work",
+      "blocking": true
+    },
+    {
+      "action": "Add OPENAI_API_KEY to .env",
+      "context": "Phase 10 AI generation requires OpenAI API access. The openai SDK is installed but no key is configured",
+      "blocking": true
+    },
+    {
+      "action": "Add SS_ACCOUNT_NUMBER and SS_API_KEY to .env (optional)",
+      "context": "Phase 09 S&S Canada REST API for back/side images requires separate credentials. Pipeline degrades gracefully without them.",
+      "blocking": false
+    }
+  ],
+  "decisions": [
+    {"decision": "Replace Shopify staged uploads with Google Drive", "rationale": "User's images are already in Google Drive; avoids touching Shopify store", "phase": "11"},
+    {"decision": "Drive folder structure: root / supplierCode / styleId / filename", "rationale": "Matches user's existing folder organization", "phase": "11"},
+    {"decision": "No Shopify product mutations in entire v2.0 pipeline", "rationale": "User explicitly said 'don't change my store images, only change the Google Sheets'", "phase": "11"},
+    {"decision": "Phase 13 plan needs update for Drive client instead of Shopify client", "rationale": "Plan was created before the Drive migration; references createShopifyClient which is no longer needed", "phase": "13"}
+  ],
+  "uncommitted_files": [],
+  "next_action": "Replan Phase 13 to use createDriveClient() instead of createShopifyClient(), then execute. The existing 13-01-PLAN.md references ShopifyClient which was replaced.",
+  "context_notes": "Phases 08-12 complete. Phase 13 is planned but the plan references ShopifyClient which was replaced with Drive client in the last session. The plan needs a quick update before execution. All 339 tests pass. The Google Drive upload function (src/sheets/drive.ts) is new and untested against real Drive API — needs the service account to have folder access."
+}
