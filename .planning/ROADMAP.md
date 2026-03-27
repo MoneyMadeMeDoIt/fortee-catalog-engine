@@ -34,7 +34,7 @@
 - [x] **Phase 08: Image Quality Scorer** - Sharp-based blur/resolution scoring on trimmed garment region with calibrated thresholds (completed 2026-03-26)
 - [x] **Phase 09: Image Sourcing** - Fallback chain fetching front/back/side images from OMG, CSW, and S&S Canada before AI (completed 2026-03-26)
 - [x] **Phase 10: AI Image Generation** - OpenAI images.edit() generates missing back/side views with quality-gated candidate selection (completed 2026-03-26)
-- [ ] **Phase 11: Image Standardization & Safe Upload** - Standardize all accepted images to 2000x2000 with uniform 85% garment height, write CDN URLs to Google Sheets
+- [x] **Phase 11: Image Standardization & Safe Upload** - Standardize all accepted images to 2000x2000 with uniform 85% garment height, write CDN URLs to Google Sheets (completed 2026-03-27)
 - [ ] **Phase 12: Audit Runner** - Per-product orchestrator wiring scorer → source → generate → standardize → upload into a single end-to-end function
 - [ ] **Phase 13: CLI Entry Point** - audit-images.ts CLI exposing the audit runner with --style-id, --all, and --dry-run flags
 
@@ -92,10 +92,10 @@ Plans:
   2. Standardized images are uploaded via Shopify staged uploads for CDN URL generation, but NOT attached to any product
   3. Google Sheets FrontImage/BackImage/DirectSideImage columns are overwritten with standardized CDN URLs
   4. Side-by-side comparison of any two standardized product images shows garments at uniform scale — no product appears visually larger or smaller than another
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 Plans:
 - [x] 11-01-PLAN.md — Refactor standardizeImage() to fixed 85% garment height target
-- [ ] 11-02-PLAN.md — standardizeImagesToSheets() with staged upload URLs and sheet write
+- [x] 11-02-PLAN.md — standardizeImagesToSheets() with staged upload URLs and sheet write
 
 ### Phase 12: Audit Runner
 **Goal**: A single `auditProductImages(styleID)` function orchestrates the complete per-product pipeline — score existing images, source replacements, generate missing views, standardize, and upload — with each step's result logged
@@ -132,6 +132,6 @@ Plans:
 | 08. Image Quality Scorer | v2.0 | 0/2 | Complete    | 2026-03-26 |
 | 09. Image Sourcing | v2.0 | 0/1 | Complete    | 2026-03-26 |
 | 10. AI Image Generation | v2.0 | 2/2 | Complete    | 2026-03-26 |
-| 11. Image Standardization & Safe Upload | v2.0 | 1/2 | In Progress|  |
+| 11. Image Standardization & Safe Upload | v2.0 | 2/2 | Complete   | 2026-03-27 |
 | 12. Audit Runner | v2.0 | 0/TBD | Not started | - |
 | 13. CLI Entry Point | v2.0 | 0/TBD | Not started | - |

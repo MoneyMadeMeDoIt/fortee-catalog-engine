@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Image Automation
-status: Ready to execute
-stopped_at: Completed 11-01-PLAN.md
-last_updated: "2026-03-26T23:55:56.821Z"
+status: Phase complete — ready for verification
+stopped_at: Completed 11-02-PLAN.md
+last_updated: "2026-03-26T23:59:59.273Z"
 progress:
   total_phases: 6
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 7
-  completed_plans: 6
+  completed_plans: 7
 ---
 
 # Project State
@@ -51,6 +51,7 @@ Key decisions for v2.0:
 - [Phase 10]: vitest 4.x clearAllMocks clears call history but NOT mockResolvedValueOnce queue; achromatic bypass test must not set candidate Once items since candidates skip extractDominantHue
 - [Phase 10]: callImagesEdit uses optional client param for dependency injection; avoids mocking createOpenAIClient factory
 - [Phase 11-image-standardization-safe-upload]: FIXED_GARMENT_HEIGHT_FRAC=0.85 replaces per-category REFERENCE_RATIOS in standardizeImage() — uniform 1700px garment height on 2000px canvas for all categories per D-01
+- [Phase 11-image-standardization-safe-upload]: standardizeImagesToSheets() uses staged uploads for CDN URL generation only — no productCreateMedia or productSet calls (D-03: store images unchanged)
 
 ### Pending Todos
 
@@ -64,6 +65,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-26T23:55:56.817Z
-Stopped at: Completed 11-01-PLAN.md
+Last session: 2026-03-26T23:59:59.269Z
+Stopped at: Completed 11-02-PLAN.md
 Resume file: None
