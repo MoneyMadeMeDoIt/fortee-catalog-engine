@@ -106,7 +106,9 @@ Plans:
   2. A product with a low-quality front image has that image replaced (sourced or generated) and uploaded without manual intervention
   3. A product that already has passing front/back/side images is left unchanged — the runner does not re-upload or overwrite good images
   4. Each run produces a log entry per product showing which images passed, failed, were sourced, were generated, and were uploaded
-**Plans**: TBD
+**Plans:** 1 plans
+Plans:
+- [ ] 12-01-PLAN.md — Types, test scaffold, and auditProductImages pipeline implementation (TDD)
 
 ### Phase 13: CLI Entry Point
 **Goal**: Running `npx ts-node scripts/audit-images.ts` processes one or all products through the complete image audit pipeline and reports results to the console
@@ -133,5 +135,5 @@ Plans:
 | 09. Image Sourcing | v2.0 | 0/1 | Complete    | 2026-03-26 |
 | 10. AI Image Generation | v2.0 | 2/2 | Complete    | 2026-03-26 |
 | 11. Image Standardization & Safe Upload | v2.0 | 2/2 | Complete    | 2026-03-27 |
-| 12. Audit Runner | v2.0 | 0/TBD | Not started | - |
+| 12. Audit Runner | v2.0 | 0/1 | Planning | - |
 | 13. CLI Entry Point | v2.0 | 0/TBD | Not started | - |
