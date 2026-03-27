@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Image Automation
-status: Ready to plan
-stopped_at: Phase 12 context gathered
-last_updated: "2026-03-27T00:07:43.659Z"
+status: Phase complete — ready for verification
+stopped_at: Completed 12-01-PLAN.md — auditProductImages pipeline implemented and tested
+last_updated: "2026-03-27T00:27:35.505Z"
 progress:
   total_phases: 6
-  completed_phases: 4
-  total_plans: 7
-  completed_plans: 7
+  completed_phases: 5
+  total_plans: 8
+  completed_plans: 8
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-26)
 
 **Core value:** One command turns an enriched sheet row into a live Shopify product with correct decoration options, placements, pricing, standardized images, and all customer-facing content.
-**Current focus:** Phase 11 — image-standardization-safe-upload
+**Current focus:** Phase 12 — audit-runner
 
 ## Current Position
 
-Phase: 12
-Plan: Not started
+Phase: 12 (audit-runner) — EXECUTING
+Plan: 1 of 1
 
 ## Accumulated Context
 
@@ -52,6 +52,8 @@ Key decisions for v2.0:
 - [Phase 10]: callImagesEdit uses optional client param for dependency injection; avoids mocking createOpenAIClient factory
 - [Phase 11-image-standardization-safe-upload]: FIXED_GARMENT_HEIGHT_FRAC=0.85 replaces per-category REFERENCE_RATIOS in standardizeImage() — uniform 1700px garment height on 2000px canvas for all categories per D-01
 - [Phase 11-image-standardization-safe-upload]: standardizeImagesToSheets() uses staged uploads for CDN URL generation only — no productCreateMedia or productSet calls (D-03: store images unchanged)
+- [Phase 12-audit-runner]: sourceImages called once per product, not per view — source all missing/failing in a single batch to avoid redundant network calls
+- [Phase 12-audit-runner]: CostTracker always injected into auditProductImages — never created internally to preserve shared budget across batch runs
 
 ### Pending Todos
 
@@ -65,6 +67,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-27T00:07:43.655Z
-Stopped at: Phase 12 context gathered
-Resume file: .planning/phases/12-audit-runner/12-CONTEXT.md
+Last session: 2026-03-27T00:27:35.501Z
+Stopped at: Completed 12-01-PLAN.md — auditProductImages pipeline implemented and tested
+Resume file: None

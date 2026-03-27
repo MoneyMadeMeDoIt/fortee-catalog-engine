@@ -35,7 +35,7 @@
 - [x] **Phase 09: Image Sourcing** - Fallback chain fetching front/back/side images from OMG, CSW, and S&S Canada before AI (completed 2026-03-26)
 - [x] **Phase 10: AI Image Generation** - OpenAI images.edit() generates missing back/side views with quality-gated candidate selection (completed 2026-03-26)
 - [x] **Phase 11: Image Standardization & Safe Upload** - Standardize all accepted images to 2000x2000 with uniform 85% garment height, write CDN URLs to Google Sheets (completed 2026-03-27)
-- [ ] **Phase 12: Audit Runner** - Per-product orchestrator wiring scorer → source → generate → standardize → upload into a single end-to-end function
+- [x] **Phase 12: Audit Runner** - Per-product orchestrator wiring scorer → source → generate → standardize → upload into a single end-to-end function (completed 2026-03-27)
 - [ ] **Phase 13: CLI Entry Point** - audit-images.ts CLI exposing the audit runner with --style-id, --all, and --dry-run flags
 
 ## Phase Details
@@ -106,9 +106,9 @@ Plans:
   2. A product with a low-quality front image has that image replaced (sourced or generated) and uploaded without manual intervention
   3. A product that already has passing front/back/side images is left unchanged — the runner does not re-upload or overwrite good images
   4. Each run produces a log entry per product showing which images passed, failed, were sourced, were generated, and were uploaded
-**Plans:** 1 plans
+**Plans:** 1/1 plans complete
 Plans:
-- [ ] 12-01-PLAN.md — Types, test scaffold, and auditProductImages pipeline implementation (TDD)
+- [x] 12-01-PLAN.md — Types, test scaffold, and auditProductImages pipeline implementation (TDD)
 
 ### Phase 13: CLI Entry Point
 **Goal**: Running `npx ts-node scripts/audit-images.ts` processes one or all products through the complete image audit pipeline and reports results to the console
@@ -135,5 +135,5 @@ Plans:
 | 09. Image Sourcing | v2.0 | 0/1 | Complete    | 2026-03-26 |
 | 10. AI Image Generation | v2.0 | 2/2 | Complete    | 2026-03-26 |
 | 11. Image Standardization & Safe Upload | v2.0 | 2/2 | Complete    | 2026-03-27 |
-| 12. Audit Runner | v2.0 | 0/1 | Planning | - |
+| 12. Audit Runner | v2.0 | 1/1 | Complete   | 2026-03-27 |
 | 13. CLI Entry Point | v2.0 | 0/TBD | Not started | - |
