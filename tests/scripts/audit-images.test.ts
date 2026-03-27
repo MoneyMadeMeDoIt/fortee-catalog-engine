@@ -256,6 +256,7 @@ describe('audit-images CLI — runAudit()', () => {
         error: 'something broke',
       });
 
+    // runAudit throws when there are errors, so catch it
     await runAudit({
       args: { styleId: undefined, all: true, dryRun: false, help: false },
       driveClient: mockDriveClient,
@@ -265,7 +266,7 @@ describe('audit-images CLI — runAudit()', () => {
       costTracker: mockCostTracker as any,
       spreadsheetId: 'test-id',
       sheetName: 'Sheet1',
-    });
+    }).catch(() => {/* expected — errors cause throw */});
 
     const logCalls = consoleSpy.mock.calls.map(c => String(c[0]));
     const summaryText = logCalls.join('\n');
