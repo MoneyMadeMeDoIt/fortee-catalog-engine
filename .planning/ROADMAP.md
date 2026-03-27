@@ -132,6 +132,6 @@ Plans:
 | 08. Image Quality Scorer | v2.0 | 0/2 | Complete    | 2026-03-26 |
 | 09. Image Sourcing | v2.0 | 0/1 | Complete    | 2026-03-26 |
 | 10. AI Image Generation | v2.0 | 2/2 | Complete    | 2026-03-26 |
-| 11. Image Standardization & Safe Upload | v2.0 | 2/2 | Complete   | 2026-03-27 |
+| 11. Image Standardization & Safe Upload | v2.0 | 2/2 | Complete    | 2026-03-27 |
 | 12. Audit Runner | v2.0 | 0/TBD | Not started | - |
 | 13. CLI Entry Point | v2.0 | 0/TBD | Not started | - |
