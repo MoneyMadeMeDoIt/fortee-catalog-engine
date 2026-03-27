@@ -130,6 +130,13 @@ function setupDefaultMocks() {
     reasons: [],
     dimensions: { blur: 90, resolution: 80, proportion: 85, content: 85 },
   });
+  vi.mocked(sourceImages).mockResolvedValue({
+    front: null,
+    back: null,
+    side: null,
+  });
+  vi.mocked(generateGarmentView).mockResolvedValue(null);
+  vi.mocked(enhanceFrontImage).mockResolvedValue(null);
   vi.mocked(standardizeImage).mockResolvedValue({
     buffer: FAKE_STD_BUFFER,
     garmentPlacement: { left: 0, top: 150, width: 2000, height: 1700 },
