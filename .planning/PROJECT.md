@@ -39,11 +39,12 @@ One command turns an enriched sheet row into a live Shopify product with correct
 Shipped v1.0 with ~12,137 LOC TypeScript across 6 completed phases in 7 days.
 Tech stack: TypeScript ESM, Shopify GraphQL Admin API (2025-01), Google Sheets API, sharp (image processing), Zod v4, cheerio (HTML parsing), p-queue (rate limiting).
 
-**Current state:** Single-product push works end-to-end. Batch processing and dry-run mode planned but deferred. Image standardization uses garment detection (not hardcoded coords). Size guides auto-generated from spec sheets.
+**Current state:** v2.0 Image Automation complete. `npx tsx scripts/audit-images.ts` processes products through a full image pipeline: quality scoring, supplier sourcing (OMG/CSW/S&S), AI generation (OpenAI), standardization (2000x2000, 85% garment height), and Google Drive upload — all results written to Google Sheets. Single-product push (v1.0) still works end-to-end.
 
 **Known tech debt:**
 - Phase 05 (Scale & Reliability) plans exist but unexecuted — no batch mode or dry-run yet
 - Phase 06 (Live Inventory Sync) not yet planned
+- Google Drive service account needs folder access for image uploads
 
 ## Constraints
 
@@ -96,4 +97,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-26 after v2.0 milestone start*
+*Last updated: 2026-03-27 after v2.0 Phase 13 completion — milestone complete*
