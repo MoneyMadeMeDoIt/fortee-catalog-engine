@@ -111,15 +111,17 @@ Plans:
 - [x] 12-01-PLAN.md — Types, test scaffold, and auditProductImages pipeline implementation (TDD)
 
 ### Phase 13: CLI Entry Point
-**Goal**: Running `npx ts-node scripts/audit-images.ts` processes one or all products through the complete image audit pipeline and reports results to the console
+**Goal**: Running `npx tsx scripts/audit-images.ts` processes one or all products through the complete image audit pipeline and reports results to the console
 **Depends on**: Phase 12
 **Requirements**: OUT-01
 **Success Criteria** (what must be TRUE):
-  1. `npx ts-node scripts/audit-images.ts --style-id CSW-12345` processes a single product end-to-end and exits with code 0 on success
-  2. `npx ts-node scripts/audit-images.ts --all` iterates all sheet rows and processes each through the audit runner
-  3. `npx ts-node scripts/audit-images.ts --dry-run --style-id CSW-12345` scores and logs what would happen without writing to Shopify or Sheets
+  1. `npx tsx scripts/audit-images.ts --style-id CSW-12345` processes a single product end-to-end and exits with code 0 on success
+  2. `npx tsx scripts/audit-images.ts --all` iterates all sheet rows and processes each through the audit runner
+  3. `npx tsx scripts/audit-images.ts --dry-run --style-id CSW-12345` scores and logs what would happen without writing to Shopify or Sheets
   4. After a successful `--style-id` run, the target product's Shopify listing shows updated front/back/side images with correct 2000x2000px dimensions
-**Plans**: TBD
+**Plans:** 1 plan
+Plans:
+- [ ] 13-01-PLAN.md — CLI script with --style-id, --all, --dry-run flags and unit tests
 
 ## Progress
 
@@ -136,4 +138,4 @@ Plans:
 | 10. AI Image Generation | v2.0 | 2/2 | Complete    | 2026-03-26 |
 | 11. Image Standardization & Safe Upload | v2.0 | 2/2 | Complete    | 2026-03-27 |
 | 12. Audit Runner | v2.0 | 1/1 | Complete    | 2026-03-27 |
-| 13. CLI Entry Point | v2.0 | 0/TBD | Not started | - |
+| 13. CLI Entry Point | v2.0 | 0/1 | Not started | - |
