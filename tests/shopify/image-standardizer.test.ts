@@ -15,7 +15,12 @@ import {
   FIXED_GARMENT_HEIGHT_FRAC,
   FIXED_TOP_OFFSET_FRAC,
 } from '../../src/shopify/image-standardizer.js';
+import { uploadToDrive } from '../../src/sheets/drive.js';
 import { writeUpdates } from '../../src/sheets/writer.js';
+
+vi.mock('../../src/sheets/drive.js', () => ({
+  uploadToDrive: vi.fn(),
+}));
 
 vi.mock('../../src/sheets/writer.js', () => ({
   writeUpdates: vi.fn().mockResolvedValue(1),
@@ -623,48 +628,24 @@ describe('standardizeImagesToSheets', () => {
     vi.restoreAllMocks();
     vi.clearAllMocks();
     vi.mocked(writeUpdates).mockResolvedValue(1);
+    vi.mocked(uploadToDrive).mockResolvedValue('https://drive.google.com/uc?id=fake-file-id');
   });
 
-  it('calls downloadImage -> standardizeImage -> uploadStagedImage for front view, then writeUpdates with K column', async () => {
+  it('calls downloadImage -> standardizeImage -> uploadToDrive for front view, then writeUpdates with K column', async () => {
     const smallImage = await sharp({
       create: { width: 100, height: 100, channels: 3, background: { r: 200, g: 50, b: 50 } },
     }).png().toBuffer();
 
-    const mockClient = {
-      request: vi.fn().mockResolvedValue({
-        data: {
-          stagedUploadsCreate: {
-            stagedTargets: [
-              {
-                url: 'https://upload.shopify.com/staged',
-                resourceUrl: 'https://cdn.shopify.com/front-std.png',
-                parameters: [],
-              },
-            ],
-            userErrors: [],
-          },
-        },
-      }),
-    };
-
+    const mockDrive = {} as never;
     const mockSheets = {} as never;
 
-    let callCount = 0;
-    vi.spyOn(globalThis, 'fetch').mockImplementation(async () => {
-      callCount++;
-      if (callCount % 2 === 1) {
-        // Download call
-        return {
-          ok: true,
-          arrayBuffer: async () => smallImage.buffer.slice(smallImage.byteOffset, smallImage.byteOffset + smallImage.byteLength),
-        } as Response;
-      }
-      // PUT call
-      return { ok: true } as Response;
-    });
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+      ok: true,
+      arrayBuffer: async () => smallImage.buffer.slice(smallImage.byteOffset, smallImage.byteOffset + smallImage.byteLength),
+    } as Response);
 
     const result = await standardizeImagesToSheets(
-      mockClient,
+      mockDrive,
       mockSheets,
       'spreadsheet-id',
       'Sheet1',
@@ -673,10 +654,15 @@ describe('standardizeImagesToSheets', () => {
       'Test Tee',
       'Red',
       'tops',
+      'CSW',
+      'CSW-12345',
     );
 
     expect(result.cellsWritten).toBe(1);
     expect(result.printAreaCoords).not.toBeNull();
+    expect(uploadToDrive).toHaveBeenCalledWith(
+      mockDrive, expect.any(Buffer), expect.stringContaining('front-std.png'), 'CSW', 'CSW-12345',
+    );
     expect(writeUpdates).toHaveBeenCalledWith(
       mockSheets,
       'spreadsheet-id',
@@ -691,39 +677,16 @@ describe('standardizeImagesToSheets', () => {
       create: { width: 100, height: 100, channels: 3, background: { r: 200, g: 50, b: 50 } },
     }).png().toBuffer();
 
-    const mockClient = {
-      request: vi.fn().mockResolvedValue({
-        data: {
-          stagedUploadsCreate: {
-            stagedTargets: [
-              {
-                url: 'https://upload.shopify.com/staged',
-                resourceUrl: 'https://cdn.shopify.com/back-std.png',
-                parameters: [],
-              },
-            ],
-            userErrors: [],
-          },
-        },
-      }),
-    };
-
+    const mockDrive = {} as never;
     const mockSheets = {} as never;
 
-    let callCount = 0;
-    vi.spyOn(globalThis, 'fetch').mockImplementation(async () => {
-      callCount++;
-      if (callCount % 2 === 1) {
-        return {
-          ok: true,
-          arrayBuffer: async () => smallImage.buffer.slice(smallImage.byteOffset, smallImage.byteOffset + smallImage.byteLength),
-        } as Response;
-      }
-      return { ok: true } as Response;
-    });
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+      ok: true,
+      arrayBuffer: async () => smallImage.buffer.slice(smallImage.byteOffset, smallImage.byteOffset + smallImage.byteLength),
+    } as Response);
 
     const result = await standardizeImagesToSheets(
-      mockClient,
+      mockDrive,
       mockSheets,
       'spreadsheet-id',
       'Sheet1',
@@ -732,6 +695,8 @@ describe('standardizeImagesToSheets', () => {
       'Test Tee',
       'Red',
       'tops',
+      'CSW',
+      'CSW-12345',
     );
 
     expect(result.printAreaCoords).toBeNull();
@@ -750,23 +715,7 @@ describe('standardizeImagesToSheets', () => {
       create: { width: 100, height: 100, channels: 3, background: { r: 200, g: 50, b: 50 } },
     }).png().toBuffer();
 
-    const mockClient = {
-      request: vi.fn().mockResolvedValue({
-        data: {
-          stagedUploadsCreate: {
-            stagedTargets: [
-              {
-                url: 'https://upload.shopify.com/staged',
-                resourceUrl: 'https://cdn.shopify.com/back-std.png',
-                parameters: [],
-              },
-            ],
-            userErrors: [],
-          },
-        },
-      }),
-    };
-
+    const mockDrive = {} as never;
     const mockSheets = {} as never;
 
     vi.spyOn(globalThis, 'fetch').mockImplementation(async (url) => {
@@ -774,10 +723,6 @@ describe('standardizeImagesToSheets', () => {
       if (urlStr.includes('front')) {
         return { ok: false, status: 404, statusText: 'Not Found' } as Response;
       }
-      if (urlStr.includes('upload.shopify.com')) {
-        return { ok: true } as Response;
-      }
-      // back image download
       return {
         ok: true,
         arrayBuffer: async () => smallImage.buffer.slice(smallImage.byteOffset, smallImage.byteOffset + smallImage.byteLength),
@@ -785,7 +730,7 @@ describe('standardizeImagesToSheets', () => {
     });
 
     const result = await standardizeImagesToSheets(
-      mockClient,
+      mockDrive,
       mockSheets,
       'spreadsheet-id',
       'Sheet1',
@@ -794,6 +739,8 @@ describe('standardizeImagesToSheets', () => {
       'Test Tee',
       'Red',
       'tops',
+      'CSW',
+      'CSW-12345',
     );
 
     // Front failed — no printAreaCoords, only back written
@@ -808,11 +755,11 @@ describe('standardizeImagesToSheets', () => {
   });
 
   it('returns cellsWritten 0 and no coords when no images provided', async () => {
-    const mockClient = { request: vi.fn() };
+    const mockDrive = {} as never;
     const mockSheets = {} as never;
 
     const result = await standardizeImagesToSheets(
-      mockClient,
+      mockDrive,
       mockSheets,
       'spreadsheet-id',
       'Sheet1',
@@ -821,6 +768,8 @@ describe('standardizeImagesToSheets', () => {
       'Test Tee',
       'Red',
       'tops',
+      'CSW',
+      'CSW-12345',
     );
 
     expect(result.cellsWritten).toBe(0);

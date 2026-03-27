@@ -3,8 +3,10 @@ import { logger } from '../lib/logger.js';
 import { STAGED_UPLOADS_CREATE } from './mutations.js';
 import type { FileSetInput, CategoryGroup, GarmentBounds, PrintAreaCoords, ImageProcessResult } from './types.js';
 import type { sheets_v4 } from 'googleapis';
+import type { drive_v3 } from 'googleapis';
 import type { EnrichmentUpdate } from '../sheets/types.js';
 import { writeUpdates } from '../sheets/writer.js';
+import { uploadToDrive } from '../sheets/drive.js';
 
 /** Client interface matching the Shopify Admin API client pattern. */
 export interface ShopifyClient {
@@ -443,7 +445,7 @@ export function buildStandardizationUpdates(
  * Side images use contain-resize (no garment detection, matching processProductImages behavior).
  */
 export async function standardizeImagesToSheets(
-  client: ShopifyClient,
+  drive: drive_v3.Drive,
   sheets: sheets_v4.Sheets,
   spreadsheetId: string,
   sheetName: string,
@@ -452,6 +454,8 @@ export async function standardizeImagesToSheets(
   productName: string,
   colorName: string,
   categoryGroup: CategoryGroup,
+  supplierCode: string,
+  styleId: string,
 ): Promise<{ cellsWritten: number; printAreaCoords: PrintAreaCoords | null }> {
   const cdnUrls: { front?: string; back?: string; side?: string } = {};
   let printAreaCoords: PrintAreaCoords | null = null;
@@ -462,7 +466,7 @@ export async function standardizeImagesToSheets(
       const raw = await downloadImage(imageUrls.front);
       const { buffer: standardized, garmentPlacement } = await standardizeImage(raw, categoryGroup);
       const filename = `${productName}-${colorName}-front-std.png`.replace(/\s+/g, '-').toLowerCase();
-      cdnUrls.front = await uploadStagedImage(client, standardized, filename);
+      cdnUrls.front = await uploadToDrive(drive, standardized, filename, supplierCode, styleId);
       printAreaCoords = derivePrintAreaCoords(
         garmentPlacement.left, garmentPlacement.top,
         garmentPlacement.width, garmentPlacement.height,
@@ -479,7 +483,7 @@ export async function standardizeImagesToSheets(
       const raw = await downloadImage(imageUrls.back);
       const { buffer: standardized } = await standardizeImage(raw, categoryGroup);
       const filename = `${productName}-${colorName}-back-std.png`.replace(/\s+/g, '-').toLowerCase();
-      cdnUrls.back = await uploadStagedImage(client, standardized, filename);
+      cdnUrls.back = await uploadToDrive(drive, standardized, filename, supplierCode, styleId);
     } catch (err) {
       logger.warn(`Skipping back standardization for ${productName} ${colorName}: ${(err as Error).message}`);
     }
@@ -494,7 +498,7 @@ export async function standardizeImagesToSheets(
         .png()
         .toBuffer();
       const filename = `${productName}-${colorName}-side-std.png`.replace(/\s+/g, '-').toLowerCase();
-      cdnUrls.side = await uploadStagedImage(client, standardized, filename);
+      cdnUrls.side = await uploadToDrive(drive, standardized, filename, supplierCode, styleId);
     } catch (err) {
       logger.warn(`Skipping side standardization for ${productName} ${colorName}: ${(err as Error).message}`);
     }

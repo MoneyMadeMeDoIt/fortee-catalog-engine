@@ -14,17 +14,16 @@
  * - D-04: Write to Google Sheets only; no Shopify product mutations
  */
 
-import type { sheets_v4 } from 'googleapis';
+import type { sheets_v4, drive_v3 } from 'googleapis';
 import { scoreImageQuality } from '../shopify/image-scorer.js';
 import { sourceImages } from '../lib/image-sourcer.js';
 import { generateGarmentView, enhanceFrontImage } from '../lib/ai-image-generator.js';
 import {
   standardizeImage,
-  uploadStagedImage,
   buildStandardizationUpdates,
   downloadImage,
-  type ShopifyClient,
 } from '../shopify/image-standardizer.js';
+import { uploadToDrive } from '../sheets/drive.js';
 import { writeUpdates } from '../sheets/writer.js';
 import { getCategoryGroup } from '../shopify/variants.js';
 import { type CostTracker } from '../lib/cost-tracker.js';
@@ -78,7 +77,7 @@ interface ResolvedBuffer {
  *
  * @param row - Sheet row with existing image URLs and product metadata
  * @param rowIndex - 0-based data row index (row 0 = sheet row 2, header is row 1)
- * @param shopifyClient - Shopify Admin API client for staged image uploads
+ * @param driveClient - Google Drive API client for image uploads
  * @param sheetsClient - Google Sheets API client for writing CDN URLs
  * @param spreadsheetId - Target Google Spreadsheet ID
  * @param sheetName - Target sheet tab name
@@ -87,7 +86,7 @@ interface ResolvedBuffer {
 export async function auditProductImages(
   row: SheetRow,
   rowIndex: number,
-  shopifyClient: ShopifyClient,
+  driveClient: drive_v3.Drive,
   sheetsClient: sheets_v4.Sheets,
   spreadsheetId: string,
   sheetName: string,
@@ -398,7 +397,7 @@ export async function auditProductImages(
         const filename = `${row.productName}-${colorName}-${view}-std.png`
           .replace(/\s+/g, '-')
           .toLowerCase();
-        const cdnUrl = await uploadStagedImage(shopifyClient, stdBuffer, filename);
+        const cdnUrl = await uploadToDrive(driveClient, stdBuffer, filename, row.supplierCode, styleId);
         cdnUrls[view] = cdnUrl;
 
         viewResults.push({

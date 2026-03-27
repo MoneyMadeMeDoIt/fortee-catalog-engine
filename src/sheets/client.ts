@@ -4,7 +4,10 @@
  */
 import { google, sheets_v4 } from 'googleapis';
 
-const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
+const SCOPES = [
+  'https://www.googleapis.com/auth/spreadsheets',
+  'https://www.googleapis.com/auth/drive.file',
+];
 
 /**
  * Create an authenticated Google Sheets API client.

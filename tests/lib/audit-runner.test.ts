@@ -11,8 +11,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { auditProductImages } from '../../src/lib/audit-runner.js';
 import { CostTracker } from '../../src/lib/cost-tracker.js';
 import type { SheetRow } from '../../src/sheets/types.js';
-import type { ShopifyClient } from '../../src/shopify/image-standardizer.js';
-import type { sheets_v4 } from 'googleapis';
+import type { sheets_v4, drive_v3 } from 'googleapis';
 
 // ---------------------------------------------------------------------------
 // Module mocks — must use .js extensions (ESM convention)
@@ -33,9 +32,12 @@ vi.mock('../../src/lib/ai-image-generator.js', () => ({
 
 vi.mock('../../src/shopify/image-standardizer.js', () => ({
   standardizeImage: vi.fn(),
-  uploadStagedImage: vi.fn(),
   buildStandardizationUpdates: vi.fn(),
   downloadImage: vi.fn(),
+}));
+
+vi.mock('../../src/sheets/drive.js', () => ({
+  uploadToDrive: vi.fn(),
 }));
 
 vi.mock('../../src/sheets/writer.js', () => ({
@@ -51,10 +53,10 @@ import { sourceImages } from '../../src/lib/image-sourcer.js';
 import { generateGarmentView, enhanceFrontImage } from '../../src/lib/ai-image-generator.js';
 import {
   standardizeImage,
-  uploadStagedImage,
   buildStandardizationUpdates,
   downloadImage,
 } from '../../src/shopify/image-standardizer.js';
+import { uploadToDrive } from '../../src/sheets/drive.js';
 import { writeUpdates } from '../../src/sheets/writer.js';
 
 // ---------------------------------------------------------------------------
@@ -108,9 +110,7 @@ function makeRow(overrides: Partial<SheetRow> = {}): SheetRow {
 }
 
 /** Default mock factories */
-const mockShopifyClient: ShopifyClient = {
-  request: vi.fn(),
-};
+const mockDriveClient = {} as drive_v3.Drive;
 
 const mockSheetsClient = {} as sheets_v4.Sheets;
 const SPREADSHEET_ID = 'test-spreadsheet-id';
@@ -118,7 +118,7 @@ const SHEET_NAME = 'Products';
 
 const FAKE_BUFFER = Buffer.from('fake-image-data');
 const FAKE_STD_BUFFER = Buffer.from('std-image-data');
-const FAKE_CDN_URL = 'https://cdn.shopify.com/staged/test-std.png';
+const FAKE_CDN_URL = 'https://drive.google.com/uc?id=fake-file-id';
 const FAKE_UPDATES = [{ range: 'Products!K2', values: [['url']] }];
 
 /** Default mock return values — applied in beforeEach */
@@ -141,7 +141,7 @@ function setupDefaultMocks() {
     buffer: FAKE_STD_BUFFER,
     garmentPlacement: { left: 0, top: 150, width: 2000, height: 1700 },
   });
-  vi.mocked(uploadStagedImage).mockResolvedValue(FAKE_CDN_URL);
+  vi.mocked(uploadToDrive).mockResolvedValue(FAKE_CDN_URL);
   vi.mocked(buildStandardizationUpdates).mockReturnValue(FAKE_UPDATES);
   vi.mocked(writeUpdates).mockResolvedValue(3);
 }
@@ -166,7 +166,7 @@ describe('auditProductImages', () => {
     const row = makeRow();
 
     const result = await auditProductImages(
-      row, 0, mockShopifyClient, mockSheetsClient, SPREADSHEET_ID, SHEET_NAME, costTracker,
+      row, 0, mockDriveClient, mockSheetsClient, SPREADSHEET_ID, SHEET_NAME, costTracker,
     );
 
     // sourceImages NOT called — all views passed
@@ -201,7 +201,7 @@ describe('auditProductImages', () => {
     });
 
     const result = await auditProductImages(
-      row, 0, mockShopifyClient, mockSheetsClient, SPREADSHEET_ID, SHEET_NAME, costTracker,
+      row, 0, mockDriveClient, mockSheetsClient, SPREADSHEET_ID, SHEET_NAME, costTracker,
     );
 
     // sourceImages MUST be called (back was missing)
@@ -235,7 +235,7 @@ describe('auditProductImages', () => {
     });
 
     const result = await auditProductImages(
-      row, 0, mockShopifyClient, mockSheetsClient, SPREADSHEET_ID, SHEET_NAME, costTracker,
+      row, 0, mockDriveClient, mockSheetsClient, SPREADSHEET_ID, SHEET_NAME, costTracker,
     );
 
     // enhanceFrontImage MUST be called
@@ -272,7 +272,7 @@ describe('auditProductImages', () => {
     });
 
     const result = await auditProductImages(
-      row, 0, mockShopifyClient, mockSheetsClient, SPREADSHEET_ID, SHEET_NAME, costTracker,
+      row, 0, mockDriveClient, mockSheetsClient, SPREADSHEET_ID, SHEET_NAME, costTracker,
     );
 
     // generateGarmentView MUST be called for back
@@ -303,7 +303,7 @@ describe('auditProductImages', () => {
     vi.mocked(generateGarmentView).mockResolvedValue(null);
 
     const result = await auditProductImages(
-      row, 0, mockShopifyClient, mockSheetsClient, SPREADSHEET_ID, SHEET_NAME, costTracker,
+      row, 0, mockDriveClient, mockSheetsClient, SPREADSHEET_ID, SHEET_NAME, costTracker,
     );
 
     // No throw — function completes
@@ -321,7 +321,7 @@ describe('auditProductImages', () => {
     const row = makeRow();
 
     await auditProductImages(
-      row, 5, mockShopifyClient, mockSheetsClient, SPREADSHEET_ID, SHEET_NAME, costTracker,
+      row, 5, mockDriveClient, mockSheetsClient, SPREADSHEET_ID, SHEET_NAME, costTracker,
     );
 
     // buildStandardizationUpdates must receive 0-based rowIndex (not rowIndex+2)
@@ -347,7 +347,7 @@ describe('auditProductImages', () => {
 
     // Should NOT throw — caps is unsupported but runner defaults to tops
     const result = await auditProductImages(
-      row, 0, mockShopifyClient, mockSheetsClient, SPREADSHEET_ID, SHEET_NAME, costTracker,
+      row, 0, mockDriveClient, mockSheetsClient, SPREADSHEET_ID, SHEET_NAME, costTracker,
     );
 
     // Function completes without error
@@ -375,7 +375,7 @@ describe('auditProductImages', () => {
 
     // Should NOT throw — download errors are non-fatal
     const result = await auditProductImages(
-      row, 0, mockShopifyClient, mockSheetsClient, SPREADSHEET_ID, SHEET_NAME, costTracker,
+      row, 0, mockDriveClient, mockSheetsClient, SPREADSHEET_ID, SHEET_NAME, costTracker,
     );
 
     expect(result.error).toBeUndefined();
