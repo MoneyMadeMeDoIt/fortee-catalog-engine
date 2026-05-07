@@ -188,6 +188,19 @@ async function buildProduct(
     variantImageByColor.set(color, b.front);
   }
 
+  // Product-level model image (single shot, not per-color). BR's
+  // ModelFrontImage column is populated identically across variant rows of a
+  // pid, so we just take the first non-empty value. Skipped when empty (e.g.
+  // for headwear, where the AI gen pipeline doesn't produce a model shot).
+  let modelUrl = '';
+  for (const row of variantRows) {
+    const v = String(row[bh['ModelFrontImage']] ?? '').trim();
+    if (v) { modelUrl = v; break; }
+  }
+  if (modelUrl) {
+    images.push({ src: modelUrl, alt: `model front`, position: String(position++) });
+  }
+
   // Build variants
   const variants: CloneableProduct['variants'] = [];
   for (const [, row] of variantBucket) {

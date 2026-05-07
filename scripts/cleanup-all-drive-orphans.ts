@@ -83,6 +83,9 @@ const STRAY_PATTERNS: RegExp[] = [
   /^back\.(png|jpg|jpeg|webp)$/i,
   /^side\.(png|jpg|jpeg|webp)$/i,
   /^model\.(png|jpg|jpeg|webp)$/i,
+  // Bare model-view files dropped without a pid prefix — common across 250+
+  // product folders. Distinct from canonical "<pid>_<color>_model_*" files.
+  /^model[-_](front|back|side)\.(png|jpg|jpeg|webp)$/i,
   /^copy of /i,
   /^chatgpt image /i,
 ];
