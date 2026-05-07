@@ -88,9 +88,16 @@ async function main(): Promise<void> {
   rows[0].forEach((x, i) => { h[x] = i; });
 
   // Build adult lookup: color (lower) → { Front, Back, Side, Model } first non-empty value
+  // Also capture the youth's supplierCode so buildSidePair uploads land in the
+  // right Drive folder (root/<supplier>/<styleId>/).
   const adultByColor = new Map<string, Partial<Record<ImageCol, string>>>();
+  let youthSupplier = '';
   for (let i = 1; i < rows.length; i++) {
-    if (String(rows[i][h['productId']] ?? '').trim() !== args.adult) continue;
+    const rowPid = String(rows[i][h['productId']] ?? '').trim();
+    if (rowPid === args.youth && !youthSupplier) {
+      youthSupplier = String(rows[i][h['supplierCode']] ?? '').trim();
+    }
+    if (rowPid !== args.adult) continue;
     const color = String(rows[i][h['colorName']] ?? '').trim();
     if (!color) continue;
     const k = color.toLowerCase();
@@ -101,6 +108,8 @@ async function main(): Promise<void> {
     }
     adultByColor.set(k, cur);
   }
+  if (!youthSupplier) throw new Error(`Could not find supplierCode for youth pid ${args.youth} in BR`);
+  logger.info(`Youth supplier: ${youthSupplier}`);
   logger.info(`Adult ${args.adult}: ${adultByColor.size} colors with images`);
 
   // Find youth rows and plan updates
@@ -236,7 +245,7 @@ async function main(): Promise<void> {
     // Build side pair for the new side image
     let leftUrl = cp.side, rightUrl = cp.side;
     if (cp.side) {
-      const pair = await buildSidePair(cp.side, 'CANADASPORTSWEAR', args.youth, safeColor(cp.color));
+      const pair = await buildSidePair(cp.side, youthSupplier, args.youth, safeColor(cp.color));
       if (pair) { leftUrl = pair.leftSideUrl; rightUrl = pair.rightSideUrl; }
     }
     const toAttach: { url: string; alt: string }[] = [];

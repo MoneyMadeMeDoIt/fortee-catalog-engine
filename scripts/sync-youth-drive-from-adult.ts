@@ -116,21 +116,32 @@ async function updateDriveFile(drive: drive_v3.Drive, fileId: string, buffer: Bu
   });
 }
 
-/** Parse "<pid>_<Color words>_<View>_<rest>.<ext>" or similar and return { color, view }. */
+/** Parse one of:
+ *    CSW (Pascal_Snake): "S5615Y_Black_Front_std.png", "L0550Y_Light_Blue_Side_std.png"
+ *    S&S (lowercase-hyphen): "18500b-light-pink-front.png", "5000-sport-grey-back.png"
+ *  → { color, view }. Skips raw/model/auxiliary files we don't sync. */
 function parseYouthFilename(pid: string, name: string): { color: string; view: 'Front' | 'Back' | 'Side' } | null {
-  // Strip extension
   const base = name.replace(/\.[a-z0-9]+$/i, '');
-  // Strip pid prefix if present
-  const stripped = base.startsWith(`${pid}_`) ? base.slice(pid.length + 1) : base;
-  // Find which view label appears
-  const VIEW_RE = /(Front|Back|Side|DirectSide|ModelFront)/;
+  const lower = base.toLowerCase();
+  const pidLower = pid.toLowerCase();
+  // Skip model/raw/right-flipped/size-chart aux files — never targets of front/back/side sync
+  if (/(_raw$|_raw_|_flipped$|_model$|_model_|_size_chart|_left_side_flipped|_right_side_flipped)/i.test(base)) return null;
+  // Strip pid prefix (either "<pid>_" or "<pid>-")
+  let stripped: string;
+  if (lower.startsWith(`${pidLower}_`)) stripped = base.slice(pid.length + 1);
+  else if (lower.startsWith(`${pidLower}-`)) stripped = base.slice(pid.length + 1);
+  else stripped = base;
+  // Look for view word at the END separated by `_`, `-`, or boundary
+  const VIEW_RE = /[-_](front|back|side|directside|modelfront)([-_].*)?$/i;
   const m = stripped.match(VIEW_RE);
   if (!m) return null;
-  const view = m[1] === 'DirectSide' ? 'Side' : m[1] === 'ModelFront' ? 'Front' : m[1] as 'Front' | 'Back' | 'Side';
-  // Color is everything before the view label, with underscores → spaces
-  const colorRaw = stripped.slice(0, m.index!).replace(/_+$/, '');
+  const viewWord = m[1].toLowerCase();
+  const view = viewWord === 'directside' ? 'Side' : viewWord === 'modelfront' ? 'Front' : (viewWord.charAt(0).toUpperCase() + viewWord.slice(1)) as 'Front' | 'Back' | 'Side';
+  // Color is everything before the view delimiter
+  const colorRaw = stripped.slice(0, m.index!);
   if (!colorRaw) return null;
-  const color = colorRaw.replace(/_/g, ' ').trim();
+  // Normalize: underscores AND hyphens → spaces; trim; capitalize words
+  const color = colorRaw.replace(/[_-]+/g, ' ').trim().replace(/\b\w/g, c => c.toUpperCase());
   return { color, view };
 }
 
