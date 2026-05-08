@@ -50,7 +50,7 @@ Plans:
 - [x] **Phase 11: Image Standardization & Safe Upload** - Standardize all accepted images to 2000x2000 with uniform 85% garment height, write CDN URLs to Google Sheets (completed 2026-03-27)
 - [x] **Phase 12: Audit Runner** - Per-product orchestrator wiring scorer → source → generate → standardize → upload into a single end-to-end function (completed 2026-03-27)
 - [x] **Phase 13: CLI Entry Point** - audit-images.ts CLI exposing the audit runner with --style-id, --all, and --dry-run flags (completed 2026-03-27)
-- [ ] **Phase 14: Garment Type Verification** - Post-generation classifier that rejects AI images where garment type doesn't match the source (e.g., hoodie generated for a crewneck product)
+- [ ] **Phase 15: Garment Type Verification** - Post-generation classifier that rejects AI images where garment type doesn't match the source (e.g., hoodie generated for a crewneck product)
 
 ## Phase Details
 
@@ -136,6 +136,13 @@ Plans:
 **Plans:** 1/1 plans complete
 Plans:
 - [x] 13-01-PLAN.md — CLI script with --style-id, --all, --dry-run flags and unit tests
+
+### Phase 15: Garment Type Verification
+**Goal**: Post-generation classifier rejects AI-generated images whose garment type drifts from the source (e.g., hoodie produced for a crewneck product), forcing regeneration before the image is accepted into the audit pipeline
+**Depends on**: Phase 10, Phase 12
+**Requirements**: (TBD — defined by SPEC.md)
+**Success Criteria**: (TBD — defined by SPEC.md)
+**Plans:** 0 plans
 
 ## Progress
 
