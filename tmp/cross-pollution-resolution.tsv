@@ -1,0 +1,743 @@
+pid	filename	suggested_action	reason
+A702	Screenshot 2026-04-24 103950.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00693	L00692-L00693_SIZE_CHART_-08-22-23.pdf	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00871	L00870-L00871_SIZE_CHART_-08-23-23.pdf	MOVE-TO-L00870	Filename pid signature matches BR pid L00870
+LCB12	33604_f_fl.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+LCB12	29517_f_fl.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S07200	L07200-L07201-L7200Y_SIZE_CHART_-08-23-23.pdf	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S07200	L07200_CSW-NV_BV_df437b5d-f87e-4777-bac3-a7865b23686e_2000x.webp	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S07200	L07200_CSW-NV_527d26ed-81e5-439e-8b67-9dd539f036a4_2000x.webp	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S07200	L07200_B-B_e0643dd4-ba55-4b9e-b3d5-76618b8aaf10_2000x.webp	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+1010	BELLA_+_CANVAS_1010_Solid_Pink_Blend_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 1010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1010']
+1010	BELLA_+_CANVAS_1010_Solid_Baby_Blue_Blend_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 1010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1010']
+1010	BELLA_+_CANVAS_1010_Solid_Black_Blend_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 1010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1010']
+1010	BELLA_+_CANVAS_1010_Solid_Natural_Blend_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 1010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1010']
+1010	BELLA_+_CANVAS_1010_Solid_Black_Blend_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 1010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1010']
+1010	BELLA_+_CANVAS_1010_Solid_Baby_Blue_Blend_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 1010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1010']
+1010	BELLA_+_CANVAS_1010_Solid_Pink_Blend_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 1010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1010']
+1010	BELLA_+_CANVAS_1010_Solid_Pink_Blend_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 1010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1010']
+1010	BELLA_+_CANVAS_1010_Solid_Natural_Blend_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 1010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1010']
+1010	BELLA_+_CANVAS_1010_Solid_Baby_Blue_Blend_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 1010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1010']
+1010	BELLA_+_CANVAS_1010_Solid_Black_Blend_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 1010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1010']
+1010	BELLA_+_CANVAS_1010_Solid_White_Blend_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 1010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1010']
+1010	BELLA_+_CANVAS_1010_Solid_Natural_Blend_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 1010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1010']
+1010	BELLA_+_CANVAS_1010_Solid_White_Blend_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 1010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1010']
+1010	BELLA_+_CANVAS_1010_Solid_White_Blend_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 1010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1010']
+H8200Y	H08200-H8200Y_SIZE_CHART_-11-04-24.pdf	MOVE-TO-H08200	Filename pid signature matches BR pid H08200
+L09300	L09300 - OLIVE - FRONT.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L01275	1275InnwerW-Back-Black-HIRes.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L01275	1275InnwerW-Front-Orange-HIRes.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L01275	1275InnwerW-Back-Yellow-HIRes.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L01275	1275InnwerW-Front-Black-HIRes.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L01275	1275InnwerW-Front-Navy-HIRes.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L01275	1275InnwerW-Front-Yellow-HIRes.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L01275	1275InnwerW-Back-Navy-HIRes.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L01275	1275InnwerW-Back-Orange-HIRes.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L03101	3100 - Backview - HiRez -- Black.jpg	MOVE-TO-L03100	Filename pid signature matches BR pid L03100
+L03101	3100-Backview-LowiRez--Navy_2000x.webp	MOVE-TO-L03100	Filename pid signature matches BR pid L03100
+S05280	S05280BlackRight.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05280	S05280WhiteRight.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05280	S05280IvoryRight.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05735	S05737-Black-Side.png	MOVE-TO-S05737	Filename pid signature matches BR pid S05737
+S05735	S05737-Red-Side.png	MOVE-TO-S05737	Filename pid signature matches BR pid S05737
+S05738	S05737-S05738_SIZE_CHART_-08-23-23.pdf	MOVE-TO-S05737	Filename pid signature matches BR pid S05737
+S05773	S05772-S05773_SIZE_CHART_-08-23-23.pdf	MOVE-TO-S05772	Filename pid signature matches BR pid S05772
+S05773	S05772-Red-Side.png	MOVE-TO-S05772	Filename pid signature matches BR pid S05772
+S05773	S05772-Grey-side.png	MOVE-TO-S05772	Filename pid signature matches BR pid S05772
+S05773	S05772-White-Side.png	MOVE-TO-S05772	Filename pid signature matches BR pid S05772
+S05773	S05772-Black-Side.png	MOVE-TO-S05772	Filename pid signature matches BR pid S05772
+S05773	S05772-Navy-Side.png	MOVE-TO-S05772	Filename pid signature matches BR pid S05772
+S05773	S05772-Royal-Side.png	MOVE-TO-S05772	Filename pid signature matches BR pid S05772
+S05773	S05573_Navy_Front.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05773	S05573_Navy_Back.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05773	S05573_Cobalt_Back.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05773	S05573_Cobalt_Front.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05773	S05573_WHITE_176_BV.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05773	S05573_GUNMETAL_FV.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05773	S05573_WHITE_170_FV.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05773	S05573_RED_158_BV.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05773	S05573_GUNMETAL_BV.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05773	S05573_BLACK_FV.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05773	S05573_BLACK_BV.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05773	S05573_RED_147_FV.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00976	L00975-L00976-L0975Y_SIZE_CHART_-07-11-24.pdf	MOVE-TO-L00975	Filename pid signature matches BR pid L00975
+S05935	Gemini_Generated_Image_uidcd7uidcd7uidc.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05935	S05936-Model-5'10''-185Lbs-L.png	MOVE-TO-S05936	Filename pid signature matches BR pid S05936
+S05936	Gemini_Generated_Image_r1f4tzr1f4tzr1f4.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05936	Gemini_Generated_Image_hswzc1hswzc1hswz.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05936	Gemini_Generated_Image_lq5dfzlq5dfzlq5d.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05936	S05935-S05936-S5935Y_SIZE_CHART_-08-22-23.pdf	MOVE-TO-S05935	Filename pid signature matches BR pid S05935
+S05948	S05948 - Black - Front.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05948	S05948 - Yellow - Front.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05948	S05948 - Navy - Front.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05948	S05948 - Orange - Front.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05960	L05960_HiVis_Black_Off_BV_RGB.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05960	L05960_HiVis_Navy_Off_RGB.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05960	L05960_HiVis_Orange_Off_FV_RGB.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05960	L05960_HiVis_Black_Off_009_RGB.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05960	L05960_HiVis_Navy_Off_Backview_RGB.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05960	L05960_HiVisYellow_Off_BV_RGB.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05960	L05960_HiVisYellow_Off_FV_RGB.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05960	L05960_HiVis_Orange_Off_BV_RGB.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00540	L00540 model.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00540	L00540 Ivory Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00540	L00540 Navy Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00540	L00540 Navy Front.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00540	L00540 Charcoal Heather  Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00540	L00540 Charcoal Heather  Front.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00540	L00540 Black Front.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00540	L00540 Black Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00540	L00540 Heather grey Front.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00540	L00540 Heather grey Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00540	L00540 ivory Front.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00540	L00540 Rouge Front.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00540	L00540 Rouge Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00540	L00540 Bleu Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00540	L00540 Bleu Front.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00545	L0545Y-Ivo-f.jpg	MOVE-TO-L0545Y	Filename pid signature matches BR pid L0545Y
+L00550	S05610-S05611-S5610Y_SIZE_CHART_-08-22-23_d0a3705c-e5d3-442a-93cb-0d690b793aef.pdf	MOVE-TO-S05610	Filename pid signature matches BR pid S05610
+L00550	L0550-AshGrey-back-LowRes_eca15492-a36d-4ad3-91a2-f635360b42f0_2000x.webp	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00550	L0550-AshGrey-front_1e3860ad-3507-4772-91c4-5f006dcd9eac_2000x.webp	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00550	L0550-Sand-back-LowRes_e96ec320-f970-4aed-8b3c-efb9659c4039_2000x.webp	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L00550	L0550-AthleticGreyHeather-front_93352e6a-eed3-4eac-9f71-3310164ee8b5_2000x.webp	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L0550Y	L00550Y-KellyGreen-front.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L0550Y	L00550Y-Heliconia-front.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L0550Y	L00550Y-Brown-front.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L0550Y	L00550Y-LtBlue-front.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L0550Y	L00550Y-Caramel-front.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L0555Y	L00555Y-Sand-front.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L0555Y	L00555Y-Maroon-front.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L0555Y	L00555Y-White-frontjpg.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L0555Y	L00555Y-Caramel-front.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+L0555Y	L00555Y-Forest-front.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05610	S05610 Lightblue Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05610	S05610 AthleticGreyHeather Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05610	S05610 AthleticGreyHeather Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05610	S05610 KellyGreen Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05610	S05610 ForestGreen Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05610	S05610 FatigueGreen Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05610	S05610 CharcoalHeather Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05610	S05610 ForestGreen Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05610	S05610 ForestGreen Front.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05610	S05610 Heleconia Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05610	S05610 Saphire side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05610	S05610 Saphire Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05610	S05610 Royal Side .png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05610	S05610 Royal Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05610	S05610 LightBlue Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05610	S05610 KellyGreen Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05610	S05610 FatigueGreen Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05610	S05610 CharcoalHeather Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Black Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Royal Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Yellow Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Sand Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Red Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Purple Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Orange Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Pink Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Lightblue Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Maroon Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 KellyGreen Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Ivory Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Gold Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Heliconia Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 ForestGreen Side .png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 FatigueGreen Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Brown Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 AthleticGreyHeather Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Yellow Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Saphire back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Navy Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Royal Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 CharcaolHeather Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Red back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 White Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Purple back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Pink Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Maroon Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Orange Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Lightblue back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 KellyGreen Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Ivory Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Heliconia Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Gold Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 ForestGreen Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 FatigueGreen Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Brown Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 AthleticGreyHeather Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Navy Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 CharcoalHeather Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 White back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Black Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Caramel Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05611	S05611 Caramel Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05615	S05615 Red Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05615	S05615 Orange Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05615	S05615 Athleticgrey Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05615	S05615 Navy Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05615	S05615 CharcoalHeather Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05615	S05615 White Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05615	S05615 Black Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05615	S05615 Royal Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05615	S05615 Red Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05615	S05615 Orange Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05615	S05615 AthleticGrey Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05615	S05615 Navy Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05615	S05615 CharcoalHeater Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05615	S05615 White Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05615	S05615 Black Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05616	S05616 Royal Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05616	S05616 Red Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05616	S05616 Orange Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05616	S05616 AthleticGrey Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05616	S05616 Navy Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05616	S05616 CharcoalHeather Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05616	S05616 White Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05616	S05616 Black Side.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05616	S05616 Royal Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05616	S05616 Red Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05616	S05616 Orange Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05616	S05616 AthleticGrey Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05616	S05616 Navy Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05616	S05616 CharcoalHeather Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05616	S05616 White Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+S05616	S05616 Black Back.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+6110	BELLA_+_CANVAS_6110_White_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6110 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6110']
+6110	BELLA_+_CANVAS_6110_Vintage_Red_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6110 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6110']
+6110	BELLA_+_CANVAS_6110_Dark_Grey_Back_High_Model.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6110 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6110']
+6110	BELLA_+_CANVAS_6110_Vintage_Navy_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6110 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6110']
+6110	BELLA_+_CANVAS_6110_Black_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6110 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6110']
+6110	BELLA_+_CANVAS_6110_Black_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6110 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6110']
+6110	BELLA_+_CANVAS_6110_Vintage_Red_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6110 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6110']
+6110	BELLA_+_CANVAS_6110_Vintage_Navy_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6110 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6110']
+6110	BELLA_+_CANVAS_6110_Athletic_Heather_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6110 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6110']
+6110	BELLA_+_CANVAS_6110_Dark_Grey_Front_High_Model.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6110 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6110']
+6110	BELLA_+_CANVAS_6110_White_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6110 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6110']
+6110	BELLA_+_CANVAS_6110_Black_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6110 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6110']
+6110	BELLA_+_CANVAS_6110_White_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6110 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6110']
+6110	BELLA_+_CANVAS_6110_Athletic_Heather_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6110 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6110']
+6110	BELLA_+_CANVAS_6110_Athletic_Heather_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6110 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6110']
+6110	BELLA_+_CANVAS_6110_Dark_Grey_Side_High_Model.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6110 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6110']
+6110	BELLA_+_CANVAS_6110_Vintage_Red_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6110 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6110']
+6110	BELLA_+_CANVAS_6110_Vintage_Navy_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6110 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6110']
+8882	BELLA_+_CANVAS_8882_Heather_Dust_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 8882 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['8882']
+8882	BELLA_+_CANVAS_8882_Heather_Dust_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 8882 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['8882']
+8882	BELLA_+_CANVAS_8882_Black_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 8882 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['8882']
+8882	BELLA_+_CANVAS_8882_Black_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 8882 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['8882']
+8882	BELLA_+_CANVAS_8882_White_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 8882 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['8882']
+8882	BELLA_+_CANVAS_8882_Black_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 8882 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['8882']
+8882	BELLA_+_CANVAS_8882_White_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 8882 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['8882']
+8882	BELLA_+_CANVAS_8882_Heather_Dust_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 8882 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['8882']
+8882	BELLA_+_CANVAS_8882_White_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 8882 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['8882']
+4610	BELLA_+_CANVAS_4610_Vintage_Navy_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Hunter_Green_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Athletic_Heather_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Asphalt_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Black_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_White_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Vintage_Red_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Black_Back_High_Model.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Black_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Vintage_Red_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Athletic_Heather_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Asphalt_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Hunter_Green_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Purple_Storm_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Vintage_Navy_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Asphalt_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Dust_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Vintage_Red_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Cocoa_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Athletic_Heather_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Black_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Purple_Storm_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Cocoa_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Dust_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Black_Side_High_Model.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Cocoa_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_White_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_White_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Dust_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Hunter_Green_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Purple_Storm_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Vintage_Navy_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+4610	BELLA_+_CANVAS_4610_Black_Front_High_Model.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 4610 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['4610']
+5200	3899_fl.jpg	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+5200	Gildan_5200_Black_Side_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_Red_Front_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_Navy_Front_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_Safety_Pink_Back_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_Sport_Grey_Front_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_Black_Back_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_Safety_Pink_Front_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_Graphite_Heather_Front_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_Purple_Front_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_Navy_Side_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_Red_Back_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_White_Front_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_Navy_Back_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_Royal_Back_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_Black_Front_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_Graphite_Heather_Back_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_Purple_Side_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_Royal_Front_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_White_Side_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_Sport_Grey_Back_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_White_Back_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_Graphite_Heather_DirectSide_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+5200	Gildan_5200_Purple_Back_High.jpg	KEEP-WHITELIST-Gildan	Branded prefix "Gildan_" with embedded pid 5200 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['5200']
+3900	Next_Level_3900_Natural_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Turquoise_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Royal_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Tahiti_Blue_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Turquoise_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Tahiti_Blue_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Purple_Rush_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Red_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Royal_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Purple_Rush_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Red_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Heather_Grey_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Kelly_Green_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Indigo_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Maroon_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Natural_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Kelly_Green_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Light_Pink_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Cancun_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Light_Pink_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Heavy_Metal_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Heather_Grey_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Black_DirectSide_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Heavy_Metal_DirectSide_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Midnight_Navy_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Black_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Midnight_Navy_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Hot_Pink_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Cancun_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_White_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_White_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Heavy_Metal_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Hot_Pink_DirectSide_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Maroon_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Black_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Hot_Pink_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_White_DirectSide_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+3900	Next_Level_3900_Indigo_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3900 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3900']
+9002	Next_Level_9002_Heather_Military_Green_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 9002 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['9002']
+9002	Next_Level_9002_Heather_Midnight_Navy_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 9002 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['9002']
+9002	Next_Level_9002_Heather_Black_DirectSide_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 9002 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['9002']
+9002	Next_Level_9002_Heather_Grey_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 9002 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['9002']
+9002	Next_Level_9002_Heather_Grey_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 9002 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['9002']
+9002	Next_Level_9002_Heather_Black_Front_High_Model.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 9002 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['9002']
+9002	Next_Level_9002_Heather_Midnight_Navy_DirectSide_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 9002 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['9002']
+9002	Next_Level_9002_Heather_Military_Green_DirectSide_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 9002 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['9002']
+9002	Next_Level_9002_Heather_Black_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 9002 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['9002']
+9002	Next_Level_9002_Heather_Black_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 9002 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['9002']
+9002	Next_Level_9002_Heather_Grey_DirectSide_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 9002 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['9002']
+9002	Next_Level_9002_Heather_Military_Green_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 9002 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['9002']
+9002	Next_Level_9002_Heather_Midnight_Navy_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 9002 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['9002']
+1510	Next_Level_1510_Military_Green_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Lilac_DirectSide_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Tahiti_Blue_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Mint_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Hot_Pink_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Red_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Raspberry_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Heather_Grey_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Turquoise_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Red_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Midnight_Navy_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Lilac_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Tahiti_Blue_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Raspberry_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Royal_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Hot_Pink_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Military_Green_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Royal_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Turquoise_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Lilac_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Mint_DirectSide_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Mint_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Cardinal_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Black_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_White_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Heather_Grey_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Desert_Pink_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_White_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Banana_Cream_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Desert_Pink_DirectSide_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Dark_Grey_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Cardinal_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Dark_Grey_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Cardinal_DirectSide_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Black_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Desert_Pink_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+1510	Next_Level_1510_Banana_Cream_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 1510 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1510']
+3911	Next_Level_3911_Black_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3911 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3911']
+3911	Next_Level_3911_Heather_Grey_DirectSide_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3911 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3911']
+3911	Next_Level_3911_Midnight_Navy_DirectSide_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3911 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3911']
+3911	Next_Level_3911_Heather_Grey_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3911 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3911']
+3911	Next_Level_3911_Red_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3911 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3911']
+3911	Next_Level_3911_Red_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3911 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3911']
+3911	Next_Level_3911_White_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3911 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3911']
+3911	Next_Level_3911_Black_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3911 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3911']
+3911	Next_Level_3911_White_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3911 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3911']
+3911	Next_Level_3911_White_DirectSide_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3911 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3911']
+3911	Next_Level_3911_Desert_Pink_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3911 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3911']
+3911	Next_Level_3911_Desert_Pink_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3911 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3911']
+3911	Next_Level_3911_Heather_Grey_Back_High_Model.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3911 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3911']
+3911	Next_Level_3911_Heather_Grey_Front_High_Model.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3911 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3911']
+3911	Next_Level_3911_Heather_Grey_Side_High_Model.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3911 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3911']
+3911	Next_Level_3911_Heather_Grey_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3911 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3911']
+3911	Next_Level_3911_Midnight_Navy_Back_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3911 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3911']
+3911	Next_Level_3911_Midnight_Navy_Front_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3911 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3911']
+3911	Next_Level_3911_Black_DirectSide_High.jpg	KEEP-WHITELIST-Next_Level	Branded prefix "Next_Level_" with embedded pid 3911 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3911']
+A704	Screenshot 2026-04-24 103950.png	TRASH-ORPHAN	No pid signature, no recognized brand prefix
+1304	American_Apparel_1304_Orange_Front_High.jpg	KEEP-WHITELIST-American_Apparel	Branded prefix "American_Apparel_" with embedded pid 1304 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1304']
+1304	American_Apparel_1304_Sand_Back_High.jpg	KEEP-WHITELIST-American_Apparel	Branded prefix "American_Apparel_" with embedded pid 1304 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1304']
+1304	American_Apparel_1304_White_Back_High.jpg	KEEP-WHITELIST-American_Apparel	Branded prefix "American_Apparel_" with embedded pid 1304 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1304']
+1304	American_Apparel_1304_Heather_Grey_Back_High.jpg	KEEP-WHITELIST-American_Apparel	Branded prefix "American_Apparel_" with embedded pid 1304 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1304']
+1304	American_Apparel_1304_Black_Back_High.jpg	KEEP-WHITELIST-American_Apparel	Branded prefix "American_Apparel_" with embedded pid 1304 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1304']
+1304	American_Apparel_1304_Black_Front_High.jpg	KEEP-WHITELIST-American_Apparel	Branded prefix "American_Apparel_" with embedded pid 1304 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1304']
+1304	American_Apparel_1304_Sand_Front_High.jpg	KEEP-WHITELIST-American_Apparel	Branded prefix "American_Apparel_" with embedded pid 1304 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1304']
+1304	American_Apparel_1304_Heather_Grey_Front_High.jpg	KEEP-WHITELIST-American_Apparel	Branded prefix "American_Apparel_" with embedded pid 1304 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1304']
+1304	American_Apparel_1304_Orange_Back_High.jpg	KEEP-WHITELIST-American_Apparel	Branded prefix "American_Apparel_" with embedded pid 1304 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1304']
+1304	American_Apparel_1304_White_Front_High.jpg	KEEP-WHITELIST-American_Apparel	Branded prefix "American_Apparel_" with embedded pid 1304 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1304']
+3001	BELLA_+_CANVAS_3001_Cardinal_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3001 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3001']
+3001	BELLA_+_CANVAS_3001_White_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3001 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3001']
+3001	BELLA_+_CANVAS_3001_Asphalt_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3001 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3001']
+3001	BELLA_+_CANVAS_3001_Navy_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3001 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3001']
+3001	BELLA_+_CANVAS_3001_Natural_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3001 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3001']
+3001	BELLA_+_CANVAS_3001_White_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3001 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3001']
+3001	BELLA_+_CANVAS_3001_Forest_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3001 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3001']
+3001	BELLA_+_CANVAS_3001_Black_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3001 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3001']
+3001	BELLA_+_CANVAS_3001_Natural_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3001 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3001']
+3001	BELLA_+_CANVAS_3001_Cardinal_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3001 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3001']
+3001	BELLA_+_CANVAS_3001_Black_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3001 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3001']
+3001	BELLA_+_CANVAS_3001_Asphalt_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3001 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3001']
+3001	BELLA_+_CANVAS_3001_Forest_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3001 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3001']
+3001	BELLA_+_CANVAS_3001_Navy_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3001 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3001']
+3010	BELLA_+_CANVAS_3010_Navy_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Natural_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Athletic_Heather_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Maroon_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Athletic_Heather_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Vintage_White_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Natural_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Vintage_Brown_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Vintage_Black_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Vintage_White_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Vintage_Navy_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Dark_Grey_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Vintage_Brown_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Vintage_Navy_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Toast_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Black_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Natural_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Dark_Grey_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Soft_Pink_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Black_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Vintage_Brown_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Vintage_Red_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Vintage_Denim_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Forest_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Dark_Grey_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Black_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Vintage_Red_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Vintage_Black_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Forest_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Navy_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Maroon_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Athletic_Heather_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Soft_Pink_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Vintage_Navy_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Maroon_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Toast_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_White_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Toast_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Vintage_Denim_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Vintage_White_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Vintage_Denim_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Navy_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_White_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Vintage_Red_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Soft_Pink_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_Vintage_Black_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3010	BELLA_+_CANVAS_3010_White_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3010 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3010']
+3480	BELLA_+_CANVAS_3480_Teal_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3480 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3480']
+3480	BELLA_+_CANVAS_3480_Black_Side_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3480 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3480']
+3480	BELLA_+_CANVAS_3480_Teal_Side_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3480 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3480']
+3480	BELLA_+_CANVAS_3480_White_Side_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3480 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3480']
+3480	BELLA_+_CANVAS_3480_Green_Triblend_Side_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3480 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3480']
+3480	BELLA_+_CANVAS_3480_Green_Triblend_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3480 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3480']
+3480	BELLA_+_CANVAS_3480_Asphalt_Side_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3480 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3480']
+3480	BELLA_+_CANVAS_3480_Teal_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3480 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3480']
+3480	BELLA_+_CANVAS_3480_Orange_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3480 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3480']
+3480	BELLA_+_CANVAS_3480_Orange_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3480 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3480']
+3480	BELLA_+_CANVAS_3480_Green_Triblend_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3480 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3480']
+3480	BELLA_+_CANVAS_3480_Navy_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3480 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3480']
+3480	BELLA_+_CANVAS_3480_Orange_Side_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3480 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3480']
+3480	BELLA_+_CANVAS_3480_Navy_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3480 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3480']
+3480	BELLA_+_CANVAS_3480_White_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3480 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3480']
+3480	BELLA_+_CANVAS_3480_Asphalt_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3480 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3480']
+3480	BELLA_+_CANVAS_3480_White_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3480 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3480']
+3480	BELLA_+_CANVAS_3480_Asphalt_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 3480 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['3480']
+6003	BELLA_+_CANVAS_6003_Athletic_Heather_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6003 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6003']
+6003	BELLA_+_CANVAS_6003_Black_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6003 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6003']
+6003	BELLA_+_CANVAS_6003_White_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6003 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6003']
+6003	BELLA_+_CANVAS_6003_Dark_Grey_Heather_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6003 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6003']
+6003	BELLA_+_CANVAS_6003_Black_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6003 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6003']
+6003	BELLA_+_CANVAS_6003_White_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6003 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6003']
+6003	BELLA_+_CANVAS_6003_Athletic_Heather_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6003 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6003']
+6003	BELLA_+_CANVAS_6003_White_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6003 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6003']
+6003	BELLA_+_CANVAS_6003_Athletic_Heather_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6003 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6003']
+6008	BELLA_+_CANVAS_6008_Red_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6008 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6008']
+6008	BELLA_+_CANVAS_6008_Dark_Grey_Heather_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6008 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6008']
+6008	BELLA_+_CANVAS_6008_Red_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6008 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6008']
+6008	BELLA_+_CANVAS_6008_Navy_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6008 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6008']
+6008	BELLA_+_CANVAS_6008_True_Royal_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6008 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6008']
+6008	BELLA_+_CANVAS_6008_True_Royal_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6008 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6008']
+6008	BELLA_+_CANVAS_6008_Teal_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6008 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6008']
+6008	BELLA_+_CANVAS_6008_True_Royal_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6008 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6008']
+6008	BELLA_+_CANVAS_6008_Teal_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6008 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6008']
+6008	BELLA_+_CANVAS_6008_Dark_Grey_Heather_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6008 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6008']
+6008	BELLA_+_CANVAS_6008_Red_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6008 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6008']
+6008	BELLA_+_CANVAS_6008_Dark_Grey_Heather_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6008 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6008']
+6008	BELLA_+_CANVAS_6008_Black_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6008 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6008']
+6008	BELLA_+_CANVAS_6008_Black_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6008 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6008']
+6008	BELLA_+_CANVAS_6008_Athletic_Heather_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6008 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6008']
+6008	BELLA_+_CANVAS_6008_Black_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6008 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6008']
+6008	BELLA_+_CANVAS_6008_Athletic_Heather_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6008 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6008']
+6008	BELLA_+_CANVAS_6008_White_Front_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6008 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6008']
+6008	BELLA_+_CANVAS_6008_White_Back_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6008 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6008']
+6008	BELLA_+_CANVAS_6008_Athletic_Heather_DirectSide_High.jpg	KEEP-WHITELIST-BELLA_+_CANVAS	Branded prefix "BELLA_+_CANVAS_" with embedded pid 6008 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['6008']
+1466	Comfort_Colors_1466_Blue_Jean_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Blue_Jean_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Pepper_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Peachy_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Crimson_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Black_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Hydrangea_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Butter_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Ivory_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Peachy_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Hydrangea_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Butter_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Grey_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Crimson_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Grey_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Peachy_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Ivory_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Blue_Jean_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_White_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_White_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Pepper_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Neon_Violet_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Espresso_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Hydrangea_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Espresso_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Grey_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Neon_Violet_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Black_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Ivory_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Espresso_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Neon_Violet_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Butter_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Pepper_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Black_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_White_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1466	Comfort_Colors_1466_Crimson_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1466 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1466']
+1467	Comfort_Colors_1467_Peachy_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Pepper_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Peachy_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Pepper_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Pepper_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Crimson_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Grey_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_White_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_White_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Hydrangea_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Black_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Ivory_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Black_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Hydrangea_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Butter_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Ivory_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Crimson_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Grey_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Ivory_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Neon_Violet_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Peachy_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Black_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Neon_Violet_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_White_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Butter_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Butter_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Blue_Jean_DirectSide_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Neon_Violet_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Grey_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Blue_Jean_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Hydrangea_Back_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Blue_Jean_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+1467	Comfort_Colors_1467_Crimson_Front_High.jpg	KEEP-WHITELIST-Comfort_Colors	Branded prefix "Comfort_Colors_" with embedded pid 1467 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['1467']
+112	Richardson_112_Loden-_Black_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Khaki-_Coffee_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Heather_Grey-_Black_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Black-_Vegas_Gold_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Heather_Grey-_Dark_Green_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Navy_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Dark_Green-_White_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Dark_Green-_White_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Heather_Grey-_Light_Grey_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Royal_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Heather_Grey-_Royal_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Black-_Vegas_Gold_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Brown-_Khaki_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Neon_Green_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Columbia_Blue-_White_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Black-_White_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Neon_Green_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Grey-_Charcoal-_Black_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Neon_Blue_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Carmel-_Black_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_White_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_White_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Black_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Heather_Grey-_Navy_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Navy_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Heather_Grey-_Light_Grey_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Carmel-_Black_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Grey-_Charcoal-_Black_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Heather_Grey-_Dark_Green_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Black-_White-_Red_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Columbia_Blue-_White_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Black_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Neon_Orange_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Red_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Red_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Neon_Orange_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Carmel-_Black_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Neon_Yellow_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Brown-_Khaki_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Black-_Charcoal_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Orange_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Royal_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Heather_Grey-_Light_Grey_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Heather_Grey-_Royal_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Black_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Columbia_Blue_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Black-_White_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_White_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Heather_Grey-_Charcoal-_Maroon_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Neon_Yellow_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Neon_Blue_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Orange_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Heather_Grey-_Royal_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Neon_Pink_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Black-_White-_Red_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Heather_Grey-_Charcoal-_Maroon_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Brown-_Khaki_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Red_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_White_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Heather_Grey-_Navy_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Columbia_Blue-_White_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Neon_Pink_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Neon_Green_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Black-_White_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Columbia_Blue_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Neon_Yellow_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Neon_Blue_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_White_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Heather_Grey-_Navy_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Heather_Grey-_Black_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Heather_Grey-_Charcoal-_Maroon_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Black-_White-_Red_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Heather_Grey-_Dark_Green_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Navy_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_White_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Black-_Gold_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Black-_White-_Heather_Grey_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Black_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Black-_Charcoal_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Black_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Black_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Black-_Gold_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Columbia_Blue_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Orange_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Black-_Charcoal_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Black-_Gold_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Neon_Orange_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Heather_Grey-_Black_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Grey-_Charcoal-_Black_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Black-_Vegas_Gold_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Black-_White-_Heather_Grey_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Dark_Green-_White_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Neon_Pink_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Black-_White-_Heather_Grey_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Charcoal-_Royal_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Navy-_Carmel_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Navy-_White_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Navy-_Orange_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Navy_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Purple-_White_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Red_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Khaki-_White_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Royal-_White_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Purple-_White_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Loden-_Black_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Navy_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Maroon-_White_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Purple-_White_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Kelly-_White_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Red-_White-_Heather_Grey_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Red-_White-_Black_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Navy-_White-_Heather_Grey_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_White-_Black_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Navy-_White_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Kelly-_White_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Royal-_Black_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Red-_White-_Heather_Grey_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Navy-_Charcoal_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Heather_Grey-_White_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Red-_Black_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Royal-_Black_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Red-_White-_Black_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Royal-_White_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Khaki-_White_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Red-_Black_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Red-_White_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Navy-_Orange_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Royal-_White-_Heather_Grey_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Red-_Black_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Navy-_White-_Heather_Grey_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Khaki-_White_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Navy-_Carmel_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Navy-_Charcoal_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Navy-_Charcoal_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_White-_Black_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Red_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_White-_Black_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Royal-_White_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Navy-_White-_Heather_Grey_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Navy-_Orange_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Navy-_White_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Heather_Grey-_White_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Navy_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Red-_White_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Kelly-_White_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Red_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Royal-_Black_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Red-_White-_Heather_Grey_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Maroon-_White_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Loden-_Black_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Navy-_Carmel_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Red-_White-_Black_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Royal-_White-_Heather_Grey_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Maroon-_White_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Red-_White_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Khaki-_Coffee_Back_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Khaki-_Coffee_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Royal-_White-_Heather_Grey_Front_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
+112	Richardson_112_Heather_Grey-_White_DirectSide_High.jpg	KEEP-WHITELIST-Richardson	Branded prefix "Richardson_" with embedded pid 112 matches parent — propose adding to KNOWN_SUPPLIER_PREFIXES['112']
