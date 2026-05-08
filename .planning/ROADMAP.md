@@ -28,12 +28,13 @@
 **Goal:** Reconcile BR ↔ Drive ↔ Store imagery state, close the cap-bound silent-pick bug class, and clean cross-pollution / DUPE-DRIVE audit categories.
 **Requirements:** R1.5000-recon, R2.sibling-invariant, R3.cap-store, R4.dupe-round2, R5.168-cross, R6.bad-alt, R10.audit-extension (see 14-SPEC.md)
 **Depends on:** Phase 13
-**Plans:** 3 plans (1/3 complete)
+**Plans:** 3 plans (3/3 complete) ✓ Phase complete 2026-05-08
+**Verification:** [.planning/phases/14-imagery-cleanup-reconcile-br-drive-store-consistency-for-cap/14-VERIFICATION.md](phases/14-imagery-cleanup-reconcile-br-drive-store-consistency-for-cap/14-VERIFICATION.md)
 
 Plans:
 - [x] **14-01: Foundations** — resolveStoreProduct helper, KNOWN_SUPPLIER_PREFIXES allowlist, dedupe STRAY_PATTERNS extension. 142 supplier-original Drive duplicates trashed. (completed 2026-05-08)
-- [ ] 14-02: BR ↔ Drive ↔ Store reconciliation (run /gsd-execute-phase 14 to continue)
-- [ ] 14-03: BAD-ALT remediation via fix-alts
+- [x] **14-02: BR ↔ Drive ↔ Store reconciliation** — pid 5000 orphan-color reap (60 store media + 43 backfill), pid 168 duplicate-side dedupe, 742-row cross-pollution classification TSV. (completed 2026-05-08)
+- [x] **14-03: Cross-pollution apply + BAD-ALT + verification** — 19 MOVE + 170 TRASH on Drive, 13 BAD-ALT visual-triaged (8 deletes + 5 renames), 14-VERIFICATION.md. Audit dropped 973→576 (all remaining documented or deferred). (completed 2026-05-08)
 
 ---
 

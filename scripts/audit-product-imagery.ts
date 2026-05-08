@@ -49,7 +49,31 @@ const ROOT_FOLDER_ID = process.env.GOOGLE_DRIVE_IMAGES_FOLDER_ID ?? '1xIjATpaEdq
 // they're correct — the audit's "filename must start with pid" invariant is
 // the wrong rule for supplier-branded naming conventions).
 const KNOWN_SUPPLIER_PREFIXES: Record<string, string[]> = {
+  // Richardson caps
   '168': ['Richardson_168_'],
+  '112': ['Richardson_112_'],
+  // BELLA + CANVAS line
+  '1010': ['BELLA_+_CANVAS_1010_'],
+  '3001': ['BELLA_+_CANVAS_3001_'],
+  '3010': ['BELLA_+_CANVAS_3010_'],
+  '3480': ['BELLA_+_CANVAS_3480_'],
+  '4610': ['BELLA_+_CANVAS_4610_'],
+  '6003': ['BELLA_+_CANVAS_6003_'],
+  '6008': ['BELLA_+_CANVAS_6008_'],
+  '6110': ['BELLA_+_CANVAS_6110_'],
+  '8882': ['BELLA_+_CANVAS_8882_'],
+  // Next Level
+  '1510': ['Next_Level_1510_'],
+  '3900': ['Next_Level_3900_'],
+  '3911': ['Next_Level_3911_'],
+  '9002': ['Next_Level_9002_'],
+  // Comfort Colors
+  '1466': ['Comfort_Colors_1466_'],
+  '1467': ['Comfort_Colors_1467_'],
+  // Gildan
+  '5200': ['Gildan_5200_'],
+  // American Apparel
+  '1304': ['American_Apparel_1304_'],
 };
 
 interface Args { pids: string[] | null; supplier: string | null; vision: boolean; limit: number; noStore: boolean }
