@@ -68,22 +68,92 @@ async function listFolder(drive: drive_v3.Drive, folderId: string): Promise<{ id
   return out;
 }
 
+/**
+ * Stray supplier-original naming patterns this script trashes when a
+ * canonical `_std.png` sibling exists for the same (color, view).
+ *
+ * Each entry is a regex matched case-insensitively against the full filename.
+ * They document the formats — actual classification still goes through
+ * parseFilename(), which extracts (color, view) so we can verify the
+ * canonical sibling exists. The patterns themselves are intentionally
+ * permissive; the canonical-sibling check is the safety guard.
+ *
+ * Patterns (added 2026-05-08, plan 14-01):
+ *   1. Underscored CSW-style:  693_NAVY_FRONT_low_375x.webp, 1040_black_front_HR.jpg
+ *      Numeric-only pid prefix + uppercase/lowercase color + view + size suffix.
+ *   2. S&S Profile-style:      H08355-Ivory-Profile_2000x.webp, H08200-White-profile.jpg
+ *      Pid + hyphen + Color + 'Profile' + optional size suffix.
+ *   3. HR-suffixed:            1040_black_front_HR.jpg, *_HR.jpg
+ *      Already covered by pattern 1's view-suffix tail; listed here for clarity.
+ */
+const STRAY_PATTERNS: RegExp[] = [
+  // 1. Underscored CSW-style (numeric-only pid prefix, optional low/HR/hi quality tag)
+  /^\d+_[A-Za-z][A-Za-z_]*_(FRONT|BACK|SIDE|MODEL)(_(low|hr|hi))?(_\d+x\d+)?\.(webp|jpg|jpeg|png)$/i,
+  // 2. S&S Profile-style (pid-color-Profile, optional size suffix)
+  /^[A-Z]\d+-[A-Za-z][A-Za-z-]*-Profile(_\d+x\d*)?\.(webp|jpg|jpeg|png)$/i,
+  // 3. HR-suffixed (numeric-only pid + view + _HR)
+  /^\d+_[a-z][a-z_]*_(front|back|side)_HR\.(jpg|jpeg|png|webp)$/i,
+];
+
 function parseFilename(pid: string, name: string): { color: string; view: string } | null {
   const base = name.replace(/\.[a-z0-9]+$/i, '');
   if (/(_raw$|_size_chart|_left_side_flipped|_right_side_flipped|_model$|_model_)/i.test(base)) return null;
   const lower = base.toLowerCase();
   const pidLower = pid.toLowerCase();
-  let stripped: string;
-  if (lower.startsWith(`${pidLower}_`) || lower.startsWith(`${pidLower}-`)) stripped = base.slice(pid.length + 1);
-  else return null;
-  const m = stripped.match(/[-_](front|back|side|directside|left|right)([-_].*)?$/i);
+  let stripped: string | null = null;
+  if (lower.startsWith(`${pidLower}_`) || lower.startsWith(`${pidLower}-`) || lower.startsWith(`${pidLower} `)) {
+    stripped = base.slice(pid.length + 1);
+  } else {
+    // Numeric-only pid prefix (e.g. "693_*" for pid "L00693", "1040_*" for "L01040",
+    // "5970 BLACK_BACK" for "S05970"). Mirrors the audit script's loose pid-membership
+    // check so dedupe can group supplier-originals alongside the canonical
+    // _std file for the same (color, view).
+    const numericMatch = pidLower.match(/[a-z]*(\d+)[a-z]*/);
+    if (numericMatch) {
+      const num = numericMatch[1];
+      const numStripped = num.replace(/^0+/, '');
+      for (const cand of [num, numStripped]) {
+        if (lower.startsWith(`${cand}-`) || lower.startsWith(`${cand}_`) || lower.startsWith(`${cand} `)) {
+          stripped = base.slice(cand.length + 1);
+          break;
+        }
+      }
+    }
+    // Branded supplier prefix (e.g. "BELLA_+_CANVAS_6110_Dark_Grey_Front_High",
+    // "Next_Level_3911_Heather_Grey_Side_High_Model", "1275InnwerW-Front-Orange-HIRes").
+    // Find the numeric-pid token embedded in the prefix and strip up to and
+    // including its trailing separator.
+    if (stripped === null && numericMatch) {
+      const num = numericMatch[1];
+      const numStripped = num.replace(/^0+/, '');
+      for (const cand of [num, numStripped]) {
+        const re = new RegExp(`(^|[ _-])${cand}[ _-]`, 'i');
+        const m = lower.match(re);
+        if (m && m.index !== undefined) {
+          stripped = base.slice(m.index + m[0].length);
+          break;
+        }
+      }
+    }
+  }
+  if (stripped === null) return null;
+  // View alternation now includes 'profile'. Trailing tail allows _low_NNNNxNNNN
+  // or _HR/_HIRes or _<size>x suffixes — and also _High and _High_Model so the
+  // Bella+Canvas / Next Level supplier-originals collapse into one group with
+  // their `_std.png` siblings (and with each other when no _std exists).
+  const m = stripped.match(/[-_ ](front|back|side|directside|left|right|profile)([-_. ].*)?$/i);
   if (!m) return null;
   const word = m[1].toLowerCase();
-  const view = (word === 'directside' || word === 'left' || word === 'right') ? 'Side'
+  const view = (word === 'directside' || word === 'left' || word === 'right' || word === 'profile') ? 'Side'
              : (word.charAt(0).toUpperCase() + word.slice(1));
   const colorRaw = stripped.slice(0, m.index!);
-  const color = colorRaw.replace(/[_-]+/g, ' ').toLowerCase().trim();
+  const color = colorRaw.replace(/[_\- ]+/g, ' ').toLowerCase().trim();
   return { color, view };
+}
+
+/** Returns true if the filename matches any documented stray supplier-original pattern. */
+function isStrayPattern(name: string): boolean {
+  return STRAY_PATTERNS.some(re => re.test(name));
 }
 
 async function main(): Promise<void> {

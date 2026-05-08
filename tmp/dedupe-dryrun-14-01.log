@@ -1,0 +1,152 @@
+[2026-05-08T12:03:20.815Z] [info]: dedupe-drive-duplicates: {"dryRun":true,"pids":null}
+[2026-05-08T12:03:20.817Z] [info]: Target pids with DUPE-DRIVE: 20
+[2026-05-08T12:03:25.031Z] [info]:   DRY CANADASPORTSWEAR/L00693 navy|Front: keep L00693_Navy_Front_std.png, trash 693_NAVY_FRONT_low_375x.webp
+[2026-05-08T12:03:25.031Z] [info]:   DRY CANADASPORTSWEAR/L00693 grey|Front: keep L00693_Grey_Front_std.png, trash 693_GREY_FRONT_low_375x.jpg
+[2026-05-08T12:03:25.032Z] [info]:   DRY CANADASPORTSWEAR/L00693 black|Front: keep L00693_Black_Front_std.png, trash 693_BLACK_FRONT_low_2000x.webp
+[2026-05-08T12:03:25.962Z] [info]:   DRY CANADASPORTSWEAR/H08355 ivory|Side: keep H08355_Ivory_side.png, trash H08355-Ivory-Profile_2000x.webp
+[2026-05-08T12:03:25.962Z] [info]:   DRY CANADASPORTSWEAR/H08355 royal|Side: keep H08355_Royal_side.png, trash H08355-Royal-Profile_2000x.webp
+[2026-05-08T12:03:25.962Z] [info]:   DRY CANADASPORTSWEAR/H08355 red|Side: keep H08355_Red_side.png, trash H08355-Red-Profile_2000x.webp
+[2026-05-08T12:03:25.962Z] [info]:   DRY CANADASPORTSWEAR/H08355 navy|Side: keep H08355_Navy_side.png, trash H08355-Navy-Profile_2000x.webp
+[2026-05-08T12:03:26.958Z] [info]:   DRY CANADASPORTSWEAR/L01040 black|Back: keep L01040_Black_Back_std.png, trash 1040_black_back_HR.jpg
+[2026-05-08T12:03:26.958Z] [info]:   DRY CANADASPORTSWEAR/L01040 black|Front: keep L01040_Black_Front_std.png, trash 1040_black_front_HR.jpg
+[2026-05-08T12:03:27.837Z] [info]:   DRY CANADASPORTSWEAR/H08200 white|Side: keep H08200_White_Side_std.png, trash H08200-White-profile.jpg
+[2026-05-08T12:03:27.837Z] [info]:   DRY CANADASPORTSWEAR/H08200 sapphire|Side: keep H08200_Sapphire_Side_std.png, trash H08200-Sapphire-profile.jpg
+[2026-05-08T12:03:27.837Z] [info]:   DRY CANADASPORTSWEAR/H08200 royal|Side: keep H08200_Royal_Side_std.png, trash H08200-Royal-profile.jpg
+[2026-05-08T12:03:27.837Z] [info]:   DRY CANADASPORTSWEAR/H08200 purple|Side: keep H08200_Purple_Side_std.png, trash H08200-Purple-profile.jpg
+[2026-05-08T12:03:27.837Z] [info]:   DRY CANADASPORTSWEAR/H08200 sand|Side: keep H08200_Sand_Side_std.png, trash H08200-Sand-profile.jpg
+[2026-05-08T12:03:27.837Z] [info]:   DRY CANADASPORTSWEAR/H08200 red|Side: keep H08200_Red_Side_std.png, trash H08200-Red-profile.jpg
+[2026-05-08T12:03:27.837Z] [info]:   DRY CANADASPORTSWEAR/H08200 pink|Side: keep H08200_Pink_Side_std.png, trash H08200-Pink-profile.jpg
+[2026-05-08T12:03:27.837Z] [info]:   DRY CANADASPORTSWEAR/H08200 orange|Side: keep H08200_Orange_Side_std.png, trash H08200-Orange-profile.jpg
+[2026-05-08T12:03:27.837Z] [info]:   DRY CANADASPORTSWEAR/H08200 navy|Side: keep H08200_Navy_Side_std.png, trash H08200-Navy-profile.jpg
+[2026-05-08T12:03:27.837Z] [info]:   DRY CANADASPORTSWEAR/H08200 maroon|Side: keep H08200_Maroon_Side_std.png, trash H08200-Maroon-profile.jpg
+[2026-05-08T12:03:27.838Z] [info]:   DRY CANADASPORTSWEAR/H08200 ivory|Side: keep H08200_Ivory_Side_std.png, trash H08200-Ivory-profile.jpg
+[2026-05-08T12:03:27.838Z] [info]:   DRY CANADASPORTSWEAR/H08200 heliconia|Side: keep H08200_Heliconia_Side_std.png, trash H08200-Heliconia-profile.jpg
+[2026-05-08T12:03:27.838Z] [info]:   DRY CANADASPORTSWEAR/H08200 charcoal|Side: keep H08200_Charcoal_Side_std.png, trash H08200-Charcoal-profile.jpg
+[2026-05-08T12:03:27.838Z] [info]:   DRY CANADASPORTSWEAR/H08200 black|Side: keep H08200_Black_Side_std.png, trash H08200-Black-profile.jpg
+[2026-05-08T12:03:27.838Z] [info]:   DRY CANADASPORTSWEAR/H08200 gold|Side: keep H08200_Gold_Side_std.png, trash H08200-Gold-profile.jpg
+[2026-05-08T12:03:28.753Z] [info]:   DRY CANADASPORTSWEAR/H08205 navy white|Side: keep H08205_Navy_White_Side_std.png, trash H08205-Navy-White-profile.jpg
+[2026-05-08T12:03:28.753Z] [info]:   DRY CANADASPORTSWEAR/H08205 brown khaki|Side: keep H08205_Brown_Khaki_Side_std.png, trash H08205-Brown-Khaki-profile.jpg
+[2026-05-08T12:03:28.753Z] [info]:   DRY CANADASPORTSWEAR/H08205 moss khaki|Side: keep H08205_Moss_Khaki_Side_std.png, trash H08205-Moss-Khaki-profile.jpg
+[2026-05-08T12:03:28.753Z] [info]:   DRY CANADASPORTSWEAR/H08205 charcoal black|Side: keep H08205_Charcoal_Black_Side_std.png, trash H08205-Charcoal-Black-profile.jpg
+[2026-05-08T12:03:28.753Z] [info]:   DRY CANADASPORTSWEAR/H08205 caramel black|Side: keep H08205_Caramel_Black_Side_std.png, trash H08205-Caramel-Black-profile.jpg
+[2026-05-08T12:03:28.753Z] [info]:   DRY CANADASPORTSWEAR/H08205 black white|Side: keep H08205_Black_White_Side_std.png, trash H08205-Black-White-profile.jpg
+[2026-05-08T12:03:29.549Z] [info]:   DRY CANADASPORTSWEAR/H08215 white|Side: keep H08215_White_Side_std.png, trash H08215-White-profile.jpg
+[2026-05-08T12:03:29.549Z] [info]:   DRY CANADASPORTSWEAR/H08215 sand|Side: keep H08215_Sand_Side_std.png, trash H08215-Sand-profile.jpg
+[2026-05-08T12:03:29.549Z] [info]:   DRY CANADASPORTSWEAR/H08215 navy|Side: keep H08215_Navy_Side_std.png, trash H08215-Navy-profile.jpg
+[2026-05-08T12:03:29.549Z] [info]:   DRY CANADASPORTSWEAR/H08215 charcoal|Side: keep H08215_Charcoal_Side_std.png, trash H08215-Charcoal-profile.jpg
+[2026-05-08T12:03:29.549Z] [info]:   DRY CANADASPORTSWEAR/H08215 black|Side: keep H08215_Black_Side_std.png, trash H08215-Black-profile.jpg
+[2026-05-08T12:03:31.559Z] [info]:   DRY CANADASPORTSWEAR/L01290 black|Front: keep L01290_Black_Front_std.png, trash 1290-Black- Front-HIRes.jpg
+[2026-05-08T12:03:32.642Z] [info]:   DRY CANADASPORTSWEAR/L00880 navy|Back: keep L00880_Navy_Back_std.png, trash L00880-Navy-Back .png
+[2026-05-08T12:03:33.638Z] [info]:   DRY CANADASPORTSWEAR/S05735 white|Back: keep S05735_White_Back_std.png, trash 5735-White-Back-HiRes.jpg
+[2026-05-08T12:03:33.638Z] [info]:   DRY CANADASPORTSWEAR/S05735 white|Front: keep S05735_White_Front_std.png, trash 5735-White-Front-HiRes.jpg
+[2026-05-08T12:03:33.638Z] [info]:   DRY CANADASPORTSWEAR/S05735 red|Back: keep S05735_Red_Back_std.png, trash 5735-Red-Back-HiRes.jpg
+[2026-05-08T12:03:33.638Z] [info]:   DRY CANADASPORTSWEAR/S05735 red|Front: keep S05735_Red_Front_std.png, trash 5735-Red-Front-HiRes.jpg
+[2026-05-08T12:03:33.638Z] [info]:   DRY CANADASPORTSWEAR/S05735 navy|Back: keep S05735_Navy_Back_std.png, trash 5735-Navy-Back-HiRes.jpg
+[2026-05-08T12:03:33.638Z] [info]:   DRY CANADASPORTSWEAR/S05735 navy|Front: keep S05735_Navy_Front_std.png, trash 5735-Navy-Front-HIRes.jpg
+[2026-05-08T12:03:33.638Z] [info]:   DRY CANADASPORTSWEAR/S05735 black|Back: keep S05735_Black_Back_std.png, trash 5735-Black-Back-HiRes.jpg
+[2026-05-08T12:03:33.638Z] [info]:   DRY CANADASPORTSWEAR/S05735 black|Front: keep S05735_Black_Front_std.png, trash 5735-Black-Front-HIRes.jpg
+[2026-05-08T12:03:33.638Z] [info]: Progress: 10/20 folders, kept=45 trashed=45
+[2026-05-08T12:03:34.543Z] [info]:   DRY CANADASPORTSWEAR/S05736 white|Back: keep S05736_White_Back_std.png, trash 5736-White-Back-HiRes.jpg
+[2026-05-08T12:03:34.543Z] [info]:   DRY CANADASPORTSWEAR/S05736 white|Front: keep S05736_White_Front_std.png, trash 5736-White-Front-HiRes.jpg
+[2026-05-08T12:03:34.543Z] [info]:   DRY CANADASPORTSWEAR/S05736 red|Back: keep S05736_Red_Back_std.png, trash 5736-Red-Back-HiRes.jpg
+[2026-05-08T12:03:34.543Z] [info]:   DRY CANADASPORTSWEAR/S05736 red|Front: keep S05736_Red_Front_std.png, trash 5736-Red-Front-HiRes.jpg
+[2026-05-08T12:03:34.543Z] [info]:   DRY CANADASPORTSWEAR/S05736 navy|Back: keep S05736_Navy_Back_std.png, trash 5736-Navy-Back-HiRes.jpg
+[2026-05-08T12:03:34.543Z] [info]:   DRY CANADASPORTSWEAR/S05736 navy|Front: keep S05736_Navy_Front_std.png, trash 5736-Navy-Front-HIRes.jpg
+[2026-05-08T12:03:34.543Z] [info]:   DRY CANADASPORTSWEAR/S05736 black|Back: keep S05736_Black_Back_std.png, trash 5736-Black-Back-HiRes.jpg
+[2026-05-08T12:03:34.543Z] [info]:   DRY CANADASPORTSWEAR/S05736 black|Front: keep S05736_Black_Front_std.png, trash 5736-Black-Front-HiRes.jpg
+[2026-05-08T12:03:35.395Z] [info]:   DRY CANADASPORTSWEAR/S05738 white|Back: keep S05738_White_Back_std.png, trash 5738-White-back-HiRes.jpg
+[2026-05-08T12:03:35.395Z] [info]:   DRY CANADASPORTSWEAR/S05738 white|Front: keep S05738_White_Front_std.png, trash 5738-White-front-HiRes.jpg
+[2026-05-08T12:03:35.395Z] [info]:   DRY CANADASPORTSWEAR/S05738 royal|Back: keep S05738_Royal_Back_std.png, trash 5738-Royal-back-HiRes.jpg
+[2026-05-08T12:03:35.396Z] [info]:   DRY CANADASPORTSWEAR/S05738 royal|Front: keep S05738_Royal_Front_std.png, trash 5738-Royal-front-HiRes.jpg
+[2026-05-08T12:03:35.396Z] [info]:   DRY CANADASPORTSWEAR/S05738 red|Back: keep S05738_Red_Back_std.png, trash 5738-Red-back-HiRes.jpg
+[2026-05-08T12:03:35.396Z] [info]:   DRY CANADASPORTSWEAR/S05738 red|Front: keep S05738_Red_Front_std.png, trash 5738-Red-front-HiRes.jpg
+[2026-05-08T12:03:35.396Z] [info]:   DRY CANADASPORTSWEAR/S05738 navy|Back: keep S05738_Navy_Back_std.png, trash 5738-Navy-back-HiRes.jpg
+[2026-05-08T12:03:35.396Z] [info]:   DRY CANADASPORTSWEAR/S05738 navy|Front: keep S05738_Navy_Front_std.png, trash 5738-Navy-front-HiRes.jpg
+[2026-05-08T12:03:35.396Z] [info]:   DRY CANADASPORTSWEAR/S05738 grey|Back: keep S05738_Grey_Back_std.png, trash 5738-Grey-back-HiRes.jpg
+[2026-05-08T12:03:35.396Z] [info]:   DRY CANADASPORTSWEAR/S05738 grey|Front: keep S05738_Grey_Front_std.png, trash 5738-Grey-front-HiRes.jpg
+[2026-05-08T12:03:35.396Z] [info]:   DRY CANADASPORTSWEAR/S05738 black|Back: keep S05738_Black_Back_std.png, trash 5738-Black-back-HiRes.jpg
+[2026-05-08T12:03:35.396Z] [info]:   DRY CANADASPORTSWEAR/S05738 black|Front: keep S05738_Black_Front_std.png, trash 5738-Black-front-HiRes.jpg
+[2026-05-08T12:03:36.242Z] [info]:   DRY CANADASPORTSWEAR/S05772 navy|Back: keep S05772_Navy_Back_std.png, trash S05772_Navy Back copy.jpg
+[2026-05-08T12:03:36.243Z] [info]:   DRY CANADASPORTSWEAR/S05772 cobalt|Front: keep S05772_Cobalt_Front_std.png, trash S05772_Cobalt Front.jpg
+[2026-05-08T12:03:37.505Z] [info]:   DRY CANADASPORTSWEAR/S05937 white|Back: keep S05937_White_Back_std.png, trash 5937-White-back.jpg
+[2026-05-08T12:03:37.505Z] [info]:   DRY CANADASPORTSWEAR/S05937 red|Back: keep S05937_Red_Back_std.png, trash 5937-Red-back.jpg
+[2026-05-08T12:03:37.505Z] [info]:   DRY CANADASPORTSWEAR/S05937 red|Front: keep S05937_Red_Front_std.png, trash 5937-Red-front.jpg
+[2026-05-08T12:03:37.505Z] [info]:   DRY CANADASPORTSWEAR/S05937 navy|Back: keep S05937_Navy_Back_std.png, trash 5937-Navy-back.jpg
+[2026-05-08T12:03:37.505Z] [info]:   DRY CANADASPORTSWEAR/S05937 navy|Front: keep S05937_Navy_Front_std.png, trash 5937-Navy-front.jpg
+[2026-05-08T12:03:37.505Z] [info]:   DRY CANADASPORTSWEAR/S05937 grey|Back: keep S05937_Grey_Back_std.png, trash 5937-Grey-back.jpg
+[2026-05-08T12:03:37.505Z] [info]:   DRY CANADASPORTSWEAR/S05937 grey|Front: keep S05937_Grey_Front_std.png, trash 5937-Grey-front.jpg
+[2026-05-08T12:03:37.505Z] [info]:   DRY CANADASPORTSWEAR/S05937 black|Back: keep S05937_Black_Back_std.png, trash 5937-Black-back.jpg
+[2026-05-08T12:03:37.505Z] [info]:   DRY CANADASPORTSWEAR/S05937 black|Front: keep S05937_Black_Front_std.png, trash 5937-Black-front.jpg
+[2026-05-08T12:03:37.505Z] [info]:   DRY CANADASPORTSWEAR/S05937 white|Front: keep S05937_White_Front_std.png, trash 5937-White-front.jpg
+[2026-05-08T12:03:38.386Z] [info]:   DRY CANADASPORTSWEAR/S05970 black|Back: keep S05970_Black_Back_std.png, trash 5970 BLACK_BACK.jpg
+[2026-05-08T12:03:38.386Z] [info]:   DRY CANADASPORTSWEAR/S05970 black|Front: keep S05970_Black_Front_std.png, trash 5970 BLACK_FRONT.jpg
+[2026-05-08T12:03:39.434Z] [info]:   DRY CANADASPORTSWEAR/S05610 yellow|Side: keep S05610_Yellow_Side_std.png, trash S05610 Yellow Side.png
+[2026-05-08T12:03:39.434Z] [info]:   DRY CANADASPORTSWEAR/S05610 yellow|Back: keep S05610_Yellow_Back_std.png, trash S05610 Yellow Back.png
+[2026-05-08T12:03:39.434Z] [info]:   DRY CANADASPORTSWEAR/S05610 white|Side: keep S05610_White_Side_std.png, trash S05610 White Side.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 white|Back: keep S05610_White_Back_std.png, trash S05610 White Back.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 sand|Side: keep S05610_Sand_Side_std.png, trash S05610 Sand Side.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 sand|Back: keep S05610_Sand_Back_std.png, trash S05610 Sand Back .png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 red|Side: keep S05610_Red_Side_std.png, trash S05610 Red Side.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 red|Back: keep S05610_Red_Back_std.png, trash S05610 Red Back.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 purple|Back: keep S05610_Purple_Back_std.png, trash S05610 Purple Back.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 purple|Back: keep S05610_Purple_Back_std.png, trash S05610 purple Back.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 pink|Side: keep S05610_Pink_Side_std.png, trash S05610 Pink Side.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 pink|Back: keep S05610_Pink_Back_std.png, trash S05610 Pink Back.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 orange|Side: keep S05610_Orange_Side_std.png, trash S05610 Orange Side.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 orange|Back: keep S05610_Orange_Back_std.png, trash S05610 Orange Back.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 navy|Side: keep S05610_Navy_Side_std.png, trash S05610 Navy Side.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 navy|Back: keep S05610_Navy_Back_std.png, trash S05610 Navy Back.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 maroon|Back: keep S05610_Maroon_Back_std.png, trash S05610 Maroon Back.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 maroon|Front: keep S05610_Maroon_Front_std.png, trash S05610 Maroon Front.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 ivory|Side: keep S05610_Ivory_Side_std.png, trash S05610 Ivory Side.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 ivory|Back: keep S05610_Ivory_Back_std.png, trash S05610 Ivory Back.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 gold|Side: keep S05610_Gold_Side_std.png, trash S05610 Gold Side.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 gold|Back: keep S05610_Gold_Back_std.png, trash S05610 Gold Back.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 caramel|Side: keep S05610_Caramel_Side_std.png, trash S05610 Caramel Side.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 brown|Side: keep S05610_Brown_Side_std.png, trash S05610 Brown Side.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 black|Side: keep S05610_Black_Side_std.png, trash S05610 Black Side.png
+[2026-05-08T12:03:39.435Z] [info]:   DRY CANADASPORTSWEAR/S05610 black|Back: keep S05610_Black_Back_std.png, trash S05610 Black Back.png
+[2026-05-08T12:03:40.272Z] [info]:   DRY SSCANADA/6110 natural|Side: keep 6110_Natural_Side_std.png, trash BELLA_+_CANVAS_6110_Natural_DirectSide_High.jpg
+[2026-05-08T12:03:40.272Z] [info]:   DRY SSCANADA/6110 natural|Back: keep 6110_Natural_Back_std.png, trash BELLA_+_CANVAS_6110_Natural_Back_High.jpg
+[2026-05-08T12:03:40.272Z] [info]:   DRY SSCANADA/6110 dark grey|Side: keep 6110_Dark_Grey_Side_std.png, trash BELLA_+_CANVAS_6110_Dark_Grey_DirectSide_High.jpg
+[2026-05-08T12:03:40.272Z] [info]:   DRY SSCANADA/6110 dark grey|Back: keep 6110_Dark_Grey_Back_std.png, trash BELLA_+_CANVAS_6110_Dark_Grey_Back_High.jpg
+[2026-05-08T12:03:40.272Z] [info]:   DRY SSCANADA/6110 vintage white|Side: keep 6110_Vintage_White_Side_std.png, trash BELLA_+_CANVAS_6110_Vintage_White_DirectSide_High.jpg
+[2026-05-08T12:03:40.272Z] [info]:   DRY SSCANADA/6110 vintage white|Back: keep 6110_Vintage_White_Back_std.png, trash BELLA_+_CANVAS_6110_Vintage_White_Back_High.jpg
+[2026-05-08T12:03:40.272Z] [info]:   DRY SSCANADA/6110 vintage white|Front: keep 6110_Vintage_White_Front_std.png, trash BELLA_+_CANVAS_6110_Vintage_White_Front_High.jpg
+[2026-05-08T12:03:40.272Z] [info]:   DRY SSCANADA/6110 vintage denim|Side: keep 6110_Vintage_Denim_Side_std.png, trash BELLA_+_CANVAS_6110_Vintage_Denim_DirectSide_High.jpg
+[2026-05-08T12:03:40.272Z] [info]:   DRY SSCANADA/6110 vintage denim|Back: keep 6110_Vintage_Denim_Back_std.png, trash BELLA_+_CANVAS_6110_Vintage_Denim_Back_High.jpg
+[2026-05-08T12:03:40.272Z] [info]:   DRY SSCANADA/6110 vintage denim|Front: keep 6110_Vintage_Denim_Front_std.png, trash BELLA_+_CANVAS_6110_Vintage_Denim_Front_High.jpg
+[2026-05-08T12:03:40.272Z] [info]:   DRY SSCANADA/6110 vintage brown|Side: keep 6110_Vintage_Brown_Side_std.png, trash BELLA_+_CANVAS_6110_Vintage_Brown_DirectSide_High.jpg
+[2026-05-08T12:03:40.272Z] [info]:   DRY SSCANADA/6110 vintage brown|Back: keep 6110_Vintage_Brown_Back_std.png, trash BELLA_+_CANVAS_6110_Vintage_Brown_Back_High.jpg
+[2026-05-08T12:03:40.272Z] [info]:   DRY SSCANADA/6110 vintage brown|Front: keep 6110_Vintage_Brown_Front_std.png, trash BELLA_+_CANVAS_6110_Vintage_Brown_Front_High.jpg
+[2026-05-08T12:03:40.272Z] [info]:   DRY SSCANADA/6110 vintage black|Side: keep 6110_Vintage_Black_Side_std.png, trash BELLA_+_CANVAS_6110_Vintage_Black_DirectSide_High.jpg
+[2026-05-08T12:03:40.272Z] [info]:   DRY SSCANADA/6110 vintage black|Back: keep 6110_Vintage_Black_Back_std.png, trash BELLA_+_CANVAS_6110_Vintage_Black_Back_High.jpg
+[2026-05-08T12:03:40.272Z] [info]:   DRY SSCANADA/6110 vintage black|Front: keep 6110_Vintage_Black_Front_std.png, trash BELLA_+_CANVAS_6110_Vintage_Black_Front_High.jpg
+[2026-05-08T12:03:40.272Z] [info]:   DRY SSCANADA/6110 toast|Side: keep 6110_Toast_Side_std.png, trash BELLA_+_CANVAS_6110_Toast_DirectSide_High.jpg
+[2026-05-08T12:03:40.272Z] [info]:   DRY SSCANADA/6110 toast|Front: keep 6110_Toast_Front_std.png, trash BELLA_+_CANVAS_6110_Toast_Front_High.jpg
+[2026-05-08T12:03:40.273Z] [info]:   DRY SSCANADA/6110 soft pink|Side: keep 6110_Soft_Pink_Side_std.png, trash BELLA_+_CANVAS_6110_Soft_Pink_DirectSide_High.jpg
+[2026-05-08T12:03:40.273Z] [info]:   DRY SSCANADA/6110 soft pink|Back: keep 6110_Soft_Pink_Back_std.png, trash BELLA_+_CANVAS_6110_Soft_Pink_Back_High.jpg
+[2026-05-08T12:03:40.273Z] [info]:   DRY SSCANADA/6110 soft pink|Front: keep 6110_Soft_Pink_Front_std.png, trash BELLA_+_CANVAS_6110_Soft_Pink_Front_High.jpg
+[2026-05-08T12:03:40.273Z] [info]:   DRY SSCANADA/6110 navy|Side: keep 6110_Navy_Side_std.png, trash BELLA_+_CANVAS_6110_Navy_DirectSide_High.jpg
+[2026-05-08T12:03:40.273Z] [info]:   DRY SSCANADA/6110 navy|Back: keep 6110_Navy_Back_std.png, trash BELLA_+_CANVAS_6110_Navy_Back_High.jpg
+[2026-05-08T12:03:40.273Z] [info]:   DRY SSCANADA/6110 navy|Front: keep 6110_Navy_Front_std.png, trash BELLA_+_CANVAS_6110_Navy_Front_High.jpg
+[2026-05-08T12:03:40.273Z] [info]:   DRY SSCANADA/6110 natural|Front: keep 6110_Natural_Front_std.png, trash BELLA_+_CANVAS_6110_Natural_Front_High.jpg
+[2026-05-08T12:03:40.273Z] [info]:   DRY SSCANADA/6110 maroon|Side: keep 6110_Maroon_Side_std.png, trash BELLA_+_CANVAS_6110_Maroon_DirectSide_High.jpg
+[2026-05-08T12:03:40.273Z] [info]:   DRY SSCANADA/6110 maroon|Back: keep 6110_Maroon_Back_std.png, trash BELLA_+_CANVAS_6110_Maroon_Back_High.jpg
+[2026-05-08T12:03:40.273Z] [info]:   DRY SSCANADA/6110 forest|Side: keep 6110_Forest_Side_std.png, trash BELLA_+_CANVAS_6110_Forest_DirectSide_High.jpg
+[2026-05-08T12:03:40.273Z] [info]:   DRY SSCANADA/6110 forest|Back: keep 6110_Forest_Back_std.png, trash BELLA_+_CANVAS_6110_Forest_Back_High.jpg
+[2026-05-08T12:03:40.273Z] [info]:   DRY SSCANADA/6110 forest|Front: keep 6110_Forest_Front_std.png, trash BELLA_+_CANVAS_6110_Forest_Front_High.jpg
+[2026-05-08T12:03:40.273Z] [info]:   DRY SSCANADA/6110 dark grey|Front: keep 6110_Dark_Grey_Front_std.png, trash BELLA_+_CANVAS_6110_Dark_Grey_Front_High.jpg
+[2026-05-08T12:03:41.961Z] [info]:   DRY SSCANADA/9002 heather teal|Back: keep 9002_Heather_Teal_Back_std.png, trash Next_Level_9002_Heather_Teal_Back_High.jpg
+[2026-05-08T12:03:41.961Z] [info]:   DRY SSCANADA/9002 heather teal|Front: keep 9002_Heather_Teal_Front_std.png, trash Next_Level_9002_Heather_Teal_Front_High.jpg
+[2026-05-08T12:03:41.961Z] [info]:   DRY SSCANADA/9002 heather maroon|Back: keep 9002_Heather_Maroon_Back_std.png, trash Next_Level_9002_Heather_Maroon_Back_High.jpg
+[2026-05-08T12:03:41.961Z] [info]:   DRY SSCANADA/9002 heather maroon|Front: keep 9002_Heather_Maroon_Front_std.png, trash Next_Level_9002_Heather_Maroon_Front_High.jpg
+[2026-05-08T12:03:41.961Z] [info]:   DRY SSCANADA/9002 heather cardinal|Back: keep 9002_Heather_Cardinal_Back_std.png, trash Next_Level_9002_Heather_Cardinal_Back_High.jpg
+[2026-05-08T12:03:41.961Z] [info]:   DRY SSCANADA/9002 heather cardinal|Front: keep 9002_Heather_Cardinal_Front_std.png, trash Next_Level_9002_Heather_Cardinal_Front_High.jpg
+[2026-05-08T12:03:42.727Z] [info]: Progress: 20/20 folders, kept=141 trashed=142
+[2026-05-08T12:03:42.727Z] [info]: 
+=== Summary ===
+[2026-05-08T12:03:42.727Z] [info]: Folders processed: 20
+[2026-05-08T12:03:42.727Z] [info]: Files kept:        141
+[2026-05-08T12:03:42.727Z] [info]: Files trashed:     (dry) 142
+[2026-05-08T12:03:42.727Z] [info]: Errors:            0
