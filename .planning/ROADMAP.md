@@ -23,6 +23,16 @@
 - Phase 05: Scale and Reliability (dry-run, batch processing, error reporting)
 - Phase 06: Live Inventory Sync (OneSource API → Shopify stock levels)
 
+### Phase 14: Imagery cleanup — reconcile BR Drive store consistency for cap-bound and partial-data products
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 13
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd-plan-phase 14 to break down)
+
 ---
 
 ### v2.0 Image Automation (In Progress)
@@ -37,6 +47,7 @@
 - [x] **Phase 11: Image Standardization & Safe Upload** - Standardize all accepted images to 2000x2000 with uniform 85% garment height, write CDN URLs to Google Sheets (completed 2026-03-27)
 - [x] **Phase 12: Audit Runner** - Per-product orchestrator wiring scorer → source → generate → standardize → upload into a single end-to-end function (completed 2026-03-27)
 - [x] **Phase 13: CLI Entry Point** - audit-images.ts CLI exposing the audit runner with --style-id, --all, and --dry-run flags (completed 2026-03-27)
+- [ ] **Phase 14: Garment Type Verification** - Post-generation classifier that rejects AI images where garment type doesn't match the source (e.g., hoodie generated for a crewneck product)
 
 ## Phase Details
 

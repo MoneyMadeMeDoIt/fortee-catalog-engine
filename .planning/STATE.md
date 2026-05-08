@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Image Automation
-status: Milestone complete
-stopped_at: Completed 13-01-PLAN.md — audit-images CLI entry point with all flags verified end-to-end
-last_updated: "2026-03-27T10:14:08.101Z"
+status: Bestseller catalog curation in progress
+stopped_at: Bestseller refresh pipeline complete — model images fetched, sizes populated, gaps sheet updated
+last_updated: "2026-04-01T16:45:00.000Z"
 progress:
   total_phases: 6
   completed_phases: 6
@@ -16,58 +16,53 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-03-26)
+See: .planning/PROJECT.md (updated 2026-04-01)
 
 **Core value:** One command turns an enriched sheet row into a live Shopify product with correct decoration options, placements, pricing, standardized images, and all customer-facing content.
-**Current focus:** Phase 13 — cli-entry-point
+**Current focus:** Bestseller catalog curation — filling data gaps for 467 curated products before go-live
 
 ## Current Position
 
-Phase: 13
-Plan: Not started
+v2.0 phases complete. Currently in catalog curation work (not phase-tracked):
+- 283/467 bestsellers fully complete
+- 179 with gaps remaining (mostly missing descriptions, size charts, categories)
+- 2 products still not in Sheet1
 
 ## Accumulated Context
+
+### Roadmap Evolution
+
+- Phase 14 added (2026-05-08): Imagery cleanup — reconcile BR Drive store consistency for cap-bound and partial-data products. Triggered by partial mid-execution failures during ad-hoc cleanup that should have been planned formally.
 
 ### Decisions
 
 Decisions are logged in PROJECT.md Key Decisions table.
 
-Key decisions for v2.0:
+Key decisions for v2.0 phases: (see PROJECT.md)
 
-- Quality scorer operates on trimmed garment region (not full canvas) — mandatory to avoid false rejects on white-background images
-- Supplier re-fetch before AI generation — OMG → CSW → S&S fallback chain exhausted before spending AI budget
-- AI generation produces 3 candidates per view; quality scorer selects best — never auto-accept first output
-- Use `productCreateMedia` / `productDeleteMedia` for surgical replacement — never re-push full `productSet` with images (destroys existing GIDs)
-- Only new npm dependency: `openai` v6.33.0 — all other stack components exist in v1.0
-- [Phase 08]: Blur detection uses 30%-inset garment region for monotonic stdev decay
-- [Phase 08]: sharp extract().stats() chaining bug: always toBuffer() then stats() separately
-- [Phase 08]: QUALITY_THRESHOLDS placeholders (BLUR_MIN_STDEV=20, PRINT_CENTER_STDEV=30) — calibrated in Plan 02
-- [Phase 08-image-quality-scorer]: BLUR_MIN_STDEV set to 1.5 — calibrated against 243 real images (stdev range 1.1–20.0, mean 8.2); old value of 20.0 was rejecting 71% of normal supplier photos
-- [Phase 08-image-quality-scorer]: WATERMARK_FULL_STDEV set to 120.0, PRINT_CENTER_STDEV to 100.0, SKIN_RATIO to 0.30 — all calibrated from real image data to eliminate false rejects
-- [Phase 09]: pickBest returns best-scoring regardless of verdict — failed images retained for Phase 10 AI enhancement (D-03)
-- [Phase 09]: colorName param threaded to fetchOMGImages for Phase 12 per-color image fetching
-- [Phase 10-ai-image-generation]: sharp.stats().dominant bins colors in 4096-bin histogram; test assertions for dominant RGB must use range checks, not exact equality
-- [Phase 10-ai-image-generation]: CostTracker.estimateCost(n) returns n * CANDIDATES_PER_CALL * COST_PER_IMAGE (D-08 minimum estimate, excludes retry cost)
-- [Phase 10]: vitest 4.x clearAllMocks clears call history but NOT mockResolvedValueOnce queue; achromatic bypass test must not set candidate Once items since candidates skip extractDominantHue
-- [Phase 10]: callImagesEdit uses optional client param for dependency injection; avoids mocking createOpenAIClient factory
-- [Phase 11-image-standardization-safe-upload]: FIXED_GARMENT_HEIGHT_FRAC=0.85 replaces per-category REFERENCE_RATIOS in standardizeImage() — uniform 1700px garment height on 2000px canvas for all categories per D-01
-- [Phase 11-image-standardization-safe-upload]: standardizeImagesToSheets() uses staged uploads for CDN URL generation only — no productCreateMedia or productSet calls (D-03: store images unchanged)
-- [Phase 12-audit-runner]: sourceImages called once per product, not per view — source all missing/failing in a single batch to avoid redundant network calls
-- [Phase 12-audit-runner]: CostTracker always injected into auditProductImages — never created internally to preserve shared budget across batch runs
-- [Phase 13]: Used node:util parseArgs for CLI flag parsing; extracted runAudit() with dependency injection for testability
+Key decisions for catalog curation (2026-04-01):
+
+- S&S Canada REST API base URL is `https://api-ca.ssactivewear.com/v2/` (NOT `api.ssactivewear.com`) — Canadian endpoint
+- S&S REST API uses Basic auth with SS_ACCOUNT_NUMBER + SS_API_KEY
+- Brand style IDs (e.g. Bella+Canvas 6110) differ from S&S internal styleIDs — must use `/styles/?search=` to resolve, then fetch products by S&S styleID
+- Model images stored as separate files in Drive (model-front.png, model-side.png, model-back.png) — NOT replacing garment-only images
+- 3 new Sheet1 columns added: ModelFrontImage, ModelSideImage, ModelBackImage (columns AN, AO, AP)
+- Catalog-Gaps tab is user-editable — NEVER delete+recreate, always read existing data first and merge
+- User enters actual data (descriptions, size charts, categories) into Catalog-Gaps "Has X" columns, not just Y/N flags
 
 ### Pending Todos
 
-None yet.
+- 13 Canada Sportswear products need manual size entry (not in any API): H08355, H08360, L00450, L00570, L01205, S01225, S04605, S04606, S05980, S05982, S05985, S07200, S07241
+- 179 bestseller products still have data gaps (see Catalog-Gaps tab)
+- 60 SS Canada products have no model images available from API
 
 ### Blockers/Concerns
 
-- OMG API catalog access scope unknown — verify which CSW/S&S styles are accessible before building Phase 09 (flagged for research-phase)
-- AI prompt quality uncertain for hoodies/polos/jackets — plan for 1-2 prompt refinement cycles in Phase 10 (flagged for research-phase)
-- Print Area metaobject `media` field population status unconfirmed in v1.0 — verify before Phase 12 GID update logic (flagged for research-phase)
+- 13 CSW products not in OneSource API — sizes must be entered manually
+- 3 products could not be resolved in S&S REST API (6501, LCB112, M858LW)
 
 ## Session Continuity
 
-Last session: 2026-03-27T10:10:28.093Z
-Stopped at: Completed 13-01-PLAN.md — audit-images CLI entry point with all flags verified end-to-end
+Last session: 2026-04-01T16:45:00.000Z
+Stopped at: Bestseller refresh pipeline complete — model images fetched and URLs written to Sheet1
 Resume file: None
