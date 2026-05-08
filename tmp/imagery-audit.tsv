@@ -1,0 +1,806 @@
+pid	color	check	severity	drive	store	detail
+A702		CROSS-POLLUTION	high	1	-	Drive file "Screenshot 2026-04-24 103950.png" doesn't match pid prefix
+L00693		CROSS-POLLUTION	high	1	-	Drive file "L00692-L00693_SIZE_CHART_-08-22-23.pdf" doesn't match pid prefix
+L00871		CROSS-POLLUTION	high	1	-	Drive file "L00870-L00871_SIZE_CHART_-08-23-23.pdf" doesn't match pid prefix
+LCB12		CROSS-POLLUTION	high	1	-	Drive file "33604_f_fl.jpg" doesn't match pid prefix
+LCB12		CROSS-POLLUTION	high	1	-	Drive file "29517_f_fl.jpg" doesn't match pid prefix
+S07200		CROSS-POLLUTION	high	1	-	Drive file "L07200-L07201-L7200Y_SIZE_CHART_-08-23-23.pdf" doesn't match pid prefix
+S07200		CROSS-POLLUTION	high	1	-	Drive file "L07200_CSW-NV_BV_df437b5d-f87e-4777-bac3-a7865b23686e_2000x.webp" doesn't match pid prefix
+S07200		CROSS-POLLUTION	high	1	-	Drive file "L07200_CSW-NV_527d26ed-81e5-439e-8b67-9dd539f036a4_2000x.webp" doesn't match pid prefix
+S07200		CROSS-POLLUTION	high	1	-	Drive file "L07200_B-B_e0643dd4-ba55-4b9e-b3d5-76618b8aaf10_2000x.webp" doesn't match pid prefix
+1010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_1010_Solid_Pink_Blend_Back_High.jpg" doesn't match pid prefix
+1010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_1010_Solid_Baby_Blue_Blend_Front_High.jpg" doesn't match pid prefix
+1010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_1010_Solid_Black_Blend_DirectSide_High.jpg" doesn't match pid prefix
+1010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_1010_Solid_Natural_Blend_DirectSide_High.jpg" doesn't match pid prefix
+1010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_1010_Solid_Black_Blend_Front_High.jpg" doesn't match pid prefix
+1010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_1010_Solid_Baby_Blue_Blend_DirectSide_High.jpg" doesn't match pid prefix
+1010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_1010_Solid_Pink_Blend_Front_High.jpg" doesn't match pid prefix
+1010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_1010_Solid_Pink_Blend_DirectSide_High.jpg" doesn't match pid prefix
+1010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_1010_Solid_Natural_Blend_Back_High.jpg" doesn't match pid prefix
+1010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_1010_Solid_Baby_Blue_Blend_Back_High.jpg" doesn't match pid prefix
+1010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_1010_Solid_Black_Blend_Back_High.jpg" doesn't match pid prefix
+1010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_1010_Solid_White_Blend_Back_High.jpg" doesn't match pid prefix
+1010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_1010_Solid_Natural_Blend_Front_High.jpg" doesn't match pid prefix
+1010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_1010_Solid_White_Blend_DirectSide_High.jpg" doesn't match pid prefix
+1010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_1010_Solid_White_Blend_Front_High.jpg" doesn't match pid prefix
+H8200Y		CROSS-POLLUTION	high	1	-	Drive file "H08200-H8200Y_SIZE_CHART_-11-04-24.pdf" doesn't match pid prefix
+L09300		CROSS-POLLUTION	high	1	-	Drive file "L09300 - OLIVE - FRONT.jpg" doesn't match pid prefix
+L01210		BAD-ALT	low	-	4	4 store media with non-canonical alt: "Left Chest Print", "Left Chest Print", "Back Print"
+L01250		BAD-ALT	low	-	9	9 store media with non-canonical alt: "(empty)", "Back Print", "Left Chest Print"
+L01275		CROSS-POLLUTION	high	1	-	Drive file "1275InnwerW-Back-Black-HIRes.jpg" doesn't match pid prefix
+L01275		CROSS-POLLUTION	high	1	-	Drive file "1275InnwerW-Front-Orange-HIRes.jpg" doesn't match pid prefix
+L01275		CROSS-POLLUTION	high	1	-	Drive file "1275InnwerW-Back-Yellow-HIRes.jpg" doesn't match pid prefix
+L01275		CROSS-POLLUTION	high	1	-	Drive file "1275InnwerW-Front-Black-HIRes.jpg" doesn't match pid prefix
+L01275		CROSS-POLLUTION	high	1	-	Drive file "1275InnwerW-Front-Navy-HIRes.jpg" doesn't match pid prefix
+L01275		CROSS-POLLUTION	high	1	-	Drive file "1275InnwerW-Front-Yellow-HIRes.jpg" doesn't match pid prefix
+L01275		CROSS-POLLUTION	high	1	-	Drive file "1275InnwerW-Back-Navy-HIRes.jpg" doesn't match pid prefix
+L01275		CROSS-POLLUTION	high	1	-	Drive file "1275InnwerW-Back-Orange-HIRes.jpg" doesn't match pid prefix
+L01275	1275innwerw	DUPE-DRIVE	medium	4	-	Back: 4 files in Drive — 1275InnwerW-Back-Black-HIRes.jpg; 1275InnwerW-Back-Yellow-HIRes.jpg; 1275InnwerW-Back-Navy-HIRes.jpg
+L01275	1275innwerw	DUPE-DRIVE	medium	4	-	Front: 4 files in Drive — 1275InnwerW-Front-Orange-HIRes.jpg; 1275InnwerW-Front-Black-HIRes.jpg; 1275InnwerW-Front-Navy-HIRes.jpg
+L03101		CROSS-POLLUTION	high	1	-	Drive file "3100 - Backview - HiRez -- Black.jpg" doesn't match pid prefix
+L03101		CROSS-POLLUTION	high	1	-	Drive file "3100-Backview-LowiRez--Navy_2000x.webp" doesn't match pid prefix
+S05280		CROSS-POLLUTION	high	1	-	Drive file "S05280BlackRight.png" doesn't match pid prefix
+S05280		CROSS-POLLUTION	high	1	-	Drive file "S05280WhiteRight.png" doesn't match pid prefix
+S05280		CROSS-POLLUTION	high	1	-	Drive file "S05280IvoryRight.png" doesn't match pid prefix
+S05735		CROSS-POLLUTION	high	1	-	Drive file "S05737-Black-Side.png" doesn't match pid prefix
+S05735		CROSS-POLLUTION	high	1	-	Drive file "S05737-Red-Side.png" doesn't match pid prefix
+S05738		CROSS-POLLUTION	high	1	-	Drive file "S05737-S05738_SIZE_CHART_-08-23-23.pdf" doesn't match pid prefix
+S05773		CROSS-POLLUTION	high	1	-	Drive file "S05772-S05773_SIZE_CHART_-08-23-23.pdf" doesn't match pid prefix
+S05773		CROSS-POLLUTION	high	1	-	Drive file "S05772-Red-Side.png" doesn't match pid prefix
+S05773		CROSS-POLLUTION	high	1	-	Drive file "S05772-Grey-side.png" doesn't match pid prefix
+S05773		CROSS-POLLUTION	high	1	-	Drive file "S05772-White-Side.png" doesn't match pid prefix
+S05773		CROSS-POLLUTION	high	1	-	Drive file "S05772-Black-Side.png" doesn't match pid prefix
+S05773		CROSS-POLLUTION	high	1	-	Drive file "S05772-Navy-Side.png" doesn't match pid prefix
+S05773		CROSS-POLLUTION	high	1	-	Drive file "S05772-Royal-Side.png" doesn't match pid prefix
+S05773		CROSS-POLLUTION	high	1	-	Drive file "S05573_Navy_Front.jpg" doesn't match pid prefix
+S05773		CROSS-POLLUTION	high	1	-	Drive file "S05573_Navy_Back.jpg" doesn't match pid prefix
+S05773		CROSS-POLLUTION	high	1	-	Drive file "S05573_Cobalt_Back.jpg" doesn't match pid prefix
+S05773		CROSS-POLLUTION	high	1	-	Drive file "S05573_Cobalt_Front.jpg" doesn't match pid prefix
+S05773		CROSS-POLLUTION	high	1	-	Drive file "S05573_WHITE_176_BV.jpg" doesn't match pid prefix
+S05773		CROSS-POLLUTION	high	1	-	Drive file "S05573_GUNMETAL_FV.jpg" doesn't match pid prefix
+S05773		CROSS-POLLUTION	high	1	-	Drive file "S05573_WHITE_170_FV.jpg" doesn't match pid prefix
+S05773		CROSS-POLLUTION	high	1	-	Drive file "S05573_RED_158_BV.jpg" doesn't match pid prefix
+S05773		CROSS-POLLUTION	high	1	-	Drive file "S05573_GUNMETAL_BV.jpg" doesn't match pid prefix
+S05773		CROSS-POLLUTION	high	1	-	Drive file "S05573_BLACK_FV.jpg" doesn't match pid prefix
+S05773		CROSS-POLLUTION	high	1	-	Drive file "S05573_BLACK_BV.jpg" doesn't match pid prefix
+S05773		CROSS-POLLUTION	high	1	-	Drive file "S05573_RED_147_FV.jpg" doesn't match pid prefix
+L00976		CROSS-POLLUTION	high	1	-	Drive file "L00975-L00976-L0975Y_SIZE_CHART_-07-11-24.pdf" doesn't match pid prefix
+S05935		CROSS-POLLUTION	high	1	-	Drive file "Gemini_Generated_Image_uidcd7uidcd7uidc.png" doesn't match pid prefix
+S05935		CROSS-POLLUTION	high	1	-	Drive file "S05936-Model-5'10''-185Lbs-L.png" doesn't match pid prefix
+S05936		CROSS-POLLUTION	high	1	-	Drive file "Gemini_Generated_Image_r1f4tzr1f4tzr1f4.png" doesn't match pid prefix
+S05936		CROSS-POLLUTION	high	1	-	Drive file "Gemini_Generated_Image_hswzc1hswzc1hswz.png" doesn't match pid prefix
+S05936		CROSS-POLLUTION	high	1	-	Drive file "Gemini_Generated_Image_lq5dfzlq5dfzlq5d.png" doesn't match pid prefix
+S05936		CROSS-POLLUTION	high	1	-	Drive file "S05935-S05936-S5935Y_SIZE_CHART_-08-22-23.pdf" doesn't match pid prefix
+S05948		CROSS-POLLUTION	high	1	-	Drive file "S05948 - Black - Front.jpg" doesn't match pid prefix
+S05948		CROSS-POLLUTION	high	1	-	Drive file "S05948 - Yellow - Front.jpg" doesn't match pid prefix
+S05948		CROSS-POLLUTION	high	1	-	Drive file "S05948 - Navy - Front.jpg" doesn't match pid prefix
+S05948		CROSS-POLLUTION	high	1	-	Drive file "S05948 - Orange - Front.jpg" doesn't match pid prefix
+S05960		CROSS-POLLUTION	high	1	-	Drive file "L05960_HiVis_Black_Off_BV_RGB.jpg" doesn't match pid prefix
+S05960		CROSS-POLLUTION	high	1	-	Drive file "L05960_HiVis_Navy_Off_RGB.jpg" doesn't match pid prefix
+S05960		CROSS-POLLUTION	high	1	-	Drive file "L05960_HiVis_Orange_Off_FV_RGB.jpg" doesn't match pid prefix
+S05960		CROSS-POLLUTION	high	1	-	Drive file "L05960_HiVis_Black_Off_009_RGB.jpg" doesn't match pid prefix
+S05960		CROSS-POLLUTION	high	1	-	Drive file "L05960_HiVis_Navy_Off_Backview_RGB.jpg" doesn't match pid prefix
+S05960		CROSS-POLLUTION	high	1	-	Drive file "L05960_HiVisYellow_Off_BV_RGB.jpg" doesn't match pid prefix
+S05960		CROSS-POLLUTION	high	1	-	Drive file "L05960_HiVisYellow_Off_FV_RGB.jpg" doesn't match pid prefix
+S05960		CROSS-POLLUTION	high	1	-	Drive file "L05960_HiVis_Orange_Off_BV_RGB.jpg" doesn't match pid prefix
+L00540		CROSS-POLLUTION	high	1	-	Drive file "L00540 model.png" doesn't match pid prefix
+L00540		CROSS-POLLUTION	high	1	-	Drive file "L00540 Ivory Back.png" doesn't match pid prefix
+L00540		CROSS-POLLUTION	high	1	-	Drive file "L00540 Navy Back.png" doesn't match pid prefix
+L00540		CROSS-POLLUTION	high	1	-	Drive file "L00540 Navy Front.png" doesn't match pid prefix
+L00540		CROSS-POLLUTION	high	1	-	Drive file "L00540 Charcoal Heather  Back.png" doesn't match pid prefix
+L00540		CROSS-POLLUTION	high	1	-	Drive file "L00540 Charcoal Heather  Front.png" doesn't match pid prefix
+L00540		CROSS-POLLUTION	high	1	-	Drive file "L00540 Black Front.png" doesn't match pid prefix
+L00540		CROSS-POLLUTION	high	1	-	Drive file "L00540 Black Back.png" doesn't match pid prefix
+L00540		CROSS-POLLUTION	high	1	-	Drive file "L00540 Heather grey Front.png" doesn't match pid prefix
+L00540		CROSS-POLLUTION	high	1	-	Drive file "L00540 Heather grey Back.png" doesn't match pid prefix
+L00540		CROSS-POLLUTION	high	1	-	Drive file "L00540 ivory Front.png" doesn't match pid prefix
+L00540		CROSS-POLLUTION	high	1	-	Drive file "L00540 Rouge Front.png" doesn't match pid prefix
+L00540		CROSS-POLLUTION	high	1	-	Drive file "L00540 Rouge Back.png" doesn't match pid prefix
+L00540		CROSS-POLLUTION	high	1	-	Drive file "L00540 Bleu Back.png" doesn't match pid prefix
+L00540		CROSS-POLLUTION	high	1	-	Drive file "L00540 Bleu Front.png" doesn't match pid prefix
+L00545		CROSS-POLLUTION	high	1	-	Drive file "L0545Y-Ivo-f.jpg" doesn't match pid prefix
+L00550		CROSS-POLLUTION	high	1	-	Drive file "S05610-S05611-S5610Y_SIZE_CHART_-08-22-23_d0a3705c-e5d3-442a-93cb-0d690b793aef.pdf" doesn't match pid prefix
+L00550		CROSS-POLLUTION	high	1	-	Drive file "L0550-AshGrey-back-LowRes_eca15492-a36d-4ad3-91a2-f635360b42f0_2000x.webp" doesn't match pid prefix
+L00550		CROSS-POLLUTION	high	1	-	Drive file "L0550-AshGrey-front_1e3860ad-3507-4772-91c4-5f006dcd9eac_2000x.webp" doesn't match pid prefix
+L00550		CROSS-POLLUTION	high	1	-	Drive file "L0550-Sand-back-LowRes_e96ec320-f970-4aed-8b3c-efb9659c4039_2000x.webp" doesn't match pid prefix
+L00550		CROSS-POLLUTION	high	1	-	Drive file "L0550-AthleticGreyHeather-front_93352e6a-eed3-4eac-9f71-3310164ee8b5_2000x.webp" doesn't match pid prefix
+L0550Y		CROSS-POLLUTION	high	1	-	Drive file "L00550Y-KellyGreen-front.jpg" doesn't match pid prefix
+L0550Y		CROSS-POLLUTION	high	1	-	Drive file "L00550Y-Heliconia-front.jpg" doesn't match pid prefix
+L0550Y		CROSS-POLLUTION	high	1	-	Drive file "L00550Y-Brown-front.jpg" doesn't match pid prefix
+L0550Y		CROSS-POLLUTION	high	1	-	Drive file "L00550Y-LtBlue-front.jpg" doesn't match pid prefix
+L0550Y		CROSS-POLLUTION	high	1	-	Drive file "L00550Y-Caramel-front.jpg" doesn't match pid prefix
+L0555Y		CROSS-POLLUTION	high	1	-	Drive file "L00555Y-Sand-front.jpg" doesn't match pid prefix
+L0555Y		CROSS-POLLUTION	high	1	-	Drive file "L00555Y-Maroon-front.jpg" doesn't match pid prefix
+L0555Y		CROSS-POLLUTION	high	1	-	Drive file "L00555Y-White-frontjpg.jpg" doesn't match pid prefix
+L0555Y		CROSS-POLLUTION	high	1	-	Drive file "L00555Y-Caramel-front.jpg" doesn't match pid prefix
+L0555Y		CROSS-POLLUTION	high	1	-	Drive file "L00555Y-Forest-front.jpg" doesn't match pid prefix
+S05610		CROSS-POLLUTION	high	1	-	Drive file "S05610 Lightblue Side.png" doesn't match pid prefix
+S05610		CROSS-POLLUTION	high	1	-	Drive file "S05610 AthleticGreyHeather Side.png" doesn't match pid prefix
+S05610		CROSS-POLLUTION	high	1	-	Drive file "S05610 AthleticGreyHeather Back.png" doesn't match pid prefix
+S05610		CROSS-POLLUTION	high	1	-	Drive file "S05610 KellyGreen Side.png" doesn't match pid prefix
+S05610		CROSS-POLLUTION	high	1	-	Drive file "S05610 ForestGreen Side.png" doesn't match pid prefix
+S05610		CROSS-POLLUTION	high	1	-	Drive file "S05610 FatigueGreen Side.png" doesn't match pid prefix
+S05610		CROSS-POLLUTION	high	1	-	Drive file "S05610 CharcoalHeather Side.png" doesn't match pid prefix
+S05610		CROSS-POLLUTION	high	1	-	Drive file "S05610 ForestGreen Back.png" doesn't match pid prefix
+S05610		CROSS-POLLUTION	high	1	-	Drive file "S05610 ForestGreen Front.png" doesn't match pid prefix
+S05610		CROSS-POLLUTION	high	1	-	Drive file "S05610 Heleconia Side.png" doesn't match pid prefix
+S05610		CROSS-POLLUTION	high	1	-	Drive file "S05610 Saphire side.png" doesn't match pid prefix
+S05610		CROSS-POLLUTION	high	1	-	Drive file "S05610 Saphire Back.png" doesn't match pid prefix
+S05610		CROSS-POLLUTION	high	1	-	Drive file "S05610 Royal Side .png" doesn't match pid prefix
+S05610		CROSS-POLLUTION	high	1	-	Drive file "S05610 Royal Back.png" doesn't match pid prefix
+S05610		CROSS-POLLUTION	high	1	-	Drive file "S05610 LightBlue Back.png" doesn't match pid prefix
+S05610		CROSS-POLLUTION	high	1	-	Drive file "S05610 KellyGreen Back.png" doesn't match pid prefix
+S05610		CROSS-POLLUTION	high	1	-	Drive file "S05610 FatigueGreen Back.png" doesn't match pid prefix
+S05610		CROSS-POLLUTION	high	1	-	Drive file "S05610 CharcoalHeather Back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Black Side.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Royal Side.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Yellow Side.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Sand Side.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Red Side.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Purple Side.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Orange Side.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Pink Side.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Lightblue Side.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Maroon Side.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 KellyGreen Side.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Ivory Side.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Gold Side.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Heliconia Side.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 ForestGreen Side .png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 FatigueGreen Side.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Brown Side.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 AthleticGreyHeather Side.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Yellow Back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Saphire back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Navy Side.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Royal Back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 CharcaolHeather Side.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Red back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 White Side.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Purple back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Pink Back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Maroon Back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Orange Back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Lightblue back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 KellyGreen Back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Ivory Back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Heliconia Back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Gold Back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 ForestGreen Back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 FatigueGreen Back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Brown Back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 AthleticGreyHeather Back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Navy Back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 CharcoalHeather Back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 White back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Black Back.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Caramel Side.png" doesn't match pid prefix
+S05611		CROSS-POLLUTION	high	1	-	Drive file "S05611 Caramel Back.png" doesn't match pid prefix
+S5610Y	Light Blue	STORE-DRIFT	medium	1	0	Front: expected 1, store has 0
+S05615		CROSS-POLLUTION	high	1	-	Drive file "S05615 Red Side.png" doesn't match pid prefix
+S05615		CROSS-POLLUTION	high	1	-	Drive file "S05615 Orange Side.png" doesn't match pid prefix
+S05615		CROSS-POLLUTION	high	1	-	Drive file "S05615 Athleticgrey Side.png" doesn't match pid prefix
+S05615		CROSS-POLLUTION	high	1	-	Drive file "S05615 Navy Side.png" doesn't match pid prefix
+S05615		CROSS-POLLUTION	high	1	-	Drive file "S05615 CharcoalHeather Side.png" doesn't match pid prefix
+S05615		CROSS-POLLUTION	high	1	-	Drive file "S05615 White Side.png" doesn't match pid prefix
+S05615		CROSS-POLLUTION	high	1	-	Drive file "S05615 Black Side.png" doesn't match pid prefix
+S05615		CROSS-POLLUTION	high	1	-	Drive file "S05615 Royal Back.png" doesn't match pid prefix
+S05615		CROSS-POLLUTION	high	1	-	Drive file "S05615 Red Back.png" doesn't match pid prefix
+S05615		CROSS-POLLUTION	high	1	-	Drive file "S05615 Orange Back.png" doesn't match pid prefix
+S05615		CROSS-POLLUTION	high	1	-	Drive file "S05615 AthleticGrey Back.png" doesn't match pid prefix
+S05615		CROSS-POLLUTION	high	1	-	Drive file "S05615 Navy Back.png" doesn't match pid prefix
+S05615		CROSS-POLLUTION	high	1	-	Drive file "S05615 CharcoalHeater Back.png" doesn't match pid prefix
+S05615		CROSS-POLLUTION	high	1	-	Drive file "S05615 White Back.png" doesn't match pid prefix
+S05615		CROSS-POLLUTION	high	1	-	Drive file "S05615 Black Back.png" doesn't match pid prefix
+S05616		CROSS-POLLUTION	high	1	-	Drive file "S05616 Royal Side.png" doesn't match pid prefix
+S05616		CROSS-POLLUTION	high	1	-	Drive file "S05616 Red Side.png" doesn't match pid prefix
+S05616		CROSS-POLLUTION	high	1	-	Drive file "S05616 Orange Side.png" doesn't match pid prefix
+S05616		CROSS-POLLUTION	high	1	-	Drive file "S05616 AthleticGrey Side.png" doesn't match pid prefix
+S05616		CROSS-POLLUTION	high	1	-	Drive file "S05616 Navy Side.png" doesn't match pid prefix
+S05616		CROSS-POLLUTION	high	1	-	Drive file "S05616 CharcoalHeather Side.png" doesn't match pid prefix
+S05616		CROSS-POLLUTION	high	1	-	Drive file "S05616 White Side.png" doesn't match pid prefix
+S05616		CROSS-POLLUTION	high	1	-	Drive file "S05616 Black Side.png" doesn't match pid prefix
+S05616		CROSS-POLLUTION	high	1	-	Drive file "S05616 Royal Back.png" doesn't match pid prefix
+S05616		CROSS-POLLUTION	high	1	-	Drive file "S05616 Red Back.png" doesn't match pid prefix
+S05616		CROSS-POLLUTION	high	1	-	Drive file "S05616 Orange Back.png" doesn't match pid prefix
+S05616		CROSS-POLLUTION	high	1	-	Drive file "S05616 AthleticGrey Back.png" doesn't match pid prefix
+S05616		CROSS-POLLUTION	high	1	-	Drive file "S05616 Navy Back.png" doesn't match pid prefix
+S05616		CROSS-POLLUTION	high	1	-	Drive file "S05616 CharcoalHeather Back.png" doesn't match pid prefix
+S05616		CROSS-POLLUTION	high	1	-	Drive file "S05616 White Back.png" doesn't match pid prefix
+S05616		CROSS-POLLUTION	high	1	-	Drive file "S05616 Black Back.png" doesn't match pid prefix
+6110		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6110_White_Front_High.jpg" doesn't match pid prefix
+6110		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6110_Vintage_Red_Back_High.jpg" doesn't match pid prefix
+6110		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6110_Dark_Grey_Back_High_Model.jpg" doesn't match pid prefix
+6110		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6110_Vintage_Navy_Front_High.jpg" doesn't match pid prefix
+6110		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6110_Black_Back_High.jpg" doesn't match pid prefix
+6110		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6110_Black_DirectSide_High.jpg" doesn't match pid prefix
+6110		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6110_Vintage_Red_Front_High.jpg" doesn't match pid prefix
+6110		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6110_Vintage_Navy_DirectSide_High.jpg" doesn't match pid prefix
+6110		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6110_Athletic_Heather_Back_High.jpg" doesn't match pid prefix
+6110		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6110_Dark_Grey_Front_High_Model.jpg" doesn't match pid prefix
+6110		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6110_White_DirectSide_High.jpg" doesn't match pid prefix
+6110		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6110_Black_Front_High.jpg" doesn't match pid prefix
+6110		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6110_White_Back_High.jpg" doesn't match pid prefix
+6110		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6110_Athletic_Heather_DirectSide_High.jpg" doesn't match pid prefix
+6110		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6110_Athletic_Heather_Front_High.jpg" doesn't match pid prefix
+6110		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6110_Dark_Grey_Side_High_Model.jpg" doesn't match pid prefix
+6110		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6110_Vintage_Red_DirectSide_High.jpg" doesn't match pid prefix
+6110		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6110_Vintage_Navy_Back_High.jpg" doesn't match pid prefix
+8882		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_8882_Heather_Dust_Back_High.jpg" doesn't match pid prefix
+8882		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_8882_Heather_Dust_DirectSide_High.jpg" doesn't match pid prefix
+8882		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_8882_Black_DirectSide_High.jpg" doesn't match pid prefix
+8882		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_8882_Black_Front_High.jpg" doesn't match pid prefix
+8882		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_8882_White_Back_High.jpg" doesn't match pid prefix
+8882		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_8882_Black_Back_High.jpg" doesn't match pid prefix
+8882		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_8882_White_Front_High.jpg" doesn't match pid prefix
+8882		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_8882_Heather_Dust_Front_High.jpg" doesn't match pid prefix
+8882		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_8882_White_DirectSide_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Vintage_Navy_Front_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Hunter_Green_Front_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Athletic_Heather_Back_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Asphalt_Back_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Black_DirectSide_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_White_Front_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Vintage_Red_Front_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Black_Back_High_Model.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Black_Front_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Vintage_Red_Back_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Athletic_Heather_DirectSide_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Asphalt_DirectSide_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Hunter_Green_Back_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Purple_Storm_Front_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Vintage_Navy_Back_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Asphalt_Front_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Dust_Front_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Vintage_Red_DirectSide_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Cocoa_Front_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Athletic_Heather_Front_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Black_Back_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Purple_Storm_Back_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Cocoa_DirectSide_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Dust_Back_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Black_Side_High_Model.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Cocoa_Back_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_White_DirectSide_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_White_Back_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Dust_DirectSide_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Hunter_Green_DirectSide_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Purple_Storm_DirectSide_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Vintage_Navy_DirectSide_High.jpg" doesn't match pid prefix
+4610		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_4610_Black_Front_High_Model.jpg" doesn't match pid prefix
+4610	bella + canvas 4610 black	DUPE-DRIVE	medium	2	-	Side: 2 files in Drive — BELLA_+_CANVAS_4610_Black_DirectSide_High.jpg; BELLA_+_CANVAS_4610_Black_Side_High_Model.jpg
+4610	bella + canvas 4610 black	DUPE-DRIVE	medium	2	-	Back: 2 files in Drive — BELLA_+_CANVAS_4610_Black_Back_High_Model.jpg; BELLA_+_CANVAS_4610_Black_Back_High.jpg
+4610	bella + canvas 4610 black	DUPE-DRIVE	medium	2	-	Front: 2 files in Drive — BELLA_+_CANVAS_4610_Black_Front_High.jpg; BELLA_+_CANVAS_4610_Black_Front_High_Model.jpg
+5200		CROSS-POLLUTION	high	1	-	Drive file "3899_fl.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_Black_Side_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_Red_Front_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_Navy_Front_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_Safety_Pink_Back_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_Sport_Grey_Front_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_Black_Back_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_Safety_Pink_Front_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_Graphite_Heather_Front_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_Purple_Front_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_Navy_Side_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_Red_Back_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_White_Front_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_Navy_Back_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_Royal_Back_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_Black_Front_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_Graphite_Heather_Back_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_Purple_Side_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_Royal_Front_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_White_Side_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_Sport_Grey_Back_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_White_Back_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_Graphite_Heather_DirectSide_High.jpg" doesn't match pid prefix
+5200		CROSS-POLLUTION	high	1	-	Drive file "Gildan_5200_Purple_Back_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Natural_Back_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Turquoise_Back_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Royal_Back_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Tahiti_Blue_Front_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Turquoise_Front_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Tahiti_Blue_Back_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Purple_Rush_Front_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Red_Front_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Royal_Front_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Purple_Rush_Back_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Red_Back_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Heather_Grey_Back_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Kelly_Green_Front_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Indigo_Front_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Maroon_Back_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Natural_Front_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Kelly_Green_Back_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Light_Pink_Front_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Cancun_Front_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Light_Pink_Back_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Heavy_Metal_Front_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Heather_Grey_Front_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Black_DirectSide_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Heavy_Metal_DirectSide_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Midnight_Navy_Back_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Black_Front_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Midnight_Navy_Front_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Hot_Pink_Back_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Cancun_Back_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_White_Back_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_White_Front_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Heavy_Metal_Back_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Hot_Pink_DirectSide_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Maroon_Front_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Black_Back_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Hot_Pink_Front_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_White_DirectSide_High.jpg" doesn't match pid prefix
+3900		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3900_Indigo_Back_High.jpg" doesn't match pid prefix
+9002		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_9002_Heather_Military_Green_Front_High.jpg" doesn't match pid prefix
+9002		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_9002_Heather_Midnight_Navy_Back_High.jpg" doesn't match pid prefix
+9002		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_9002_Heather_Black_DirectSide_High.jpg" doesn't match pid prefix
+9002		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_9002_Heather_Grey_Front_High.jpg" doesn't match pid prefix
+9002		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_9002_Heather_Grey_Back_High.jpg" doesn't match pid prefix
+9002		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_9002_Heather_Black_Front_High_Model.jpg" doesn't match pid prefix
+9002		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_9002_Heather_Midnight_Navy_DirectSide_High.jpg" doesn't match pid prefix
+9002		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_9002_Heather_Military_Green_DirectSide_High.jpg" doesn't match pid prefix
+9002		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_9002_Heather_Black_Front_High.jpg" doesn't match pid prefix
+9002		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_9002_Heather_Black_Back_High.jpg" doesn't match pid prefix
+9002		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_9002_Heather_Grey_DirectSide_High.jpg" doesn't match pid prefix
+9002		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_9002_Heather_Military_Green_Back_High.jpg" doesn't match pid prefix
+9002		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_9002_Heather_Midnight_Navy_Front_High.jpg" doesn't match pid prefix
+9002	next level 9002 heather black	DUPE-DRIVE	medium	2	-	Front: 2 files in Drive — Next_Level_9002_Heather_Black_Front_High_Model.jpg; Next_Level_9002_Heather_Black_Front_High.jpg
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Military_Green_Back_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Lilac_DirectSide_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Tahiti_Blue_Back_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Mint_Back_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Hot_Pink_Back_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Red_Back_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Raspberry_Front_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Heather_Grey_Back_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Turquoise_Back_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Red_Front_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Midnight_Navy_Front_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Lilac_Front_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Tahiti_Blue_Front_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Raspberry_Back_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Royal_Front_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Hot_Pink_Front_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Military_Green_Front_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Royal_Back_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Turquoise_Front_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Lilac_Back_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Mint_DirectSide_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Mint_Front_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Cardinal_Back_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Black_Back_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_White_Back_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Heather_Grey_Front_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Desert_Pink_Back_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_White_Front_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Banana_Cream_Front_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Desert_Pink_DirectSide_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Dark_Grey_Front_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Cardinal_Front_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Dark_Grey_Back_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Cardinal_DirectSide_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Black_Front_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Desert_Pink_Front_High.jpg" doesn't match pid prefix
+1510		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_1510_Banana_Cream_Back_High.jpg" doesn't match pid prefix
+3911		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3911_Black_Front_High.jpg" doesn't match pid prefix
+3911		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3911_Heather_Grey_DirectSide_High.jpg" doesn't match pid prefix
+3911		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3911_Midnight_Navy_DirectSide_High.jpg" doesn't match pid prefix
+3911		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3911_Heather_Grey_Back_High.jpg" doesn't match pid prefix
+3911		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3911_Red_Back_High.jpg" doesn't match pid prefix
+3911		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3911_Red_Front_High.jpg" doesn't match pid prefix
+3911		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3911_White_Back_High.jpg" doesn't match pid prefix
+3911		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3911_Black_Back_High.jpg" doesn't match pid prefix
+3911		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3911_White_Front_High.jpg" doesn't match pid prefix
+3911		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3911_White_DirectSide_High.jpg" doesn't match pid prefix
+3911		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3911_Desert_Pink_Back_High.jpg" doesn't match pid prefix
+3911		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3911_Desert_Pink_Front_High.jpg" doesn't match pid prefix
+3911		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3911_Heather_Grey_Back_High_Model.jpg" doesn't match pid prefix
+3911		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3911_Heather_Grey_Front_High_Model.jpg" doesn't match pid prefix
+3911		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3911_Heather_Grey_Side_High_Model.jpg" doesn't match pid prefix
+3911		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3911_Heather_Grey_Front_High.jpg" doesn't match pid prefix
+3911		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3911_Midnight_Navy_Back_High.jpg" doesn't match pid prefix
+3911		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3911_Midnight_Navy_Front_High.jpg" doesn't match pid prefix
+3911		CROSS-POLLUTION	high	1	-	Drive file "Next_Level_3911_Black_DirectSide_High.jpg" doesn't match pid prefix
+3911	next level 3911 heather grey	DUPE-DRIVE	medium	2	-	Side: 2 files in Drive — Next_Level_3911_Heather_Grey_DirectSide_High.jpg; Next_Level_3911_Heather_Grey_Side_High_Model.jpg
+3911	next level 3911 heather grey	DUPE-DRIVE	medium	2	-	Back: 2 files in Drive — Next_Level_3911_Heather_Grey_Back_High.jpg; Next_Level_3911_Heather_Grey_Back_High_Model.jpg
+3911	next level 3911 heather grey	DUPE-DRIVE	medium	2	-	Front: 2 files in Drive — Next_Level_3911_Heather_Grey_Front_High_Model.jpg; Next_Level_3911_Heather_Grey_Front_High.jpg
+168	Black	STORE-DRIFT	medium	2	3	Side: expected 2, store has 3
+168	Black/ Camo/ Loden	STORE-DRIFT	medium	2	3	Side: expected 2, store has 3
+168	Red/ Black	STORE-DRIFT	medium	2	3	Side: expected 2, store has 3
+168	Royal/ Black	STORE-DRIFT	medium	2	3	Side: expected 2, store has 3
+A704		CROSS-POLLUTION	high	1	-	Drive file "Screenshot 2026-04-24 103950.png" doesn't match pid prefix
+1304		CROSS-POLLUTION	high	1	-	Drive file "American_Apparel_1304_Orange_Front_High.jpg" doesn't match pid prefix
+1304		CROSS-POLLUTION	high	1	-	Drive file "American_Apparel_1304_Sand_Back_High.jpg" doesn't match pid prefix
+1304		CROSS-POLLUTION	high	1	-	Drive file "American_Apparel_1304_White_Back_High.jpg" doesn't match pid prefix
+1304		CROSS-POLLUTION	high	1	-	Drive file "American_Apparel_1304_Heather_Grey_Back_High.jpg" doesn't match pid prefix
+1304		CROSS-POLLUTION	high	1	-	Drive file "American_Apparel_1304_Black_Back_High.jpg" doesn't match pid prefix
+1304		CROSS-POLLUTION	high	1	-	Drive file "American_Apparel_1304_Black_Front_High.jpg" doesn't match pid prefix
+1304		CROSS-POLLUTION	high	1	-	Drive file "American_Apparel_1304_Sand_Front_High.jpg" doesn't match pid prefix
+1304		CROSS-POLLUTION	high	1	-	Drive file "American_Apparel_1304_Heather_Grey_Front_High.jpg" doesn't match pid prefix
+1304		CROSS-POLLUTION	high	1	-	Drive file "American_Apparel_1304_Orange_Back_High.jpg" doesn't match pid prefix
+1304		CROSS-POLLUTION	high	1	-	Drive file "American_Apparel_1304_White_Front_High.jpg" doesn't match pid prefix
+3001		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3001_Cardinal_Back_High.jpg" doesn't match pid prefix
+3001		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3001_White_Front_High.jpg" doesn't match pid prefix
+3001		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3001_Asphalt_Back_High.jpg" doesn't match pid prefix
+3001		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3001_Navy_Back_High.jpg" doesn't match pid prefix
+3001		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3001_Natural_Front_High.jpg" doesn't match pid prefix
+3001		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3001_White_Back_High.jpg" doesn't match pid prefix
+3001		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3001_Forest_Front_High.jpg" doesn't match pid prefix
+3001		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3001_Black_Back_High.jpg" doesn't match pid prefix
+3001		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3001_Natural_Back_High.jpg" doesn't match pid prefix
+3001		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3001_Cardinal_Front_High.jpg" doesn't match pid prefix
+3001		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3001_Black_Front_High.jpg" doesn't match pid prefix
+3001		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3001_Asphalt_Front_High.jpg" doesn't match pid prefix
+3001		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3001_Forest_Back_High.jpg" doesn't match pid prefix
+3001		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3001_Navy_Front_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Navy_Front_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Natural_Back_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Athletic_Heather_Front_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Maroon_Back_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Athletic_Heather_Back_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Vintage_White_Front_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Natural_DirectSide_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Vintage_Brown_Front_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Vintage_Black_Front_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Vintage_White_Back_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Vintage_Navy_Back_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Dark_Grey_Back_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Vintage_Brown_Back_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Vintage_Navy_Front_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Toast_DirectSide_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Black_Back_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Natural_Front_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Dark_Grey_DirectSide_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Soft_Pink_Back_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Black_DirectSide_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Vintage_Brown_DirectSide_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Vintage_Red_DirectSide_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Vintage_Denim_DirectSide_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Forest_Front_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Dark_Grey_Front_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Black_Front_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Vintage_Red_Front_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Vintage_Black_Back_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Forest_Back_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Navy_DirectSide_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Maroon_DirectSide_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Athletic_Heather_DirectSide_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Soft_Pink_DirectSide_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Vintage_Navy_DirectSide_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Maroon_Front_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Toast_Back_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_White_Back_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Toast_Front_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Vintage_Denim_Front_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Vintage_White_DirectSide_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Vintage_Denim_Back_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Navy_Back_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_White_Front_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Vintage_Red_Back_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Soft_Pink_Front_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_Vintage_Black_DirectSide_High.jpg" doesn't match pid prefix
+3010		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3010_White_DirectSide_High.jpg" doesn't match pid prefix
+3480		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3480_Teal_Front_High.jpg" doesn't match pid prefix
+3480		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3480_Black_Side_High.jpg" doesn't match pid prefix
+3480		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3480_Teal_Side_High.jpg" doesn't match pid prefix
+3480		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3480_White_Side_High.jpg" doesn't match pid prefix
+3480		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3480_Green_Triblend_Side_High.jpg" doesn't match pid prefix
+3480		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3480_Green_Triblend_Front_High.jpg" doesn't match pid prefix
+3480		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3480_Asphalt_Side_High.jpg" doesn't match pid prefix
+3480		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3480_Teal_Back_High.jpg" doesn't match pid prefix
+3480		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3480_Orange_Front_High.jpg" doesn't match pid prefix
+3480		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3480_Orange_Back_High.jpg" doesn't match pid prefix
+3480		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3480_Green_Triblend_Back_High.jpg" doesn't match pid prefix
+3480		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3480_Navy_Front_High.jpg" doesn't match pid prefix
+3480		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3480_Orange_Side_High.jpg" doesn't match pid prefix
+3480		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3480_Navy_Back_High.jpg" doesn't match pid prefix
+3480		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3480_White_Back_High.jpg" doesn't match pid prefix
+3480		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3480_Asphalt_Back_High.jpg" doesn't match pid prefix
+3480		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3480_White_Front_High.jpg" doesn't match pid prefix
+3480		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_3480_Asphalt_Front_High.jpg" doesn't match pid prefix
+6003		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6003_Athletic_Heather_DirectSide_High.jpg" doesn't match pid prefix
+6003		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6003_Black_DirectSide_High.jpg" doesn't match pid prefix
+6003		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6003_White_Back_High.jpg" doesn't match pid prefix
+6003		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6003_Dark_Grey_Heather_Front_High.jpg" doesn't match pid prefix
+6003		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6003_Black_Back_High.jpg" doesn't match pid prefix
+6003		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6003_White_DirectSide_High.jpg" doesn't match pid prefix
+6003		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6003_Athletic_Heather_Back_High.jpg" doesn't match pid prefix
+6003		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6003_White_Front_High.jpg" doesn't match pid prefix
+6003		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6003_Athletic_Heather_Front_High.jpg" doesn't match pid prefix
+6008		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6008_Red_DirectSide_High.jpg" doesn't match pid prefix
+6008		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6008_Dark_Grey_Heather_DirectSide_High.jpg" doesn't match pid prefix
+6008		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6008_Red_Front_High.jpg" doesn't match pid prefix
+6008		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6008_Navy_Front_High.jpg" doesn't match pid prefix
+6008		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6008_True_Royal_Front_High.jpg" doesn't match pid prefix
+6008		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6008_True_Royal_DirectSide_High.jpg" doesn't match pid prefix
+6008		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6008_Teal_DirectSide_High.jpg" doesn't match pid prefix
+6008		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6008_True_Royal_Back_High.jpg" doesn't match pid prefix
+6008		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6008_Teal_Back_High.jpg" doesn't match pid prefix
+6008		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6008_Dark_Grey_Heather_Back_High.jpg" doesn't match pid prefix
+6008		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6008_Red_Back_High.jpg" doesn't match pid prefix
+6008		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6008_Dark_Grey_Heather_Front_High.jpg" doesn't match pid prefix
+6008		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6008_Black_Front_High.jpg" doesn't match pid prefix
+6008		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6008_Black_Back_High.jpg" doesn't match pid prefix
+6008		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6008_Athletic_Heather_Back_High.jpg" doesn't match pid prefix
+6008		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6008_Black_DirectSide_High.jpg" doesn't match pid prefix
+6008		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6008_Athletic_Heather_Front_High.jpg" doesn't match pid prefix
+6008		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6008_White_Front_High.jpg" doesn't match pid prefix
+6008		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6008_White_Back_High.jpg" doesn't match pid prefix
+6008		CROSS-POLLUTION	high	1	-	Drive file "BELLA_+_CANVAS_6008_Athletic_Heather_DirectSide_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Blue_Jean_Front_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Blue_Jean_DirectSide_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Pepper_Back_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Peachy_Front_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Crimson_Front_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Black_Front_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Hydrangea_DirectSide_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Butter_Front_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Ivory_Front_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Peachy_Back_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Hydrangea_Front_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Butter_DirectSide_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Grey_Front_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Crimson_Back_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Grey_Back_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Peachy_DirectSide_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Ivory_DirectSide_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Blue_Jean_Back_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_White_Back_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_White_DirectSide_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Pepper_DirectSide_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Neon_Violet_Back_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Espresso_Front_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Hydrangea_Back_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Espresso_DirectSide_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Grey_DirectSide_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Neon_Violet_DirectSide_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Black_Back_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Ivory_Back_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Espresso_Back_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Neon_Violet_Front_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Butter_Back_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Pepper_Front_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Black_DirectSide_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_White_Front_High.jpg" doesn't match pid prefix
+1466		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1466_Crimson_DirectSide_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Peachy_DirectSide_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Pepper_Front_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Peachy_Back_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Pepper_Back_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Pepper_DirectSide_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Crimson_Back_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Grey_DirectSide_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_White_DirectSide_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_White_Front_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Hydrangea_DirectSide_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Black_Front_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Ivory_Front_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Black_DirectSide_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Hydrangea_Front_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Butter_Front_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Ivory_DirectSide_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Crimson_DirectSide_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Grey_Back_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Ivory_Back_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Neon_Violet_DirectSide_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Peachy_Front_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Black_Back_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Neon_Violet_Front_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_White_Back_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Butter_DirectSide_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Butter_Back_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Blue_Jean_DirectSide_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Neon_Violet_Back_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Grey_Front_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Blue_Jean_Back_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Hydrangea_Back_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Blue_Jean_Front_High.jpg" doesn't match pid prefix
+1467		CROSS-POLLUTION	high	1	-	Drive file "Comfort_Colors_1467_Crimson_Front_High.jpg" doesn't match pid prefix
+5000	Sapphire	STORE-DRIFT	medium	1	0	Back: expected 1, store has 0
+5000	Sapphire	STORE-DRIFT	medium	2	0	Side: expected 2, store has 0
+5000	Sky	STORE-DRIFT	medium	1	0	Front: expected 1, store has 0
+5000	Sky	STORE-DRIFT	medium	1	0	Back: expected 1, store has 0
+5000	Sky	STORE-DRIFT	medium	2	0	Side: expected 2, store has 0
+5000	Sport Grey	STORE-DRIFT	medium	1	0	Front: expected 1, store has 0
+5000	Sport Grey	STORE-DRIFT	medium	1	0	Back: expected 1, store has 0
+5000	Sport Grey	STORE-DRIFT	medium	2	0	Side: expected 2, store has 0
+5000	Tangerine	STORE-DRIFT	medium	1	0	Front: expected 1, store has 0
+5000	Tangerine	STORE-DRIFT	medium	1	0	Back: expected 1, store has 0
+5000	Tangerine	STORE-DRIFT	medium	2	0	Side: expected 2, store has 0
+5000	Tennessee Orange	STORE-DRIFT	medium	1	0	Front: expected 1, store has 0
+5000	Tennessee Orange	STORE-DRIFT	medium	1	0	Back: expected 1, store has 0
+5000	Tennessee Orange	STORE-DRIFT	medium	2	0	Side: expected 2, store has 0
+5000	Texas Orange	STORE-DRIFT	medium	1	0	Front: expected 1, store has 0
+5000	Texas Orange	STORE-DRIFT	medium	1	0	Back: expected 1, store has 0
+5000	Texas Orange	STORE-DRIFT	medium	2	0	Side: expected 2, store has 0
+5000	Tropical Blue	STORE-DRIFT	medium	1	0	Front: expected 1, store has 0
+5000	Tropical Blue	STORE-DRIFT	medium	1	0	Back: expected 1, store has 0
+5000	Tropical Blue	STORE-DRIFT	medium	2	0	Side: expected 2, store has 0
+5000	Turf Green	STORE-DRIFT	medium	1	0	Front: expected 1, store has 0
+5000	Turf Green	STORE-DRIFT	medium	1	0	Back: expected 1, store has 0
+5000	Turf Green	STORE-DRIFT	medium	2	0	Side: expected 2, store has 0
+5000	Tweed	STORE-DRIFT	medium	1	0	Front: expected 1, store has 0
+5000	Tweed	STORE-DRIFT	medium	1	0	Back: expected 1, store has 0
+5000	Tweed	STORE-DRIFT	medium	2	0	Side: expected 2, store has 0
+5000	Violet	STORE-DRIFT	medium	1	0	Front: expected 1, store has 0
+5000	Violet	STORE-DRIFT	medium	1	0	Back: expected 1, store has 0
+5000	Violet	STORE-DRIFT	medium	2	0	Side: expected 2, store has 0
+5000	White	STORE-DRIFT	medium	1	0	Front: expected 1, store has 0
+5000	White	STORE-DRIFT	medium	1	0	Back: expected 1, store has 0
+5000	White	STORE-DRIFT	medium	2	0	Side: expected 2, store has 0
+5000	antique jade dome	STORE-EXTRA-COLOR	medium	0	?	Store has media for color "antique jade dome" but BR has no such variant
+5000	antique orange	STORE-EXTRA-COLOR	medium	0	?	Store has media for color "antique orange" but BR has no such variant
+5000	aquatic	STORE-EXTRA-COLOR	medium	0	?	Store has media for color "aquatic" but BR has no such variant
+5000	berry	STORE-EXTRA-COLOR	medium	0	?	Store has media for color "berry" but BR has no such variant
+5000	blackberry	STORE-EXTRA-COLOR	medium	0	?	Store has media for color "blackberry" but BR has no such variant
+5000	blue dusk	STORE-EXTRA-COLOR	medium	0	?	Store has media for color "blue dusk" but BR has no such variant
+5000	brown savana	STORE-EXTRA-COLOR	medium	0	?	Store has media for color "brown savana" but BR has no such variant
+5000	cobalt	STORE-EXTRA-COLOR	medium	0	?	Store has media for color "cobalt" but BR has no such variant
+5000	dusty rose	STORE-EXTRA-COLOR	medium	0	?	Store has media for color "dusty rose" but BR has no such variant
+5000	electric green	STORE-EXTRA-COLOR	medium	0	?	Store has media for color "electric green" but BR has no such variant
+5000	lilac	STORE-EXTRA-COLOR	medium	0	?	Store has media for color "lilac" but BR has no such variant
+5000	midnight	STORE-EXTRA-COLOR	medium	0	?	Store has media for color "midnight" but BR has no such variant
+5000	neon blue	STORE-EXTRA-COLOR	medium	0	?	Store has media for color "neon blue" but BR has no such variant
+5000	neon green	STORE-EXTRA-COLOR	medium	0	?	Store has media for color "neon green" but BR has no such variant
+5000	russet	STORE-EXTRA-COLOR	medium	0	?	Store has media for color "russet" but BR has no such variant
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Loden-_Black_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Khaki-_Coffee_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Heather_Grey-_Black_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Black-_Vegas_Gold_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Heather_Grey-_Dark_Green_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Navy_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Dark_Green-_White_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Dark_Green-_White_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Heather_Grey-_Light_Grey_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Royal_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Heather_Grey-_Royal_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Black-_Vegas_Gold_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Brown-_Khaki_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Neon_Green_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Columbia_Blue-_White_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Black-_White_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Neon_Green_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Grey-_Charcoal-_Black_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Neon_Blue_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Carmel-_Black_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_White_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_White_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Black_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Heather_Grey-_Navy_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Navy_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Heather_Grey-_Light_Grey_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Carmel-_Black_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Grey-_Charcoal-_Black_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Heather_Grey-_Dark_Green_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Black-_White-_Red_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Columbia_Blue-_White_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Black_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Neon_Orange_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Red_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Red_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Neon_Orange_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Carmel-_Black_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Neon_Yellow_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Brown-_Khaki_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Black-_Charcoal_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Orange_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Royal_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Heather_Grey-_Light_Grey_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Heather_Grey-_Royal_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Black_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Columbia_Blue_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Black-_White_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_White_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Heather_Grey-_Charcoal-_Maroon_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Neon_Yellow_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Neon_Blue_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Orange_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Heather_Grey-_Royal_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Neon_Pink_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Black-_White-_Red_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Heather_Grey-_Charcoal-_Maroon_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Brown-_Khaki_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Red_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_White_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Heather_Grey-_Navy_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Columbia_Blue-_White_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Neon_Pink_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Neon_Green_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Black-_White_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Columbia_Blue_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Neon_Yellow_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Neon_Blue_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_White_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Heather_Grey-_Navy_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Heather_Grey-_Black_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Heather_Grey-_Charcoal-_Maroon_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Black-_White-_Red_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Heather_Grey-_Dark_Green_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Navy_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_White_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Black-_Gold_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Black-_White-_Heather_Grey_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Black_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Black-_Charcoal_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Black_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Black_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Black-_Gold_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Columbia_Blue_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Orange_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Black-_Charcoal_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Black-_Gold_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Neon_Orange_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Heather_Grey-_Black_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Grey-_Charcoal-_Black_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Black-_Vegas_Gold_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Black-_White-_Heather_Grey_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Dark_Green-_White_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Neon_Pink_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Black-_White-_Heather_Grey_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Charcoal-_Royal_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Navy-_Carmel_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Navy-_White_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Navy-_Orange_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Navy_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Purple-_White_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Red_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Khaki-_White_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Royal-_White_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Purple-_White_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Loden-_Black_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Navy_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Maroon-_White_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Purple-_White_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Kelly-_White_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Red-_White-_Heather_Grey_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Red-_White-_Black_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Navy-_White-_Heather_Grey_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_White-_Black_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Navy-_White_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Kelly-_White_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Royal-_Black_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Red-_White-_Heather_Grey_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Navy-_Charcoal_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Heather_Grey-_White_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Red-_Black_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Royal-_Black_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Red-_White-_Black_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Royal-_White_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Khaki-_White_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Red-_Black_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Red-_White_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Navy-_Orange_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Royal-_White-_Heather_Grey_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Red-_Black_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Navy-_White-_Heather_Grey_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Khaki-_White_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Navy-_Carmel_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Navy-_Charcoal_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Navy-_Charcoal_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_White-_Black_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Red_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_White-_Black_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Royal-_White_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Navy-_White-_Heather_Grey_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Navy-_Orange_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Navy-_White_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Heather_Grey-_White_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Navy_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Red-_White_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Kelly-_White_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Red_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Royal-_Black_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Red-_White-_Heather_Grey_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Maroon-_White_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Loden-_Black_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Navy-_Carmel_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Red-_White-_Black_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Royal-_White-_Heather_Grey_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Maroon-_White_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Red-_White_DirectSide_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Khaki-_Coffee_Back_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Khaki-_Coffee_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Royal-_White-_Heather_Grey_Front_High.jpg" doesn't match pid prefix
+112		CROSS-POLLUTION	high	1	-	Drive file "Richardson_112_Heather_Grey-_White_DirectSide_High.jpg" doesn't match pid prefix

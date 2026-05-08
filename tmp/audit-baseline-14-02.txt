@@ -1,0 +1,28 @@
+# Phase 14 Plan 02 — Audit Baseline
+# Captured before any plan-02 mutations. Source of truth for downstream tasks.
+#
+# Timestamp:   2026-05-08T14:04:42Z (UTC)
+# Pids audited: 460
+# Total issues: 805
+# Affected pids: 51
+#
+# Per-check counts (from tmp/imagery-audit.log Summary block):
+#
+#   CROSS-POLLUTION   :  742  (46 pids)
+#   STORE-DRIFT       :   37  (3 pids)
+#   STORE-EXTRA-COLOR :   15  (1 pids)   ← all on pid 5000
+#   DUPE-DRIVE        :    9  (4 pids)   ← carryover from 14-01
+#   BAD-ALT           :    2  (2 pids)
+#
+# Comparison to 14-01 close (per 14-01 SUMMARY context):
+#   CROSS-POLLUTION   826 → 742  (-84 — likely from 14-01 dedupe trash removing
+#                                  duplicates that were also flagged as cross-pollution)
+#   STORE-DRIFT        42 →  37  (-5)
+#   STORE-EXTRA-COLOR   0 →  15  (newly surfaced via filter — these are the
+#                                  15 orphan colors on pid 5000 we'll delete in T2)
+#   DUPE-DRIVE         92 →   9  (-83 — 14-01 trash applied)
+#   BAD-ALT            13 →   2  (-11 — likely audit regex changes)
+#
+# Source files:
+#   tmp/imagery-audit.tsv (re-generated 2026-05-08 10:04 local)
+#   tmp/imagery-audit.log (run summary)
