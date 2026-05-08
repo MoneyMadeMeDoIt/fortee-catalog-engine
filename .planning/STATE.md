@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Image Automation
-status: Phase 14 imagery cleanup in progress (1/3 plans complete)
-stopped_at: 14-01-PLAN.md complete — resolveStoreProduct helper shipped, KNOWN_SUPPLIER_PREFIXES added to audit, 142 supplier-original Drive duplicates trashed
-last_updated: "2026-05-08T13:56:05.155Z"
+status: Phase 14 imagery cleanup COMPLETE (3/3 plans + allowlist follow-up)
+stopped_at: Phase 14 verified clean — audit 973→25; only 2 protected SIZE_CHART CROSS-POLLUTION + deferred follow-ups remain
+last_updated: "2026-05-08T18:10:00.000Z"
 progress:
   total_phases: 7
-  completed_phases: 6
-  total_plans: 15
-  completed_plans: 11
-  percent: 73
+  completed_phases: 7
+  total_plans: 18
+  completed_plans: 18
+  percent: 100
 ---
 
 # Project State
@@ -24,18 +24,30 @@ See: .planning/PROJECT.md (updated 2026-04-01)
 
 ## Current Position
 
-v2.0 phases complete. Currently in catalog curation work (not phase-tracked):
+v2.0 phases + Phase 14 imagery cleanup all shipped. Catalog curation work continues separately (not phase-tracked):
 
 - 283/467 bestsellers fully complete
 - 179 with gaps remaining (mostly missing descriptions, size charts, categories)
 - 2 products still not in Sheet1
+
+**Imagery audit state (2026-05-08):**
+- 25 issues across 460 audited pids (down from 973 baseline)
+- 0 STORE-DRIFT, 0 STORE-EXTRA-COLOR, 0 BAD-ALT
+- 2 CROSS-POLLUTION (intentional protected SIZE_CHARTs)
+- 15 DUPE-DRIVE deferred (logged in `tmp/dedupe-leftovers.tsv`)
+- 7 MODEL-MISSING-ON-STORE (separate push workflow)
+- 1 MODEL-DUPLICATED accepted variance (L01250)
 
 ## Accumulated Context
 
 ### Roadmap Evolution
 
 - Phase 14 added (2026-05-08): Imagery cleanup — reconcile BR Drive store consistency for cap-bound and partial-data products. Triggered by partial mid-execution failures during ad-hoc cleanup that should have been planned formally.
-- Phase 14 Plan 01 complete (2026-05-08): resolveStoreProduct helper, KNOWN_SUPPLIER_PREFIXES allowlist, dedupe STRAY_PATTERNS extension. 142 supplier-original Drive duplicates trashed; DUPE-DRIVE 92 → 9. Helper smoke-tested against pid 5000.
+- Phase 14 complete (2026-05-08, all 3 plans + allowlist follow-up):
+  - **14-01 Foundations:** `resolveStoreProduct` helper (throws on >1 match — closes silent-pick bug class), `KNOWN_SUPPLIER_PREFIXES` allowlist, dedupe `STRAY_PATTERNS` extension. 142 supplier-original Drive duplicates trashed.
+  - **14-02 BR↔Drive↔Store reconciliation:** pid 5000 orphan-color reap (60 store media + 43 backfill), pid 168 duplicate-side dedupe, 742-row cross-pollution classification TSV.
+  - **14-03 Cross-pollution apply + BAD-ALT + verification:** 19 MOVE + 170 TRASH on Drive, 13 BAD-ALT visual-triaged (8 deletes + 5 renames), 14-VERIFICATION.md.
+  - **Allowlist follow-up:** 18 new (pid, brand) entries → CROSS-POLLUTION 553 → 2 (only protected SIZE_CHART PDFs).
 
 ### Decisions
 
@@ -55,9 +67,18 @@ Key decisions for catalog curation (2026-04-01):
 
 ### Pending Todos
 
+**Catalog curation (separate from phase work):**
 - 13 Canada Sportswear products need manual size entry (not in any API): H08355, H08360, L00450, L00570, L01205, S01225, S04605, S04606, S05980, S05982, S05985, S07200, S07241
 - 179 bestseller products still have data gaps (see Catalog-Gaps tab)
 - 60 SS Canada products have no model images available from API
+
+**Phase 14 follow-ups (deferred, not blocking):**
+- 6 new DUPE-DRIVE collisions from 14-03 MOVE actions (S05772 sides + 4610) — logged in `tmp/dedupe-leftovers.tsv`
+- 7 MODEL-MISSING-ON-STORE pids (L07260, L07261, L09270, L09271, S04600, S05650, S05652) — distinct push workflow, not audit-cleanup scope
+- Audit `--pids X` mode overwrites `tmp/imagery-audit.tsv` — DX bug; possible follow-up: write narrow audits to a separate path
+
+**Next planned phase:**
+- Phase 15 (Garment Type Verification) — post-generation classifier rejecting AI images where garment type doesn't match source. See `project_garment_classifier.md` memory.
 
 ### Blockers/Concerns
 
@@ -66,6 +87,6 @@ Key decisions for catalog curation (2026-04-01):
 
 ## Session Continuity
 
-Last session: 2026-05-08T13:55:00.000Z
-Stopped at: 14-01-PLAN.md complete — see .planning/phases/14-imagery-cleanup-reconcile-br-drive-store-consistency-for-cap/14-01-SUMMARY.md. Next: 14-02-PLAN.md
+Last session: 2026-05-08T18:10:00.000Z
+Stopped at: Phase 14 imagery cleanup complete + audit allowlist follow-up applied. Final audit: 25 issues, all justified or deferred. See `.planning/phases/14-imagery-cleanup-.../14-VERIFICATION.md`.
 Resume file: None
