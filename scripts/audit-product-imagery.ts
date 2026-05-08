@@ -41,6 +41,17 @@ const MAIN_ID = '1GcsOwEy96Y8P8cLKafTl-KdkhP9cTY1jLm-9CL_0tPs';
 const READY_TAB = 'Bestsellers-Ready';
 const ROOT_FOLDER_ID = process.env.GOOGLE_DRIVE_IMAGES_FOLDER_ID ?? '1xIjATpaEdqJYHRiuy0Iy6wIYUcNCXC8k';
 
+// Known supplier-prefixed filenames that are legitimate despite not starting
+// with the pid. Add per-pid entries when a supplier consistently uses a brand-
+// prefix naming (e.g., Richardson cap line uses 'Richardson_168_*').
+// Without this allowlist, the cross-pollution check phantom-flags every
+// Richardson_-prefixed file in pid 168's folder (BR points to those URLs and
+// they're correct — the audit's "filename must start with pid" invariant is
+// the wrong rule for supplier-branded naming conventions).
+const KNOWN_SUPPLIER_PREFIXES: Record<string, string[]> = {
+  '168': ['Richardson_168_'],
+};
+
 interface Args { pids: string[] | null; supplier: string | null; vision: boolean; limit: number; noStore: boolean }
 function parseArgs(argv: string[]): Args {
   const a: Args = { pids: null, supplier: null, vision: false, limit: Infinity, noStore: false };
@@ -111,7 +122,9 @@ async function listFolder(drive: drive_v3.Drive, folderId: string): Promise<{ id
 
 // --- Filename parsing -----------------------------------------------------
 /** Loose pid-membership check. Accepts files starting with pid, pid+lowercase,
- *  or numeric-only portion (e.g. "1290-Black-Front" for pid "L01290"). */
+ *  numeric-only portion (e.g. "1290-Black-Front" for pid "L01290"), or any
+ *  registered supplier-brand prefix in KNOWN_SUPPLIER_PREFIXES (e.g.
+ *  "Richardson_168_Black_Front_High.jpg" for pid 168). */
 function fileBelongsToPid(pid: string, name: string): boolean {
   const lower = name.toLowerCase();
   const pidLower = pid.toLowerCase();
@@ -124,6 +137,13 @@ function fileBelongsToPid(pid: string, name: string): boolean {
     if (lower.startsWith(`${num}-`) || lower.startsWith(`${num}_`) ||
         lower.startsWith(`${numStripped}-`) || lower.startsWith(`${numStripped}_`) ||
         lower.startsWith(`${numStripped} `)) return true;
+  }
+  // Supplier-branded prefix allowlist (e.g. Richardson_168_*). Case-insensitive.
+  const allowed = KNOWN_SUPPLIER_PREFIXES[pid];
+  if (allowed) {
+    for (const prefix of allowed) {
+      if (name.toLowerCase().startsWith(prefix.toLowerCase())) return true;
+    }
   }
   return false;
 }
@@ -184,10 +204,14 @@ async function fetchAllStoreProducts(client: ShopifyClient): Promise<StoreProduc
     const r = (await client.request(STORE_PAGE_QUERY, { variables: { after } })) as any;
     for (const e of r.data.products.edges) {
       const node = e.node;
+      // Don't require n.image — Shopify lazily populates that field, so freshly
+      // attached media may have null image even though the alt is correct.
+      // Filtering on it caused phantom STORE-DRIFT for processed-but-not-yet-
+      // CDN'd media. Vision checks downstream filter for url separately.
       const media = node.media.edges
         .map((x: any) => x.node)
-        .filter((n: any) => n && n.id && n.image)
-        .map((n: any) => ({ id: n.id, alt: (n.alt ?? '').trim(), url: n.image.url }));
+        .filter((n: any) => n && n.id)
+        .map((n: any) => ({ id: n.id, alt: (n.alt ?? '').trim(), url: n.image?.url ?? '' }));
       out.push({ id: node.id, handle: node.handle, title: node.title, media });
     }
     if (!r.data.products.pageInfo.hasNextPage) break;
