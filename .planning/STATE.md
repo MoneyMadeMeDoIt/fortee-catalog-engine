@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Image Automation
-status: Phase 14 imagery cleanup COMPLETE (3/3 plans + allowlist follow-up)
-stopped_at: Phase 14 verified clean — audit 973→25; only 2 protected SIZE_CHART CROSS-POLLUTION + deferred follow-ups remain
-last_updated: "2026-05-08T18:10:00.000Z"
+status: Phase 15 SPEC + CONTEXT captured — ready for /gsd-plan-phase 15
+stopped_at: Phase 15 context gathered — verifier design + retro mechanism + defaults all locked
+last_updated: "2026-05-08T19:00:00.000Z"
 progress:
   total_phases: 7
   completed_phases: 7
