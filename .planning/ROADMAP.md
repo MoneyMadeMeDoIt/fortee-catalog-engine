@@ -138,11 +138,12 @@ Plans:
 - [x] 13-01-PLAN.md — CLI script with --style-id, --all, --dry-run flags and unit tests
 
 ### Phase 15: Garment Type Verification
-**Goal**: Post-generation classifier rejects AI-generated images whose garment type drifts from the source (e.g., hoodie produced for a crewneck product), forcing regeneration before the image is accepted into the audit pipeline
+**Goal**: Per-candidate Vision-based garment-type verification inside `generateGarmentView()` so AI-generated back/side images that drift to a different garment shape (e.g., crewneck → hoodie on pid A343) never reach Drive or the store. Plus a one-off retro audit script that flags wrong-shape images already uploaded.
 **Depends on**: Phase 10, Phase 12
-**Requirements**: (TBD — defined by SPEC.md)
-**Success Criteria**: (TBD — defined by SPEC.md)
-**Plans:** 0 plans
+**Requirements**: 6 locked in [15-SPEC.md](phases/15-garment-type-verification/15-SPEC.md) — verifier filter (R1), helper API (R2), strict AND retry predicate (R3), skip+log on total fail (R4), no budget gating (R5), retro audit script (R6).
+**Success Criteria**: See SPEC.md Acceptance Criteria — 9 pass/fail checks anchored on A343 regression case + 5–10 fixture set across all CategoryGroups.
+**Context**: 11 implementation decisions in [15-CONTEXT.md](phases/15-garment-type-verification/15-CONTEXT.md) — side-by-side gpt-4o-mini comparison, coarse family match, scan-all retro, mocked + fixture-gated tests.
+**Plans:** 0 plans (SPEC + CONTEXT committed; ready for /gsd-plan-phase)
 
 ## Progress
 
@@ -160,3 +161,5 @@ Plans:
 | 11. Image Standardization & Safe Upload | v2.0 | 2/2 | Complete    | 2026-03-27 |
 | 12. Audit Runner | v2.0 | 1/1 | Complete    | 2026-03-27 |
 | 13. CLI Entry Point | v2.0 | 1/1 | Complete    | 2026-03-27 |
+| 14. Imagery Cleanup | v2.0 | 3/3 | Complete    | 2026-05-08 |
+| 15. Garment Type Verification | v2.0 | 0/0 | Spec'd & Discussed (planning next) | — |

@@ -6,11 +6,11 @@ status: Phase 15 SPEC + CONTEXT captured — ready for /gsd-plan-phase 15
 stopped_at: Phase 15 context gathered — verifier design + retro mechanism + defaults all locked
 last_updated: "2026-05-08T19:00:00.000Z"
 progress:
-  total_phases: 7
+  total_phases: 8
   completed_phases: 7
   total_plans: 18
   completed_plans: 18
-  percent: 100
+  percent: 88
 ---
 
 # Project State
@@ -24,11 +24,19 @@ See: .planning/PROJECT.md (updated 2026-04-01)
 
 ## Current Position
 
-v2.0 phases + Phase 14 imagery cleanup all shipped. Catalog curation work continues separately (not phase-tracked):
+v2.0 phases + Phase 14 imagery cleanup all shipped. Phase 15 (Garment Type Verification) in planning — SPEC.md + CONTEXT.md committed; ready for `/gsd-plan-phase 15`. Catalog curation work continues separately (not phase-tracked):
 
 - 283/467 bestsellers fully complete
 - 179 with gaps remaining (mostly missing descriptions, size charts, categories)
 - 2 products still not in Sheet1
+
+**Phase 15 status (2026-05-08):**
+- SPEC.md committed — 6 requirements, ambiguity 0.18 (gate ≤ 0.20)
+- CONTEXT.md committed — 11 implementation decisions locked
+- Verifier: side-by-side gpt-4o-mini, coarse CategoryGroup match
+- Retro: scan-all back/side regardless of source (~$0.06/pass)
+- Tests: mocked-OpenAI unit + real-API fixture test gated on OPENAI_API_KEY
+- Next: /gsd-plan-phase 15
 
 **Imagery audit state (2026-05-08):**
 - 25 issues across 460 audited pids (down from 973 baseline)
@@ -48,6 +56,10 @@ v2.0 phases + Phase 14 imagery cleanup all shipped. Catalog curation work contin
   - **14-02 BR↔Drive↔Store reconciliation:** pid 5000 orphan-color reap (60 store media + 43 backfill), pid 168 duplicate-side dedupe, 742-row cross-pollution classification TSV.
   - **14-03 Cross-pollution apply + BAD-ALT + verification:** 19 MOVE + 170 TRASH on Drive, 13 BAD-ALT visual-triaged (8 deletes + 5 renames), 14-VERIFICATION.md.
   - **Allowlist follow-up:** 18 new (pid, brand) entries → CROSS-POLLUTION 553 → 2 (only protected SIZE_CHART PDFs).
+- Phase 15 added (2026-05-08): Garment Type Verification — post-generation classifier rejecting AI back/side images that drift garment shape. Triggered by A343 regression (crewneck → hoodie drift in generated views).
+- Phase 15 planning in progress (2026-05-08):
+  - **15-SPEC.md** — 6 requirements locked. Ambiguity 0.18. R6 ⚠ flag resolved by D-04 (scan-all retro). Three-round Socratic interview captured the source-of-truth (front image), strict AND retry predicate, and skip-on-total-fail policy.
+  - **15-CONTEXT.md** — 11 implementation decisions across Vision verifier design, retro identification, TSV format, fixture set, and test strategy.
 
 ### Decisions
 
@@ -78,7 +90,7 @@ Key decisions for catalog curation (2026-04-01):
 - Audit `--pids X` mode overwrites `tmp/imagery-audit.tsv` — DX bug; possible follow-up: write narrow audits to a separate path
 
 **Next planned phase:**
-- Phase 15 (Garment Type Verification) — post-generation classifier rejecting AI images where garment type doesn't match source. See `project_garment_classifier.md` memory.
+- Phase 15 (Garment Type Verification) — SPEC + CONTEXT committed; ready for `/gsd-plan-phase 15`. Source: `project_garment_classifier.md` memory + A343 regression case.
 
 ### Blockers/Concerns
 
@@ -87,6 +99,6 @@ Key decisions for catalog curation (2026-04-01):
 
 ## Session Continuity
 
-Last session: 2026-05-08T18:10:00.000Z
-Stopped at: Phase 14 imagery cleanup complete + audit allowlist follow-up applied. Final audit: 25 issues, all justified or deferred. See `.planning/phases/14-imagery-cleanup-.../14-VERIFICATION.md`.
-Resume file: None
+Last session: 2026-05-08T19:00:00.000Z
+Stopped at: Phase 15 SPEC + CONTEXT captured. Verifier design + retro mechanism + mechanical defaults all locked. Ready for `/gsd-plan-phase 15`.
+Resume file: `.planning/phases/15-garment-type-verification/15-CONTEXT.md`
