@@ -25,13 +25,15 @@
 
 ### Phase 14: Imagery cleanup — reconcile BR Drive store consistency for cap-bound and partial-data products
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Reconcile BR ↔ Drive ↔ Store imagery state, close the cap-bound silent-pick bug class, and clean cross-pollution / DUPE-DRIVE audit categories.
+**Requirements:** R1.5000-recon, R2.sibling-invariant, R3.cap-store, R4.dupe-round2, R5.168-cross, R6.bad-alt, R10.audit-extension (see 14-SPEC.md)
 **Depends on:** Phase 13
-**Plans:** 0 plans
+**Plans:** 3 plans (1/3 complete)
 
 Plans:
-- [ ] TBD (run /gsd-plan-phase 14 to break down)
+- [x] **14-01: Foundations** — resolveStoreProduct helper, KNOWN_SUPPLIER_PREFIXES allowlist, dedupe STRAY_PATTERNS extension. 142 supplier-original Drive duplicates trashed. (completed 2026-05-08)
+- [ ] 14-02: BR ↔ Drive ↔ Store reconciliation (run /gsd-execute-phase 14 to continue)
+- [ ] 14-03: BAD-ALT remediation via fix-alts
 
 ---
 

@@ -2,14 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Image Automation
-status: Bestseller catalog curation in progress
-stopped_at: Bestseller refresh pipeline complete — model images fetched, sizes populated, gaps sheet updated
-last_updated: "2026-04-01T16:45:00.000Z"
+status: Phase 14 imagery cleanup in progress (1/3 plans complete)
+stopped_at: 14-01-PLAN.md complete — resolveStoreProduct helper shipped, KNOWN_SUPPLIER_PREFIXES added to audit, 142 supplier-original Drive duplicates trashed
+last_updated: "2026-05-08T13:56:05.155Z"
 progress:
-  total_phases: 6
+  total_phases: 7
   completed_phases: 6
-  total_plans: 9
-  completed_plans: 9
+  total_plans: 15
+  completed_plans: 11
+  percent: 73
 ---
 
 # Project State
@@ -24,6 +25,7 @@ See: .planning/PROJECT.md (updated 2026-04-01)
 ## Current Position
 
 v2.0 phases complete. Currently in catalog curation work (not phase-tracked):
+
 - 283/467 bestsellers fully complete
 - 179 with gaps remaining (mostly missing descriptions, size charts, categories)
 - 2 products still not in Sheet1
@@ -33,6 +35,7 @@ v2.0 phases complete. Currently in catalog curation work (not phase-tracked):
 ### Roadmap Evolution
 
 - Phase 14 added (2026-05-08): Imagery cleanup — reconcile BR Drive store consistency for cap-bound and partial-data products. Triggered by partial mid-execution failures during ad-hoc cleanup that should have been planned formally.
+- Phase 14 Plan 01 complete (2026-05-08): resolveStoreProduct helper, KNOWN_SUPPLIER_PREFIXES allowlist, dedupe STRAY_PATTERNS extension. 142 supplier-original Drive duplicates trashed; DUPE-DRIVE 92 → 9. Helper smoke-tested against pid 5000.
 
 ### Decisions
 
@@ -63,6 +66,6 @@ Key decisions for catalog curation (2026-04-01):
 
 ## Session Continuity
 
-Last session: 2026-04-01T16:45:00.000Z
-Stopped at: Bestseller refresh pipeline complete — model images fetched and URLs written to Sheet1
+Last session: 2026-05-08T13:55:00.000Z
+Stopped at: 14-01-PLAN.md complete — see .planning/phases/14-imagery-cleanup-reconcile-br-drive-store-consistency-for-cap/14-01-SUMMARY.md. Next: 14-02-PLAN.md
 Resume file: None
