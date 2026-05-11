@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Image Automation
-status: Phase 15 SPEC + CONTEXT captured — ready for /gsd-plan-phase 15
-stopped_at: Phase 15 context gathered — verifier design + retro mechanism + defaults all locked
-last_updated: "2026-05-08T19:00:00.000Z"
+status: Ready to execute
+stopped_at: Phase 15 SPEC + CONTEXT captured. Verifier design + retro mechanism + mechanical defaults all locked. Ready for `/gsd-plan-phase 15`.
+last_updated: "2026-05-11T13:20:59.784Z"
 progress:
   total_phases: 8
   completed_phases: 7
-  total_plans: 18
-  completed_plans: 18
-  percent: 88
+  total_plans: 16
+  completed_plans: 12
+  percent: 75
 ---
 
 # Project State
@@ -31,6 +31,7 @@ v2.0 phases + Phase 14 imagery cleanup all shipped. Phase 15 (Garment Type Verif
 - 2 products still not in Sheet1
 
 **Phase 15 status (2026-05-08):**
+
 - SPEC.md committed — 6 requirements, ambiguity 0.18 (gate ≤ 0.20)
 - CONTEXT.md committed — 11 implementation decisions locked
 - Verifier: side-by-side gpt-4o-mini, coarse CategoryGroup match
@@ -39,6 +40,7 @@ v2.0 phases + Phase 14 imagery cleanup all shipped. Phase 15 (Garment Type Verif
 - Next: /gsd-plan-phase 15
 
 **Imagery audit state (2026-05-08):**
+
 - 25 issues across 460 audited pids (down from 973 baseline)
 - 0 STORE-DRIFT, 0 STORE-EXTRA-COLOR, 0 BAD-ALT
 - 2 CROSS-POLLUTION (intentional protected SIZE_CHARTs)
@@ -80,16 +82,19 @@ Key decisions for catalog curation (2026-04-01):
 ### Pending Todos
 
 **Catalog curation (separate from phase work):**
+
 - 13 Canada Sportswear products need manual size entry (not in any API): H08355, H08360, L00450, L00570, L01205, S01225, S04605, S04606, S05980, S05982, S05985, S07200, S07241
 - 179 bestseller products still have data gaps (see Catalog-Gaps tab)
 - 60 SS Canada products have no model images available from API
 
 **Phase 14 follow-ups (deferred, not blocking):**
+
 - 6 new DUPE-DRIVE collisions from 14-03 MOVE actions (S05772 sides + 4610) — logged in `tmp/dedupe-leftovers.tsv`
 - 7 MODEL-MISSING-ON-STORE pids (L07260, L07261, L09270, L09271, S04600, S05650, S05652) — distinct push workflow, not audit-cleanup scope
 - Audit `--pids X` mode overwrites `tmp/imagery-audit.tsv` — DX bug; possible follow-up: write narrow audits to a separate path
 
 **Next planned phase:**
+
 - Phase 15 (Garment Type Verification) — SPEC + CONTEXT committed; ready for `/gsd-plan-phase 15`. Source: `project_garment_classifier.md` memory + A343 regression case.
 
 ### Blockers/Concerns
