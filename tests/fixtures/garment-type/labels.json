@@ -1,0 +1,44 @@
+{
+  "A343": {
+    "expected_category": "crewnecks",
+    "front_path": "A343-front.png",
+    "back_path": "A343-back.png",
+    "side_path": "A343-side.png",
+    "expected_match": { "back": false, "side": false }
+  },
+  "FIXTURE-tops-01": {
+    "expected_category": "tops",
+    "front_path": "FIXTURE-tops-01-front.png",
+    "back_path": "FIXTURE-tops-01-back.png",
+    "side_path": "FIXTURE-tops-01-side.png",
+    "expected_match": { "back": true, "side": true }
+  },
+  "FIXTURE-hoodies-01": {
+    "expected_category": "hoodies",
+    "front_path": "FIXTURE-hoodies-01-front.png",
+    "back_path": "FIXTURE-hoodies-01-back.png",
+    "side_path": "FIXTURE-hoodies-01-side.png",
+    "expected_match": { "back": true, "side": true }
+  },
+  "FIXTURE-polos-01": {
+    "expected_category": "polos",
+    "front_path": "FIXTURE-polos-01-front.png",
+    "back_path": "FIXTURE-polos-01-back.png",
+    "side_path": "FIXTURE-polos-01-side.png",
+    "expected_match": { "back": true, "side": true }
+  },
+  "FIXTURE-crewnecks-01": {
+    "expected_category": "crewnecks",
+    "front_path": "FIXTURE-crewnecks-01-front.png",
+    "back_path": "FIXTURE-crewnecks-01-back.png",
+    "side_path": "FIXTURE-crewnecks-01-side.png",
+    "expected_match": { "back": true, "side": true }
+  },
+  "FIXTURE-jackets-01": {
+    "expected_category": "jackets",
+    "front_path": "FIXTURE-jackets-01-front.png",
+    "back_path": "FIXTURE-jackets-01-back.png",
+    "side_path": "FIXTURE-jackets-01-side.png",
+    "expected_match": { "back": true, "side": true }
+  }
+}
