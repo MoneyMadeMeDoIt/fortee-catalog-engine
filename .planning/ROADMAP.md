@@ -143,7 +143,12 @@ Plans:
 **Requirements**: 6 locked in [15-SPEC.md](phases/15-garment-type-verification/15-SPEC.md) — verifier filter (R1), helper API (R2), strict AND retry predicate (R3), skip+log on total fail (R4), no budget gating (R5), retro audit script (R6).
 **Success Criteria**: See SPEC.md Acceptance Criteria — 9 pass/fail checks anchored on A343 regression case + 5–10 fixture set across all CategoryGroups.
 **Context**: 11 implementation decisions in [15-CONTEXT.md](phases/15-garment-type-verification/15-CONTEXT.md) — side-by-side gpt-4o-mini comparison, coarse family match, scan-all retro, mocked + fixture-gated tests.
-**Plans:** 0 plans (SPEC + CONTEXT committed; ready for /gsd-plan-phase)
+**Plans:** 4 plans
+Plans:
+- [ ] 15-01-PLAN.md — Foundations: verifier helper `verifyGarmentTypeMatch()` + shared rejects-TSV writer + fixture scaffold (R2)
+- [ ] 15-02-PLAN.md — In-pipeline integration: wire verifier into `scoreCandidates`/`generateGarmentView`, strict AND filter, skip+log on total fail; mocked tests (R1, R3, R4, R5)
+- [ ] 15-03-PLAN.md — Retro audit CLI: `scripts/audit-garment-types.ts` scans all back/side images, flag-only TSV output; smoke + read-only-invariant tests (R6)
+- [ ] 15-04-PLAN.md — Fixture-gated real-API test on 6-pid set (A343 + 5 known-good CategoryGroups); E2E A343 verification (R2)
 
 ## Progress
 
@@ -162,4 +167,4 @@ Plans:
 | 12. Audit Runner | v2.0 | 1/1 | Complete    | 2026-03-27 |
 | 13. CLI Entry Point | v2.0 | 1/1 | Complete    | 2026-03-27 |
 | 14. Imagery Cleanup | v2.0 | 3/3 | Complete    | 2026-05-08 |
-| 15. Garment Type Verification | v2.0 | 0/0 | Spec'd & Discussed (planning next) | — |
+| 15. Garment Type Verification | v2.0 | 0/4 | Planned (ready for execute) | — |
