@@ -17,6 +17,7 @@ import {
 // ---------------------------------------------------------------------------
 
 const mockImagesEdit = vi.fn();
+const mockChatCompletionsCreate = vi.fn();
 
 vi.mock('openai', () => {
   class BadRequestError extends Error {
@@ -31,6 +32,7 @@ vi.mock('openai', () => {
   // Must be a class (constructor function) so `new OpenAI(...)` works
   class OpenAI {
     images = { edit: mockImagesEdit };
+    chat = { completions: { create: mockChatCompletionsCreate } };
     static BadRequestError = BadRequestError;
   }
 
@@ -39,6 +41,18 @@ vi.mock('openai', () => {
     toFile: vi.fn().mockResolvedValue({ name: 'input.png', type: 'image/png' }),
   };
 });
+
+// ---------------------------------------------------------------------------
+// Mock: rejects-tsv (Phase 15 — appendRejectRow + getOrCreateRunId)
+// ---------------------------------------------------------------------------
+
+const mockAppendRejectRow = vi.fn().mockResolvedValue(undefined);
+const mockGetOrCreateRunId = vi.fn().mockReturnValue('2026-05-11T00:00:00.000Z');
+
+vi.mock('../../src/lib/rejects-tsv.js', () => ({
+  appendRejectRow: mockAppendRejectRow,
+  getOrCreateRunId: mockGetOrCreateRunId,
+}));
 
 // ---------------------------------------------------------------------------
 // Mock: scoreImageQuality
@@ -106,6 +120,21 @@ function makeQualityResult(score: number, verdict: 'pass' | 'fail' = score >= 70
   };
 }
 
+// Phase 15: seed a verifier (chat.completions.create) JSON response.
+function makeChatResponse(match: boolean, reason: string) {
+  return {
+    choices: [{ message: { content: JSON.stringify({ match, reason }) } }],
+  };
+}
+
+// Phase 15: seed the describeGarment() call (which is the FIRST chat.completions
+// call generateGarmentView makes when productName is undefined).
+function makeDescribeGarmentResponse(desc: string) {
+  return {
+    choices: [{ message: { content: desc } }],
+  };
+}
+
 // ---------------------------------------------------------------------------
 // Import the module under test AFTER mocks are set up
 // ---------------------------------------------------------------------------
@@ -151,7 +180,7 @@ describe('generateGarmentView — AIGEN-01 basic generation', () => {
       .mockResolvedValueOnce(makeQualityResult(70, 'pass'))
       .mockResolvedValueOnce(makeQualityResult(60, 'pass'));
 
-    const result = await generateGarmentView(frontBuffer, 'back', 'tops', 'navy blue', costTracker);
+    const result = await generateGarmentView(frontBuffer, 'back', 'tops', 'navy blue', 'TEST-PID', costTracker);
 
     expect(result).not.toBeNull();
     expect(result!.score).toBe(80);
@@ -182,7 +211,7 @@ describe('generateGarmentView — AIGEN-02 highest-score selection', () => {
       .mockResolvedValueOnce(makeQualityResult(90, 'pass'))
       .mockResolvedValueOnce(makeQualityResult(70, 'pass'));
 
-    const result = await generateGarmentView(frontBuffer, 'back', 'tops', 'navy blue', costTracker);
+    const result = await generateGarmentView(frontBuffer, 'back', 'tops', 'navy blue', 'TEST-PID', costTracker);
 
     expect(result).not.toBeNull();
     expect(result!.score).toBe(90);
@@ -217,7 +246,7 @@ describe('generateGarmentView — AIGEN-02 hue rejection', () => {
       .mockResolvedValueOnce(makeQualityResult(70, 'pass'))  // c2
       .mockResolvedValueOnce(makeQualityResult(85, 'pass')); // c3
 
-    const result = await generateGarmentView(frontBuffer, 'back', 'tops', 'navy blue', costTracker);
+    const result = await generateGarmentView(frontBuffer, 'back', 'tops', 'navy blue', 'TEST-PID', costTracker);
 
     expect(result).not.toBeNull();
     expect(result!.score).toBe(85);
@@ -264,7 +293,7 @@ describe('generateGarmentView — AIGEN-04 retry on all-fail hue', () => {
       .mockResolvedValueOnce(makeQualityResult(50, 'pass'))
       .mockResolvedValueOnce(makeQualityResult(45, 'pass'));
 
-    const result = await generateGarmentView(frontBuffer, 'back', 'tops', 'navy blue', costTracker);
+    const result = await generateGarmentView(frontBuffer, 'back', 'tops', 'navy blue', 'TEST-PID', costTracker);
 
     expect(result).not.toBeNull();
     expect(result!.usedRetry).toBe(true);
@@ -306,7 +335,7 @@ describe('generateGarmentView — D-04 best-of-6 fallback', () => {
       .mockResolvedValueOnce(makeQualityResult(45))
       .mockResolvedValueOnce(makeQualityResult(40));
 
-    const result = await generateGarmentView(frontBuffer, 'back', 'tops', 'navy blue', costTracker);
+    const result = await generateGarmentView(frontBuffer, 'back', 'tops', 'navy blue', 'TEST-PID', costTracker);
 
     expect(result).not.toBeNull();
     expect(result!.score).toBe(65);
@@ -324,7 +353,7 @@ describe('generateGarmentView — D-07 budget exhaustion', () => {
     const frontBuffer = makeFakeBuffer('front');
     const costTracker = new CostTracker(0.01); // too small for any call
 
-    const result = await generateGarmentView(frontBuffer, 'back', 'tops', 'navy blue', costTracker);
+    const result = await generateGarmentView(frontBuffer, 'back', 'tops', 'navy blue', 'TEST-PID', costTracker);
 
     expect(result).toBeNull();
     expect(mockImagesEdit).not.toHaveBeenCalled();
@@ -355,7 +384,7 @@ describe('generateGarmentView — achromatic bypass', () => {
       .mockResolvedValueOnce(makeQualityResult(85, 'pass'))  // best
       .mockResolvedValueOnce(makeQualityResult(70, 'pass'));
 
-    const result = await generateGarmentView(frontBuffer, 'back', 'tops', 'white', costTracker);
+    const result = await generateGarmentView(frontBuffer, 'back', 'tops', 'white', 'TEST-PID', costTracker);
 
     expect(result).not.toBeNull();
     expect(result!.score).toBe(85);
@@ -381,7 +410,7 @@ describe('generateGarmentView — content policy error', () => {
     const BadRequestError = (OpenAI as any).BadRequestError;
     mockImagesEdit.mockRejectedValue(new BadRequestError('content_policy violation'));
 
-    const result = await generateGarmentView(frontBuffer, 'back', 'tops', 'navy blue', costTracker);
+    const result = await generateGarmentView(frontBuffer, 'back', 'tops', 'navy blue', 'TEST-PID', costTracker);
 
     // Both calls failed with content policy — should return null (no candidates at all)
     expect(result).toBeNull();
@@ -455,7 +484,7 @@ describe('generateGarmentView — cost tracking', () => {
       .mockResolvedValueOnce(makeQualityResult(70, 'pass'))
       .mockResolvedValueOnce(makeQualityResult(60, 'pass'));
 
-    await generateGarmentView(frontBuffer, 'back', 'tops', 'navy blue', costTracker);
+    await generateGarmentView(frontBuffer, 'back', 'tops', 'navy blue', 'TEST-PID', costTracker);
 
     expect(recordSpy).toHaveBeenCalledTimes(1);
     expect(recordSpy).toHaveBeenCalledWith(CANDIDATES_PER_CALL * COST_PER_IMAGE);
@@ -479,7 +508,7 @@ describe('generateGarmentView — API parameters', () => {
     mockImagesEdit.mockResolvedValue(makeEditResponse(candidates));
     mockScoreImageQuality.mockResolvedValue(makeQualityResult(80, 'pass'));
 
-    await generateGarmentView(frontBuffer, 'back', 'tops', 'navy blue', costTracker);
+    await generateGarmentView(frontBuffer, 'back', 'tops', 'navy blue', 'TEST-PID', costTracker);
 
     const callArgs = mockImagesEdit.mock.calls[0][0];
     expect(callArgs).toHaveProperty('model', 'gpt-image-1');
@@ -490,5 +519,221 @@ describe('generateGarmentView — API parameters', () => {
     expect(callArgs).not.toHaveProperty('response_format');
     expect(callArgs).not.toHaveProperty('input_fidelity');
     expect(callArgs).not.toHaveProperty('output_format');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Phase 15 type-match wiring (R1, R3, R4, R5 + verifier-fallback)
+// ---------------------------------------------------------------------------
+
+describe('generateGarmentView — Phase 15 type-match', () => {
+  it('R1: returns the only type-passing candidate even when others have higher quality', async () => {
+    const frontBuffer = makeFakeBuffer('front');
+    const costTracker = new CostTracker(200);
+    const candidates = [makeFakeBuffer('c1'), makeFakeBuffer('c2'), makeFakeBuffer('c3')];
+
+    // All three candidates have hue=200 → pass hue, but verifier rejects c1 & c2.
+    mockExtractDominantHue
+      .mockResolvedValueOnce({ hue: 200, achromatic: false, rgb: { r: 0, g: 0, b: 255 } }) // front
+      .mockResolvedValueOnce({ hue: 200, achromatic: false, rgb: { r: 0, g: 0, b: 255 } }) // c1
+      .mockResolvedValueOnce({ hue: 200, achromatic: false, rgb: { r: 0, g: 0, b: 255 } }) // c2
+      .mockResolvedValueOnce({ hue: 200, achromatic: false, rgb: { r: 0, g: 0, b: 255 } }); // c3
+
+    mockImagesEdit.mockResolvedValueOnce(makeEditResponse(candidates));
+
+    // describeGarment first, then 3 verifier calls.
+    mockChatCompletionsCreate
+      .mockResolvedValueOnce(makeDescribeGarmentResponse('crewneck'))             // describeGarment
+      .mockResolvedValueOnce(makeChatResponse(false, 'hoodie'))                    // c1 type-fail
+      .mockResolvedValueOnce(makeChatResponse(false, 'hoodie'))                    // c2 type-fail
+      .mockResolvedValueOnce(makeChatResponse(true, 'crewneck'));                  // c3 type-pass
+
+    mockScoreImageQuality
+      .mockResolvedValueOnce(makeQualityResult(95, 'pass')) // c1 highest
+      .mockResolvedValueOnce(makeQualityResult(90, 'pass')) // c2
+      .mockResolvedValueOnce(makeQualityResult(70, 'pass')); // c3 lowest
+
+    const result = await generateGarmentView(frontBuffer, 'back', 'crewnecks', 'navy', 'A343', costTracker);
+
+    expect(result).not.toBeNull();
+    expect(result!.buffer).toEqual(candidates[2]); // c3 wins despite lowest score (R1)
+    expect(result!.usedRetry).toBe(false);
+    expect(result!.callCount).toBe(1);
+  });
+
+  it('R3a: strict AND triggers round 2 when no candidate passes both hue AND type', async () => {
+    const frontBuffer = makeFakeBuffer('front');
+    const costTracker = new CostTracker(200);
+    const r1 = [makeFakeBuffer('r1c1'), makeFakeBuffer('r1c2'), makeFakeBuffer('r1c3')];
+    const r2 = [makeFakeBuffer('r2c1'), makeFakeBuffer('r2c2'), makeFakeBuffer('r2c3')];
+
+    // Round 1: c1+c2 hue-pass type-fail, c3 hue-fail type-pass. No candidate passes both.
+    // Round 2: c1 hue-pass type-pass.
+    mockExtractDominantHue
+      .mockResolvedValueOnce({ hue: 200, achromatic: false, rgb: { r: 0, g: 0, b: 255 } }) // front
+      .mockResolvedValueOnce({ hue: 200, achromatic: false, rgb: { r: 0, g: 0, b: 255 } }) // r1c1 hue-pass
+      .mockResolvedValueOnce({ hue: 200, achromatic: false, rgb: { r: 0, g: 0, b: 255 } }) // r1c2 hue-pass
+      .mockResolvedValueOnce({ hue: 280, achromatic: false, rgb: { r: 100, g: 0, b: 100 } }) // r1c3 hue-fail (drift 80)
+      .mockResolvedValueOnce({ hue: 200, achromatic: false, rgb: { r: 0, g: 0, b: 255 } }) // r2c1 hue-pass
+      .mockResolvedValueOnce({ hue: 200, achromatic: false, rgb: { r: 0, g: 0, b: 255 } }) // r2c2
+      .mockResolvedValueOnce({ hue: 200, achromatic: false, rgb: { r: 0, g: 0, b: 255 } }); // r2c3
+
+    mockImagesEdit
+      .mockResolvedValueOnce(makeEditResponse(r1))
+      .mockResolvedValueOnce(makeEditResponse(r2));
+
+    mockChatCompletionsCreate
+      .mockResolvedValueOnce(makeDescribeGarmentResponse('crewneck'))    // describeGarment (round 1)
+      .mockResolvedValueOnce(makeChatResponse(false, 'hoodie'))          // r1c1 type-fail
+      .mockResolvedValueOnce(makeChatResponse(false, 'hoodie'))          // r1c2 type-fail
+      .mockResolvedValueOnce(makeChatResponse(true, 'crewneck'))         // r1c3 type-pass (but hue-fail)
+      .mockResolvedValueOnce(makeChatResponse(true, 'crewneck'))         // r2c1 type-pass
+      .mockResolvedValueOnce(makeChatResponse(false, 'hoodie'))          // r2c2
+      .mockResolvedValueOnce(makeChatResponse(false, 'hoodie'));         // r2c3
+
+    mockScoreImageQuality
+      .mockResolvedValueOnce(makeQualityResult(80, 'pass'))
+      .mockResolvedValueOnce(makeQualityResult(75, 'pass'))
+      .mockResolvedValueOnce(makeQualityResult(85, 'pass'))
+      .mockResolvedValueOnce(makeQualityResult(78, 'pass'))
+      .mockResolvedValueOnce(makeQualityResult(60, 'pass'))
+      .mockResolvedValueOnce(makeQualityResult(55, 'pass'));
+
+    const result = await generateGarmentView(frontBuffer, 'back', 'crewnecks', 'navy', 'A343', costTracker);
+
+    expect(result).not.toBeNull();
+    expect(result!.usedRetry).toBe(true);
+    expect(result!.callCount).toBe(2);
+    // Verifier mock was called: 1 describe + 3 round-1 + 3 round-2 = 7 chat calls.
+    expect(mockChatCompletionsCreate.mock.calls.length).toBeGreaterThanOrEqual(4);
+  });
+
+  it('R3b: no retry when one candidate passes BOTH hue and type', async () => {
+    const frontBuffer = makeFakeBuffer('front');
+    const costTracker = new CostTracker(200);
+    const r1 = [makeFakeBuffer('c1'), makeFakeBuffer('c2'), makeFakeBuffer('c3')];
+
+    mockExtractDominantHue
+      .mockResolvedValueOnce({ hue: 200, achromatic: false, rgb: { r: 0, g: 0, b: 255 } }) // front
+      .mockResolvedValueOnce({ hue: 200, achromatic: false, rgb: { r: 0, g: 0, b: 255 } }) // c1 hue-pass
+      .mockResolvedValueOnce({ hue: 200, achromatic: false, rgb: { r: 0, g: 0, b: 255 } }) // c2
+      .mockResolvedValueOnce({ hue: 200, achromatic: false, rgb: { r: 0, g: 0, b: 255 } }); // c3
+
+    // Seed mockImagesEdit ONCE — no round 2 expected. If round 2 fires this will return undefined.
+    mockImagesEdit.mockResolvedValueOnce(makeEditResponse(r1));
+
+    mockChatCompletionsCreate
+      .mockResolvedValueOnce(makeDescribeGarmentResponse('crewneck')) // describeGarment
+      .mockResolvedValueOnce(makeChatResponse(true, 'crewneck'))      // c1 type-pass
+      .mockResolvedValueOnce(makeChatResponse(false, 'hoodie'))       // c2
+      .mockResolvedValueOnce(makeChatResponse(false, 'hoodie'));      // c3
+
+    mockScoreImageQuality
+      .mockResolvedValueOnce(makeQualityResult(80, 'pass'))
+      .mockResolvedValueOnce(makeQualityResult(75, 'pass'))
+      .mockResolvedValueOnce(makeQualityResult(70, 'pass'));
+
+    const result = await generateGarmentView(frontBuffer, 'back', 'crewnecks', 'navy', 'A343', costTracker);
+
+    expect(result).not.toBeNull();
+    expect(result!.usedRetry).toBe(false);
+    expect(result!.callCount).toBe(1);
+    expect(mockImagesEdit.mock.calls.length).toBe(1); // no round 2 fired
+  });
+
+  it('R4: writes to rejects TSV and returns null when ALL 6 candidates fail type-match', async () => {
+    const frontBuffer = makeFakeBuffer('front');
+    const costTracker = new CostTracker(200);
+    const r1 = [makeFakeBuffer('r1c1'), makeFakeBuffer('r1c2'), makeFakeBuffer('r1c3')];
+    const r2 = [makeFakeBuffer('r2c1'), makeFakeBuffer('r2c2'), makeFakeBuffer('r2c3')];
+
+    // All 6 candidates pass hue but fail type-match.
+    mockExtractDominantHue.mockResolvedValue({ hue: 200, achromatic: false, rgb: { r: 0, g: 0, b: 255 } });
+
+    mockImagesEdit
+      .mockResolvedValueOnce(makeEditResponse(r1))
+      .mockResolvedValueOnce(makeEditResponse(r2));
+
+    // describe + 3 round-1 verifier (all false) + 3 round-2 verifier (all false)
+    mockChatCompletionsCreate
+      .mockResolvedValueOnce(makeDescribeGarmentResponse('crewneck'))
+      .mockResolvedValueOnce(makeChatResponse(false, 'front is crewneck, candidate is hoodie'))
+      .mockResolvedValueOnce(makeChatResponse(false, 'front is crewneck, candidate is hoodie'))
+      .mockResolvedValueOnce(makeChatResponse(false, 'front is crewneck, candidate is hoodie'))
+      .mockResolvedValueOnce(makeChatResponse(false, 'front is crewneck, candidate is hoodie'))
+      .mockResolvedValueOnce(makeChatResponse(false, 'front is crewneck, candidate is hoodie'))
+      .mockResolvedValueOnce(makeChatResponse(false, 'front is crewneck, candidate is hoodie'));
+
+    mockScoreImageQuality.mockResolvedValue(makeQualityResult(80, 'pass'));
+
+    const result = await generateGarmentView(frontBuffer, 'back', 'crewnecks', 'navy', 'A343', costTracker);
+
+    expect(result).toBeNull();
+    expect(mockAppendRejectRow).toHaveBeenCalledTimes(1);
+    expect(mockAppendRejectRow).toHaveBeenCalledWith({
+      pid: 'A343',
+      view: 'back',
+      reason: 'front is crewneck, candidate is hoodie',
+      timestamp: expect.any(String),
+      run_id: '2026-05-11T00:00:00.000Z',
+    });
+  });
+
+  it('R5: CostTracker.record is called only by images.edit — never by the verifier', async () => {
+    const frontBuffer = makeFakeBuffer('front');
+    const costTracker = new CostTracker(200);
+    const recordSpy = vi.spyOn(costTracker, 'record');
+    const r1 = [makeFakeBuffer('r1c1'), makeFakeBuffer('r1c2'), makeFakeBuffer('r1c3')];
+    const r2 = [makeFakeBuffer('r2c1'), makeFakeBuffer('r2c2'), makeFakeBuffer('r2c3')];
+
+    // Round 1 all type-fail to force round 2; round 2 c1 passes.
+    mockExtractDominantHue.mockResolvedValue({ hue: 200, achromatic: false, rgb: { r: 0, g: 0, b: 255 } });
+
+    mockImagesEdit
+      .mockResolvedValueOnce(makeEditResponse(r1))
+      .mockResolvedValueOnce(makeEditResponse(r2));
+
+    mockChatCompletionsCreate
+      .mockResolvedValueOnce(makeDescribeGarmentResponse('crewneck'))
+      .mockResolvedValueOnce(makeChatResponse(false, 'hoodie'))
+      .mockResolvedValueOnce(makeChatResponse(false, 'hoodie'))
+      .mockResolvedValueOnce(makeChatResponse(false, 'hoodie'))
+      .mockResolvedValueOnce(makeChatResponse(true, 'crewneck'))
+      .mockResolvedValueOnce(makeChatResponse(false, 'hoodie'))
+      .mockResolvedValueOnce(makeChatResponse(false, 'hoodie'));
+
+    mockScoreImageQuality.mockResolvedValue(makeQualityResult(80, 'pass'));
+
+    await generateGarmentView(frontBuffer, 'back', 'crewnecks', 'navy', 'A343', costTracker);
+
+    // Only the two images.edit rounds should have recorded cost.
+    expect(recordSpy).toHaveBeenCalledTimes(2);
+    // Verifier ran on every candidate (3 round-1 + 3 round-2) plus describeGarment.
+    expect(mockChatCompletionsCreate.mock.calls.length).toBeGreaterThan(2);
+  });
+
+  it('verifier API failure: candidate is treated as type-passing (fallback match=true)', async () => {
+    const frontBuffer = makeFakeBuffer('front');
+    const costTracker = new CostTracker(200);
+    const r1 = [makeFakeBuffer('c1'), makeFakeBuffer('c2'), makeFakeBuffer('c3')];
+
+    mockExtractDominantHue.mockResolvedValue({ hue: 200, achromatic: false, rgb: { r: 0, g: 0, b: 255 } });
+    mockImagesEdit.mockResolvedValueOnce(makeEditResponse(r1));
+
+    // describeGarment succeeds; every subsequent chat call (the 3 verifier calls) fails.
+    mockChatCompletionsCreate
+      .mockResolvedValueOnce(makeDescribeGarmentResponse('crewneck'))
+      .mockRejectedValue(new Error('API timeout'));
+
+    mockScoreImageQuality
+      .mockResolvedValueOnce(makeQualityResult(80, 'pass'))
+      .mockResolvedValueOnce(makeQualityResult(75, 'pass'))
+      .mockResolvedValueOnce(makeQualityResult(70, 'pass'));
+
+    const result = await generateGarmentView(frontBuffer, 'back', 'crewnecks', 'navy', 'A343', costTracker);
+
+    // Verifier-error fallback returns match=true → candidates are eligible.
+    expect(result).not.toBeNull();
+    expect(mockAppendRejectRow).not.toHaveBeenCalled();
   });
 });
