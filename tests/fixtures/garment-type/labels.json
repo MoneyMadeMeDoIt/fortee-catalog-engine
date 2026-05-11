@@ -1,44 +1,124 @@
 {
-  "A343": {
-    "expected_category": "crewnecks",
-    "front_path": "A343-front.png",
-    "back_path": "A343-back.png",
-    "side_path": "A343-side.png",
-    "expected_match": { "back": false, "side": false }
+  "_meta": {
+    "schema_version": 2,
+    "updated": "2026-05-11",
+    "notes": "13 pids fetched from Bestsellers-Ready. 7 bad (user-flagged catalog pollution) + 6 good (user-curated clean references). Replaces the original 6-pid A343-based schema. expected_match per view; bad fixtures expect at least one false."
   },
-  "FIXTURE-tops-01": {
+  "1010": {
     "expected_category": "tops",
-    "front_path": "FIXTURE-tops-01-front.png",
-    "back_path": "FIXTURE-tops-01-back.png",
-    "side_path": "FIXTURE-tops-01-side.png",
-    "expected_match": { "back": true, "side": true }
+    "kind": "bad",
+    "front_path": "1010-front.png",
+    "back_path": "1010-back.png",
+    "side_path": "1010-side.png",
+    "expected_match": { "back": false, "side": false },
+    "note": "duplicate images flagged by operator"
   },
-  "FIXTURE-hoodies-01": {
+  "6110": {
+    "expected_category": "tops",
+    "kind": "bad",
+    "front_path": "6110-front.png",
+    "back_path": "6110-back.png",
+    "side_path": "6110-side.png",
+    "expected_match": { "back": false, "side": false },
+    "note": "front shows infant bodysuit, not a t-shirt; mixed product pollution"
+  },
+  "8882": {
+    "expected_category": "tops",
+    "kind": "bad",
+    "front_path": "8882-front.png",
+    "back_path": "8882-back.png",
+    "side_path": "8882-side.png",
+    "expected_match": { "back": false, "side": false },
+    "note": "wrong product as model image; all 3 views point to Adidas hoodie pollution"
+  },
+  "5200": {
+    "expected_category": "tops",
+    "kind": "bad",
+    "front_path": "5200-front.png",
+    "back_path": "5200-back.png",
+    "side_path": "5200-side.png",
+    "expected_match": { "back": false, "side": false },
+    "note": "mixes Gildan 5200 with C2 Sports 5200; pollution"
+  },
+  "3900": {
+    "expected_category": "tops",
+    "kind": "bad",
+    "front_path": "3900-front.png",
+    "back_path": "3900-back.png",
+    "side_path": "3900-side.png",
+    "expected_match": { "back": false, "side": false },
+    "note": "mixes adidas polo with 3/4-sleeve raglan tee"
+  },
+  "102": {
+    "expected_category": "tops",
+    "kind": "bad",
+    "front_path": "102-front.png",
+    "back_path": "102-back.png",
+    "side_path": "102-side.png",
+    "expected_match": { "back": false, "side": false },
+    "note": "random products mixed in"
+  },
+  "1301": {
+    "expected_category": "tops",
+    "kind": "bad",
+    "front_path": "1301-front.png",
+    "back_path": "1301-back.png",
+    "side_path": "1301-side.png",
+    "expected_match": { "back": false, "side": false },
+    "note": "wrong model image"
+  },
+  "S05610": {
+    "expected_category": "tops",
+    "kind": "good",
+    "front_path": "S05610-front.png",
+    "back_path": "S05610-back.png",
+    "side_path": "S05610-side.png",
+    "expected_match": { "back": true, "side": true },
+    "note": "user-curated t-shirt template; baseCategory updated to T-Shirts - Core in BR"
+  },
+  "L00550": {
     "expected_category": "hoodies",
-    "front_path": "FIXTURE-hoodies-01-front.png",
-    "back_path": "FIXTURE-hoodies-01-back.png",
-    "side_path": "FIXTURE-hoodies-01-side.png",
-    "expected_match": { "back": true, "side": true }
+    "kind": "good",
+    "front_path": "L00550-front.png",
+    "back_path": "L00550-back.png",
+    "side_path": "L00550-side.png",
+    "expected_match": { "back": true, "side": true },
+    "note": "user-curated hoodie template; baseCategory updated to Fleece - Core - Hood in BR"
   },
-  "FIXTURE-polos-01": {
+  "S05772": {
     "expected_category": "polos",
-    "front_path": "FIXTURE-polos-01-front.png",
-    "back_path": "FIXTURE-polos-01-back.png",
-    "side_path": "FIXTURE-polos-01-side.png",
-    "expected_match": { "back": true, "side": true }
+    "kind": "good",
+    "front_path": "S05772-front.png",
+    "back_path": "S05772-back.png",
+    "side_path": "S05772-side.png",
+    "expected_match": { "back": true, "side": true },
+    "note": "user-curated polo template"
   },
-  "FIXTURE-crewnecks-01": {
+  "L00540": {
     "expected_category": "crewnecks",
-    "front_path": "FIXTURE-crewnecks-01-front.png",
-    "back_path": "FIXTURE-crewnecks-01-back.png",
-    "side_path": "FIXTURE-crewnecks-01-side.png",
-    "expected_match": { "back": true, "side": true }
+    "kind": "good",
+    "front_path": "L00540-front.png",
+    "back_path": "L00540-back.png",
+    "side_path": "L00540-side.png",
+    "expected_match": { "back": true, "side": true },
+    "note": "user-curated crewneck template"
   },
-  "FIXTURE-jackets-01": {
+  "L01115": {
     "expected_category": "jackets",
-    "front_path": "FIXTURE-jackets-01-front.png",
-    "back_path": "FIXTURE-jackets-01-back.png",
-    "side_path": "FIXTURE-jackets-01-side.png",
-    "expected_match": { "back": true, "side": true }
+    "kind": "good",
+    "front_path": "L01115-front.png",
+    "back_path": "L01115-back.png",
+    "side_path": "L01115-side.png",
+    "expected_match": { "back": true, "side": true },
+    "note": "user-curated jacket template"
+  },
+  "L00693": {
+    "expected_category": "jackets",
+    "kind": "good",
+    "front_path": "L00693-front.png",
+    "back_path": "L00693-back.png",
+    "side_path": "L00693-side.png",
+    "expected_match": { "back": true, "side": true },
+    "note": "retro-audit flagged as bad but operator confirms good — discontinued-color mixing (separate issue, deferred)"
   }
 }
