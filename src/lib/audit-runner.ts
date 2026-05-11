@@ -95,6 +95,12 @@ export async function auditProductImages(
   const styleId = row.styleID;
   const colorName = row.colorName;
 
+  // Resolve garment description for AI prompts (prefer productName, fallback to category/brand)
+  const garmentName = row.productName?.trim()
+    || row.baseCategory?.trim()
+    || `${row.brandName?.trim() ?? ''} ${row.productId?.trim() ?? ''}`.trim()
+    || 'garment';
+
   // -------------------------------------------------------------------------
   // Step 1 — Resolve category (per D-03 and Pitfall 4)
   // -------------------------------------------------------------------------
@@ -120,10 +126,13 @@ export async function auditProductImages(
       side: null,
     };
 
+    // Filter out broken image hosts — these URLs exist in the sheet but have no actual images
+    const isInvalidUrl = (url: string) => url.includes('assetly.ordermygear');
+
     const existingUrls: Record<ViewKey, string | null> = {
-      front: row.FrontImage || null,
-      back: row.BackImage || null,
-      side: row.DirectSideImage || null,
+      front: (row.FrontImage && !isInvalidUrl(row.FrontImage)) ? row.FrontImage : null,
+      back: (row.BackImage && !isInvalidUrl(row.BackImage)) ? row.BackImage : null,
+      side: (row.DirectSideImage && !isInvalidUrl(row.DirectSideImage)) ? row.DirectSideImage : null,
     };
 
     for (const view of ['front', 'back', 'side'] as const) {
@@ -150,7 +159,7 @@ export async function auditProductImages(
 
     let sourced: SourcedImages = { front: null, back: null, side: null };
     if (needsSourcing) {
-      sourced = await sourceImages(styleId, colorName);
+      sourced = await sourceImages(styleId, colorName, row.supplierCode, row.productId);
     }
 
     // -----------------------------------------------------------------------
@@ -162,7 +171,9 @@ export async function auditProductImages(
     // For back/side: generate from front buffer if missing/failing
 
     // We need the front buffer for AI generation of back/side
+    // frontIsFromSupplier gates AI generation — only generate from trusted supplier images
     let resolvedFrontBuffer: Buffer | null = null;
+    let frontIsFromSupplier = false;
 
     const resolvedBuffers: Record<ViewKey, ResolvedBuffer | null> = {
       front: null,
@@ -177,6 +188,7 @@ export async function auditProductImages(
       if (existing?.verdict === 'pass') {
         // D-03: existing passes → no sourcing/generation, just standardize
         resolvedFrontBuffer = existing.buffer;
+        frontIsFromSupplier = true; // existing front passed quality — trust it for AI
         resolvedBuffers.front = {
           buffer: existing.buffer,
           score: existing.score,
@@ -193,6 +205,7 @@ export async function auditProductImages(
             const sourcedBuf = await downloadImage(sourcedFront.url);
             if (sourcedFront.verdict === 'pass') {
               resolvedFrontBuffer = sourcedBuf;
+              frontIsFromSupplier = true;
               resolvedBuffers.front = {
                 buffer: sourcedBuf,
                 score: sourcedFront.score,
@@ -216,6 +229,7 @@ export async function auditProductImages(
             if (enhanced) {
               aiCostIncurred += enhanced.cost;
               resolvedFrontBuffer = enhanced.buffer;
+              frontIsFromSupplier = true; // enhanced from real supplier image
               resolvedBuffers.front = {
                 buffer: enhanced.buffer,
                 score: enhanced.score,
@@ -224,25 +238,14 @@ export async function auditProductImages(
               };
             } else {
               // Budget exhausted — use whatever buffer we have
-              const fallbackBuf = gotFrontBuffer ?? existing?.buffer;
-              if (fallbackBuf) {
-                resolvedFrontBuffer = fallbackBuf;
-                resolvedBuffers.front = {
-                  buffer: fallbackBuf,
-                  score: sourcedFront?.score ?? existing?.score ?? 0,
-                  verdict: 'fail',
-                  status: 'skipped',
-                  reason: 'budget exhausted',
-                };
-              } else {
-                resolvedBuffers.front = {
-                  buffer: Buffer.alloc(0),
-                  score: 0,
-                  verdict: 'fail',
-                  status: 'failed',
-                  reason: 'no front image available',
-                };
-              }
+              resolvedFrontBuffer = frontBufForEnhance;
+              resolvedBuffers.front = {
+                buffer: frontBufForEnhance,
+                score: sourcedFront?.score ?? existing?.score ?? 0,
+                verdict: 'fail',
+                status: 'skipped',
+                reason: 'front image failed quality check',
+              };
             }
           } else if (sourcedFront) {
             // Had a sourced view with failing verdict but download failed
@@ -296,10 +299,10 @@ export async function auditProductImages(
             };
             continue;
           }
-          // Sourced but failing — try AI generation if front available
+          // Sourced but failing — try AI generation using the sourced front as reference
           if (resolvedFrontBuffer) {
             const generated = await generateGarmentView(
-              resolvedFrontBuffer, view, categoryGroup, colorName, costTracker,
+              resolvedFrontBuffer, view, categoryGroup, colorName, row.productId, costTracker, undefined, garmentName,
             );
             if (generated) {
               aiCostIncurred += generated.totalCost;
@@ -310,22 +313,21 @@ export async function auditProductImages(
                 status: 'generated',
               };
             } else {
-              // Budget exhausted — fall back to failing sourced image
               resolvedBuffers[view] = {
                 buffer: sourcedBuf,
                 score: sourcedView.score,
                 verdict: 'fail',
-                status: 'skipped',
-                reason: 'budget exhausted',
+                status: 'sourced',
+                reason: 'sourced image failed quality check',
               };
             }
           } else {
-            // No front buffer — use failing sourced image as best option
             resolvedBuffers[view] = {
               buffer: sourcedBuf,
               score: sourcedView.score,
               verdict: 'fail',
               status: 'sourced',
+              reason: 'sourced image failed quality check',
             };
           }
         } catch (err) {
@@ -334,11 +336,11 @@ export async function auditProductImages(
         }
       }
 
-      // No sourced image (or sourced download failed) — try AI generation
+      // No sourced image — AI generate only if front is from a trusted supplier source
       if (!resolvedBuffers[view]) {
-        if (resolvedFrontBuffer) {
+        if (resolvedFrontBuffer && frontIsFromSupplier) {
           const generated = await generateGarmentView(
-            resolvedFrontBuffer, view, categoryGroup, colorName, costTracker,
+            resolvedFrontBuffer, view, categoryGroup, colorName, row.productId, costTracker, undefined, garmentName,
           );
           if (generated) {
             aiCostIncurred += generated.totalCost;
@@ -349,23 +351,21 @@ export async function auditProductImages(
               status: 'generated',
             };
           } else {
-            // Budget exhausted or content policy
             resolvedBuffers[view] = {
               buffer: Buffer.alloc(0),
               score: null as unknown as number,
               verdict: 'fail',
               status: 'skipped',
-              reason: 'budget exhausted',
+              reason: 'AI generation failed or budget exhausted',
             };
           }
         } else {
-          // No front buffer — cannot generate back/side
           resolvedBuffers[view] = {
             buffer: Buffer.alloc(0),
             score: null as unknown as number,
             verdict: 'fail',
-            status: 'failed',
-            reason: 'no front image available for AI generation',
+            status: 'skipped',
+            reason: resolvedFrontBuffer ? 'front image not from supplier — AI skipped' : 'no front image available',
           };
         }
       }
@@ -394,10 +394,10 @@ export async function auditProductImages(
 
       try {
         const { buffer: stdBuffer } = await standardizeImage(resolved.buffer, categoryGroup);
-        const filename = `${row.productName}-${colorName}-${view}-std.png`
+        const filename = `${row.productId}-${colorName}-${view}.png`
           .replace(/\s+/g, '-')
           .toLowerCase();
-        const cdnUrl = await uploadToDrive(driveClient, stdBuffer, filename, row.supplierCode, styleId);
+        const cdnUrl = await uploadToDrive(driveClient, stdBuffer, filename, row.supplierCode, row.productId);
         cdnUrls[view] = cdnUrl;
 
         viewResults.push({
@@ -421,8 +421,20 @@ export async function auditProductImages(
 
     // -----------------------------------------------------------------------
     // Step 6 — Write CDN URLs to Google Sheets (per D-04)
+    // Also clear invalid URLs (e.g., assetly.ordermygear) even if no replacement found
     // -----------------------------------------------------------------------
     const updates = buildStandardizationUpdates(sheetName, rowIndex, cdnUrls);
+
+    // Clear invalid URLs from sheet even when no replacement was found
+    const sheetRowNumber = rowIndex + 2;
+    const viewColumns: Record<ViewKey, string> = { front: 'K', back: 'L', side: 'M' };
+    for (const view of ['front', 'back', 'side'] as const) {
+      const rawUrl = view === 'front' ? row.FrontImage : view === 'back' ? row.BackImage : row.DirectSideImage;
+      if (rawUrl && isInvalidUrl(rawUrl) && !cdnUrls[view]) {
+        updates.push({ range: `${sheetName}!${viewColumns[view]}${sheetRowNumber}`, values: [['']] });
+      }
+    }
+
     const cellsWritten = await writeUpdates(sheetsClient, spreadsheetId, updates);
 
     return {

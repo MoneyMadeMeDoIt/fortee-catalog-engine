@@ -21,6 +21,7 @@ import 'dotenv/config';
 import { writeFileSync, mkdirSync } from 'fs';
 import path from 'path';
 import { createSheetsClient } from '../src/sheets/client.js';
+import { createDriveClient } from '../src/sheets/drive.js';
 import { CostTracker } from '../src/lib/cost-tracker.js';
 import { generateGarmentView } from '../src/lib/ai-image-generator.js';
 import { generateModelImage, type ModelGender } from '../src/lib/ai-model-image.js';
@@ -32,10 +33,10 @@ const MAIN_ID = '1GcsOwEy96Y8P8cLKafTl-KdkhP9cTY1jLm-9CL_0tPs';
 const MISSING_TAB = 'Missing-Info';
 const READY_TAB = 'Bestsellers-Ready';
 
-const CAP_BAG_WORDS = ['cap', 'hat', 'beanie', 'toque', 'visor', 'snapback', 'trucker', 'dad hat', 'bag', 'tote', 'backpack', 'duffle', 'cooler', 'apron', 'pouch'];
-function isCapOrBag(name: string, productType: string): boolean {
-  const blob = `${name} ${productType}`.toLowerCase();
-  return CAP_BAG_WORDS.some(w => blob.includes(w));
+const CAP_BAG_WORDS = ['cap', 'hat', 'beanie', 'toque', 'visor', 'snapback', 'trucker', 'dad hat', 'headwear', 'headband', 'bandana', 'balaclava', 'bucket hat', 'ear warmer', 'bag', 'tote', 'backpack', 'duffle', 'cooler', 'apron', 'pouch'];
+function isCapOrBag(...blobs: string[]): boolean {
+  const hay = blobs.join(' ').toLowerCase();
+  return CAP_BAG_WORDS.some(w => hay.includes(w));
 }
 
 interface Flags {
@@ -113,7 +114,26 @@ async function batchWrite(sheets: any, ops: UpdateOp[]): Promise<void> {
   }
 }
 
-async function downloadImage(url: string): Promise<Buffer | null> {
+function extractDriveFileId(url: string): string | null {
+  // Handles: /uc?id=ID, /uc?export=view&id=ID, /file/d/ID/view, /open?id=ID
+  const m = url.match(/[?&]id=([^&]+)/) || url.match(/\/d\/([^/]+)/);
+  return m ? m[1] : null;
+}
+
+async function downloadImage(url: string, drive?: any): Promise<Buffer | null> {
+  const driveFileId = extractDriveFileId(url);
+  if (driveFileId && drive) {
+    try {
+      const res = await drive.files.get(
+        { fileId: driveFileId, alt: 'media', supportsAllDrives: true },
+        { responseType: 'arraybuffer' },
+      );
+      return Buffer.from(res.data);
+    } catch (e: any) {
+      console.log(`    [drive api] ${driveFileId}: ${e.message}`);
+      return null;
+    }
+  }
   try {
     const r = await fetch(url, { headers: { 'User-Agent': 'fortee-catalog-engine/1.0' } });
     if (!r.ok) return null;
@@ -128,6 +148,7 @@ async function main(): Promise<void> {
   console.log(`Flags: ${JSON.stringify(flags)}`);
 
   const sheets = createSheetsClient();
+  const drive = flags.dryRun ? null : createDriveClient();
 
   // --- Read both tabs ---
   console.log('Reading Missing-Info...');
@@ -173,8 +194,34 @@ async function main(): Promise<void> {
   }
 
   // --- Filter scope ---
+  // Stub products (no variant rows with both colorName and frontUrl) can never produce
+  // an AI gen — the orchestrator silently skips them. Drop them before applying --limit
+  // so `--limit 10` actually means 10 real candidates, not 10 Missing-Info rows.
+  const colorCol = brH['colorName'];
+  const frontCol = brH['FrontImage'];
+  const backCol = brH['BackImage'];
+  const sideCol = brH['DirectSideImage'];
+  const modelCol = brH['ModelFrontImage'];
+  const hasGenWorkRemaining = (pid: string): boolean => {
+    const rows = brByPid.get(pid) ?? [];
+    let anyModel = false;
+    for (const rn of rows) {
+      const row = brRows[rn - 1];
+      const color = String(row[colorCol] ?? '').trim();
+      const front = String(row[frontCol] ?? '').trim();
+      if (!color || !front) continue;
+      const back = String(row[backCol] ?? '').trim();
+      const side = String(row[sideCol] ?? '').trim();
+      const model = String(row[modelCol] ?? '').trim();
+      if (!back || !side) return true;
+      if (model) anyModel = true;
+    }
+    // Model is product-level (one per product). If we found any row with model filled, done.
+    return !anyModel;
+  };
   let scope = missing;
   if (flags.styleId) scope = scope.filter(m => m.productId === flags.styleId);
+  else if (flags.only !== 'csw') scope = scope.filter(m => hasGenWorkRemaining(m.productId));
   if (flags.limit) scope = scope.slice(0, flags.limit);
   console.log(`Processing ${scope.length} products`);
 
@@ -231,8 +278,34 @@ async function main(): Promise<void> {
     // ===== Phase B: AI image generation =====
     if (flags.only === 'csw') continue;
 
-    const skipModelForType = csw ? isCapOrBag(prod.productName, csw.productType) : isCapOrBag(prod.productName, '');
-    const gender: ModelGender = csw?.gender ?? 'unisex';
+    // Gather product-type hints from every source we have: CSW scrape, Missing-Info, and
+    // Bestsellers-Ready fields. With --only images (no CSW) the BR fields are our only signal.
+    const brSample = variantRows.length > 0 ? brRows[variantRows[0] - 1] : [];
+    const brProductName = String(brSample[brH['productName']] ?? '');
+    const brBaseCategory = String(brSample[brH['baseCategory']] ?? '');
+    const brCategories = String(brSample[brH['categories']] ?? '');
+    const brKeywords = String(brSample[brH['keywords']] ?? '');
+    const skipModelForType = isCapOrBag(
+      prod.productName,
+      csw?.productType ?? '',
+      brProductName,
+      brBaseCategory,
+      brCategories,
+      brKeywords,
+    );
+    if (skipModelForType) console.log(`  skipModelForType=true (headwear/bag detected)`);
+
+    // Infer youth from productId suffix/prefix or any available text field.
+    // Handles kids-line codes like L3170Y, Y07250, and keyword hits in BR metadata.
+    const brGender = String(brSample[brH['gender']] ?? '').toLowerCase();
+    const textBlob = `${prod.productId} ${prod.productName} ${brProductName} ${brBaseCategory} ${brCategories} ${brKeywords} ${brGender}`.toLowerCase();
+    const isYouth =
+      /^y\d/i.test(prod.productId) ||
+      /y$/i.test(prod.productId) ||
+      /\b(youth|kid|kids|toddler|infant|boys|girls|junior)\b/.test(textBlob);
+    let gender: ModelGender = csw?.gender ?? 'unisex';
+    if (isYouth) gender = 'youth';
+    console.log(`  gender=${gender}${isYouth ? ' (youth detected)' : ''}`);
     const categoryGroup: CategoryGroup = getCategoryGroup(csw?.productType ?? '') ?? 'tops';
 
     // Group variant rows by colorName — back/side/model images are color-level,
@@ -264,6 +337,15 @@ async function main(): Promise<void> {
       }
     }
 
+    // Model images are product-level, not color-level — generate on the first color
+    // with a usable front and unmet need. All other colors skip model gen.
+    let modelColorPicked: string | null = null;
+    if (!flags.noModel && !skipModelForType) {
+      for (const [colorName, plan] of colorGroups) {
+        if (plan.frontUrl && plan.needsModel) { modelColorPicked = colorName; break; }
+      }
+    }
+
     for (const [colorName, plan] of colorGroups) {
       if (!plan.frontUrl) {
         console.log(`  [${colorName}] no front image — skip`);
@@ -272,12 +354,12 @@ async function main(): Promise<void> {
       }
       const needsBack = plan.needsBack;
       const needsSide = plan.needsSide;
-      const needsModel = !flags.noModel && !skipModelForType && plan.needsModel;
+      const needsModel = colorName === modelColorPicked;
       if (!needsBack && !needsSide && !needsModel) continue;
 
       let frontBuf: Buffer | null = null;
       if (!flags.dryRun) {
-        frontBuf = await downloadImage(plan.frontUrl);
+        frontBuf = await downloadImage(plan.frontUrl, drive);
         if (!frontBuf) {
           console.log(`  [${colorName}] front download failed: ${plan.frontUrl}`);
           summary.failed++;
@@ -305,7 +387,7 @@ async function main(): Promise<void> {
             costLine = `cost $${res.cost.toFixed(3)}`;
             summary.modelGenerated++;
           } else {
-            const res = await generateGarmentView(frontBuf!, view, categoryGroup, colorName, tracker, undefined, prod.productName);
+            const res = await generateGarmentView(frontBuf!, view, categoryGroup, colorName, prod.productId, tracker, undefined, prod.productName);
             if (!res) { console.log(`  [${colorName}] ${view} gen failed (budget/policy)`); summary.failed++; continue; }
             buffer = res.buffer;
             costLine = `cost $${res.totalCost.toFixed(3)}, score=${res.score}`;

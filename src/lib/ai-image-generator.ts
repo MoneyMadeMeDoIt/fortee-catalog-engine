@@ -27,6 +27,7 @@ import {
 import { extractDominantHue, hueDrift } from './hue-utils.js';
 import { type CostTracker } from './cost-tracker.js';
 import { buildPrompt, buildRetryPrompt, buildPromptFromName, buildRetryPromptFromName, CLEANUP_PROMPT } from './prompt-templates.js';
+import { appendRejectRow, getOrCreateRunId } from './rejects-tsv.js';
 
 /**
  * Use OpenAI Vision to describe the garment in an image.
@@ -342,6 +343,7 @@ export async function generateGarmentView(
   view: AIView,
   garmentType: CategoryGroup,
   colorName: string,
+  pid: string,
   costTracker: CostTracker,
   client?: OpenAI,
   productName?: string,
@@ -383,11 +385,11 @@ export async function generateGarmentView(
   costTracker.record(callCost);
   totalCost += callCost;
 
-  const round1Candidates = await scoreCandidates(round1Buffers, frontHue, frontIsAchromatic, garmentType);
+  const round1Candidates = await scoreCandidates(round1Buffers, frontHue, frontIsAchromatic, garmentType, openai, frontBuffer);
   allCandidates.push(...round1Candidates);
 
-  // Find best hue-passing candidate from round 1
-  const round1Passing = round1Candidates.filter(c => c.passesHue);
+  // Find best candidate passing BOTH hue AND type-match from round 1 (SPEC R3 strict AND).
+  const round1Passing = round1Candidates.filter(c => c.passesHue && c.passesType);
   if (round1Passing.length > 0) {
     const best = round1Passing.reduce((a, b) => (b.score > a.score ? b : a));
     return {
@@ -414,11 +416,11 @@ export async function generateGarmentView(
     costTracker.record(callCost);
     totalCost += callCost;
 
-    const round2Candidates = await scoreCandidates(round2Buffers, frontHue, frontIsAchromatic, garmentType);
+    const round2Candidates = await scoreCandidates(round2Buffers, frontHue, frontIsAchromatic, garmentType, openai, frontBuffer);
     allCandidates.push(...round2Candidates);
 
-    // Find best hue-passing candidate from retry round
-    const round2Passing = round2Candidates.filter(c => c.passesHue);
+    // Find best candidate passing BOTH hue AND type-match from retry round (SPEC R3 strict AND).
+    const round2Passing = round2Candidates.filter(c => c.passesHue && c.passesType);
     if (round2Passing.length > 0) {
       const best = round2Passing.reduce((a, b) => (b.score > a.score ? b : a));
       return {
@@ -433,25 +435,46 @@ export async function generateGarmentView(
     }
   }
 
-  // --- D-04 fallback: all 6 candidates failed — return best-scoring regardless ---
+  // --- D-04 fallback: all 6 candidates failed hue — but Phase 15 inserts a
+  //     type-match gate first per SPEC R4.
   if (allCandidates.length === 0) {
     // All API calls failed with content policy or other issues — return null
     return null;
   }
 
-  const bestOfAll = allCandidates.reduce((a, b) => (b.score > a.score ? b : a));
+  // SPEC R4: If every candidate failed type-match, skip the view + log to
+  // rejects TSV. No D-04 hue-fallback is allowed to return a wrong-shape image.
+  const typePassing = allCandidates.filter(c => c.passesType);
+  if (typePassing.length === 0) {
+    const reason = allCandidates[0]?.typeMatchReason ?? 'unknown';
+    logger.warn(
+      `[ai-image-generator] All ${allCandidates.length} candidates failed type-match for ${pid}/${view}. Returning null.`,
+    );
+    await appendRejectRow({
+      pid,
+      view,
+      reason,
+      timestamp: new Date().toISOString(),
+      run_id: getOrCreateRunId(),
+    });
+    return null;
+  }
+
+  // D-04 hue-fallback (unchanged behavior) but constrained to type-passing
+  // candidates only — we never return a wrong-shape image.
+  const bestOfTypePassing = typePassing.reduce((a, b) => (b.score > a.score ? b : a));
   logger.warn(
-    `[ai-image-generator] All ${allCandidates.length} candidates failed hue check. Returning best-scoring (score=${bestOfAll.score}) per D-04.`,
+    `[ai-image-generator] All ${allCandidates.length} candidates failed hue check; returning best type-passing (score=${bestOfTypePassing.score}) per D-04 (constrained to typePassing).`,
   );
 
   return {
-    buffer: bestOfAll.buffer,
-    score: bestOfAll.score,
-    verdict: bestOfAll.verdict,
+    buffer: bestOfTypePassing.buffer,
+    score: bestOfTypePassing.score,
+    verdict: bestOfTypePassing.verdict,
     totalCost,
     callCount,
     usedRetry,
-    hueDrift: bestOfAll.drift,
+    hueDrift: bestOfTypePassing.drift,
   };
 }
 
