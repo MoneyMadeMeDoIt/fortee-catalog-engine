@@ -26,7 +26,159 @@ import {
 } from './ai-image-types.js';
 import { extractDominantHue, hueDrift } from './hue-utils.js';
 import { type CostTracker } from './cost-tracker.js';
-import { buildPrompt, buildRetryPrompt, CLEANUP_PROMPT } from './prompt-templates.js';
+import { buildPrompt, buildRetryPrompt, buildPromptFromName, buildRetryPromptFromName, CLEANUP_PROMPT } from './prompt-templates.js';
+
+/**
+ * Use OpenAI Vision to describe the garment in an image.
+ * Returns a short description like "women's boxy cropped t-shirt" or "men's quarter-zip pullover".
+ */
+async function describeGarment(client: OpenAI, imageBuffer: Buffer): Promise<string> {
+  try {
+    const base64 = imageBuffer.toString('base64');
+    const response = await client.chat.completions.create({
+      model: 'gpt-4o-mini',
+      max_tokens: 50,
+      messages: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: 'What type of garment is this? Reply with ONLY a short description like "men\'s polo shirt", "women\'s boxy t-shirt", "unisex hoodie", "quarter-zip pullover", etc. No other text.',
+            },
+            {
+              type: 'image_url',
+              image_url: { url: `data:image/png;base64,${base64}` },
+            },
+          ],
+        },
+      ],
+    });
+    const desc = response.choices[0]?.message?.content?.trim() ?? '';
+    logger.info(`[ai-image-generator] Garment described as: "${desc}"`);
+    return desc;
+  } catch (err) {
+    logger.warn(`[ai-image-generator] Vision describe failed: ${err}`);
+    return '';
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Phase 15: Garment Type Verifier (D-01, D-02, D-03)
+// ---------------------------------------------------------------------------
+
+/**
+ * Result from verifyGarmentTypeMatch(): does the candidate match the reference's garment family?
+ * Phase 15 / R2.
+ */
+export interface VerifyGarmentTypeResult {
+  match: boolean;
+  reason: string;
+}
+
+/**
+ * System prompt for the verifier. Verbatim from 15-RESEARCH.md Vision Prompt Design.
+ * Asks gpt-4o-mini to compare two garment photos at the CategoryGroup (family) level (D-02).
+ */
+const VERIFIER_SYSTEM_PROMPT = `You are comparing two product photos of garments on white backgrounds.
+The FIRST image is the reference (the source front view).
+The SECOND image is a candidate (a generated back or side view).
+
+Decide whether the two images depict the SAME GARMENT FAMILY.
+
+Families (use exactly these labels):
+- tops (t-shirts, tanks, short-sleeve casual)
+- hoodies (any pullover or zip with a hood)
+- polos (collared placket tops)
+- crewnecks (round-neck sweatshirts, no hood)
+- jackets (zip/snap outerwear, not hoodies)
+
+Coarse match only:
+- Long-sleeve vs short-sleeve = SAME family
+- Boxy vs relaxed fit = SAME family
+- Crewneck vs hoodie = DIFFERENT families (the bug we are catching)
+- Hoodie vs jacket = DIFFERENT families
+- Polo vs crewneck = DIFFERENT families
+
+Respond with ONLY a JSON object on a single line:
+{"match": true|false, "reason": "<short phrase, max 80 chars>"}
+
+Examples of reasons:
+- "both crewnecks"
+- "front is crewneck, candidate is hoodie"
+- "both hoodies"
+- "front is polo, candidate is t-shirt"`;
+
+/**
+ * Phase 15 / R2: Verify that a generated candidate image depicts the same garment family
+ * as the reference front image. Uses gpt-4o-mini Vision in a single side-by-side call (D-01).
+ *
+ * NOTE: verifier calls bypass CostTracker per SPEC R5 — do NOT pass costTracker here.
+ *
+ * Error policy (per CONTEXT specifics + RESEARCH Pitfall 1): on Vision/parse failure,
+ * return `{ match: true, reason: 'verifier ... fallback' }` — never false-reject when
+ * the verifier itself broke. Cost of a false-accept is one wrong image; cost of false-
+ * reject is wasted generation budget.
+ *
+ * @param client OpenAI client (DI seam for tests).
+ * @param generatedBuffer Candidate image (back or side) to verify.
+ * @param frontBuffer Reference front image.
+ * @returns `{ match, reason }` where match=true means same garment family.
+ */
+export async function verifyGarmentTypeMatch(
+  client: OpenAI,
+  generatedBuffer: Buffer,
+  frontBuffer: Buffer,
+): Promise<VerifyGarmentTypeResult> {
+  try {
+    const frontB64 = frontBuffer.toString('base64');
+    const genB64 = generatedBuffer.toString('base64');
+
+    const response = await client.chat.completions.create({
+      model: 'gpt-4o-mini',
+      max_tokens: 100,
+      response_format: { type: 'json_object' },
+      messages: [
+        { role: 'system', content: VERIFIER_SYSTEM_PROMPT },
+        {
+          role: 'user',
+          content: [
+            { type: 'text', text: 'Reference (source front):' },
+            { type: 'image_url', image_url: { url: `data:image/png;base64,${frontB64}`, detail: 'low' } },
+            { type: 'text', text: 'Candidate (generated view):' },
+            { type: 'image_url', image_url: { url: `data:image/png;base64,${genB64}`, detail: 'low' } },
+          ],
+        },
+      ],
+    });
+
+    const raw = response.choices[0]?.message?.content?.trim() ?? '';
+
+    // First try direct JSON.parse; on failure, regex-extract a {...} block from the raw text.
+    let parsed: { match?: unknown; reason?: unknown };
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      const m = raw.match(/\{[\s\S]*\}/);
+      if (m === null) {
+        logger.warn(`[ai-image-generator] verifyGarmentTypeMatch parse failed (no JSON object found in: ${raw.slice(0, 100)})`);
+        return { match: true, reason: 'verifier parse error fallback' };
+      }
+      // If the regex-extracted block is itself unparseable, the throw falls through
+      // to the outer catch which returns the api-error fallback shape.
+      parsed = JSON.parse(m[0]);
+    }
+
+    return {
+      match: parsed.match === true,
+      reason: typeof parsed.reason === 'string' ? parsed.reason.slice(0, 200) : '',
+    };
+  } catch (err) {
+    logger.warn(`[ai-image-generator] verifyGarmentTypeMatch failed: ${err}`);
+    return { match: true, reason: 'verifier api error fallback' };
+  }
+}
+
 import { scoreImageQuality } from '../shopify/image-scorer.js';
 import type { CategoryGroup } from '../shopify/types.js';
 import { logger } from './logger.js';
@@ -180,6 +332,7 @@ export async function generateGarmentView(
   colorName: string,
   costTracker: CostTracker,
   client?: OpenAI,
+  productName?: string,
 ): Promise<GenerateViewResult | null> {
   const openai = client ?? createOpenAIClient();
   const callCost = CANDIDATES_PER_CALL * COST_PER_IMAGE;
@@ -197,13 +350,22 @@ export async function generateGarmentView(
   const frontHue = frontDominant.hue;
   const frontIsAchromatic = frontDominant.achromatic;
 
+  // Use Vision API to describe the actual garment in the front image
+  // This prevents generating the wrong garment type (e.g., hoodie for a t-shirt)
+  let garmentDesc = productName || '';
+  if (!garmentDesc) {
+    garmentDesc = await describeGarment(openai, frontBuffer);
+  }
+
   let callCount = 0;
   let usedRetry = false;
   let totalCost = 0;
   const allCandidates: CandidateResult[] = [];
 
   // --- Round 1: initial generation ---
-  const prompt = buildPrompt(garmentType, view, colorName);
+  const prompt = garmentDesc
+    ? buildPromptFromName(garmentDesc, view, colorName)
+    : buildPrompt(garmentType, view, colorName);
   const round1Buffers = await callImagesEdit(openai, frontBuffer, prompt, CANDIDATES_PER_CALL);
   callCount++;
   costTracker.record(callCost);
@@ -232,7 +394,9 @@ export async function generateGarmentView(
 
   // Budget check for retry
   if (costTracker.canAfford(callCost)) {
-    const retryPrompt = buildRetryPrompt(garmentType, view, colorName);
+    const retryPrompt = garmentDesc
+      ? buildRetryPromptFromName(garmentDesc, view, colorName)
+      : buildRetryPrompt(garmentType, view, colorName);
     const round2Buffers = await callImagesEdit(openai, frontBuffer, retryPrompt, CANDIDATES_PER_CALL);
     callCount++;
     costTracker.record(callCost);
