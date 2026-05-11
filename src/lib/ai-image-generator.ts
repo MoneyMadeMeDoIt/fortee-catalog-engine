@@ -194,6 +194,8 @@ interface CandidateResult {
   hue: number;
   drift: number;
   passesHue: boolean;
+  passesType: boolean;
+  typeMatchReason: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -270,6 +272,8 @@ async function scoreCandidates(
   frontHue: number,
   frontIsAchromatic: boolean,
   garmentType: CategoryGroup,
+  openai: OpenAI,
+  frontBuffer: Buffer,
 ): Promise<CandidateResult[]> {
   const results: CandidateResult[] = [];
 
@@ -287,6 +291,12 @@ async function scoreCandidates(
       passesHue = drift <= HUE_DRIFT_THRESHOLD;
     }
 
+    // SPEC R1/R3: Per-candidate type-match check via Vision API.
+    // NOTE: verifier calls bypass CostTracker per SPEC R5.
+    const typeResult = await verifyGarmentTypeMatch(openai, buffer, frontBuffer);
+    const passesType = typeResult.match;
+    const typeMatchReason = typeResult.reason;
+
     results.push({
       buffer,
       score: qualityResult.score,
@@ -294,6 +304,8 @@ async function scoreCandidates(
       hue: candidateHue,
       drift,
       passesHue,
+      passesType,
+      typeMatchReason,
     });
   }
 
