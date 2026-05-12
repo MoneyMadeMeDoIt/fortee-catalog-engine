@@ -38,13 +38,17 @@ Plans:
 
 ### Phase 16: Catalog Image Pollution Audit & Fix
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Audit every unique pid in Bestsellers-Ready for image pollution across three classes (content-mismatch, shape drift, model-image pollution) plus a 4th structural class (invalid_image_format) recommended by research. Auto-fix where a source-of-truth exists via tiered flow (Tier 1 supplier fetch → Tier 2 AI regen → Tier 3 operator manual queue). Phase closes only when zero unresolved polluted pids remain. Manual queue HARD-CAPPED at 20 — overflow BLOCKS the phase for re-planning.
+**Requirements:** R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11 (see 16-SPEC.md — 11 locked requirements; 24 context decisions in 16-CONTEXT.md)
 **Depends on:** Phase 15
-**Plans:** 0 plans
+**Plans:** 4 plans
+**Validation:** [.planning/phases/16-catalog-image-pollution-audit-fix/16-VALIDATION.md](phases/16-catalog-image-pollution-audit-fix/16-VALIDATION.md)
 
 Plans:
-- [ ] TBD (run /gsd-plan-phase 16 to break down)
+- [ ] **16-01-PLAN.md** — Foundations: image-pollution-trail.ts (fsync + resume), verify-same-product.ts (gpt-4o-mini same-product Vision), supplier-canonical.ts (S&S + CSW + KNOWN_SUPPLIER_PREFIXES dispatcher), Drive helpers (download/trash/metadata/extract-id). (R3, R7, R8, R9, R11)
+- [ ] **16-02-PLAN.md** — Audit script: scripts/audit-image-pollution.ts — 3-pass detection (Pass 1 shared_url + invalid_image_format structural; Pass 2 AI content + model_pollution; Pass 3 AI shape via Phase 15 verifier). Read-only static invariant enforced. (R1, R2)
+- [ ] **16-03-PLAN.md** — Fix orchestrator: scripts/fix-image-pollution.ts — Tier 1 supplier fetch with verifier-after-fix + T-16-01 compare-before-trash, Tier 2 AI regen via Phase 10 generateGarmentView. R6 hard cap → exit 2 on overflow. (R3, R4, R6, R7, R8, R9, R11)
+- [ ] **16-04-PLAN.md** — Manual CLI: scripts/fix-image-pollution-manual.ts — interactive readline walkthrough with literal DELETE/FORCE confirmations + --re-audit for R10 phase-close. (R5, R10, R11)
 
 ---
 
@@ -60,7 +64,8 @@ Plans:
 - [x] **Phase 11: Image Standardization & Safe Upload** - Standardize all accepted images to 2000x2000 with uniform 85% garment height, write CDN URLs to Google Sheets (completed 2026-03-27)
 - [x] **Phase 12: Audit Runner** - Per-product orchestrator wiring scorer → source → generate → standardize → upload into a single end-to-end function (completed 2026-03-27)
 - [x] **Phase 13: CLI Entry Point** - audit-images.ts CLI exposing the audit runner with --style-id, --all, and --dry-run flags (completed 2026-03-27)
-- [ ] **Phase 15: Garment Type Verification** - Post-generation classifier that rejects AI images where garment type doesn't match the source (e.g., hoodie generated for a crewneck product)
+- [x] **Phase 15: Garment Type Verification** - Post-generation classifier that rejects AI images where garment type doesn't match the source (completed 2026-05-11)
+- [ ] **Phase 16: Catalog Image Pollution Audit & Fix** - Tiered audit + auto-fix for identity pollution (wrong product images, shared URLs, mixed brands) across BR catalog
 
 ## Phase Details
 
@@ -153,12 +158,12 @@ Plans:
 **Requirements**: 6 locked in [15-SPEC.md](phases/15-garment-type-verification/15-SPEC.md) — verifier filter (R1), helper API (R2), strict AND retry predicate (R3), skip+log on total fail (R4), no budget gating (R5), retro audit script (R6).
 **Success Criteria**: See SPEC.md Acceptance Criteria — 9 pass/fail checks anchored on A343 regression case + 5–10 fixture set across all CategoryGroups.
 **Context**: 11 implementation decisions in [15-CONTEXT.md](phases/15-garment-type-verification/15-CONTEXT.md) — side-by-side gpt-4o-mini comparison, coarse family match, scan-all retro, mocked + fixture-gated tests.
-**Plans:** 4 plans
+**Plans:** 4/4 plans complete ✓ Phase complete 2026-05-11
 Plans:
-- [ ] 15-01-PLAN.md — Foundations: verifier helper `verifyGarmentTypeMatch()` + shared rejects-TSV writer + fixture scaffold (R2)
-- [ ] 15-02-PLAN.md — In-pipeline integration: wire verifier into `scoreCandidates`/`generateGarmentView`, strict AND filter, skip+log on total fail; mocked tests (R1, R3, R4, R5)
-- [ ] 15-03-PLAN.md — Retro audit CLI: `scripts/audit-garment-types.ts` scans all back/side images, flag-only TSV output; smoke + read-only-invariant tests (R6)
-- [ ] 15-04-PLAN.md — Fixture-gated real-API test on 6-pid set (A343 + 5 known-good CategoryGroups); E2E A343 verification (R2)
+- [x] 15-01-PLAN.md — Foundations: verifier helper `verifyGarmentTypeMatch()` + shared rejects-TSV writer + fixture scaffold (R2)
+- [x] 15-02-PLAN.md — In-pipeline integration: wire verifier into `scoreCandidates`/`generateGarmentView`, strict AND filter, skip+log on total fail; mocked tests (R1, R3, R4, R5)
+- [x] 15-03-PLAN.md — Retro audit CLI: `scripts/audit-garment-types.ts` scans all back/side images, flag-only TSV output; smoke + read-only-invariant tests (R6)
+- [x] 15-04-PLAN.md — Fixture-gated real-API test (13 pids: 7 bad + 6 good); 100% recall on good fixtures; documented finding that verifier catches shape drift but not identity pollution (R2)
 
 ## Progress
 
@@ -177,4 +182,5 @@ Plans:
 | 12. Audit Runner | v2.0 | 1/1 | Complete    | 2026-03-27 |
 | 13. CLI Entry Point | v2.0 | 1/1 | Complete    | 2026-03-27 |
 | 14. Imagery Cleanup | v2.0 | 3/3 | Complete    | 2026-05-08 |
-| 15. Garment Type Verification | v2.0 | 0/4 | Planned (ready for execute) | — |
+| 15. Garment Type Verification | v2.0 | 4/4 | Complete    | 2026-05-11 |
+| 16. Catalog Image Pollution Audit & Fix | v2.0 | 0/4 | Planned (ready for execute) | — |
