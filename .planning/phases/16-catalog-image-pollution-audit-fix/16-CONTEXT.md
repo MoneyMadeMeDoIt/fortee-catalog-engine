@@ -91,6 +91,8 @@ This is a planning-time decision, not run-time — planner sees the post-mortem 
 - If BR's FrontImage itself is being replaced, source of truth = supplier canonical
 - If a back/side/model image is being replaced, source of truth = current FrontImage (assumed correct unless Tier 1 already flagged + fixed it earlier in the same run)
 
+**Exception:** When replacing FrontImage with the supplier canonical (Tier 1), the verifier-after-fix step is skipped because the new value IS the source-of-truth — comparing supplier-canonical to itself is tautological. Trail logs the operation with `tier=1` and `notes='verifier_skipped_tautology'` (NOT a fake VERIFIER_PASS row). This exception is documented in RESEARCH lines 510-512 and was sanctioned during revision iteration 1.
+
 **D-18: Verifier failure rolls back transparently.** New image is discarded, BR cell + Drive are not modified, pid cascades to the next tier (Tier 1 fail → Tier 2; Tier 2 fail → Tier 3). Trail logs `VERIFIER_FAIL` with reason.
 
 **D-19: Delete operations require explicit pollution confirmation.** A Drive delete (or BR column blank) only fires when the trail has a confirmed `VERIFIER_FAIL` or pollution-class flag for that specific image. Audit pollution flag alone is enough; tier-3 manual `d` choice from CLI is enough. Defensive — no implicit deletes.

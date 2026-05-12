@@ -1227,37 +1227,43 @@ export async function appendTrailRow(row: TrailRow, trailPath: string): Promise<
 
 **Verifier prompt design (Content-Mismatch Verifier section)** is `[ASSUMED]` in the sense that no Phase 16 fixture set has been built yet — the prompt is designed based on the empirical Phase 15 fixture results (6/6 good fixtures pass strict; 7/7 bad fixtures pass shape but are content-polluted). The plan's first task should curate a 3-5 pid Phase 16 fixture set (e.g., 6110, 8882, S05610-good, L00550-good) and validate the prompt's pass-rate BEFORE running the full audit.
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Should Pass 2's verifier-after for FrontImage replacement compare new against supplier canonical (a tautology) or skip the verifier entirely?**
    - What we know: D-17 says verifier-after-fix is mandatory; for FrontImage SoT = supplier canonical.
    - What's unclear: If new = supplier canonical (which is the case when Tier 1 fetches from supplier), the comparison is supplier-vs-supplier-of-itself = trivially match. Wastes ~$0.0003 per pid.
    - Recommendation: Skip verifier-after when new came directly from supplier (semantically guaranteed). Document as a plan-time decision.
+   - **RESOLVED:** Plan 03 Task 1 skips verifier-after-fix for FrontImage replacements (RESEARCH lines 510-512). Trail logs the operation with tier=1 and notes=verifier_skipped_tautology (NOT a fake VERIFIER_PASS row). See CONTEXT.md D-17 exception (added in revision iteration 1).
 
 2. **What's the operator workflow if Tier 1 fetches a supplier canonical that the operator thinks is wrong?**
    - What we know: Tier 1 trusts the supplier API; the verifier-after is only meaningful for Back/Side/Model.
    - What's unclear: If the supplier API itself returns a wrong image (e.g., S&S has the wrong product mapped to a styleID), the fix overwrites BR with the wrong image. The audit doesn't catch this because the verifier-after is supplier-vs-supplier.
    - Recommendation: Tier 1 always writes a trail row with the supplier URL; operator can inspect the trail post-run to spot-check. Defer auto-detection of supplier-side errors.
+   - **RESOLVED:** Plan 03 Task 1 logs SUPPLIER_FETCH trail rows with the supplier URL + status; operator post-mortem possible via trail. Auto-detection of supplier-side errors deferred.
 
 3. **Should `invalid_image_format` be its own pollution class or folded into `content_mismatch`?**
    - What we know: It's structurally detectable (Drive mime check), free to detect, and represents ~48 Vision errors in the live audit.
    - What's unclear: D-08 specifies 4 classes (`shared_url | content_mismatch | shape_drift | model_pollution`). Adding `invalid_image_format` is a SPEC extension.
    - Recommendation: Surface to operator at plan-phase review. If accepted, becomes 5th class; otherwise fold into `content_mismatch` with notes='invalid_format'.
+   - **RESOLVED:** Plan 02 Pass 1 adopts invalid_image_format as the 5th pollution class (POLLUTION_CLASSES enum); Drive metadata mime-type check is the detection mechanism. SPEC extension accepted at plan-phase review.
 
 4. **Concurrency within Tier 1 — D-20 allows 3-5 parallel supplier calls. Worth the complexity?**
    - What we know: S&S rate limit is 60 req/min; sequential at 1.1s/call ≈ 55 req/min — already near saturation. CSW has no documented rate limit but throttled to 1s/call. Total Tier 1 runtime ~15 min for ~150 pids sequential.
    - What's unclear: If 3 parallel S&S calls, the 1.1s spacing must be per-process-not-per-worker, otherwise rate limit explodes.
    - Recommendation: Start with SEQUENTIAL Tier 1. Add parallelism only if a runtime budget review post-Phase 16 demands it.
+   - **RESOLVED:** Plans 03 + 04 use sequential per-pid within each tier per D-20 / D-21. Parallelism deferred to a post-Phase 16 runtime review.
 
 5. **Manual queue persistence between runs — does the script re-read the manual queue TSV or rely solely on the trail?**
    - What we know: D-15 specifies resume-from-trail; manual queue is a TSV file.
    - What's unclear: If operator processes 10/20 rows then quits, on resume should the manual CLI re-read the queue TSV and skip already-processed (via trail) — or re-read the trail and recompute the queue?
    - Recommendation: Re-read the queue TSV from disk; cross-reference against `processed_pids` from trail; present unprocessed rows. Simple, predictable.
+   - **RESOLVED:** Plan 04 runManualFix re-reads the manual queue TSV from disk, calls loadProcessedPids() against the trail, and presents only unprocessed rows. Per D-15.
 
 6. **Test fixture strategy for Phase 16 verifySameProduct**
    - What we know: Phase 15 has 13-pid fixture set in `tests/fixtures/garment-type/`.
    - What's unclear: Should Phase 16 reuse the Phase 15 fixtures (specifically the 7 bad ones — 6110, 8882, etc.) or curate a new set?
    - Recommendation: Reuse. The 7 bad fixtures are exactly the content-mismatch class Phase 16 must catch; verify `verifySameProduct` returns `match=false` on them and `match=true` on the 6 good ones.
+   - **RESOLVED:** All Phase 16 unit tests use synthetic Buffers (Buffer.from("fake-png")); real-API fixture testing against Phase 15 fixtures deferred to a follow-up integration phase.
 
 ## Sources
 
