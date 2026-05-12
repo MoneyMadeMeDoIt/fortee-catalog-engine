@@ -60,6 +60,7 @@ v2.0 phases + Phase 14 imagery cleanup all shipped. Phase 15 (Garment Type Verif
   - **14-02 BR↔Drive↔Store reconciliation:** pid 5000 orphan-color reap (60 store media + 43 backfill), pid 168 duplicate-side dedupe, 742-row cross-pollution classification TSV.
   - **14-03 Cross-pollution apply + BAD-ALT + verification:** 19 MOVE + 170 TRASH on Drive, 13 BAD-ALT visual-triaged (8 deletes + 5 renames), 14-VERIFICATION.md.
   - **Allowlist follow-up:** 18 new (pid, brand) entries → CROSS-POLLUTION 553 → 2 (only protected SIZE_CHART PDFs).
+- Phase 16 added (2026-05-12): Catalog Image Pollution Audit & Fix. Triggered by Phase 15 fixture work surfacing identity pollution (8882=5200=CE520L=NE220 all share the same Adidas hoodie image; 6110's FrontImage is a baby onesie). Different problem class from Phase 14 (structural BR↔Drive↔Store reconciliation) and Phase 15 (shape drift in NEW AI gens). This phase audits + fixes IDENTITY of stored images: is the image in slot X actually a picture of product X?
 - Phase 15 added (2026-05-08): Garment Type Verification — post-generation classifier rejecting AI back/side images that drift garment shape. Triggered by A343 regression (crewneck → hoodie drift in generated views).
 - Phase 15 planning in progress (2026-05-08):
   - **15-SPEC.md** — 6 requirements locked. Ambiguity 0.18. R6 ⚠ flag resolved by D-04 (scan-all retro). Three-round Socratic interview captured the source-of-truth (front image), strict AND retry predicate, and skip-on-total-fail policy.

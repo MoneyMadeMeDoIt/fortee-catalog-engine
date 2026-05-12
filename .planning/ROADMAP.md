@@ -36,6 +36,16 @@ Plans:
 - [x] **14-02: BR ↔ Drive ↔ Store reconciliation** — pid 5000 orphan-color reap (60 store media + 43 backfill), pid 168 duplicate-side dedupe, 742-row cross-pollution classification TSV. (completed 2026-05-08)
 - [x] **14-03: Cross-pollution apply + BAD-ALT + verification** — 19 MOVE + 170 TRASH on Drive, 13 BAD-ALT visual-triaged (8 deletes + 5 renames), 14-VERIFICATION.md. Audit dropped 973→576 (all remaining documented or deferred). (completed 2026-05-08)
 
+### Phase 16: Catalog Image Pollution Audit & Fix
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 15
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd-plan-phase 16 to break down)
+
 ---
 
 ### v2.0 Image Automation (In Progress)
