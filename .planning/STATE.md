@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Image Automation
-status: Ready to execute
-stopped_at: Phase 15 SPEC + CONTEXT captured. Verifier design + retro mechanism + mechanical defaults all locked. Ready for `/gsd-plan-phase 15`.
-last_updated: "2026-05-12T14:06:35.256Z"
+status: Phase 16 automated portion shipped — awaiting blocking operator checkpoint
+stopped_at: Phase 16 Plans 01/02/03 shipped (foundations + audit + fix orchestrator), Plan 04 Task 1 shipped (manual CLI + 21 tests). 80/80 Phase 16 tests green. Task 2 = blocking human-verify checkpoint (operator dry-run on 2 sacrificial pids against real Drive/Sheets) — outstanding. 16-PHASE-SUMMARY.md not written until checkpoint approved.
+last_updated: "2026-05-12T18:00:00.000Z"
 progress:
   total_phases: 9
   completed_phases: 8
-  total_plans: 20
-  completed_plans: 17
-  percent: 85
+  total_plans: 24
+  completed_plans: 20
+  percent: 83
 ---
 
 # Project State
@@ -20,11 +20,11 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-01)
 
 **Core value:** One command turns an enriched sheet row into a live Shopify product with correct decoration options, placements, pricing, standardized images, and all customer-facing content.
-**Current focus:** Phase 16 — Catalog Image Pollution Audit & Fix (planned, ready to execute)
+**Current focus:** Phase 16 — Catalog Image Pollution Audit & Fix (automated portion shipped 2026-05-12, awaiting operator checkpoint)
 
 ## Current Position
 
-Phase 15 SHIPPED 2026-05-11. Phase 16 PLANNED 2026-05-12.
+Phase 15 SHIPPED 2026-05-11. Phase 16 automated portion SHIPPED 2026-05-12 — operator checkpoint pending.
 
 **Phase 15 (Garment Type Verification) — SHIPPED 2026-05-11:**
 - 4/4 plans complete: verifier helper + in-pipeline integration + retro audit CLI + fixture-gated real-API test
@@ -33,16 +33,15 @@ Phase 15 SHIPPED 2026-05-11. Phase 16 PLANNED 2026-05-12.
 - A343 reference pid was never a real product — used CE520L, 6110, 8882 etc. as actual cases during fixture work
 - Found during fixture work: catalog has identity-pollution issues (shared URLs across pids, wrong product images, mixed brands) — triggered Phase 16
 
-**Phase 16 (Catalog Image Pollution Audit & Fix) — PLANNED 2026-05-12:**
-- SPEC.md — 11 requirements, ambiguity 0.18
-- CONTEXT.md — 24 implementation decisions (3-pass detection, per-tier batching, interactive CLI, supplier-canonical comparison, single append-only trail)
-- RESEARCH.md — 1,379 lines, integration map + reuse strategy + 4th pollution class `invalid_image_format` recommended
-- PATTERNS.md — 14 files mapped to analogs with line numbers
-- 4 plans across 3 waves: 16-01 foundations → 16-02 audit + 16-03 fix orchestrator (parallel) → 16-04 manual CLI
-- Plan checker: VERIFICATION PASSED on iteration 2 across all 12 dimensions
-- HARD constraint: manual queue ≤ 20 pids (BLOCKS phase if exceeded)
-- Safety rails: T-16-01 (Drive update-in-place destruction — verify-compare-then-trash mandatory), T-16-04 (delete good image — literal DELETE confirmation)
-- Next: /gsd-execute-phase 16
+**Phase 16 (Catalog Image Pollution Audit & Fix) — AUTOMATED PORTION SHIPPED 2026-05-12:**
+- 11 atomic commits (`b54b6e0` hook fix → `f976173` manual CLI). 80/80 Phase 16 tests green; no regressions in Plans 01–15.
+- **Plan 16-01 (Foundations) ✓** — 4 commits, 36 tests across 4 suites. New libs: `src/lib/image-pollution-trail.ts` (fsync + resume), `src/lib/verify-same-product.ts` (gpt-4o-mini same-product verifier, candidate-first prompt), `src/lib/supplier-canonical.ts` (S* → S&S, L* → CSW, H08* → null short-circuit, `colorSideImage` banned from canonical return per feedback_strict_side_profile memory). 4 new exports on `src/sheets/drive.ts`.
+- **Plan 16-02 (Audit) ✓** — 3 commits, 15 tests. `scripts/audit-image-pollution.ts` (981 lines). Read-only invariant statically enforced. 3-pass detection: Pass 1 shared_url + invalid_image_format (free), Pass 2 content_mismatch + model_pollution (Vision), Pass 3 shape_drift (Phase 15 verifier reuse). Drive metadata rate-limited at 10 req/sec with exponential backoff on 403/429. D-09 summary header confirmed.
+- **Plan 16-03 (Fix orchestrator) ✓** — 2 commits, 17 tests. `scripts/fix-image-pollution.ts` (970 lines). Tier 1 supplier fetch + Tier 2 AI regen via Phase 10's `generateGarmentView` (no double-verify — Phase 15 internal). R6 hard cap verified: 19 → exit 0; 21 → exit 2 BLOCKED-QUEUE-OVERFLOW. T-16-01 compare-before-trash mitigated at every Drive write. D-17 Exception encoded (FrontImage tier-1 skips tautological verifier, logs `notes='verifier_skipped_tautology'`). Two adaptations: real `generateGarmentView` is 8-arg (plan had simplified 3-arg sig — inferred CategoryGroup from BR row); added `PermissiveCostTracker` shim because the fn requires a CostTracker and D-24 says no fix budget cap.
+- **Plan 16-04 Task 1 (Manual CLI) ✓** — 1 commit, 21 tests. `scripts/fix-image-pollution-manual.ts` (1040 lines). Interactive `[r]/[s]/[a]/[d]/[v]/[q]` menu. Literal `DELETE` + `FORCE` confirmations enforced. T-16-01 mitigation re-applied to operator URL writes. R10 OR-path: `--re-audit` triggers post-fix audit AND computes BR_WRITE coverage from trail (status SATISFIED iff `pollutedCount===0 OR coveragePct===100`).
+- **Plan 16-04 Task 2 (Blocking human checkpoint) — PENDING.** Operator must run `scripts/fix-image-pollution-manual.ts` on 2 sacrificial pids (NOT production) against real Drive + Sheets. 8 verification steps in 16-04-PLAN.md `<how-to-verify>`. Phase 16 cannot close until operator types `approved`. `16-PHASE-SUMMARY.md` not written until then.
+- Pre-existing Phase 15 test bug surfaced (out-of-scope, ignored): `tests/lib/garment-type-verifier.test.ts` errors at module-load when `OPENAI_API_KEY` unset (new OpenAI() lives outside the describe.skipIf). Phase 15 hygiene fix, not a Phase 16 regression.
+- Next: operator runs the 8-step checkpoint walkthrough → on `approved`, write `16-PHASE-SUMMARY.md`, update STATE.md status, run `--all` audit on real BR.
 
 **Catalog curation (not phase-tracked):**
 - 283/467 bestsellers fully complete; 179 with data gaps remaining
@@ -115,7 +114,7 @@ Key decisions for catalog curation (2026-04-01):
 
 **Next planned phase:**
 
-- Phase 16 (Catalog Image Pollution Audit & Fix) — 4 plans across 3 waves; ready for `/gsd-execute-phase 16`. Source: Phase 15 fixture work + identity-pollution evidence.
+- Phase 16 (Catalog Image Pollution Audit & Fix) — automated portion SHIPPED 2026-05-12 (80/80 tests, 11 commits). Awaiting operator checkpoint (Plan 04 Task 2: live walkthrough on 2 sacrificial pids) before phase close.
 
 ### Blockers/Concerns
 
@@ -125,7 +124,7 @@ Key decisions for catalog curation (2026-04-01):
 ## Session Continuity
 
 Last session: 2026-05-12 (active)
-Stopped at: Phase 15 SHIPPED. Phase 16 SPEC + CONTEXT + RESEARCH + PATTERNS + PLANS all committed. Plan checker passed iteration 2. Ready for `/gsd-execute-phase 16`.
-Resume file: `.planning/phases/16-catalog-image-pollution-audit-fix/16-CONTEXT.md`
+Stopped at: Phase 16 automated portion SHIPPED — 11 commits (`b54b6e0` hook fix → `f976173` manual CLI), 80/80 Phase 16 tests green. Plans 16-01/02/03 fully closed; Plan 16-04 has Task 1 closed (CLI + tests) but Task 2 outstanding (blocking operator checkpoint — live dry-run on 2 sacrificial pids).
+Resume file: `.planning/phases/16-catalog-image-pollution-audit-fix/16-04-PLAN.md` (search for `task type="checkpoint:human-verify"` — 8-step verification protocol)
 
 Project pushed to remote: https://github.com/MoneyMadeMeDoIt/fortee-catalog-engine (master branch)
