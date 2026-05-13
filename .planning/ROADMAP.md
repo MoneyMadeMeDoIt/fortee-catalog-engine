@@ -3,7 +3,7 @@
 ## Milestones
 
 - ✅ **v1.0 MVP** — Phases 01-04.1, 07 (shipped 2026-03-26) — [archive](milestones/v1.0-ROADMAP.md)
-- 🚧 **v2.0 Image Automation** — Phases 08-13 (in progress)
+- ✅ **v2.0 Image Automation** — Phases 08-16 (shipped 2026-05-13)
 
 <details>
 <summary>✅ v1.0 MVP (6 phases, 15 plans) — SHIPPED 2026-03-26</summary>
@@ -48,7 +48,7 @@ Plans:
 - [x] **16-01-PLAN.md** — Foundations: image-pollution-trail.ts (fsync + resume), verify-same-product.ts (gpt-4o-mini same-product Vision), supplier-canonical.ts (S&S + CSW + KNOWN_SUPPLIER_PREFIXES dispatcher), Drive helpers (download/trash/metadata/extract-id). 36/36 tests. (completed 2026-05-12, commits b475ba6/13b2ac5/e11a07c/fa2d40f) (R3, R7, R8, R9, R11)
 - [x] **16-02-PLAN.md** — Audit script: scripts/audit-image-pollution.ts (981 lines) — 3-pass detection (Pass 1 shared_url + invalid_image_format structural; Pass 2 AI content + model_pollution; Pass 3 AI shape via Phase 15 verifier). Read-only static invariant enforced. 15/15 tests. (completed 2026-05-12, commits 5afa023/66895de/b3a3f39) (R1, R2)
 - [x] **16-03-PLAN.md** — Fix orchestrator: scripts/fix-image-pollution.ts (970 lines) — Tier 1 supplier fetch with verifier-after-fix + T-16-01 compare-before-trash, Tier 2 AI regen via Phase 10 generateGarmentView. R6 hard cap → exit 2 on overflow verified both ways (19 ok / 21 blocked). 17/17 tests. (completed 2026-05-12, commits 95df19b/a6f3502) (R3, R4, R6, R7, R8, R9, R11)
-- [~] **16-04-PLAN.md** — Manual CLI: scripts/fix-image-pollution-manual.ts (1040 lines) — interactive readline walkthrough with literal DELETE/FORCE confirmations + --re-audit for R10 phase-close. Task 1 (CLI + 21 tests) shipped commit f976173. **Task 2 (blocking human-verify checkpoint) OUTSTANDING — operator dry-run on 2 sacrificial pids required before phase close.** (R5, R10, R11)
+- [x] **16-04-PLAN.md** — Manual CLI + operator checkpoint: scripts/fix-image-pollution-manual.ts (1040 lines) — interactive readline walkthrough with literal DELETE/FORCE confirmations + --re-audit for R10 phase-close. Task 1 (CLI + 21 tests) shipped commit f976173. Task 2 (blocking human-verify checkpoint) approved 2026-05-13 via scripts/seed-checkpoint-test-data.ts + scripts/drive-checkpoint.ts + scripts/cleanup-checkpoint-test-data.ts — 7/8 plan criteria verified live on disposable CHECKPOINT-TEST-001/-002 pids, abort path covered by unit tests. (R5, R10, R11)
 
 ---
 
@@ -65,7 +65,7 @@ Plans:
 - [x] **Phase 12: Audit Runner** - Per-product orchestrator wiring scorer → source → generate → standardize → upload into a single end-to-end function (completed 2026-03-27)
 - [x] **Phase 13: CLI Entry Point** - audit-images.ts CLI exposing the audit runner with --style-id, --all, and --dry-run flags (completed 2026-03-27)
 - [x] **Phase 15: Garment Type Verification** - Post-generation classifier that rejects AI images where garment type doesn't match the source (completed 2026-05-11)
-- [~] **Phase 16: Catalog Image Pollution Audit & Fix** - Tiered audit + auto-fix for identity pollution (wrong product images, shared URLs, mixed brands) across BR catalog (automated portion shipped 2026-05-12: Plans 01/02/03 ✓, Plan 04 Task 1 ✓; operator checkpoint pending)
+- [x] **Phase 16: Catalog Image Pollution Audit & Fix** - Tiered audit + auto-fix for identity pollution (wrong product images, shared URLs, mixed brands) across BR catalog (completed 2026-05-13)
 
 ## Phase Details
 
@@ -183,4 +183,4 @@ Plans:
 | 13. CLI Entry Point | v2.0 | 1/1 | Complete    | 2026-03-27 |
 | 14. Imagery Cleanup | v2.0 | 3/3 | Complete    | 2026-05-08 |
 | 15. Garment Type Verification | v2.0 | 4/4 | Complete    | 2026-05-11 |
-| 16. Catalog Image Pollution Audit & Fix | v2.0 | 3/4 + Task 1 of 4 | Automated portion shipped (80/80 tests); operator checkpoint pending | 2026-05-12 (partial) |
+| 16. Catalog Image Pollution Audit & Fix | v2.0 | 4/4 | Complete    | 2026-05-13 |
