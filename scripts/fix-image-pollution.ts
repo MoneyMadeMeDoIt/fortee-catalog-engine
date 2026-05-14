@@ -71,6 +71,7 @@ export interface RunImagePollutionFixArgs {
   limit?: number;
   dryRun: boolean;
   pid?: string;
+  tier1Only?: boolean;
   help: boolean;
 }
 
@@ -108,7 +109,7 @@ export interface RunImagePollutionFixResult {
   manualQueueSize: number;
   manualQueuePath: string;
   summaryPath: string;
-  status: 'OK' | 'BLOCKED-QUEUE-OVERFLOW';
+  status: 'OK' | 'OK-TIER1-ONLY' | 'BLOCKED-QUEUE-OVERFLOW';
 }
 
 // ---------------------------------------------------------------------------
@@ -799,7 +800,12 @@ export async function runImagePollutionFix(
   }
 
   // D-21: Tier 1 fully complete BEFORE Tier 2 starts.
-  const cascadedToTier2 = tier1Results.filter((r) => r.cascade).map((r) => r.pid);
+  // --tier1-only short-circuits Tier 2 entirely — used when OpenAI budget is
+  // depleted or when the operator wants to take only the free supplier-fetch
+  // wins this round.
+  const cascadedToTier2 = deps.args.tier1Only
+    ? []
+    : tier1Results.filter((r) => r.cascade).map((r) => r.pid);
 
   // 6. Tier 2 — back/side AI regen for cascaded pids (only those with back/side
   //    pollution; pids with only FrontImage or Model* pollution cascade to Tier 3).
@@ -841,9 +847,14 @@ export async function runImagePollutionFix(
   writeManualQueueTsv(manualQueuePath, tier3Pids, pollutedByPid, brIndex);
 
   // 8. R6 hard cap.
+  // In --tier1-only mode the manual queue is expected to be huge (the whole
+  // point is to defer Tier 2/3); R6 does not apply.
   const manualQueueSize = tier3Pids.length;
-  const status: 'OK' | 'BLOCKED-QUEUE-OVERFLOW' =
-    manualQueueSize > 20 ? 'BLOCKED-QUEUE-OVERFLOW' : 'OK';
+  const status: 'OK' | 'OK-TIER1-ONLY' | 'BLOCKED-QUEUE-OVERFLOW' = deps.args.tier1Only
+    ? 'OK-TIER1-ONLY'
+    : manualQueueSize > 20
+      ? 'BLOCKED-QUEUE-OVERFLOW'
+      : 'OK';
 
   // 9. Summary JSON.
   const summary = {
@@ -903,6 +914,7 @@ async function main(): Promise<void> {
       pid: { type: 'string' },
       limit: { type: 'string' },
       'dry-run': { type: 'boolean', default: false },
+      'tier1-only': { type: 'boolean', default: false },
       help: { type: 'boolean', short: 'h', default: false },
     },
     strict: true,
@@ -932,6 +944,7 @@ async function main(): Promise<void> {
     pid: values.pid as string | undefined,
     limit: values.limit ? Number(values.limit) : undefined,
     dryRun: values['dry-run'] === true,
+    tier1Only: values['tier1-only'] === true,
     help: false,
   };
 
