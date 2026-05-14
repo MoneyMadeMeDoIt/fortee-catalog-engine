@@ -37,3 +37,24 @@ scope per the executor scope-boundary rule.
 
 Open a follow-up plan or sweep to address these failures separately. They are
 NOT regressions from 17-07.
+
+---
+
+## Update from Plan 17-04 execution (2026-05-14)
+
+Full suite (`npx vitest run --exclude '.claude/worktrees/**'`) reported:
+- 525 tests passing
+- 2 suite-level failures, both pre-existing and unrelated to 17-04:
+
+### tests/scripts/fix-model-images.test.ts
+- Cannot find module `scripts/fix-model-images.js` — this test file ships ahead
+  of its production source. Plan 17-03 (running in parallel) creates that
+  script; once 17-03 lands the import resolves.
+- NOT caused by 17-04 (which only touches `src/lib/supplier-canonical.ts` and
+  `tests/lib/supplier-canonical.test.ts`).
+
+### tests/lib/garment-type-verifier.test.ts
+- Same pre-existing failure documented above (missing `OPENAI_API_KEY` env at
+  module-load time).
+
+Both deferred — out of scope for 17-04.
