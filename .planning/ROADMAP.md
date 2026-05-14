@@ -50,6 +50,24 @@ Plans:
 - [x] **16-03-PLAN.md** — Fix orchestrator: scripts/fix-image-pollution.ts (970 lines) — Tier 1 supplier fetch with verifier-after-fix + T-16-01 compare-before-trash, Tier 2 AI regen via Phase 10 generateGarmentView. R6 hard cap → exit 2 on overflow verified both ways (19 ok / 21 blocked). 17/17 tests. (completed 2026-05-12, commits 95df19b/a6f3502) (R3, R4, R6, R7, R8, R9, R11)
 - [x] **16-04-PLAN.md** — Manual CLI + operator checkpoint: scripts/fix-image-pollution-manual.ts (1040 lines) — interactive readline walkthrough with literal DELETE/FORCE confirmations + --re-audit for R10 phase-close. Task 1 (CLI + 21 tests) shipped commit f976173. Task 2 (blocking human-verify checkpoint) approved 2026-05-13 via scripts/seed-checkpoint-test-data.ts + scripts/drive-checkpoint.ts + scripts/cleanup-checkpoint-test-data.ts — 7/8 plan criteria verified live on disposable CHECKPOINT-TEST-001/-002 pids, abort path covered by unit tests. (R5, R10, R11)
 
+### Phase 17: Catalog Image Pollution Fix
+
+**Goal:** Convert Phase 16's working-but-narrow audit/fix tooling into something that resolves the real pollution pattern surfaced by the first production audit on 2026-05-14 (213 polluted pids / 453 detections; 1 fully-fixed in Tier 1 vs 36 estimated). Close the audit-hang Drive timeout, route adidas/Bella/Gildan via S&S, add per-color supplier-canonical filtering, build a Model* image rebuild tool (69% of detected pollution), and patch three latent bugs (--dry-run trash gate, cleanup MANUAL/ blind spot, OpenAI billing-hard-limit short-circuit). Phase closes per Phase 16's R10 OR-path.
+**Requirements**: R17-01, R17-02, R17-03, R17-04, R17-05, R17-06, R17-07, R17-08 (see 17-RESEARCH.md §Phase Requirements)
+**Depends on:** Phase 16
+**Plans:** 8 plans
+**Validation:** [.planning/phases/17-catalog-image-pollution-fix/17-VALIDATION.md](phases/17-catalog-image-pollution-fix/17-VALIDATION.md)
+
+Plans:
+- [ ] **17-01-PLAN.md** — Drive fetch timeout (B-1): 30s gaxios timeout + 2-retry on all 4 Drive helpers. Wave 1 (blocking pre-req). (R17-01)
+- [ ] **17-02-PLAN.md** — Per-color supplier-canonical: extend resolveSupplierCanonical(pid, colorName?) with S&S exact-match + CSW filename-substring + wasFallback flag. Wave 2. (R17-02)
+- [ ] **17-03-PLAN.md** — Model image rebuild tool: NEW scripts/fix-model-images.ts (per D-17-01), 10-pid sample-test gate (per D-17-02) before full 213-pid run. tier=4 trail rows. Wave 3. (R17-03)
+- [ ] **17-04-PLAN.md** — Prefix dispatcher widening: routesViaSS(pid) routes adidas A*/CE* + 19 KNOWN_SUPPLIER_PREFIXES brand pids through the existing S&S branch. No new scrapers (per RESEARCH Findings 1+2). Wave 3. (R17-04)
+- [ ] **17-05-PLAN.md** — Manual triage residue via existing scripts/fix-image-pollution-manual.ts. Wave 4 (operator-driven). (R17-05)
+- [ ] **17-06-PLAN.md** — B-2: gate trashDriveFile behind !args.dryRun at both manual CLI sites. Wave 1. (R17-06)
+- [ ] **17-07-PLAN.md** — B-3: cleanup-checkpoint-test-data.ts also scans MANUAL/CHECKPOINT-TEST-*/. Wave 1. (R17-07)
+- [ ] **17-08-PLAN.md** — B-4: detect OpenAI billing_hard_limit_reached once; widen TrailOperation with TIER2_BUDGET_EXHAUSTED; surface 'BILLING_LIMIT_HIT' in summary. Wave 1. (R17-08)
+
 ---
 
 ### v2.0 Image Automation (In Progress)
