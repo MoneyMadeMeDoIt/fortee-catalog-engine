@@ -1468,6 +1468,152 @@ describe('17-02 colorName propagation', () => {
   });
 });
 
+// ---------------------------------------------------------------------------
+// B-5 (Phase 17 post-shipped patch): `--dry-run` must NOT mutate Drive or
+// Sheets and must NOT emit DRIVE_UPLOAD / DRIVE_DELETE / BR_WRITE trail rows.
+// Pre-patch tier1Fix/tier2Fix only gated Sheets writes; Drive uploads and
+// trashes ran regardless of --dry-run. Verified live on 2026-05-14 when a
+// dry-run trashed ~30 production Drive files and uploaded ~30 replacements
+// without touching Sheets, leaving the catalog with broken-link cells.
+// ---------------------------------------------------------------------------
+describe('B-5 --dry-run never mutates Drive or Sheets', () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it('Tier 1 dry-run: uploadToDrive + trashDriveFile + writeUpdates all skipped', async () => {
+    const pollutedRows: PollutionRow[] = [
+      makePollutionRow({
+        pid: 'pid1',
+        affected_columns: ['BackImage'],
+        affected_drive_urls: [driveUrl('BACK_OLD_ID_CCCCCCCCCCCC')],
+      }),
+    ];
+    const deps = makeDeps({
+      args: {
+        auditFile: undefined,
+        limit: undefined,
+        dryRun: true,
+        pid: undefined,
+        help: false,
+      },
+      auditRowsOverride: pollutedRows as never,
+      readRawRowsFn: vi.fn().mockResolvedValue([
+        BR_HEADER,
+        makeBrRow({
+          productId: 'pid1',
+          FrontImage: driveUrl('FRONT_GOOD_ID_BBBBBBBBBBBBBB'),
+          BackImage: driveUrl('BACK_OLD_ID_CCCCCCCCCCCC'),
+        }),
+      ]) as never,
+    } as never);
+
+    await runImagePollutionFix(deps);
+
+    expect(deps.uploadToDriveFn).not.toHaveBeenCalled();
+    expect(deps.trashDriveFileFn).not.toHaveBeenCalled();
+    expect(deps.writeUpdatesFn).not.toHaveBeenCalled();
+  });
+
+  it('Tier 1 dry-run: emits no DRIVE_UPLOAD / DRIVE_DELETE / BR_WRITE trail rows', async () => {
+    const pollutedRows: PollutionRow[] = [
+      makePollutionRow({
+        pid: 'pid1',
+        affected_columns: ['BackImage'],
+        affected_drive_urls: [driveUrl('BACK_OLD_ID_CCCCCCCCCCCC')],
+      }),
+    ];
+    const deps = makeDeps({
+      args: {
+        auditFile: undefined,
+        limit: undefined,
+        dryRun: true,
+        pid: undefined,
+        help: false,
+      },
+      auditRowsOverride: pollutedRows as never,
+      readRawRowsFn: vi.fn().mockResolvedValue([
+        BR_HEADER,
+        makeBrRow({
+          productId: 'pid1',
+          FrontImage: driveUrl('FRONT_GOOD_ID_BBBBBBBBBBBBBB'),
+          BackImage: driveUrl('BACK_OLD_ID_CCCCCCCCCCCC'),
+        }),
+      ]) as never,
+    } as never);
+
+    await runImagePollutionFix(deps);
+
+    const operations = (deps.appendTrailRowFn as ReturnType<typeof vi.fn>).mock.calls.map(
+      (c) => (c[0] as { operation: string }).operation,
+    );
+    expect(operations).not.toContain('DRIVE_UPLOAD');
+    expect(operations).not.toContain('DRIVE_DELETE');
+    expect(operations).not.toContain('BR_WRITE');
+  });
+
+  it('Tier 1 dry-run: VERIFIER_PASS trail row still emitted (read-only op)', async () => {
+    const pollutedRows: PollutionRow[] = [
+      makePollutionRow({
+        pid: 'pid1',
+        affected_columns: ['BackImage'],
+        affected_drive_urls: [driveUrl('BACK_OLD_ID_CCCCCCCCCCCC')],
+      }),
+    ];
+    const deps = makeDeps({
+      args: {
+        auditFile: undefined,
+        limit: undefined,
+        dryRun: true,
+        pid: undefined,
+        help: false,
+      },
+      auditRowsOverride: pollutedRows as never,
+      readRawRowsFn: vi.fn().mockResolvedValue([
+        BR_HEADER,
+        makeBrRow({
+          productId: 'pid1',
+          FrontImage: driveUrl('FRONT_GOOD_ID_BBBBBBBBBBBBBB'),
+          BackImage: driveUrl('BACK_OLD_ID_CCCCCCCCCCCC'),
+        }),
+      ]) as never,
+    } as never);
+
+    await runImagePollutionFix(deps);
+
+    const operations = (deps.appendTrailRowFn as ReturnType<typeof vi.fn>).mock.calls.map(
+      (c) => (c[0] as { operation: string }).operation,
+    );
+    expect(operations).toContain('VERIFIER_PASS');
+  });
+
+  it('Tier 1 non-dry-run regression: uploadToDrive + trashDriveFile + writeUpdates still called', async () => {
+    const pollutedRows: PollutionRow[] = [
+      makePollutionRow({
+        pid: 'pid1',
+        affected_columns: ['BackImage'],
+        affected_drive_urls: [driveUrl('BACK_OLD_ID_CCCCCCCCCCCC')],
+      }),
+    ];
+    const deps = makeDeps({
+      auditRowsOverride: pollutedRows as never,
+      readRawRowsFn: vi.fn().mockResolvedValue([
+        BR_HEADER,
+        makeBrRow({
+          productId: 'pid1',
+          FrontImage: driveUrl('FRONT_GOOD_ID_BBBBBBBBBBBBBB'),
+          BackImage: driveUrl('BACK_OLD_ID_CCCCCCCCCCCC'),
+        }),
+      ]) as never,
+    } as never);
+
+    await runImagePollutionFix(deps);
+
+    expect(deps.uploadToDriveFn).toHaveBeenCalled();
+    expect(deps.writeUpdatesFn).toHaveBeenCalled();
+    // trashDriveFile called because oldFileId differs from newFileId (T-16-01 path)
+    expect(deps.trashDriveFileFn).toHaveBeenCalled();
+  });
+});
+
 // Unused for typechecking, but ensures __dirname is referenced (silences
 // linter when test file has no relative path operations).
 void __dirname;

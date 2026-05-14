@@ -450,7 +450,19 @@ export async function tier1Fix(
       }
     }
 
-    // 3. Drive write with T-16-01 compare-before-trash.
+    // 3. Drive + Sheets writes with T-16-01 compare-before-trash.
+    // B-5 fix: dry-run skips ALL destructive ops (Drive upload, Drive trash,
+    // Sheets write) AND their trail rows. Pre-patch only the Sheets write was
+    // gated, so `--dry-run` still mutated Drive (uploads + trashes) and
+    // emitted misleading BR_WRITE trail rows. See Plan 17-06 / B-2 for the
+    // same pattern applied to the manual CLI.
+    if (deps.args.dryRun) {
+      logger.info(
+        `[fix-image-pollution] dry-run: would fix ${pid}/${col} (verifier passed)`,
+      );
+      continue;
+    }
+
     const origFileId = extractFileId(currentBrUrls[col] ?? '');
     const filename = makeFilename(pid, col, supplierPrefix);
     let newUrl: string;
@@ -507,15 +519,13 @@ export async function tier1Fix(
       return { pid, tier: 1, status: 'cascade', cascade: true };
     }
     const range = `'${deps.sheetName}'!${columnToLetter(colIdx)}${brEntry.rowIndex0 + 1}`;
-    if (!deps.args.dryRun) {
-      try {
-        await deps.writeUpdatesFn(deps.sheetsClient, deps.spreadsheetId, [
-          { range, values: [[newUrl]] },
-        ]);
-      } catch (err) {
-        logger.warn(`[fix-image-pollution] writeUpdates failed for ${pid}/${col}: ${err}`);
-        return { pid, tier: 1, status: 'cascade', cascade: true };
-      }
+    try {
+      await deps.writeUpdatesFn(deps.sheetsClient, deps.spreadsheetId, [
+        { range, values: [[newUrl]] },
+      ]);
+    } catch (err) {
+      logger.warn(`[fix-image-pollution] writeUpdates failed for ${pid}/${col}: ${err}`);
+      return { pid, tier: 1, status: 'cascade', cascade: true };
     }
     await deps.appendTrailRowFn({
       timestamp_iso: new Date().toISOString(),
@@ -634,6 +644,16 @@ export async function tier2Fix(
       notes: `Tier 2 success score=${regen.score}`,
     });
 
+    // B-5 fix: dry-run skips ALL destructive ops + their trail rows. Mirrors
+    // the Tier 1 gate. AI_REGEN trail row above is intentionally NOT gated —
+    // it records the AI cost incurred (cost is mutating but already happened).
+    if (deps.args.dryRun) {
+      logger.info(
+        `[fix-image-pollution] dry-run: would Tier-2 fix ${pid}/${col} (AI regen passed)`,
+      );
+      continue;
+    }
+
     // T-16-01 compare-before-trash, mirrored from Tier 1.
     const origFileId = extractFileId(currentUrl);
     const filename = makeFilename(pid, col, supplierPrefix);
@@ -688,15 +708,13 @@ export async function tier2Fix(
       return { pid, tier: 2, status: 'cascade', cascade: true };
     }
     const range = `'${deps.sheetName}'!${columnToLetter(colIdx)}${brEntry.rowIndex0 + 1}`;
-    if (!deps.args.dryRun) {
-      try {
-        await deps.writeUpdatesFn(deps.sheetsClient, deps.spreadsheetId, [
-          { range, values: [[newUrl]] },
-        ]);
-      } catch (err) {
-        logger.warn(`[fix-image-pollution] tier2 writeUpdates failed for ${pid}/${col}: ${err}`);
-        return { pid, tier: 2, status: 'cascade', cascade: true };
-      }
+    try {
+      await deps.writeUpdatesFn(deps.sheetsClient, deps.spreadsheetId, [
+        { range, values: [[newUrl]] },
+      ]);
+    } catch (err) {
+      logger.warn(`[fix-image-pollution] tier2 writeUpdates failed for ${pid}/${col}: ${err}`);
+      return { pid, tier: 2, status: 'cascade', cascade: true };
     }
     await deps.appendTrailRowFn({
       timestamp_iso: new Date().toISOString(),
