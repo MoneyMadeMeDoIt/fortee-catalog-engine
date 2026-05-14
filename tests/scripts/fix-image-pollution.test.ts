@@ -331,9 +331,10 @@ describe('runImagePollutionFix — Task 1 (orchestrator + Tier 1)', () => {
 
     await runImagePollutionFix(deps);
 
-    // supplierCanonicalFn called exactly once — for pidB only (pidA skipped)
+    // supplierCanonicalFn called exactly once — for pidB only (pidA skipped).
+    // Phase 17 17-02: now also threads the BR row's colorName as 2nd arg.
     expect(supplierCanonicalFn).toHaveBeenCalledTimes(1);
-    expect(supplierCanonicalFn).toHaveBeenCalledWith('pidB');
+    expect(supplierCanonicalFn).toHaveBeenCalledWith('pidB', expect.any(String));
   });
 
   it('Test 4 (R3 Tier 1 happy — FrontImage replacement, D-17 verifier skipped)', async () => {
@@ -1417,6 +1418,53 @@ describe('17-08 B-4 billing hard limit', () => {
     const json = JSON.parse(summaryEntry![1]);
     expect(json.status).toBe('BILLING_LIMIT_HIT');
     expect(json.tier2_budget_exhausted_count).toBe(3);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Phase 17 17-02 — colorName propagation
+// (Tier 1 supplier fetch now passes the BR row's colorName cell as a 2nd arg
+// so per-color URL matching can occur.)
+// ---------------------------------------------------------------------------
+
+describe('17-02 colorName propagation', () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it('Tier 1 forwards the BR row colorName cell to supplierCanonicalFn', async () => {
+    const pollutedRows: PollutionRow[] = [
+      makePollutionRow({
+        pid: 'S05610',
+        pollution_class: 'content_mismatch',
+        affected_columns: ['FrontImage'],
+        affected_drive_urls: [driveUrl('FRONT_OLD_ID_AAAAAAAAAAAAA')],
+      }),
+    ];
+    const readRawRowsFn = vi.fn().mockResolvedValue([
+      BR_HEADER,
+      makeBrRow({
+        productId: 'S05610',
+        colorName: 'ROYAL',
+        FrontImage: driveUrl('FRONT_OLD_ID_AAAAAAAAAAAAA'),
+      }),
+    ]);
+    const supplierCanonicalFn = vi.fn().mockResolvedValue({
+      url: 'https://www.ssactivewear.com/Style/3001_ROYAL_fl.jpg',
+      source: 'ss',
+      styleId: 3001,
+    });
+
+    const deps = makeDeps({
+      auditRowsOverride: pollutedRows as never,
+      readRawRowsFn: readRawRowsFn as never,
+      supplierCanonicalFn: supplierCanonicalFn as never,
+    } as never);
+    await runImagePollutionFix(deps);
+
+    expect(supplierCanonicalFn).toHaveBeenCalled();
+    for (const call of supplierCanonicalFn.mock.calls) {
+      expect(call[0]).toBe('S05610');
+      expect(call[1]).toBe('ROYAL');
+    }
   });
 });
 

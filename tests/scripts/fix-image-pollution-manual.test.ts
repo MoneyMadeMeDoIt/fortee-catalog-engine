@@ -959,3 +959,79 @@ describe('handleManualRow direct calls', () => {
     expect(deps.appendTrailRowFn).not.toHaveBeenCalled();
   });
 });
+
+// ---------------------------------------------------------------------------
+// Phase 17 17-02 — colorName propagation
+// (handleReplace's reference-front resolution now passes the BR row's
+// colorName cell to supplierCanonicalFn so per-color matching can occur.)
+// ---------------------------------------------------------------------------
+
+describe('17-02 colorName propagation', () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it('handleReplace forwards the BR row colorName cell to supplierCanonicalFn', async () => {
+    // Trigger the FrontImage branch of handleReplace which calls
+    // supplierCanonicalFn(pid, colorName). The downloadFromDriveFn for
+    // candidate fails so the path returns 'skipped' BEFORE verifier/upload,
+    // letting us assert only the supplierCanonicalFn call shape.
+    const queueRow: ManualQueueRow = {
+      pid: 'L00660',
+      pollution_class: 'content_mismatch',
+      affected_columns: ['FrontImage'],
+      current_drive_urls: [driveUrl('FRONT_OLD_ID_AAAAAAAAAAAA')],
+      front_image_screenshot_link: '',
+      suggested_action: 'replace',
+    };
+    const supplierCanonicalFn = vi.fn().mockResolvedValue({
+      url: driveUrl('CANONICAL_ID_DDDDDDDDDDDDD'),
+      source: 'csw',
+      styleId: 'l00660-handle',
+    });
+    const downloadFromDriveFn = vi
+      .fn()
+      // First call: candidate (operator URL) — succeed
+      .mockResolvedValueOnce(Buffer.from('candidate'))
+      // Second call: canonical front (Drive URL extracted from canonical.url) — succeed
+      .mockResolvedValueOnce(Buffer.from('canonical'));
+    const verifySameProductFn = vi
+      .fn()
+      .mockResolvedValue({ match: true, reason: 'same product' });
+
+    const deps = makeDeps({
+      promptFn: scriptedPrompt(['r', driveUrl('NEW_REPLACE_ID_EEEEEEEEE')]),
+      supplierCanonicalFn: supplierCanonicalFn as never,
+      downloadFromDriveFn: downloadFromDriveFn as never,
+      verifySameProductFn: verifySameProductFn as never,
+    });
+
+    const brIndex = {
+      headerMap: BR_HEADER.reduce(
+        (acc, h, i) => {
+          acc[h] = i;
+          return acc;
+        },
+        {} as Record<string, number>,
+      ),
+      rowByPid: new Map([
+        [
+          'L00660',
+          {
+            rowIndex0: 1,
+            row: makeBrRow({
+              productId: 'L00660',
+              colorName: 'Heather Gold Melange',
+            }),
+          },
+        ],
+      ]),
+    };
+
+    await handleManualRow(queueRow, brIndex, deps, 'test-run');
+
+    expect(supplierCanonicalFn).toHaveBeenCalled();
+    for (const call of supplierCanonicalFn.mock.calls) {
+      expect(call[0]).toBe('L00660');
+      expect(call[1]).toBe('Heather Gold Melange');
+    }
+  });
+});

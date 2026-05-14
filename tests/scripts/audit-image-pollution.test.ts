@@ -533,3 +533,41 @@ describe('runImagePollutionAudit — Task 2 (Passes 2 + 3 + summary)', () => {
     consoleSpy.mockRestore();
   });
 });
+
+// ---------------------------------------------------------------------------
+// Phase 17 17-02 — colorName propagation
+// (Pass 2 supplier-canonical resolution now passes the BR row's colorName
+// cell as a second positional argument so per-color URL matching can occur.)
+// ---------------------------------------------------------------------------
+
+describe('17-02 colorName propagation', () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it('audit Pass 2 forwards the BR row colorName cell to supplierCanonicalFn', async () => {
+    const rows = [
+      HEADER_ROW,
+      makeRawRow({
+        productId: 'S05610',
+        colorName: 'ROYAL',
+        FrontImage: driveUrl('S05610FrontFFFFFFFFFFFFFFF'),
+      }),
+    ];
+    const supplierCanonicalFn = vi.fn().mockResolvedValue({
+      url: 'https://www.ssactivewear.com/Style/3001_ROYAL_fl.jpg',
+      source: 'ss',
+      styleId: 3001,
+    });
+    const deps = makeDeps({
+      readRawRowsFn: vi.fn().mockResolvedValue(rows) as never,
+      supplierCanonicalFn: supplierCanonicalFn as never,
+    });
+    await runImagePollutionAudit(deps);
+
+    expect(supplierCanonicalFn).toHaveBeenCalled();
+    // Every call must carry colorName as the 2nd positional argument.
+    for (const call of supplierCanonicalFn.mock.calls) {
+      expect(call[0]).toBe('S05610');
+      expect(call[1]).toBe('ROYAL');
+    }
+  });
+});
