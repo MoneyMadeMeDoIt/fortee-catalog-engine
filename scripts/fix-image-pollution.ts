@@ -36,6 +36,44 @@ import type { sheets_v4, drive_v3 } from 'googleapis';
 import type { CategoryGroup } from '../src/shopify/types.js';
 
 // ---------------------------------------------------------------------------
+// Phase 17 17-08 (B-4): OpenAI billing-hard-limit short-circuit for Tier 2.
+//
+// Module-scope flag set ONCE when the first billing_hard_limit_reached error
+// is detected; subsequent pids in the same Tier 2 loop short-circuit without
+// calling generateGarmentView. Resume safety is preserved by Task 1's
+// loadProcessedPids (TIER2_BUDGET_EXHAUSTED is non-terminal).
+// ---------------------------------------------------------------------------
+
+let __billingExhausted = false;
+
+/**
+ * Test-only helper to reset the module-scope billing-exhausted flag between
+ * test runs (the flag is process-global, so leak across `beforeEach` blocks
+ * without an explicit reset).
+ */
+export function __resetBillingExhaustedForTest(): void {
+  __billingExhausted = false;
+}
+
+/**
+ * Returns true if `err` is the OpenAI typed billing-hard-limit error.
+ * Primary check: `err.code === 'billing_hard_limit_reached'`. Fallback for
+ * older SDK versions: substring match on err.message.
+ */
+function isBillingHardLimit(err: unknown): boolean {
+  if (!(err instanceof OpenAI.BadRequestError)) return false;
+  const code = (err as unknown as { code?: string }).code;
+  if (code === 'billing_hard_limit_reached') return true;
+  if (
+    typeof err.message === 'string' &&
+    err.message.includes('Billing hard limit has been reached')
+  ) {
+    return true;
+  }
+  return false;
+}
+
+// ---------------------------------------------------------------------------
 // Public types
 // ---------------------------------------------------------------------------
 
@@ -109,7 +147,9 @@ export interface RunImagePollutionFixResult {
   manualQueueSize: number;
   manualQueuePath: string;
   summaryPath: string;
-  status: 'OK' | 'OK-TIER1-ONLY' | 'BLOCKED-QUEUE-OVERFLOW';
+  status: 'OK' | 'OK-TIER1-ONLY' | 'BLOCKED-QUEUE-OVERFLOW' | 'BILLING_LIMIT_HIT';
+  /** Count of pids that were short-circuited because OpenAI billing hard limit was hit. */
+  tier2BudgetExhausted: number;
 }
 
 // ---------------------------------------------------------------------------
@@ -549,6 +589,13 @@ export async function tier2Fix(
         productName,
       );
     } catch (err) {
+      // 17-08 (B-4): billing-hard-limit must propagate to the outer Tier 2
+      // loop so the orchestrator can flip the __billingExhausted flag and
+      // short-circuit the remaining pids. Other errors are swallowed here
+      // (existing Phase 16 behavior) and the pid is marked verifier_rejected.
+      if (isBillingHardLimit(err)) {
+        throw err;
+      }
       logger.warn(`[fix-image-pollution] generateGarmentView crashed for ${pid}/${view}: ${err}`);
       regen = null;
     }
@@ -811,6 +858,8 @@ export async function runImagePollutionFix(
   //    pollution; pids with only FrontImage or Model* pollution cascade to Tier 3).
   const costTracker = new PermissiveCostTracker();
   const tier2Results: TierResult[] = [];
+  // 17-08 (B-4): count pids short-circuited by the billing-hard-limit fast path.
+  let tier2BudgetExhausted = 0;
   for (const pid of cascadedToTier2) {
     const polluted = pollutedByPid.get(pid);
     if (!polluted) {
@@ -824,10 +873,52 @@ export async function runImagePollutionFix(
       tier2Results.push({ pid, tier: 2, status: 'skipped', cascade: true });
       continue;
     }
+
+    // 17-08 fast-path: if the billing-hard-limit flag was tripped earlier in
+    // this loop, skip the API call entirely and emit a sentinel trail row.
+    if (__billingExhausted) {
+      await deps.appendTrailRowFn({
+        timestamp_iso: new Date().toISOString(),
+        pid,
+        operation: 'TIER2_BUDGET_EXHAUSTED',
+        column_or_path: '',
+        old_value: '',
+        new_value: '',
+        tier: 2,
+        run_id: runId,
+        notes: 'OpenAI billing hard limit reached \u2014 Tier 2 aborted',
+      });
+      tier2Results.push({ pid, tier: 2, status: 'verifier_rejected', cascade: true });
+      tier2BudgetExhausted++;
+      continue;
+    }
+
     try {
       const result = await tier2Fix(pid, polluted, brIndex, deps, runId, costTracker);
       tier2Results.push(result);
     } catch (err) {
+      if (isBillingHardLimit(err)) {
+        // 17-08 first-detection: flip the flag, log ONCE, emit sentinel trail row.
+        logger.warn(
+          '[fix-image-pollution] OpenAI billing hard limit \u2014 aborting Tier 2',
+        );
+        __billingExhausted = true;
+        await deps.appendTrailRowFn({
+          timestamp_iso: new Date().toISOString(),
+          pid,
+          operation: 'TIER2_BUDGET_EXHAUSTED',
+          column_or_path: '',
+          old_value: '',
+          new_value: '',
+          tier: 2,
+          run_id: runId,
+          notes:
+            'OpenAI billing hard limit reached \u2014 Tier 2 aborted (first detection)',
+        });
+        tier2Results.push({ pid, tier: 2, status: 'verifier_rejected', cascade: true });
+        tier2BudgetExhausted++;
+        continue;
+      }
       logger.warn(`[fix-image-pollution] Tier 2 crashed for ${pid}: ${err}`);
       tier2Results.push({ pid, tier: 2, status: 'verifier_rejected', cascade: true });
     }
@@ -850,11 +941,16 @@ export async function runImagePollutionFix(
   // In --tier1-only mode the manual queue is expected to be huge (the whole
   // point is to defer Tier 2/3); R6 does not apply.
   const manualQueueSize = tier3Pids.length;
-  const status: 'OK' | 'OK-TIER1-ONLY' | 'BLOCKED-QUEUE-OVERFLOW' = deps.args.tier1Only
-    ? 'OK-TIER1-ONLY'
-    : manualQueueSize > 20
-      ? 'BLOCKED-QUEUE-OVERFLOW'
-      : 'OK';
+  // 17-08 (B-4): BILLING_LIMIT_HIT takes precedence over R6 overflow because
+  // the overflow is an artifact of the truncated Tier 2 — the operator's
+  // remediation is 'top up billing and re-run', not 'broaden Tier 1/2 coverage'.
+  const status: 'OK' | 'OK-TIER1-ONLY' | 'BLOCKED-QUEUE-OVERFLOW' | 'BILLING_LIMIT_HIT' = __billingExhausted
+    ? 'BILLING_LIMIT_HIT'
+    : deps.args.tier1Only
+      ? 'OK-TIER1-ONLY'
+      : manualQueueSize > 20
+        ? 'BLOCKED-QUEUE-OVERFLOW'
+        : 'OK';
 
   // 9. Summary JSON.
   const summary = {
@@ -867,6 +963,8 @@ export async function runImagePollutionFix(
     total_cost_usd_estimate: Number(costTracker.spent.toFixed(4)),
     status,
     processed_pid_count: todoRows.length,
+    // 17-08 (B-4): always emitted, zero when no billing hit occurred.
+    tier2_budget_exhausted_count: tier2BudgetExhausted,
   };
   try {
     if (!existsSync('tmp')) mkdirSync('tmp', { recursive: true });
@@ -900,6 +998,7 @@ export async function runImagePollutionFix(
     manualQueuePath,
     summaryPath,
     status,
+    tier2BudgetExhausted,
   };
 }
 

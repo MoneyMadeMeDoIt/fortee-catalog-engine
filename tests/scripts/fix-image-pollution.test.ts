@@ -38,9 +38,22 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Mock OpenAI so importing the script never constructs a real client.
+// Phase 17 17-08 (B-4): expose BadRequestError so tests can throw the typed
+// error that the production code checks for via `instanceof`.
 vi.mock('openai', () => {
+  class BadRequestError extends Error {
+    code?: string;
+    status: number = 400;
+    type: string = 'invalid_request_error';
+    constructor(message: string, code?: string) {
+      super(message);
+      this.code = code;
+      this.name = 'BadRequestError';
+    }
+  }
   class OpenAI {
     chat = { completions: { create: vi.fn() } };
+    static BadRequestError = BadRequestError;
   }
   return { default: OpenAI };
 });
@@ -1037,6 +1050,373 @@ describe('runImagePollutionFix — Task 2 (Tier 2 + R6 gate + queue + summary)',
       expect(json).toHaveProperty(key);
     }
     expect(['OK', 'BLOCKED-QUEUE-OVERFLOW']).toContain(json.status);
+  });
+});
+
+
+// ---------------------------------------------------------------------------
+// 17-08 (B-4) tests — OpenAI billing-hard-limit short-circuit in Tier 2 loop.
+//
+// Coverage:
+//   1. First-pid billing hit → set __billingExhausted, log ONE warn,
+//      TIER2_BUDGET_EXHAUSTED rows for each pid in cascade, status
+//      BILLING_LIMIT_HIT, generateGarmentViewFn called exactly once.
+//   2. Message-substring fallback for older SDK versions (code missing).
+//   3. Non-billing OpenAI errors do NOT short-circuit (content_policy_violation).
+//   4. Generic Error does NOT short-circuit.
+//   5. Resume safety — TIER2_BUDGET_EXHAUSTED rows do NOT skip pids on re-run.
+//   6. Summary JSON includes status='BILLING_LIMIT_HIT' and
+//      tier2_budget_exhausted_count.
+// ---------------------------------------------------------------------------
+
+describe('17-08 B-4 billing hard limit', () => {
+  beforeEach(async () => {
+    vi.clearAllMocks();
+    (await getFsWrites()).clear();
+    // Reset the module-scope __billingExhausted flag between tests.
+    const { __resetBillingExhaustedForTest } = await import(
+      '../../scripts/fix-image-pollution.js'
+    );
+    __resetBillingExhaustedForTest();
+  });
+
+  function makeThreePidsCascadingToTier2(): PollutionRow[] {
+    // All three pids have BackImage pollution → cascade to Tier 2 after Tier 1
+    // returns null canonical.
+    return ['L00001', 'L00002', 'L00003'].map((pid) =>
+      makePollutionRow({
+        pid,
+        pollution_class: 'shape_drift',
+        affected_columns: ['BackImage'],
+        affected_drive_urls: [driveUrl(`${pid}OLD000000000000000000`.slice(0, 25))],
+        recommended_fix_tier: 2,
+      }),
+    );
+  }
+
+  function makeThreeRowsBr(): string[][] {
+    return [
+      BR_HEADER,
+      ...['L00001', 'L00002', 'L00003'].map((pid) =>
+        makeBrRow({
+          productId: pid,
+          FrontImage: driveUrl(`FRONT_${pid}_AAAAAAAAAAAA`.slice(0, 30)),
+          BackImage: driveUrl(`${pid}OLD000000000000000000`.slice(0, 25)),
+        }),
+      ),
+    ];
+  }
+
+  it('Test 1 (first pid hits billing_hard_limit_reached → short-circuits rest)', async () => {
+    const OpenAI = (await import('openai')).default as unknown as {
+      BadRequestError: new (msg: string, code?: string) => Error & {
+        code?: string;
+      };
+    };
+
+    const pollutedRows = makeThreePidsCascadingToTier2();
+    const brRows = makeThreeRowsBr();
+    const supplierCanonicalFn = vi.fn().mockResolvedValue(null);
+    // First call throws billing_hard_limit_reached. Subsequent pids would NOT
+    // call generateGarmentViewFn — they short-circuit through the flag check.
+    const generateGarmentViewFn = vi.fn().mockImplementation(async () => {
+      throw new OpenAI.BadRequestError(
+        'Billing hard limit has been reached for this account',
+        'billing_hard_limit_reached',
+      );
+    }) as never;
+
+    const { logger } = await import('../../src/lib/logger.js');
+    const warnSpy = vi.spyOn(logger, 'warn').mockImplementation((() => undefined) as never);
+
+    const deps = makeDeps({
+      auditRowsOverride: pollutedRows as never,
+      readRawRowsFn: vi.fn().mockResolvedValue(brRows) as never,
+      supplierCanonicalFn: supplierCanonicalFn as never,
+      generateGarmentViewFn,
+    } as never);
+
+    const result = await runImagePollutionFix(deps);
+
+    // (a) generateGarmentViewFn called exactly ONCE — pid 1 only.
+    expect((generateGarmentViewFn as ReturnType<typeof vi.fn>).mock.calls.length).toBe(1);
+
+    // (b) logger.warn fired with the special billing message at least once.
+    const billingWarn = (warnSpy.mock.calls as unknown[][]).find(
+      (c) =>
+        typeof c[0] === 'string' && (c[0] as string).includes('OpenAI billing hard limit'),
+    );
+    expect(billingWarn).toBeTruthy();
+
+    // (c) Three TIER2_BUDGET_EXHAUSTED rows — one per pid (1 detection + 2 short-circuits).
+    const trail = (deps.appendTrailRowFn as ReturnType<typeof vi.fn>).mock.calls.map(
+      (c) => c[0],
+    );
+    const budgetRows = trail.filter(
+      (r) => r.operation === 'TIER2_BUDGET_EXHAUSTED',
+    );
+    expect(budgetRows.length).toBe(3);
+    // Each row tagged tier=2.
+    for (const r of budgetRows) {
+      expect(r.tier).toBe(2);
+    }
+    // Each row references its own pid (no duplication).
+    const pidSet = new Set(budgetRows.map((r) => r.pid));
+    expect(pidSet.has('L00001')).toBe(true);
+    expect(pidSet.has('L00002')).toBe(true);
+    expect(pidSet.has('L00003')).toBe(true);
+
+    // (d) Status in JSON summary is BILLING_LIMIT_HIT.
+    const writes = await getFsWrites();
+    const summaryEntry = [...writes.entries()].find(([k]) =>
+      k.includes('image-pollution-fix-summary-'),
+    );
+    expect(summaryEntry).toBeTruthy();
+    const summaryJson = JSON.parse(summaryEntry![1]);
+    expect(summaryJson.status).toBe('BILLING_LIMIT_HIT');
+
+    // (e) Return value reflects BILLING_LIMIT_HIT (no exit-2 since R6 doesn't apply).
+    expect(result.status).toBe('BILLING_LIMIT_HIT');
+
+    warnSpy.mockRestore();
+  });
+
+  it('Test 2 (message-substring fallback when code is undefined)', async () => {
+    const OpenAI = (await import('openai')).default as unknown as {
+      BadRequestError: new (msg: string, code?: string) => Error & {
+        code?: string;
+      };
+    };
+
+    const pollutedRows = makeThreePidsCascadingToTier2();
+    const brRows = makeThreeRowsBr();
+    const supplierCanonicalFn = vi.fn().mockResolvedValue(null);
+    // Throw with NO code (code === undefined) but message-substring match.
+    const generateGarmentViewFn = vi.fn().mockImplementation(async () => {
+      throw new OpenAI.BadRequestError(
+        'Billing hard limit has been reached for this account',
+        // undefined code → fallback path
+      );
+    }) as never;
+
+    const deps = makeDeps({
+      auditRowsOverride: pollutedRows as never,
+      readRawRowsFn: vi.fn().mockResolvedValue(brRows) as never,
+      supplierCanonicalFn: supplierCanonicalFn as never,
+      generateGarmentViewFn,
+    } as never);
+
+    const result = await runImagePollutionFix(deps);
+
+    expect((generateGarmentViewFn as ReturnType<typeof vi.fn>).mock.calls.length).toBe(1);
+    expect(result.status).toBe('BILLING_LIMIT_HIT');
+
+    const trail = (deps.appendTrailRowFn as ReturnType<typeof vi.fn>).mock.calls.map(
+      (c) => c[0],
+    );
+    const budgetRows = trail.filter(
+      (r) => r.operation === 'TIER2_BUDGET_EXHAUSTED',
+    );
+    expect(budgetRows.length).toBe(3);
+  });
+
+  it('Test 3 (non-billing OpenAI error: content_policy_violation does NOT short-circuit)', async () => {
+    const OpenAI = (await import('openai')).default as unknown as {
+      BadRequestError: new (msg: string, code?: string) => Error & {
+        code?: string;
+      };
+    };
+
+    const pollutedRows = makeThreePidsCascadingToTier2();
+    const brRows = makeThreeRowsBr();
+    const supplierCanonicalFn = vi.fn().mockResolvedValue(null);
+    // First call throws content_policy. Subsequent pids STILL get a call.
+    let callCount = 0;
+    const generateGarmentViewFn = vi.fn().mockImplementation(async () => {
+      callCount++;
+      if (callCount === 1) {
+        throw new OpenAI.BadRequestError(
+          'Content policy violation',
+          'content_policy_violation',
+        );
+      }
+      // Pids 2 and 3 succeed normally.
+      return {
+        buffer: Buffer.from('regen-back'),
+        score: 80,
+        verdict: 'pass',
+        totalCost: 0.04,
+        callCount: 1,
+        usedRetry: false,
+        hueDrift: 0,
+      };
+    }) as never;
+
+    const deps = makeDeps({
+      auditRowsOverride: pollutedRows as never,
+      readRawRowsFn: vi.fn().mockResolvedValue(brRows) as never,
+      supplierCanonicalFn: supplierCanonicalFn as never,
+      generateGarmentViewFn,
+    } as never);
+
+    const result = await runImagePollutionFix(deps);
+
+    // All 3 pids got a generateGarmentView call (no short-circuit).
+    expect((generateGarmentViewFn as ReturnType<typeof vi.fn>).mock.calls.length).toBe(3);
+
+    // No TIER2_BUDGET_EXHAUSTED rows.
+    const trail = (deps.appendTrailRowFn as ReturnType<typeof vi.fn>).mock.calls.map(
+      (c) => c[0],
+    );
+    const budgetRows = trail.filter(
+      (r) => r.operation === 'TIER2_BUDGET_EXHAUSTED',
+    );
+    expect(budgetRows.length).toBe(0);
+
+    // Status is OK (no billing limit, manual queue includes pid 1 only).
+    expect(result.status).not.toBe('BILLING_LIMIT_HIT');
+  });
+
+  it('Test 4 (generic Error does NOT short-circuit)', async () => {
+    const pollutedRows = makeThreePidsCascadingToTier2();
+    const brRows = makeThreeRowsBr();
+    const supplierCanonicalFn = vi.fn().mockResolvedValue(null);
+    let callCount = 0;
+    const generateGarmentViewFn = vi.fn().mockImplementation(async () => {
+      callCount++;
+      if (callCount === 1) {
+        throw new Error('some random failure');
+      }
+      return {
+        buffer: Buffer.from('regen-back'),
+        score: 80,
+        verdict: 'pass',
+        totalCost: 0.04,
+        callCount: 1,
+        usedRetry: false,
+        hueDrift: 0,
+      };
+    }) as never;
+
+    const deps = makeDeps({
+      auditRowsOverride: pollutedRows as never,
+      readRawRowsFn: vi.fn().mockResolvedValue(brRows) as never,
+      supplierCanonicalFn: supplierCanonicalFn as never,
+      generateGarmentViewFn,
+    } as never);
+
+    const result = await runImagePollutionFix(deps);
+
+    // All 3 pids got a call (generic errors don't short-circuit).
+    expect((generateGarmentViewFn as ReturnType<typeof vi.fn>).mock.calls.length).toBe(3);
+
+    const trail = (deps.appendTrailRowFn as ReturnType<typeof vi.fn>).mock.calls.map(
+      (c) => c[0],
+    );
+    const budgetRows = trail.filter(
+      (r) => r.operation === 'TIER2_BUDGET_EXHAUSTED',
+    );
+    expect(budgetRows.length).toBe(0);
+    expect(result.status).not.toBe('BILLING_LIMIT_HIT');
+  });
+
+  it('Test 5 (resume safety: TIER2_BUDGET_EXHAUSTED is non-terminal, pids retried on re-run)', async () => {
+    // Simulate run #2 after a previous run hit billing limit:
+    // loadProcessedPidsFn returns an EMPTY set (the trail had only
+    // TIER2_BUDGET_EXHAUSTED rows for these pids — non-terminal — so they were
+    // excluded from the processed set per 17-08 Task 1).
+    const pollutedRows: PollutionRow[] = [
+      makePollutionRow({
+        pid: 'pidA',
+        pollution_class: 'shape_drift',
+        affected_columns: ['BackImage'],
+        affected_drive_urls: [driveUrl('pidAOLD0000000000000000')],
+        recommended_fix_tier: 2,
+      }),
+      makePollutionRow({
+        pid: 'pidB',
+        pollution_class: 'shape_drift',
+        affected_columns: ['BackImage'],
+        affected_drive_urls: [driveUrl('pidBOLD0000000000000000')],
+        recommended_fix_tier: 2,
+      }),
+    ];
+    const brRows = [
+      BR_HEADER,
+      makeBrRow({
+        productId: 'pidA',
+        FrontImage: driveUrl('FRONT_pidA00000000000000'),
+        BackImage: driveUrl('pidAOLD0000000000000000'),
+      }),
+      makeBrRow({
+        productId: 'pidB',
+        FrontImage: driveUrl('FRONT_pidB00000000000000'),
+        BackImage: driveUrl('pidBOLD0000000000000000'),
+      }),
+    ];
+    const supplierCanonicalFn = vi.fn().mockResolvedValue(null);
+    const generateGarmentViewFn = vi.fn().mockResolvedValue({
+      buffer: Buffer.from('regen-back'),
+      score: 80,
+      verdict: 'pass',
+      totalCost: 0.04,
+      callCount: 1,
+      usedRetry: false,
+      hueDrift: 0,
+    } as never) as never;
+    // Critical: loadProcessedPidsFn returns empty Set — TIER2_BUDGET_EXHAUSTED
+    // rows from the previous run were filtered out by 17-08 Task 1's
+    // loadProcessedPids logic.
+    const loadProcessedPidsFn = vi.fn().mockResolvedValue(new Set<string>());
+
+    const deps = makeDeps({
+      auditRowsOverride: pollutedRows as never,
+      readRawRowsFn: vi.fn().mockResolvedValue(brRows) as never,
+      supplierCanonicalFn: supplierCanonicalFn as never,
+      generateGarmentViewFn,
+      loadProcessedPidsFn: loadProcessedPidsFn as never,
+    } as never);
+
+    await runImagePollutionFix(deps);
+
+    // BOTH pids called generateGarmentView (neither skipped).
+    expect((generateGarmentViewFn as ReturnType<typeof vi.fn>).mock.calls.length).toBe(2);
+  });
+
+  it('Test 6 (summary JSON has tier2_budget_exhausted_count + BILLING_LIMIT_HIT)', async () => {
+    const OpenAI = (await import('openai')).default as unknown as {
+      BadRequestError: new (msg: string, code?: string) => Error & {
+        code?: string;
+      };
+    };
+
+    const pollutedRows = makeThreePidsCascadingToTier2();
+    const brRows = makeThreeRowsBr();
+    const supplierCanonicalFn = vi.fn().mockResolvedValue(null);
+    const generateGarmentViewFn = vi.fn().mockImplementation(async () => {
+      throw new OpenAI.BadRequestError(
+        'Billing hard limit has been reached for this account',
+        'billing_hard_limit_reached',
+      );
+    }) as never;
+
+    const deps = makeDeps({
+      auditRowsOverride: pollutedRows as never,
+      readRawRowsFn: vi.fn().mockResolvedValue(brRows) as never,
+      supplierCanonicalFn: supplierCanonicalFn as never,
+      generateGarmentViewFn,
+    } as never);
+
+    await runImagePollutionFix(deps);
+
+    const writes = await getFsWrites();
+    const summaryEntry = [...writes.entries()].find(([k]) =>
+      k.includes('image-pollution-fix-summary-'),
+    );
+    expect(summaryEntry).toBeTruthy();
+    const json = JSON.parse(summaryEntry![1]);
+    expect(json.status).toBe('BILLING_LIMIT_HIT');
+    expect(json.tier2_budget_exhausted_count).toBe(3);
   });
 });
 
