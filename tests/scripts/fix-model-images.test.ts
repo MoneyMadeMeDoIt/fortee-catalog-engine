@@ -598,7 +598,7 @@ describe('fixModelImage', () => {
     const row = makeBrRow({
       productId: 'S05610',
       colorName: 'ROYAL',
-      FrontImage: driveUrl('FRONT_ID_XYZ'),
+      FrontImage: driveUrl('FRONT_ID_XYZ12345678901234567890'),
       ModelFrontImage: driveUrl(SAME),
     });
     const brEntry = { rowIndex0: 1, row };

@@ -87,8 +87,12 @@ export interface TrailRow {
   column_or_path: string;
   old_value: string;
   new_value: string;
-  /** 0 for audit-side events; 1/2/3 for fix-side events. */
-  tier: 0 | 1 | 2 | 3;
+  /**
+   * 0 for audit-side events; 1/2/3 for Phase 16 fix-side events;
+   * 4 for Phase 17 17-03 Model* rebuild ops (separates them from Phase 16
+   * tier 1/2/3 in post-mortem queries — see D-17-01).
+   */
+  tier: 0 | 1 | 2 | 3 | 4;
   run_id: string;
   notes: string;
 }
