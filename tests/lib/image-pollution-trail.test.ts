@@ -336,3 +336,78 @@ describe('TrailOperation — discriminated union coverage', () => {
     }
   });
 });
+
+// ---------------------------------------------------------------------------
+// 17-08 (B-4): TIER2_BUDGET_EXHAUSTED — OpenAI billing hard-limit sentinel
+//
+// New TrailOperation variant emitted by scripts/fix-image-pollution.ts Tier 2
+// when the OpenAI billing hard limit is hit. NOT a terminal op — the pid must
+// stay retry-eligible on the next run after the operator tops up billing.
+// See RESEARCH Open Question 6.
+// ---------------------------------------------------------------------------
+
+describe('17-08 TIER2_BUDGET_EXHAUSTED', () => {
+  it('accepts TIER2_BUDGET_EXHAUSTED as a TrailOperation (compile-time)', async () => {
+    const { appendTrailRow } = await import('../../src/lib/image-pollution-trail.js');
+    type Op = import('../../src/lib/image-pollution-trail.js').TrailOperation;
+    const op: Op = 'TIER2_BUDGET_EXHAUSTED';
+    expect(op).toBe('TIER2_BUDGET_EXHAUSTED');
+
+    const { existsSync, openSync } = await import('fs');
+    (vi.mocked(existsSync) as ReturnType<typeof vi.fn>).mockReturnValue(true);
+    (vi.mocked(openSync) as ReturnType<typeof vi.fn>).mockReturnValue(60);
+
+    await expect(
+      appendTrailRow(makeRow({ operation: 'TIER2_BUDGET_EXHAUSTED' })),
+    ).resolves.toBeUndefined();
+  });
+
+  it('loadProcessedPids does NOT treat TIER2_BUDGET_EXHAUSTED as terminal', async () => {
+    const { existsSync, readFileSync } = await import('fs');
+    (vi.mocked(existsSync) as ReturnType<typeof vi.fn>).mockReturnValue(true);
+
+    const header =
+      'timestamp_iso\tpid\toperation\tcolumn_or_path\told_value\tnew_value\ttier\trun_id\tnotes';
+    const body = [
+      'T1\tpidA\tBR_WRITE\tFrontImage\told\tnew\t1\tR\tnote',
+      'T2\tpidB\tTIER2_BUDGET_EXHAUSTED\t\t\t\t2\tR\tbilling hit',
+    ].join('\n');
+    (vi.mocked(readFileSync) as ReturnType<typeof vi.fn>).mockReturnValue(
+      header + '\n' + body + '\n',
+    );
+
+    const { loadProcessedPids } = await import('../../src/lib/image-pollution-trail.js');
+    const result = await loadProcessedPids();
+
+    expect(result.has('pidA')).toBe(true);
+    expect(result.has('pidB')).toBe(false);
+    expect(result.size).toBe(1);
+  });
+
+  it('appendTrailRow writes TIER2_BUDGET_EXHAUSTED row in 9-column TSV format', async () => {
+    const { existsSync, appendFileSync, openSync } = await import('fs');
+    (vi.mocked(existsSync) as ReturnType<typeof vi.fn>).mockReturnValue(true);
+    (vi.mocked(openSync) as ReturnType<typeof vi.fn>).mockReturnValue(61);
+
+    const { appendTrailRow } = await import('../../src/lib/image-pollution-trail.js');
+    await appendTrailRow(
+      makeRow({
+        operation: 'TIER2_BUDGET_EXHAUSTED',
+        column_or_path: '',
+        old_value: '',
+        new_value: '',
+        tier: 2,
+        notes: 'OpenAI billing hard limit reached — Tier 2 aborted',
+      }),
+    );
+
+    expect(vi.mocked(appendFileSync)).toHaveBeenCalledTimes(1);
+    const [, content] = vi.mocked(appendFileSync).mock.calls[0];
+    const text = content as string;
+    const fields = text.replace(/\n$/, '').split('\t');
+    expect(fields).toHaveLength(9);
+    expect(fields[2]).toBe('TIER2_BUDGET_EXHAUSTED');
+    expect(fields[6]).toBe('2');
+    expect(fields[8]).toBe('OpenAI billing hard limit reached — Tier 2 aborted');
+  });
+});

@@ -56,8 +56,14 @@ function getTrailPath(): string {
 }
 
 /**
- * The 9 operation kinds logged across audit (Pass 1/2/3) and fix (Tier 1/2/3).
+ * The 10 operation kinds logged across audit (Pass 1/2/3) and fix (Tier 1/2/3).
  * Discriminated union — exhaustive at compile time.
+ *
+ * `TIER2_BUDGET_EXHAUSTED` (Phase 17 / 17-08, B-4) is a sentinel emitted when
+ * the OpenAI billing hard limit aborts Tier 2 mid-loop. It is NOT a terminal
+ * op — `loadProcessedPids` deliberately excludes it from the terminal set so
+ * the affected pid stays retry-eligible on the next run after the operator
+ * tops up billing (RESEARCH Open Question 6).
  */
 export type TrailOperation =
   | 'BR_WRITE'
@@ -68,7 +74,8 @@ export type TrailOperation =
   | 'VERIFIER_PASS'
   | 'VERIFIER_FAIL'
   | 'MANUAL_SKIP'
-  | 'MANUAL_ACCEPT';
+  | 'MANUAL_ACCEPT'
+  | 'TIER2_BUDGET_EXHAUSTED';
 
 /** One row of the image-pollution trail TSV. */
 export interface TrailRow {
