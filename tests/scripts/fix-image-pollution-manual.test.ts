@@ -30,6 +30,7 @@ import {
   type RunManualFixDeps,
   type ManualQueueRow,
 } from '../../scripts/fix-image-pollution-manual.js';
+import { logger } from '../../src/lib/logger.js';
 
 // Mock OpenAI so importing the script never constructs a real client.
 vi.mock('openai', () => {
@@ -719,6 +720,211 @@ describe('parseManualQueueTsv', () => {
     expect(rows[1].affected_columns).toEqual(['DirectSideImage', 'BackImage']);
     expect(rows[1].current_drive_urls.length).toBe(2);
     expect(rows[1].suggested_action).toContain('delete');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Plan 17-06 — B-2 dry-run blocks Drive trash
+//
+// Closes the footgun: in --dry-run mode, neither `[d]elete` nor `[r]eplace`
+// must call `trashDriveFileFn`. Instead, a `logger.info` line announces what
+// WOULD have happened. The DRIVE_DELETE trail row is also gated (matches the
+// existing BR_WRITE gate pattern at lines 404 + 741).
+// ---------------------------------------------------------------------------
+
+describe('17-06 B-2 dry-run blocks trash', () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  // Test 17-06-1 — dry-run delete handler: NO trash, NO BR write, logs would-have
+  it('dry-run [d]elete: trashDriveFileFn NOT called, logger.info announces would-have-trashed, no DRIVE_DELETE trail row', async () => {
+    const queue = [makeQueueRow()];
+    const promptFn = scriptedPrompt(['d', 'DELETE']);
+    const loggerInfoSpy = vi
+      .spyOn(logger, 'info')
+      .mockImplementation(() => undefined);
+    const deps = makeDeps({
+      manualQueueOverride: queue,
+      promptFn,
+      args: {
+        queueFile: undefined,
+        reAudit: false,
+        dryRun: true,
+        help: false,
+      },
+    });
+
+    await runManualFix(deps);
+
+    // Footgun closed: no destructive Drive call.
+    expect(deps.trashDriveFileFn).not.toHaveBeenCalled();
+    // BR_WRITE blank cell also skipped in dry-run (Phase 16 existing behavior).
+    expect(deps.writeUpdatesFn).not.toHaveBeenCalled();
+    // logger.info announces the would-have-trashed fileId.
+    const infoMessages = loggerInfoSpy.mock.calls.map((c) => String(c[0]));
+    const wouldHaveMessage = infoMessages.find(
+      (m) =>
+        m.includes('dry-run: would have trashed') &&
+        m.includes('BACK_OLD_ID_BBBBBBBBBBBBB'),
+    );
+    expect(wouldHaveMessage).toBeDefined();
+    // DRIVE_DELETE trail row NOT written (matches BR_WRITE gate pattern).
+    const ops = operationsOf(
+      deps.appendTrailRowFn as ReturnType<typeof vi.fn>,
+    );
+    expect(ops).not.toContain('DRIVE_DELETE');
+    // BR_WRITE trail row also skipped (pre-existing dry-run behavior — gated at
+    // line 404 — does NOT call appendTrailRowFn for BR_WRITE inside the gate.
+    // NOTE: In the current Phase 16 source, the BR_WRITE trail row IS written
+    // even on dry-run because appendTrailRowFn is OUTSIDE the gate. That's
+    // pre-existing scope for this plan; we only assert the DRIVE_DELETE gate.
+    loggerInfoSpy.mockRestore();
+  });
+
+  // Test 17-06-2 — dry-run replace handler: NO trash even when fileIds differ
+  it('dry-run [r]eplace: trashDriveFileFn NOT called even when uploaded fileId differs, logger.info announces would-have-trashed, no DRIVE_DELETE trail row', async () => {
+    const queue = [makeQueueRow()];
+    const promptFn = scriptedPrompt([
+      'r',
+      'https://drive.google.com/file/d/NEW_ID_XXXXXXXXXXXXXXXXX/view',
+    ]);
+    const loggerInfoSpy = vi
+      .spyOn(logger, 'info')
+      .mockImplementation(() => undefined);
+    const deps = makeDeps({
+      manualQueueOverride: queue,
+      promptFn,
+      args: {
+        queueFile: undefined,
+        reAudit: false,
+        dryRun: true,
+        help: false,
+      },
+    });
+
+    await runManualFix(deps);
+
+    // Drive file NOT trashed.
+    expect(deps.trashDriveFileFn).not.toHaveBeenCalled();
+    // BR write also skipped (pre-existing Phase 16 gate at line 741).
+    expect(deps.writeUpdatesFn).not.toHaveBeenCalled();
+    // logger.info announces would-have-trashed with both origFileId + new fileId.
+    const infoMessages = loggerInfoSpy.mock.calls.map((c) => String(c[0]));
+    const wouldHave = infoMessages.find(
+      (m) =>
+        m.includes('dry-run: would have trashed') &&
+        m.includes('BACK_OLD_ID_BBBBBBBBBBBBB'),
+    );
+    expect(wouldHave).toBeDefined();
+    // DRIVE_DELETE trail row NOT written.
+    const ops = operationsOf(
+      deps.appendTrailRowFn as ReturnType<typeof vi.fn>,
+    );
+    expect(ops).not.toContain('DRIVE_DELETE');
+    loggerInfoSpy.mockRestore();
+  });
+
+  // Test 17-06-3 — live mode delete handler regression check: trash still fires
+  it('live [d]elete (dryRun=false): trashDriveFileFn IS called once + DRIVE_DELETE trail row written', async () => {
+    const queue = [makeQueueRow()];
+    const promptFn = scriptedPrompt(['d', 'DELETE']);
+    const deps = makeDeps({
+      manualQueueOverride: queue,
+      promptFn,
+      args: {
+        queueFile: undefined,
+        reAudit: false,
+        dryRun: false,
+        help: false,
+      },
+    });
+
+    await runManualFix(deps);
+
+    expect(deps.trashDriveFileFn).toHaveBeenCalledTimes(1);
+    expect(deps.trashDriveFileFn).toHaveBeenCalledWith(
+      expect.anything(),
+      'BACK_OLD_ID_BBBBBBBBBBBBB',
+    );
+    expect(deps.writeUpdatesFn).toHaveBeenCalledTimes(1);
+    const ops = operationsOf(
+      deps.appendTrailRowFn as ReturnType<typeof vi.fn>,
+    );
+    expect(ops).toContain('DRIVE_DELETE');
+  });
+
+  // Test 17-06-4 — live mode replace handler regression check: trash fires when fileIds differ
+  it('live [r]eplace (dryRun=false, fileIds differ): trashDriveFileFn IS called once + DRIVE_DELETE trail row written', async () => {
+    const queue = [makeQueueRow()];
+    const promptFn = scriptedPrompt([
+      'r',
+      'https://drive.google.com/file/d/NEW_ID_XXXXXXXXXXXXXXXXX/view',
+    ]);
+    const deps = makeDeps({
+      manualQueueOverride: queue,
+      promptFn,
+      args: {
+        queueFile: undefined,
+        reAudit: false,
+        dryRun: false,
+        help: false,
+      },
+    });
+
+    await runManualFix(deps);
+
+    expect(deps.trashDriveFileFn).toHaveBeenCalledTimes(1);
+    expect(deps.trashDriveFileFn).toHaveBeenCalledWith(
+      expect.anything(),
+      'BACK_OLD_ID_BBBBBBBBBBBBB',
+    );
+    expect(deps.writeUpdatesFn).toHaveBeenCalledTimes(1);
+    const ops = operationsOf(
+      deps.appendTrailRowFn as ReturnType<typeof vi.fn>,
+    );
+    expect(ops).toContain('DRIVE_DELETE');
+  });
+
+  // Test 17-06-5 — live mode update-in-place: T-16-01 invariant preserved (no trash)
+  it('live [r]eplace (dryRun=false, same fileId): T-16-01 — NO trash, NO DRIVE_DELETE trail', async () => {
+    const queue = [
+      makeQueueRow({
+        affected_columns: ['BackImage'],
+        current_drive_urls: [driveUrl('SAME_ID_YYYYYYYYYYYYYYYY')],
+      }),
+    ];
+    const promptFn = scriptedPrompt([
+      'r',
+      'https://drive.google.com/file/d/SAME_ID_YYYYYYYYYYYYYYYY/view',
+    ]);
+    const uploadToDriveFn = vi
+      .fn()
+      .mockResolvedValue(driveUrl('SAME_ID_YYYYYYYYYYYYYYYY'));
+    const deps = makeDeps({
+      manualQueueOverride: queue,
+      promptFn,
+      uploadToDriveFn: uploadToDriveFn as never,
+      args: {
+        queueFile: undefined,
+        reAudit: false,
+        dryRun: false,
+        help: false,
+      },
+      readRawRowsFn: vi.fn().mockResolvedValue([
+        BR_HEADER,
+        makeBrRow({
+          BackImage: driveUrl('SAME_ID_YYYYYYYYYYYYYYYY'),
+        }),
+      ]) as never,
+    });
+
+    await runManualFix(deps);
+
+    expect(deps.trashDriveFileFn).not.toHaveBeenCalled();
+    expect(deps.writeUpdatesFn).toHaveBeenCalledTimes(1);
+    const ops = operationsOf(
+      deps.appendTrailRowFn as ReturnType<typeof vi.fn>,
+    );
+    expect(ops).not.toContain('DRIVE_DELETE');
   });
 });
 
