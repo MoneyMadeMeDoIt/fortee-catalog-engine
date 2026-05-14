@@ -1,14 +1,18 @@
 /**
- * Phase 16: pid → supplier canonical image URL resolver.
+ * Phase 16 / 17: pid → supplier canonical image URL resolver.
  *
  * Dispatches by pid prefix to fetch the "what the product SHOULD look like"
  * image from each supplier's authoritative source:
  *
- *   H08*  → null (headwear is out-of-scope per D-22; never fetched)
- *   S*    → S&S Canada REST API (auth via Basic / SS_ACCOUNT_NUMBER + SS_API_KEY)
- *   L*    → Canada Sportswear Shopify scraper (no auth)
- *   other → null; if in KNOWN_SUPPLIER_PREFIXES, log a Phase 16 D-12 expansion
- *           candidate hint
+ *   H08*   → null (headwear is out-of-scope per D-22; never fetched)
+ *   routesViaSS(pid) → S&S Canada REST API (auth via Basic / SS_ACCOUNT_NUMBER
+ *             + SS_API_KEY). Phase 17 17-04 widened this to also include
+ *             adidas (A*, CE*) and the KNOWN_SUPPLIER_PREFIXES allowlist
+ *             (Bella+Canvas / Gildan / Next Level / Comfort Colors /
+ *             American Apparel / Richardson) — all carried by S&S Canada.
+ *   L*     → Canada Sportswear Shopify scraper (no auth)
+ *   other  → null (M786, NE220, anvil 9xx, QTB6000 — handled by Plan 17-05
+ *             manual triage)
  *
  * Patterns copied from:
  *   - scripts/fetch-ss-images-fixed.ts (S&S auth, throttle, ssGet, resolveStyleId, makeLargeUrl)
@@ -79,6 +83,46 @@ const KNOWN_SUPPLIER_PREFIXES: Record<string, string[]> = {
   // American Apparel
   '1304': ['American_Apparel_1304_'],
 };
+
+// ---------------------------------------------------------------------------
+// Phase 17 17-04: S&S prefix dispatcher widening
+// ---------------------------------------------------------------------------
+
+/**
+ * Phase 17 17-04: pids dispatched to the S&S branch via brand-prefix routing.
+ * Per RESEARCH Findings 1 + 2:
+ *   - adidas is EXCLUSIVE to S&S in the promo channel (`/^A\d/i`, `/^CE\d/i`)
+ *   - Bella+Canvas, Gildan, Next Level, Comfort Colors, American Apparel,
+ *     and Richardson pids (the KNOWN_SUPPLIER_PREFIXES allowlist) are ALSO
+ *     carried by S&S Canada.
+ * Routing them through the existing S&S branch unlocks Tier 1 fixes without
+ * building separate scrapers per brand. The S&S `/styles/?search=<pid>`
+ * endpoint works for any pid, not just S*-prefixed (verified pattern in
+ * scripts/fetch-ss-rest-sizes.ts:80-94).
+ */
+const SS_ROUTABLE_PIDS: Set<string> = new Set<string>(Object.keys(KNOWN_SUPPLIER_PREFIXES));
+
+/**
+ * Returns true if `pid` should be dispatched through the S&S branch of
+ * resolveSupplierCanonical. Phase 17 17-04.
+ *
+ * Trigger conditions (any match):
+ *   - `/^S/i`  (native S&S S* prefix — Phase 16 default)
+ *   - `/^A\d/i` (adidas A2009, A702 etc. — RESEARCH Finding 1)
+ *   - `/^CE\d/i` (adidas CE520L etc. — RESEARCH Finding 1)
+ *   - `SS_ROUTABLE_PIDS.has(pid)` (Bella+Canvas / Gildan / Next Level /
+ *     Comfort Colors / American Apparel / Richardson — RESEARCH Finding 2)
+ *
+ * The H08* early-return in resolveSupplierCanonical fires BEFORE this helper,
+ * so headwear (D-22) never reaches the dispatcher.
+ */
+export function routesViaSS(pid: string): boolean {
+  if (/^S/i.test(pid)) return true;
+  if (/^A\d/i.test(pid)) return true;
+  if (/^CE\d/i.test(pid)) return true;
+  if (SS_ROUTABLE_PIDS.has(pid)) return true;
+  return false;
+}
 
 // ---------------------------------------------------------------------------
 // Public types
@@ -224,18 +268,22 @@ async function fetchCSWProduct(handle: string): Promise<{ images: Array<{ src: s
  *
  * Dispatch order (each branch short-circuits on miss):
  *   1. `/^H08/i` → return null without any network call (D-22 headwear exclusion).
- *   2. `/^S/i`   → S&S Canada REST. resolveStyleId → /products/?style= → take
- *                  the matching color's `colorFrontImage` (or first variant if
- *                  no colorName) and run it through makeSSLargeUrl
- *                  (`_fm` → `_fl`). Returns `{ url, source: 'ss', styleId }`
- *                  or null.
+ *   2. `routesViaSS(pid)` → S&S Canada REST. Matches `/^S/i` (native S&S),
+ *                  `/^A\d/i` (adidas A-family), `/^CE\d/i` (adidas CE-family),
+ *                  or `SS_ROUTABLE_PIDS.has(pid)` (Bella+Canvas / Gildan /
+ *                  Next Level / Comfort Colors / American Apparel / Richardson).
+ *                  resolveStyleId → /products/?style= → take the matching color's
+ *                  `colorFrontImage` (or first variant if no colorName) and run
+ *                  it through makeSSLargeUrl (`_fm` → `_fl`). Returns
+ *                  `{ url, source: 'ss', styleId }` or null.
+ *                  Phase 17 17-04 added the brand-prefix widening — see
+ *                  RESEARCH Findings 1 + 2 + Open Question 4.
  *   3. `/^L/i`   → CSW Shopify. findCSWHandle → fetchCSWProduct → match by
  *                  filename slug when colorName provided, else first image
  *                  `src`. Returns `{ url, source: 'csw', styleId: handle }` or
  *                  null.
- *   4. KNOWN_SUPPLIER_PREFIXES → null with a `[supplier-canonical]` info log
- *                  flagging the pid as a Phase 16 D-12 expansion candidate.
- *   5. Else      → silent null (no log noise for genuinely unknown prefixes).
+ *   4. Else      → silent null. Truly unsupported brands (M786, NE220, anvil
+ *                  9xx, QTB6000) are handled by Plan 17-05 manual triage.
  *
  * Phase 17 17-02 — per-color resolution. When `colorName` is provided:
  *   - S&S branch filters `/products/?style=` response by case-insensitive,
@@ -278,8 +326,26 @@ export async function resolveSupplierCanonical(
   // Headwear exclusion (D-22) — short-circuit BEFORE any network call.
   if (/^H08/i.test(pid)) return null;
 
-  // S&S Canada
-  if (/^S/i.test(pid)) {
+  // Phase 17 17-04: brand-prefix dispatch routes adidas + KNOWN_SUPPLIER_PREFIXES
+  // pids through the existing S&S branch. No new scrapers needed — S&S Canada
+  // carries adidas (exclusive — RESEARCH Finding 1) plus Bella+Canvas / Gildan /
+  // Next Level / Comfort Colors / American Apparel / Richardson (Finding 2).
+  // Order matters: routesViaSS check includes /^S/i so S* pids behave as before.
+  // CSW (L*) does NOT match routesViaSS and falls through to its own branch.
+  if (routesViaSS(pid)) {
+    // Surface which routing rule matched (operator observability — when an
+    // audit run produces unexpected results, this log reveals the dispatch).
+    const rule = /^S/i.test(pid)
+      ? 'S*'
+      : /^A\d/i.test(pid)
+        ? 'A*'
+        : /^CE\d/i.test(pid)
+          ? 'CE*'
+          : 'KNOWN_PREFIX';
+    logger.info(
+      `[supplier-canonical] routing ${pid} via S&S (${rule})${colorName ? ` colorName=${colorName}` : ''}`,
+    );
+
     await throttle('ss');
     const auth = getSSAuth();
     const ssId = await resolveSSStyleId(pid, auth);
@@ -370,14 +436,10 @@ export async function resolveSupplierCanonical(
     };
   }
 
-  // Allowlisted brand prefix but no scraper exists (Bella, Gildan, etc.)
-  if (KNOWN_SUPPLIER_PREFIXES[pid]) {
-    logger.info(
-      `[supplier-canonical] ${pid} is in allowlist but no scraper exists (Phase 16 D-12 expansion candidate)`,
-    );
-    return null;
-  }
-
-  // Truly unknown — silent null.
+  // Truly unknown prefix (M786, NE220, anvil 9xx, QTB6000, etc.) — silent null.
+  // Phase 17 17-04 dispatched the former KNOWN_SUPPLIER_PREFIXES allowlist
+  // through the S&S branch above, so the legacy "D-12 expansion candidate" log
+  // path is no longer reachable. Pids that fall through here are handled by
+  // Plan 17-05 manual triage.
   return null;
 }
