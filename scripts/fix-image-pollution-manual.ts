@@ -425,24 +425,34 @@ export async function handleManualRow(
       });
       const origFileId = extractFileId(currentUrl);
       if (origFileId) {
-        try {
-          await deps.trashDriveFileFn(deps.driveClient, origFileId);
-        } catch (err) {
-          logger.warn(
-            `[fix-image-pollution-manual] trashDriveFile failed for ${row.pid}: ${err}`,
+        // Plan 17-06 (B-2): gate destructive Drive-trash + trail row behind
+        // !args.dryRun so `--dry-run` is truly side-effect-free. Pre-patch this
+        // call was UNGATED — an operator running with --dry-run and typing
+        // 'DELETE' irrecoverably trashed Drive files.
+        if (!deps.args.dryRun) {
+          try {
+            await deps.trashDriveFileFn(deps.driveClient, origFileId);
+          } catch (err) {
+            logger.warn(
+              `[fix-image-pollution-manual] trashDriveFile failed for ${row.pid}: ${err}`,
+            );
+          }
+          await deps.appendTrailRowFn({
+            timestamp_iso: new Date().toISOString(),
+            pid: row.pid,
+            operation: 'DRIVE_DELETE',
+            column_or_path: origFileId,
+            old_value: origFileId,
+            new_value: '',
+            tier: 3,
+            run_id: runId,
+            notes: 'operator deleted in manual queue',
+          });
+        } else {
+          logger.info(
+            `[fix-image-pollution-manual] dry-run: would have trashed ${origFileId} (delete handler, pid=${row.pid})`,
           );
         }
-        await deps.appendTrailRowFn({
-          timestamp_iso: new Date().toISOString(),
-          pid: row.pid,
-          operation: 'DRIVE_DELETE',
-          column_or_path: origFileId,
-          old_value: origFileId,
-          new_value: '',
-          tier: 3,
-          run_id: runId,
-          notes: 'operator deleted in manual queue',
-        });
       }
     }
     return 'resolved';
@@ -708,24 +718,34 @@ async function handleReplace(
     newFileIdFromUpload &&
     origFileId !== newFileIdFromUpload
   ) {
-    try {
-      await deps.trashDriveFileFn(deps.driveClient, origFileId);
-    } catch (err) {
-      logger.warn(
-        `[fix-image-pollution-manual] trashDriveFile failed for ${row.pid}: ${err}`,
+    // Plan 17-06 (B-2): gate destructive Drive-trash + trail row behind
+    // !args.dryRun. Mirrors the BR_WRITE gate at line ~741 below; pre-patch
+    // this call was UNGATED — a dry-run [r]eplace with a verifier-passing URL
+    // still trashed the original Drive file when fileIds differed.
+    if (!deps.args.dryRun) {
+      try {
+        await deps.trashDriveFileFn(deps.driveClient, origFileId);
+      } catch (err) {
+        logger.warn(
+          `[fix-image-pollution-manual] trashDriveFile failed for ${row.pid}: ${err}`,
+        );
+      }
+      await deps.appendTrailRowFn({
+        timestamp_iso: new Date().toISOString(),
+        pid: row.pid,
+        operation: 'DRIVE_DELETE',
+        column_or_path: origFileId,
+        old_value: origFileId,
+        new_value: '',
+        tier: 3,
+        run_id: runId,
+        notes: `replaced by ${newFileIdFromUpload}`,
+      });
+    } else {
+      logger.info(
+        `[fix-image-pollution-manual] dry-run: would have trashed ${origFileId} (replace handler, pid=${row.pid}, replacedBy=${newFileIdFromUpload})`,
       );
     }
-    await deps.appendTrailRowFn({
-      timestamp_iso: new Date().toISOString(),
-      pid: row.pid,
-      operation: 'DRIVE_DELETE',
-      column_or_path: origFileId,
-      old_value: origFileId,
-      new_value: '',
-      tier: 3,
-      run_id: runId,
-      notes: `replaced by ${newFileIdFromUpload}`,
-    });
   }
   // T-16-01: else branch — uploadToDrive updated in-place. NEVER trash.
 
