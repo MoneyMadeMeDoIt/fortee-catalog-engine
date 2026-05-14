@@ -258,6 +258,393 @@ describe('resolveSupplierCanonical — colorSideImage MUST NOT be canonical', ()
 // Test 9 — Rate-limit: consecutive S&S calls separated by >= RATE_LIMIT_MS
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// 17-02 per-color resolver tests
+// (Phase 17 Plan 02 — extends Phase 16 dispatcher with optional colorName
+// argument; S&S branch filters /products/?style= response by colorName
+// case-insensitive trim-equality; CSW branch does best-effort filename
+// substring match; wasFallback flag set when colorName provided but no match.)
+// ---------------------------------------------------------------------------
+
+describe('17-02 per-color resolver', () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+    vi.resetModules();
+    process.env.SS_ACCOUNT_NUMBER = 'TESTACCT';
+    process.env.SS_API_KEY = 'TESTKEY';
+  });
+
+  // Test 1 — per-color happy path (S&S)
+  it('S&S: returns the colorFrontImage of the matching color when colorName is provided', async () => {
+    const fetchSpy = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse([{ styleID: 3001, styleName: 'S05610' }]),
+      )
+      .mockResolvedValueOnce(
+        jsonResponse([
+          { colorName: 'BLACK', colorFrontImage: 'Images/3001_BLACK_fm.jpg' },
+          { colorName: 'WHITE', colorFrontImage: 'Images/3001_WHITE_fm.jpg' },
+          { colorName: 'ROYAL', colorFrontImage: 'Images/3001_ROYAL_fm.jpg' },
+        ]),
+      );
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import(
+      '../../src/lib/supplier-canonical.js'
+    );
+    const result = await resolveSupplierCanonical('S05610', 'ROYAL');
+
+    expect(result).not.toBeNull();
+    expect(result!.url).toContain('3001_ROYAL');
+    // wasFallback must be undefined or false (NOT a fallback — we matched).
+    expect(result!.wasFallback).toBeFalsy();
+    expect(result!.source).toBe('ss');
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
+  });
+
+  // Test 2 — case-insensitive + whitespace-tolerant colorName match
+  it('S&S: matches colorName case-insensitively and trims surrounding whitespace', async () => {
+    const fetchSpy = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse([{ styleID: 3001, styleName: 'S05610' }]),
+      )
+      .mockResolvedValueOnce(
+        jsonResponse([
+          { colorName: 'BLACK', colorFrontImage: 'Images/3001_BLACK_fm.jpg' },
+          { colorName: 'ROYAL', colorFrontImage: 'Images/3001_ROYAL_fm.jpg' },
+        ]),
+      );
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import(
+      '../../src/lib/supplier-canonical.js'
+    );
+    // lowercase
+    const r1 = await resolveSupplierCanonical('S05610', 'royal');
+    expect(r1).not.toBeNull();
+    expect(r1!.url).toContain('3001_ROYAL');
+    expect(r1!.wasFallback).toBeFalsy();
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
+
+    // Reset spy for a separate import (caching note: the SS_ENV is already set;
+    // we run a fresh module to clear throttle / fetch counters).
+    vi.resetModules();
+    const fetchSpy2 = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse([{ styleID: 3001, styleName: 'S05610' }]),
+      )
+      .mockResolvedValueOnce(
+        jsonResponse([
+          { colorName: 'BLACK', colorFrontImage: 'Images/3001_BLACK_fm.jpg' },
+          { colorName: 'ROYAL', colorFrontImage: 'Images/3001_ROYAL_fm.jpg' },
+        ]),
+      );
+    vi.stubGlobal('fetch', fetchSpy2);
+    const { resolveSupplierCanonical: resolveAgain } = await import(
+      '../../src/lib/supplier-canonical.js'
+    );
+    const r2 = await resolveAgain('S05610', '  Royal  ');
+    expect(r2).not.toBeNull();
+    expect(r2!.url).toContain('3001_ROYAL');
+    expect(r2!.wasFallback).toBeFalsy();
+  });
+
+  // Test 3 — colorName not found, fall back to first
+  it('S&S: falls back to first front-image-bearing variant and sets wasFallback=true when colorName has no match', async () => {
+    const fetchSpy = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse([{ styleID: 3001, styleName: 'S05610' }]),
+      )
+      .mockResolvedValueOnce(
+        jsonResponse([
+          { colorName: 'BLACK', colorFrontImage: 'Images/3001_BLACK_fm.jpg' },
+          { colorName: 'WHITE', colorFrontImage: 'Images/3001_WHITE_fm.jpg' },
+        ]),
+      );
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import(
+      '../../src/lib/supplier-canonical.js'
+    );
+    const result = await resolveSupplierCanonical('S05610', 'NONEXISTENT-COLOR');
+
+    expect(result).not.toBeNull();
+    // BLACK is the first variant; fallback should land there.
+    expect(result!.url).toContain('3001_BLACK');
+    expect(result!.wasFallback).toBe(true);
+    expect(result!.source).toBe('ss');
+  });
+
+  // Test 4 — no colorName arg = pre-Phase-17 behavior (no fallback flag)
+  it('S&S: with no colorName argument, returns first front-image-bearing variant and does NOT mark wasFallback', async () => {
+    const fetchSpy = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse([{ styleID: 3001, styleName: 'S05610' }]),
+      )
+      .mockResolvedValueOnce(
+        jsonResponse([
+          { colorName: 'BLACK', colorFrontImage: 'Images/3001_BLACK_fm.jpg' },
+          { colorName: 'WHITE', colorFrontImage: 'Images/3001_WHITE_fm.jpg' },
+        ]),
+      );
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import(
+      '../../src/lib/supplier-canonical.js'
+    );
+    const result = await resolveSupplierCanonical('S05610');
+
+    expect(result).not.toBeNull();
+    expect(result!.url).toContain('3001_BLACK');
+    // Operator did not ask for a specific color → wasFallback is undefined/false.
+    expect(result!.wasFallback).toBeFalsy();
+  });
+
+  // Test 5 — variant matches colorName but has empty colorFrontImage → fall through
+  it('S&S: skips a colorName match whose colorFrontImage is empty; falls back to first non-empty variant with wasFallback=true', async () => {
+    const fetchSpy = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse([{ styleID: 3001, styleName: 'S05610' }]),
+      )
+      .mockResolvedValueOnce(
+        jsonResponse([
+          { colorName: 'BLACK', colorFrontImage: '' },
+          { colorName: 'ROYAL', colorFrontImage: 'Images/3001_ROYAL_fm.jpg' },
+        ]),
+      );
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import(
+      '../../src/lib/supplier-canonical.js'
+    );
+    const result = await resolveSupplierCanonical('S05610', 'BLACK');
+
+    expect(result).not.toBeNull();
+    expect(result!.url).toContain('3001_ROYAL');
+    expect(result!.wasFallback).toBe(true);
+  });
+
+  // Test 6 — empty /products/ response → null
+  it('S&S: returns null when /products/ response is empty even with colorName provided', async () => {
+    const fetchSpy = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse([{ styleID: 3001, styleName: 'S05610' }]),
+      )
+      .mockResolvedValueOnce(jsonResponse([]));
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import(
+      '../../src/lib/supplier-canonical.js'
+    );
+    const result = await resolveSupplierCanonical('S05610', 'BLACK');
+
+    expect(result).toBeNull();
+  });
+
+  // Test 7 — S&S API call count unchanged (Finding 4 invariant)
+  it('S&S: passing colorName does NOT add extra fetches (same call count as Phase 16)', async () => {
+    const fetchSpy = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse([{ styleID: 3001, styleName: 'S05610' }]),
+      )
+      .mockResolvedValueOnce(
+        jsonResponse([
+          { colorName: 'BLACK', colorFrontImage: 'Images/3001_BLACK_fm.jpg' },
+          { colorName: 'ROYAL', colorFrontImage: 'Images/3001_ROYAL_fm.jpg' },
+        ]),
+      );
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import(
+      '../../src/lib/supplier-canonical.js'
+    );
+    await resolveSupplierCanonical('S05610', 'ROYAL');
+    // Exactly 2 fetches: /styles/?search= + /products/?style= — no extra
+    // colorName-specific call.
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
+  });
+
+  // Test 8 — CSW per-color filename match
+  it('CSW: matches the image whose filename contains the colorName slug', async () => {
+    const fetchSpy = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse({
+          resources: {
+            results: {
+              products: [
+                { handle: 'l00660-handle', title: 'L00660 Hoodie', tags: ['L00660'] },
+              ],
+            },
+          },
+        }),
+      )
+      .mockResolvedValueOnce(
+        jsonResponse({
+          product: {
+            images: [
+              { src: 'https://cdn.shopify.com/.../L00660-Black-front.jpg' },
+              { src: 'https://cdn.shopify.com/.../L00660-Royal-front.jpg' },
+            ],
+          },
+        }),
+      );
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import(
+      '../../src/lib/supplier-canonical.js'
+    );
+    const result = await resolveSupplierCanonical('L00660', 'Royal');
+
+    expect(result).not.toBeNull();
+    expect(result!.url).toContain('Royal-front.jpg');
+    expect(result!.source).toBe('csw');
+    expect(result!.wasFallback).toBeFalsy();
+  });
+
+  // Test 9 — CSW multi-word color — hyphenated slug match
+  it('CSW: converts spaces in colorName to hyphens to build the filename slug', async () => {
+    const fetchSpy = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse({
+          resources: {
+            results: {
+              products: [
+                { handle: 'l00660-handle', title: 'L00660 Hoodie', tags: ['L00660'] },
+              ],
+            },
+          },
+        }),
+      )
+      .mockResolvedValueOnce(
+        jsonResponse({
+          product: {
+            images: [
+              { src: 'https://cdn.shopify.com/.../L00660-heather-gold-melange-front.jpg' },
+              { src: 'https://cdn.shopify.com/.../L00660-black-front.jpg' },
+            ],
+          },
+        }),
+      );
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import(
+      '../../src/lib/supplier-canonical.js'
+    );
+    const result = await resolveSupplierCanonical('L00660', 'Heather Gold Melange');
+
+    expect(result).not.toBeNull();
+    expect(result!.url).toContain('heather-gold-melange-front');
+    expect(result!.wasFallback).toBeFalsy();
+  });
+
+  // Test 10 — CSW filename match fails — fallback to first image
+  it('CSW: falls back to first image and sets wasFallback=true when no filename matches the colorName slug', async () => {
+    const fetchSpy = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse({
+          resources: {
+            results: {
+              products: [
+                { handle: 'l00660-handle', title: 'L00660 Hoodie', tags: ['L00660'] },
+              ],
+            },
+          },
+        }),
+      )
+      .mockResolvedValueOnce(
+        jsonResponse({
+          product: {
+            images: [
+              { src: 'https://cdn.shopify.com/.../L00660-Black-front.jpg' },
+              { src: 'https://cdn.shopify.com/.../L00660-Royal-front.jpg' },
+            ],
+          },
+        }),
+      );
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import(
+      '../../src/lib/supplier-canonical.js'
+    );
+    const result = await resolveSupplierCanonical('L00660', 'NONEXISTENT');
+
+    expect(result).not.toBeNull();
+    // Fallback = first image.
+    expect(result!.url).toContain('L00660-Black-front.jpg');
+    expect(result!.wasFallback).toBe(true);
+  });
+
+  // Test 11 — CSW no colorName — backward compat (no wasFallback)
+  it('CSW: with no colorName argument, returns first image and does NOT mark wasFallback', async () => {
+    const fetchSpy = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse({
+          resources: {
+            results: {
+              products: [
+                { handle: 'l00660-handle', title: 'L00660 Hoodie', tags: ['L00660'] },
+              ],
+            },
+          },
+        }),
+      )
+      .mockResolvedValueOnce(
+        jsonResponse({
+          product: {
+            images: [
+              { src: 'https://cdn.shopify.com/.../L00660-Black-front.jpg' },
+              { src: 'https://cdn.shopify.com/.../L00660-Royal-front.jpg' },
+            ],
+          },
+        }),
+      );
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import(
+      '../../src/lib/supplier-canonical.js'
+    );
+    const result = await resolveSupplierCanonical('L00660');
+
+    expect(result).not.toBeNull();
+    expect(result!.url).toContain('L00660-Black-front.jpg');
+    expect(result!.wasFallback).toBeFalsy();
+  });
+
+  // Test 12 — CanonicalResult interface shape
+  it('exports CanonicalResult with optional url/source/styleId/wasFallback fields', async () => {
+    const mod = await import('../../src/lib/supplier-canonical.js');
+    type CR = import('../../src/lib/supplier-canonical.js').CanonicalResult;
+    // Compile-time + runtime — any object matching the shape must assignable.
+    const sample: CR = {
+      url: 'https://example.com/x.jpg',
+      source: 'ss',
+      styleId: 1234,
+      wasFallback: true,
+    };
+    expect(sample.url).toBeDefined();
+    expect(sample.source).toBe('ss');
+    expect(sample.wasFallback).toBe(true);
+    // And the function exists.
+    expect(typeof mod.resolveSupplierCanonical).toBe('function');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Test 9 — Rate-limit: consecutive S&S calls separated by >= RATE_LIMIT_MS
+// ---------------------------------------------------------------------------
+
 describe('resolveSupplierCanonical — S&S rate-limit (T-16-05)', () => {
   it('throttles two consecutive S* resolves so the 3rd fetch is >= 1100ms after the 1st', async () => {
     // Each resolveSupplierCanonical('S*') makes 2 fetches with a throttle
