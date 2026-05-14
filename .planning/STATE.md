@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Image Automation
-status: Phase 16 SHIPPED 2026-05-13 — v2.0 milestone complete
-stopped_at: Phase 16 fully complete. Plans 01/02/03 + Plan 04 (CLI + operator checkpoint) all shipped. 80/80 Phase 16 tests green. Operator checkpoint approved after live walkthrough on disposable CHECKPOINT-TEST-001/-002 pids — verified verifier-after-fail FORCE path, literal DELETE path, T-16-01 compare-before-trash, R10 OR-path (re-audit=0 polluted), and resume-from-trail silent skip. 16-PHASE-SUMMARY.md written.
-last_updated: "2026-05-13T16:00:00.000Z"
+status: v2.0 SHIPPED 2026-05-13. First production audit (2026-05-14) surfaced Phase 17 scope.
+stopped_at: First production audit run completed (hung at 435/449 pids on a stuck Drive fetch — recovered via trail reconstruction). 213 polluted pids found, 453 detections. Tier 1-only fix run completed: 1 pid fully fixed, 5 partially, 366 cascaded to manual queue. Findings written to .planning/research/phase17-prep/PRODUCTION-AUDIT-FINDINGS.md with proposed Phase 17 plans (Drive timeout, per-color supplier-canonical, Model image rebuild, D-12 scraper expansion).
+last_updated: "2026-05-14T12:00:00.000Z"
 progress:
   total_phases: 9
   completed_phases: 9
@@ -113,14 +113,19 @@ Key decisions for catalog curation (2026-04-01):
 - 1,494 CSW rows have generic baseCategory `T-shirts/Shorts/Polos` — sweeping fix deferred to its own phase
 - Headwear (H08*) doesn't fit any CategoryGroup in the verifier — separate phase needed
 
-**Next planned phase:**
+**Next planned phase (Phase 17 — Catalog Image Pollution Fix):**
 
-- v2.0 milestone complete. Candidates for v3.0 / future work:
-  - Generic baseCategory cleanup (1,494 CSW rows with `T-shirts/Shorts/Polos` — blocks Phase 15 verifier catalog-wide utility)
-  - H08* headwear classifier (caps don't fit Phase 15's CategoryGroup taxonomy)
-  - Live audit phase: run `audit-image-pollution.ts --all` on production BR, triage findings
-  - Product curation filtering + missing image generation (see `project_pending_research`)
-  - Phase 14 follow-ups (6 DUPE-DRIVE, 7 MODEL-MISSING-ON-STORE, audit `--pids` overwrite bug)
+Real production audit (2026-05-14) found 213 polluted pids / 453 detections. Tier 1/2 yield was 1 fully-fixed pid. Phase 17 scope addresses why (per `.planning/research/phase17-prep/PRODUCTION-AUDIT-FINDINGS.md`):
+
+- **17-01 Drive fetch timeout** — patch B-1 (no timeout on Drive HTTP). Prerequisite for any large audit run.
+- **17-02 Per-color supplier-canonical** — `supplier-canonical` returns style-level URLs; verifier rejects "wrong color" on real BR rows. Need `(pid, colorName)` resolver.
+- **17-03 Model image rebuild tool** — biggest yield: addresses 312 of 453 detections (69%). Tier 2 doesn't handle Model* columns.
+- **17-04 D-12 scraper expansion** — add Bella+Canvas, Gildan, Adidas, New Era, anvil scrapers. 714 "no canonical" trail rows show the gap.
+- **17-05 Shared_url cluster manual triage** — operator effort; tooling already exists.
+
+Plus minor cleanup: B-2 (`--dry-run` Drive-trash gap), B-3 (cleanup script blind spot), B-4 (Tier 2 billing-limit short-circuit).
+
+Phase 14 follow-ups still deferred (6 DUPE-DRIVE, 7 MODEL-MISSING-ON-STORE, audit `--pids` overwrite bug).
 
 ### Blockers/Concerns
 
