@@ -180,24 +180,32 @@ describe('resolveSupplierCanonical — CSW no matching handle', () => {
 });
 
 // ---------------------------------------------------------------------------
-// Test 6 — Allowlist but no scraper: logs D-12 expansion hint
+// Test 6 — Allowlist routing: post-17-04, KNOWN_SUPPLIER_PREFIXES pids
+// dispatch through the S&S branch (Phase 16 D-12 expansion landed in 17-04).
+// The previous "no-scraper-yet" log path is now unreachable for these pids.
+// Full S&S-routing coverage lives in the '17-04 prefix routing' describe block.
 // ---------------------------------------------------------------------------
 
-describe('resolveSupplierCanonical — allowlist-but-no-scraper', () => {
-  it('returns null and logs a Phase 16 D-12 expansion-candidate info for KNOWN_SUPPLIER_PREFIXES pids', async () => {
-    const fetchSpy = vi.fn();
+describe('resolveSupplierCanonical — allowlist routing post-17-04', () => {
+  it('routes 6110 through the S&S branch when the pid resolves (D-12 expansion complete)', async () => {
+    const fetchSpy = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse([{ styleID: 50061, styleName: '6110' }]),
+      )
+      .mockResolvedValueOnce(
+        jsonResponse([
+          { colorName: 'BLACK', colorFrontImage: 'Images/Style/6110_BLACK_fm.jpg' },
+        ]),
+      );
     vi.stubGlobal('fetch', fetchSpy);
 
     const { resolveSupplierCanonical } = await import('../../src/lib/supplier-canonical.js');
     const result = await resolveSupplierCanonical('6110');
 
-    expect(result).toBeNull();
-    expect(fetchSpy).not.toHaveBeenCalled();
-    expect(mockLoggerInfo).toHaveBeenCalled();
-    const msg = String(mockLoggerInfo.mock.calls[0][0]);
-    expect(msg).toContain('[supplier-canonical]');
-    expect(msg).toContain('6110');
-    expect(msg).toContain('Phase 16 D-12 expansion');
+    expect(result).not.toBeNull();
+    expect(result!.source).toBe('ss');
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
   });
 });
 
@@ -638,6 +646,374 @@ describe('17-02 per-color resolver', () => {
     expect(sample.wasFallback).toBe(true);
     // And the function exists.
     expect(typeof mod.resolveSupplierCanonical).toBe('function');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// 17-04 prefix routing — adidas + KNOWN_SUPPLIER_PREFIXES dispatched via S&S
+//
+// Per RESEARCH Findings 1 + 2 + Open Question 4:
+//   - adidas (/^A\d/i, /^CE\d/i) is exclusive to S&S in the promo channel.
+//   - Bella+Canvas / Gildan / Next Level / Comfort Colors / American Apparel /
+//     Richardson pids (the existing KNOWN_SUPPLIER_PREFIXES allowlist) are ALSO
+//     carried by S&S Canada. The S&S /styles/?search=<pid> endpoint works for
+//     non-S* pids — already used by scripts/fetch-ss-rest-sizes.ts.
+//   - The H08* early-return MUST still fire BEFORE the new dispatcher.
+//   - CSW (/^L/i) routing is unchanged.
+//   - True unsupported brands (M786, NE220, anvil 9xx, QTB6000) still return null
+//     with NO fetch — Plan 17-05 manual triage will handle them.
+//
+// Each test that exercises the network mocks /styles/?search= + /products/?style=
+// using the same shape as the 17-02 tests above. The routesViaSS helper is
+// imported and exercised directly for prefix-matching edge cases (Tests 15-17).
+// ---------------------------------------------------------------------------
+
+describe('17-04 prefix routing', () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+    vi.resetModules();
+    process.env.SS_ACCOUNT_NUMBER = 'TESTACCT';
+    process.env.SS_API_KEY = 'TESTKEY';
+  });
+
+  /** Shared mock setup: /styles/?search=<pid> → [{styleID, styleName}], then
+   *  /products/?style=<styleID> → variants array. */
+  function mockSSResolution(
+    styleId: number,
+    styleName: string,
+    variants: Array<{ colorName?: string; colorFrontImage?: string }>,
+  ) {
+    return vi
+      .fn()
+      .mockResolvedValueOnce(jsonResponse([{ styleID: styleId, styleName }]))
+      .mockResolvedValueOnce(jsonResponse(variants));
+  }
+
+  // -------------------------------------------------------------------------
+  // Test 1 — adidas A702 routes via S&S
+  // -------------------------------------------------------------------------
+  it('routes adidas A702 through the S&S branch', async () => {
+    const fetchSpy = mockSSResolution(98101, 'A702', [
+      { colorName: 'BLACK', colorFrontImage: 'Images/Style/A702_BLACK_fm.jpg' },
+      { colorName: 'WHITE', colorFrontImage: 'Images/Style/A702_WHITE_fm.jpg' },
+    ]);
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import('../../src/lib/supplier-canonical.js');
+    const result = await resolveSupplierCanonical('A702', 'BLACK');
+
+    expect(result).not.toBeNull();
+    expect(result!.source).toBe('ss');
+    expect(result!.url).toContain('A702_BLACK');
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
+    // First fetch is /styles/?search=A702 (URL-encoded ok); second is /products/.
+    const firstUrl = String(fetchSpy.mock.calls[0][0]);
+    expect(firstUrl).toContain('/styles/?search=A702');
+    const secondUrl = String(fetchSpy.mock.calls[1][0]);
+    expect(secondUrl).toContain('/products/?style=98101');
+  });
+
+  // -------------------------------------------------------------------------
+  // Test 2 — adidas CE520L routes via S&S
+  // -------------------------------------------------------------------------
+  it('routes adidas CE520L through the S&S branch', async () => {
+    const fetchSpy = mockSSResolution(98202, 'CE520L', [
+      { colorName: 'WHITE', colorFrontImage: 'Images/Style/CE520L_WHITE_fm.jpg' },
+    ]);
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import('../../src/lib/supplier-canonical.js');
+    const result = await resolveSupplierCanonical('CE520L', 'WHITE');
+
+    expect(result).not.toBeNull();
+    expect(result!.source).toBe('ss');
+    expect(result!.url).toContain('CE520L_WHITE');
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
+  });
+
+  // -------------------------------------------------------------------------
+  // Test 3 — Bella+Canvas 6110 routes via S&S
+  // -------------------------------------------------------------------------
+  it('routes Bella+Canvas 6110 through the S&S branch', async () => {
+    const fetchSpy = mockSSResolution(50061, '6110', [
+      { colorName: 'BLACK', colorFrontImage: 'Images/Style/6110_BLACK_fm.jpg' },
+    ]);
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import('../../src/lib/supplier-canonical.js');
+    const result = await resolveSupplierCanonical('6110', 'BLACK');
+
+    expect(result).not.toBeNull();
+    expect(result!.source).toBe('ss');
+    expect(result!.url).toContain('6110_BLACK');
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
+  });
+
+  // -------------------------------------------------------------------------
+  // Test 4 — Bella+Canvas 3001 routes via S&S
+  // -------------------------------------------------------------------------
+  it('routes Bella+Canvas 3001 through the S&S branch', async () => {
+    const fetchSpy = mockSSResolution(30010, '3001', [
+      { colorName: 'NAVY', colorFrontImage: 'Images/Style/3001_NAVY_fm.jpg' },
+    ]);
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import('../../src/lib/supplier-canonical.js');
+    const result = await resolveSupplierCanonical('3001', 'NAVY');
+
+    expect(result).not.toBeNull();
+    expect(result!.source).toBe('ss');
+    expect(result!.url).toContain('3001_NAVY');
+  });
+
+  // -------------------------------------------------------------------------
+  // Test 5 — Gildan 5200 routes via S&S
+  // -------------------------------------------------------------------------
+  it('routes Gildan 5200 through the S&S branch', async () => {
+    const fetchSpy = mockSSResolution(52000, '5200', [
+      { colorName: 'SPORT GREY', colorFrontImage: 'Images/Style/5200_SPORTGREY_fm.jpg' },
+    ]);
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import('../../src/lib/supplier-canonical.js');
+    const result = await resolveSupplierCanonical('5200', 'SPORT GREY');
+
+    expect(result).not.toBeNull();
+    expect(result!.source).toBe('ss');
+    expect(result!.url).toContain('5200_SPORTGREY');
+  });
+
+  // -------------------------------------------------------------------------
+  // Test 6 — Next Level 1510 routes via S&S
+  // -------------------------------------------------------------------------
+  it('routes Next Level 1510 through the S&S branch', async () => {
+    const fetchSpy = mockSSResolution(15100, '1510', [
+      { colorName: 'ROYAL', colorFrontImage: 'Images/Style/1510_ROYAL_fm.jpg' },
+    ]);
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import('../../src/lib/supplier-canonical.js');
+    const result = await resolveSupplierCanonical('1510', 'ROYAL');
+
+    expect(result).not.toBeNull();
+    expect(result!.source).toBe('ss');
+    expect(result!.url).toContain('1510_ROYAL');
+  });
+
+  // -------------------------------------------------------------------------
+  // Test 7 — Comfort Colors 1466 routes via S&S
+  // -------------------------------------------------------------------------
+  it('routes Comfort Colors 1466 through the S&S branch', async () => {
+    const fetchSpy = mockSSResolution(14660, '1466', [
+      { colorName: 'IVORY', colorFrontImage: 'Images/Style/1466_IVORY_fm.jpg' },
+    ]);
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import('../../src/lib/supplier-canonical.js');
+    const result = await resolveSupplierCanonical('1466', 'IVORY');
+
+    expect(result).not.toBeNull();
+    expect(result!.source).toBe('ss');
+    expect(result!.url).toContain('1466_IVORY');
+  });
+
+  // -------------------------------------------------------------------------
+  // Test 8 — American Apparel 1304 routes via S&S
+  // -------------------------------------------------------------------------
+  it('routes American Apparel 1304 through the S&S branch', async () => {
+    const fetchSpy = mockSSResolution(13040, '1304', [
+      { colorName: 'BLACK', colorFrontImage: 'Images/Style/1304_BLACK_fm.jpg' },
+    ]);
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import('../../src/lib/supplier-canonical.js');
+    const result = await resolveSupplierCanonical('1304', 'BLACK');
+
+    expect(result).not.toBeNull();
+    expect(result!.source).toBe('ss');
+    expect(result!.url).toContain('1304_BLACK');
+  });
+
+  // -------------------------------------------------------------------------
+  // Test 9 — Richardson 168 routes via S&S (Open Question 4: not H08-prefixed)
+  // -------------------------------------------------------------------------
+  it('routes Richardson 168 through the S&S branch (NOT H08-prefixed)', async () => {
+    const fetchSpy = mockSSResolution(1680, '168', [
+      { colorName: 'BLACK', colorFrontImage: 'Images/Style/168_BLACK_fm.jpg' },
+    ]);
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import('../../src/lib/supplier-canonical.js');
+    const result = await resolveSupplierCanonical('168', 'BLACK');
+
+    expect(result).not.toBeNull();
+    expect(result!.source).toBe('ss');
+    expect(result!.url).toContain('168_BLACK');
+  });
+
+  // -------------------------------------------------------------------------
+  // Test 10 — H08* invariant preserved: H08355 returns null with NO fetch
+  // -------------------------------------------------------------------------
+  it('preserves the H08* early-return: H08355 returns null without any fetch', async () => {
+    const fetchSpy = vi.fn();
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import('../../src/lib/supplier-canonical.js');
+    const result = await resolveSupplierCanonical('H08355', 'BLACK');
+
+    expect(result).toBeNull();
+    expect(fetchSpy).not.toHaveBeenCalled();
+  });
+
+  // -------------------------------------------------------------------------
+  // Test 11 — M786 (true unsupported) returns null with NO fetch
+  // -------------------------------------------------------------------------
+  it('returns null with NO fetch for M786 (truly unsupported — manual triage)', async () => {
+    const fetchSpy = vi.fn();
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import('../../src/lib/supplier-canonical.js');
+    const result = await resolveSupplierCanonical('M786', 'BLACK');
+
+    expect(result).toBeNull();
+    // M786 doesn't match S*/A*/CE*/KNOWN_SUPPLIER_PREFIXES — dispatcher MUST not
+    // emit any S&S request.
+    expect(fetchSpy).not.toHaveBeenCalled();
+  });
+
+  // -------------------------------------------------------------------------
+  // Test 12 — NE220 (New Era proprietary) returns null with NO fetch
+  // -------------------------------------------------------------------------
+  it('returns null with NO fetch for NE220 (New Era proprietary — manual triage)', async () => {
+    const fetchSpy = vi.fn();
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import('../../src/lib/supplier-canonical.js');
+    const result = await resolveSupplierCanonical('NE220', 'BLACK');
+
+    expect(result).toBeNull();
+    expect(fetchSpy).not.toHaveBeenCalled();
+  });
+
+  // -------------------------------------------------------------------------
+  // Test 13 — existing S* pid behavior unchanged (regression guard)
+  // -------------------------------------------------------------------------
+  it('preserves existing S* behavior: S05610 still routes via S&S', async () => {
+    const fetchSpy = mockSSResolution(12345, 'S05610', [
+      { colorName: 'NAVY', colorFrontImage: 'Images/Style/S05610_NAVY_fm.jpg' },
+    ]);
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import('../../src/lib/supplier-canonical.js');
+    const result = await resolveSupplierCanonical('S05610', 'NAVY');
+
+    expect(result).not.toBeNull();
+    expect(result!.source).toBe('ss');
+    expect(result!.url).toContain('S05610_NAVY');
+  });
+
+  // -------------------------------------------------------------------------
+  // Test 14 — existing L* CSW behavior unchanged (regression guard)
+  // -------------------------------------------------------------------------
+  it('preserves existing L* CSW behavior: L00660 still routes via CSW', async () => {
+    const fetchSpy = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse({
+          resources: {
+            results: {
+              products: [
+                { handle: 'l00660-handle', title: 'L00660 Hoodie', tags: ['L00660'] },
+              ],
+            },
+          },
+        }),
+      )
+      .mockResolvedValueOnce(
+        jsonResponse({
+          product: {
+            images: [{ src: 'https://cdn.shopify.com/.../L00660-Black-front.jpg' }],
+          },
+        }),
+      );
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import('../../src/lib/supplier-canonical.js');
+    const result = await resolveSupplierCanonical('L00660');
+
+    expect(result).not.toBeNull();
+    expect(result!.source).toBe('csw');
+    // CSW endpoint, not S&S — verifies dispatcher routed CORRECTLY (not via S&S).
+    const firstUrl = String(fetchSpy.mock.calls[0][0]);
+    expect(firstUrl).toContain('canadasportswear.com');
+  });
+
+  // -------------------------------------------------------------------------
+  // Test 15 — routesViaSS: standalone 'A' (no digit) is NOT S&S
+  // -------------------------------------------------------------------------
+  it('routesViaSS("A") === false (single letter, no digit — accidental BR row)', async () => {
+    const { routesViaSS } = await import('../../src/lib/supplier-canonical.js');
+    expect(routesViaSS('A')).toBe(false);
+  });
+
+  // -------------------------------------------------------------------------
+  // Test 16 — routesViaSS: adidas-style A2009 matches /^A\d/
+  // -------------------------------------------------------------------------
+  it('routesViaSS("A2009") === true (adidas A-digit family)', async () => {
+    const { routesViaSS } = await import('../../src/lib/supplier-canonical.js');
+    expect(routesViaSS('A2009')).toBe(true);
+  });
+
+  // -------------------------------------------------------------------------
+  // Test 17 — routesViaSS: adidas CE520L matches /^CE\d/
+  // -------------------------------------------------------------------------
+  it('routesViaSS("CE520L") === true (adidas CE-digit family)', async () => {
+    const { routesViaSS } = await import('../../src/lib/supplier-canonical.js');
+    expect(routesViaSS('CE520L')).toBe(true);
+  });
+
+  // -------------------------------------------------------------------------
+  // Test 18 — routesViaSS: CSW L* does NOT route via S&S (CSW branch handles it)
+  // -------------------------------------------------------------------------
+  it('routesViaSS("L00660") === false (CSW pid — falls through to CSW branch)', async () => {
+    const { routesViaSS } = await import('../../src/lib/supplier-canonical.js');
+    expect(routesViaSS('L00660')).toBe(false);
+  });
+
+  // -------------------------------------------------------------------------
+  // Test 19 — routesViaSS: lowercase s* still routes via S&S (case-insensitive)
+  // -------------------------------------------------------------------------
+  it('routesViaSS("s05610") === true (case-insensitive S* match)', async () => {
+    const { routesViaSS } = await import('../../src/lib/supplier-canonical.js');
+    expect(routesViaSS('s05610')).toBe(true);
+  });
+
+  // -------------------------------------------------------------------------
+  // Test 20 — routesViaSS: anvil 9xx (NOT in KNOWN_SUPPLIER_PREFIXES) returns false
+  // -------------------------------------------------------------------------
+  it('routesViaSS("980") === false (anvil pid not in KNOWN_SUPPLIER_PREFIXES — manual triage)', async () => {
+    const { routesViaSS } = await import('../../src/lib/supplier-canonical.js');
+    expect(routesViaSS('980')).toBe(false);
+  });
+
+  // -------------------------------------------------------------------------
+  // Test 21 — dispatcher emits a log line surfacing which routing rule fired
+  // -------------------------------------------------------------------------
+  it('logs the routing rule that fired (operator observability)', async () => {
+    const fetchSpy = mockSSResolution(50061, '6110', [
+      { colorName: 'BLACK', colorFrontImage: 'Images/Style/6110_BLACK_fm.jpg' },
+    ]);
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const { resolveSupplierCanonical } = await import('../../src/lib/supplier-canonical.js');
+    await resolveSupplierCanonical('6110', 'BLACK');
+
+    // At least one info log should mention the pid and a routing-rule hint.
+    const calls = mockLoggerInfo.mock.calls.map((c) => String(c[0]));
+    const routingLog = calls.find((m) => m.includes('6110') && m.includes('S&S'));
+    expect(routingLog).toBeDefined();
+    // The log should surface WHICH rule fired (S*, A*, CE*, or KNOWN_PREFIX).
+    expect(String(routingLog)).toMatch(/(S\*|A\*|CE\*|KNOWN_PREFIX)/);
   });
 });
 
