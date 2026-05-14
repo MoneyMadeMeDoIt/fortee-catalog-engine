@@ -306,6 +306,12 @@ function writeAuditTSV(
 interface PidData {
   pid: string;
   styleId: string;
+  /**
+   * Phase 17 17-02: BR row's colorName cell, threaded into the per-color
+   * supplier-canonical resolver so it filters /products/?style= to the right
+   * variant. Empty string when the BR row has no colorName populated.
+   */
+  colorName: string;
   // column → URL
   urls: Map<string, string>;
 }
@@ -320,6 +326,7 @@ function buildPidData(rows: string[][]): PidData[] {
 
   const pidIdx = h['productId'] ?? -1;
   const styleIdx = h['styleID'] ?? -1;
+  const colorIdx = h['colorName'] ?? -1;
 
   // Dedup by productId — first occurrence wins.
   const byPid = new Map<string, PidData>();
@@ -332,6 +339,7 @@ function buildPidData(rows: string[][]): PidData[] {
     const data: PidData = {
       pid,
       styleId: String(row[styleIdx] ?? '').trim(),
+      colorName: colorIdx >= 0 ? String(row[colorIdx] ?? '').trim() : '',
       urls: new Map(),
     };
     for (const col of IMAGE_COLUMNS) {
@@ -359,6 +367,14 @@ async function pass1Structural(
   const rows: AuditRow[] = [];
   const args = deps.args;
 
+  // Phase 17 17-02: build a pid → colorName lookup so the shared_url loop
+  // (which iterates a flat fileId map, not PidData) can still thread the BR
+  // row's colorName into the per-color supplier-canonical resolver.
+  const colorNameByPid = new Map<string, string>();
+  for (const p of targetPids) {
+    colorNameByPid.set(p.pid, p.colorName);
+  }
+
   // Step 1: build fileId → Map<pid, columns[]>
   const fileIdMap = new Map<string, Map<string, Set<string>>>();
   for (const p of targetPids) {
@@ -381,7 +397,11 @@ async function pass1Structural(
       const colsArr = [...cols].sort();
       // Find canonical URL for the fileId — pick the original URL from any pid
       const url = `https://drive.google.com/uc?id=${fid}`;
-      const recTier = await recommendedFixTier(pid, deps);
+      const recTier = await recommendedFixTier(
+        pid,
+        colorNameByPid.get(pid) ?? '',
+        deps,
+      );
       rows.push({
         pid,
         pollution_class: 'shared_url',
@@ -439,7 +459,7 @@ async function pass1Structural(
         }
         if (!meta) continue;
         if (!VALID_IMAGE_MIMES.has(meta.mimeType)) {
-          const recTier = await recommendedFixTier(p.pid, deps);
+          const recTier = await recommendedFixTier(p.pid, p.colorName, deps);
           rows.push({
             pid: p.pid,
             pollution_class: 'invalid_image_format',
@@ -477,13 +497,17 @@ async function pass1Structural(
 // Pass-1 + Pass-2 quick canonical-availability check. Used both for the
 // recommended_fix_tier hint (tier 1 if canonical available, else 3) and for
 // short-circuiting Pass 2 when supplier-canonical returns null.
+//
+// Phase 17 17-02: colorName is threaded through so the per-color resolver
+// can filter the S&S /products/?style= response to the right variant.
 async function recommendedFixTier(
   pid: string,
+  colorName: string,
   deps: RunImagePollutionAuditDeps,
 ): Promise<string> {
   if (deps.args.dryRun) return '1';
   try {
-    const canon = await deps.supplierCanonicalFn(pid);
+    const canon = await deps.supplierCanonicalFn(pid, colorName);
     return canon ? '1' : '3';
   } catch {
     return '3';
@@ -514,7 +538,9 @@ async function pass2Content(
 
     let canonical: { url: string; source: string; styleId?: number | string } | null = null;
     try {
-      canonical = (await deps.supplierCanonicalFn(p.pid)) as typeof canonical;
+      // Phase 17 17-02: thread BR row colorName so the resolver returns the
+      // right variant (eliminates "same style, different color" verifier rejects).
+      canonical = (await deps.supplierCanonicalFn(p.pid, p.colorName)) as typeof canonical;
     } catch (err) {
       logger.warn(`[audit-image-pollution] supplier-canonical failed for ${p.pid}: ${err}`);
     }

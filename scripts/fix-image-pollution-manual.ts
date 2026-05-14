@@ -555,7 +555,12 @@ async function handleReplace(
   let verifyForceNotes = '';
   if (col === 'FrontImage') {
     try {
-      const canonical = await deps.supplierCanonicalFn(row.pid);
+      // Phase 17 17-02: thread BR row colorName so the canonical reference
+      // matches the variant the operator is fixing (not just the first color).
+      const colorName = String(
+        brEntry.row[brIndex.headerMap['colorName'] ?? -1] ?? '',
+      );
+      const canonical = await deps.supplierCanonicalFn(row.pid, colorName);
       if (canonical) {
         // Download canonical via Drive helper if it's a Drive URL, otherwise
         // skip verifier (no easy way to fetch arbitrary HTTP from this helper

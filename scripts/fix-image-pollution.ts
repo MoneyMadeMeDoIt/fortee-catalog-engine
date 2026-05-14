@@ -328,10 +328,17 @@ export async function tier1Fix(
     return { pid, tier: 1, status: 'skipped', cascade: true };
   }
 
+  // Phase 17 17-02: extract BR row's colorName so the per-color resolver
+  // returns the canonical URL for the matching variant (eliminates the
+  // "same style, different color" verifier-fail class from 2026-05-14).
+  const colorName = String(
+    brEntry.row[brIndex.headerMap['colorName'] ?? -1] ?? '',
+  );
+
   // 1. Resolve canonical
   let canonical: Awaited<ReturnType<typeof resolveSupplierCanonical>> = null;
   try {
-    canonical = await deps.supplierCanonicalFn(pid);
+    canonical = await deps.supplierCanonicalFn(pid, colorName);
   } catch (err) {
     logger.warn(`[fix-image-pollution] supplier-canonical crashed for ${pid}: ${err}`);
     canonical = null;
