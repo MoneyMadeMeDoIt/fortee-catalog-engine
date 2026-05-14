@@ -92,6 +92,14 @@ export interface CanonicalResult {
   source: 'ss' | 'csw';
   /** S&S styleID (number) or CSW handle (string) — for trail logging. */
   styleId?: number | string;
+  /**
+   * Phase 17 17-02: true iff caller passed a `colorName` but no exact match
+   * was found in the supplier response, and the result fell back to the first
+   * front-image-bearing variant. Callers can use this to distinguish a precise
+   * per-color resolution from a best-effort fallback. Unset when colorName was
+   * not provided (preserves Phase 16 behavior).
+   */
+  wasFallback?: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -217,14 +225,35 @@ async function fetchCSWProduct(handle: string): Promise<{ images: Array<{ src: s
  * Dispatch order (each branch short-circuits on miss):
  *   1. `/^H08/i` → return null without any network call (D-22 headwear exclusion).
  *   2. `/^S/i`   → S&S Canada REST. resolveStyleId → /products/?style= → take
- *                  the first variant's `colorFrontImage` and run it through
- *                  makeSSLargeUrl (`_fm` → `_fl`). Returns `{ url, source: 'ss',
- *                  styleId }` or null.
- *   3. `/^L/i`   → CSW Shopify. findCSWHandle → fetchCSWProduct → first image
- *                  `src`. Returns `{ url, source: 'csw', styleId: handle }` or null.
+ *                  the matching color's `colorFrontImage` (or first variant if
+ *                  no colorName) and run it through makeSSLargeUrl
+ *                  (`_fm` → `_fl`). Returns `{ url, source: 'ss', styleId }`
+ *                  or null.
+ *   3. `/^L/i`   → CSW Shopify. findCSWHandle → fetchCSWProduct → match by
+ *                  filename slug when colorName provided, else first image
+ *                  `src`. Returns `{ url, source: 'csw', styleId: handle }` or
+ *                  null.
  *   4. KNOWN_SUPPLIER_PREFIXES → null with a `[supplier-canonical]` info log
  *                  flagging the pid as a Phase 16 D-12 expansion candidate.
  *   5. Else      → silent null (no log noise for genuinely unknown prefixes).
+ *
+ * Phase 17 17-02 — per-color resolution. When `colorName` is provided:
+ *   - S&S branch filters `/products/?style=` response by case-insensitive,
+ *     whitespace-trimmed equality on each variant's `colorName`. The chosen
+ *     variant must also carry a non-empty `colorFrontImage`; if it does not,
+ *     the resolver falls through to the first front-image-bearing variant.
+ *   - CSW branch does best-effort filename-substring match: the colorName is
+ *     lowercased, trimmed, and spaces replaced by hyphens, then the slug is
+ *     searched within each `images[].src` filename. CSW does not carry first-
+ *     class color metadata — match is fragile by design (see RESEARCH §17-02
+ *     Finding 4).
+ *   - In either branch, if a `colorName` was provided but no match found, the
+ *     result falls back to the first variant AND sets `wasFallback: true` so
+ *     callers can choose strict vs loose handling.
+ *
+ * Phase 16 behavior is preserved when `colorName` is omitted: the first
+ * front-image-bearing variant (S&S) / first image (CSW) is returned with
+ * `wasFallback` unset.
  *
  * IMPORTANT (per Phase 16 memory `feedback_strict_side_profile` and
  * `scripts/fetch-ss-images-fixed.ts:132-138`): S&S `colorSideImage` is sometimes
@@ -235,9 +264,16 @@ async function fetchCSWProduct(handle: string): Promise<{ images: Array<{ src: s
  * Rate-limit (T-16-05): every successful branch calls `throttle()` per source
  * before each fetch. The throttle uses a module-global `lastRequestAt`, so
  * sequential calls observe the 1100ms (S&S) / 1000ms (CSW) gap.
+ *
+ * @param pid Style/product identifier (BR productId).
+ * @param colorName Optional BR row colorName cell value. Case-insensitive,
+ *                  whitespace-trimmed match on S&S; best-effort
+ *                  filename-substring match on CSW. When omitted, the
+ *                  pre-Phase-17 first-variant behavior is preserved.
  */
 export async function resolveSupplierCanonical(
   pid: string,
+  colorName?: string,
 ): Promise<CanonicalResult | null> {
   // Headwear exclusion (D-22) — short-circuit BEFORE any network call.
   if (/^H08/i.test(pid)) return null;
@@ -250,18 +286,47 @@ export async function resolveSupplierCanonical(
     if (ssId === null) return null;
 
     await throttle('ss');
-    const products = await ssGet<Array<{ colorFrontImage?: string }>>(
-      `/products/?style=${ssId}&fields=colorFrontImage`,
+    // Phase 17 17-02: also request colorName so we can filter per-color.
+    const products = await ssGet<Array<{ colorName?: string; colorFrontImage?: string }>>(
+      `/products/?style=${ssId}&fields=colorName,colorFrontImage`,
       auth,
     );
     if (!products || products.length === 0) return null;
 
-    // Only `colorFrontImage` is canonical. See JSDoc T-16-side-trust caveat
-    // above — colorSideImage / colorDirectSideImage are intentionally NOT read.
-    const front = products.find((p) => p.colorFrontImage)?.colorFrontImage;
-    if (!front) return null;
+    // Phase 17 17-02: per-color filter, with fallback to first front-image-
+    // bearing variant. Only `colorFrontImage` is canonical (see JSDoc
+    // T-16-side-trust caveat above — colorSideImage / colorDirectSideImage are
+    // intentionally NOT read).
+    let match: { colorName?: string; colorFrontImage?: string } | undefined;
+    let wasFallback = false;
 
-    return { url: makeSSLargeUrl(front), source: 'ss', styleId: ssId };
+    if (colorName) {
+      const target = colorName.toUpperCase().trim();
+      match = products.find(
+        (p) =>
+          p.colorFrontImage &&
+          String(p.colorName ?? '').toUpperCase().trim() === target,
+      );
+      if (!match) {
+        wasFallback = true;
+      }
+    }
+    // Fall back to first front-image-bearing variant (preserves Phase 16 default).
+    if (!match) {
+      match = products.find((p) => p.colorFrontImage);
+    }
+    if (!match || !match.colorFrontImage) return null;
+
+    logger.info(
+      `[supplier-canonical] S&S resolved ${pid}${colorName ? ` colorName=${colorName}` : ''}${wasFallback ? ' (fallback)' : ''} -> ${match.colorFrontImage}`,
+    );
+
+    return {
+      url: makeSSLargeUrl(match.colorFrontImage),
+      source: 'ss',
+      styleId: ssId,
+      ...(wasFallback ? { wasFallback: true } : {}),
+    };
   }
 
   // CSW (Canada Sportswear)
@@ -274,7 +339,35 @@ export async function resolveSupplierCanonical(
     const product = await fetchCSWProduct(handle);
     if (!product || !product.images || product.images.length === 0) return null;
 
-    return { url: product.images[0].src, source: 'csw', styleId: handle };
+    // Phase 17 17-02: CSW best-effort filename-substring match. CSW does not
+    // expose per-color metadata; filenames sometimes embed a color token
+    // (e.g. `L00660-Black-front.jpg`). Slug = lowercase + trim + spaces→hyphens.
+    let chosen: { src: string } | undefined;
+    let wasFallback = false;
+
+    if (colorName) {
+      const colorSlug = colorName.toLowerCase().trim().replace(/\s+/g, '-');
+      chosen = product.images.find((img) => {
+        const filename = String(img.src.split('/').pop() ?? '').toLowerCase();
+        return filename.includes(colorSlug);
+      });
+      if (!chosen) {
+        wasFallback = true;
+      }
+    }
+    if (!chosen) chosen = product.images[0];
+    if (!chosen?.src) return null;
+
+    logger.info(
+      `[supplier-canonical] CSW resolved ${pid}${colorName ? ` colorName=${colorName}` : ''}${wasFallback ? ' (fallback)' : ''} -> ${chosen.src}`,
+    );
+
+    return {
+      url: chosen.src,
+      source: 'csw',
+      styleId: handle,
+      ...(wasFallback ? { wasFallback: true } : {}),
+    };
   }
 
   // Allowlisted brand prefix but no scraper exists (Bella, Gildan, etc.)
