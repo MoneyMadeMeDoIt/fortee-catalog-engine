@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Image Automation
-status: v2.0 SHIPPED 2026-05-13. First production audit (2026-05-14) surfaced Phase 17 scope.
-stopped_at: First production audit run completed (hung at 435/449 pids on a stuck Drive fetch — recovered via trail reconstruction). 213 polluted pids found, 453 detections. Tier 1-only fix run completed: 1 pid fully fixed, 5 partially, 366 cascaded to manual queue. Findings written to .planning/research/phase17-prep/PRODUCTION-AUDIT-FINDINGS.md with proposed Phase 17 plans (Drive timeout, per-color supplier-canonical, Model image rebuild, D-12 scraper expansion).
-last_updated: "2026-05-14T12:00:00.000Z"
+status: Phase 17 6/8 plans + B-5 patch shipped 2026-05-14. Manual finish in progress via ai-gen-product-image.ts (2026-05-15).
+stopped_at: Phase 17 Wave 1+2+3 shipped (17-01, 17-02, 17-04, 17-06, 17-07, 17-08 + 17-03 Task 1). Verification proved Tier 1 yield jumped 1 → 59 fixed pids after 17-02 per-color + 17-04 prefix dispatcher widening. 17-03 Task 2 sample-test blocked at 9/24 pass rate (verifier doesn't catch view-mismatch in AI-generated models, per operator spot-check). Pivoted to operator-driven mixed manual + AI workflow: scripts/ai-gen-product-image.ts + per-pid batch wrappers in tmp/. Today's batches: 18000, 18500, 18600, 3323, 3601, 3945, 5000L, 5400, 5V00L (AI side gens). Duplicates: 18000→18000B, 18500→18500B, 5000→5000B (server-side copy filtered by BR colors). Also shipped: refresh-all-ss-images.ts (17,748 standardized copies), dedupe-ssanada-pid-folders.ts (consolidated 4 duplicate folders), ai-gen-product-image.ts, B-5 dry-run Drive-ops gating patch.
+last_updated: "2026-05-15T14:30:00.000Z"
 progress:
-  total_phases: 9
+  total_phases: 10
   completed_phases: 9
-  total_plans: 24
-  completed_plans: 24
-  percent: 100
+  total_plans: 32
+  completed_plans: 30
+  percent: 94
 ---
 
 # Project State
@@ -20,11 +20,28 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-01)
 
 **Core value:** One command turns an enriched sheet row into a live Shopify product with correct decoration options, placements, pricing, standardized images, and all customer-facing content.
-**Current focus:** v2.0 Image Automation milestone COMPLETE (2026-05-13). Next milestone TBD.
+**Current focus:** Phase 17 manual finish — operator-driven AI side-image generation via scripts/ai-gen-product-image.ts, per-pid batches in tmp/.
 
 ## Current Position
 
-Phase 15 SHIPPED 2026-05-11. Phase 16 SHIPPED 2026-05-13 (operator checkpoint approved). v2.0 milestone closed.
+Phase 17 6/8 plans + B-5 patch shipped 2026-05-14. Phase 17 Task 2 (Model* AI rebuild) abandoned on 2026-05-15 — verifier doesn't catch view-mismatch (AI generates front-view images and labels them as side/back, verifier passes them anyway). Pivoted to operator-driven mixed workflow: operator inspects pids manually, sends reference front + product name, I generate AI side views via gpt-image-1, standardize via Phase 11, upload to Drive as `ai_<pid>_<color>_DirectSideImage.png` in SSCANADA/<pid>/.
+
+**Today (2026-05-15) — AI gens completed:**
+- 18000 (Unisex Heavy Blend Crewneck Sweatshirt): 29 colors
+- 18000B (kids): 10 colors duplicated from 18000 (BR-filtered server-side copy)
+- 18500 (Unisex Heavy Blend Hooded Sweatshirt): 30 colors
+- 18500B (kids): 16 of 19 BR colors duplicated from 18500 (3 colors had no 18500 source: Gold, Graphite Heather, White)
+- 18600 (Unisex Heavy Blend Full-Zip Hooded Sweatshirt): 15 colors
+- 3323 (Toddler Fine Jersey Tank): 4 colors
+- 3601 (Unisex Cotton Long Sleeve T-Shirt): 3 colors
+- 3945 (Unisex Sponge Fleece Drop Shoulder Crewneck Sweatshirt): 3 colors
+- 5000L (Women's Heavy Cotton V-Neck T-Shirt — wait that's 5V00L): 25 colors (5000L is Women's Heavy Cotton T-Shirt)
+- 5000B (kids of 5000): 54 colors server-side copied from 5000 (existing _Side_std.png pattern, not AI)
+- 5400 (Unisex Heavy Cotton Long Sleeve T-Shirt): 14 colors
+- 5V00L (Women's Heavy Cotton V-Neck T-Shirt): 11 colors
+- Net AI gen cost today: ~$5-7 OpenAI
+
+Phase 15 SHIPPED 2026-05-11. Phase 16 SHIPPED 2026-05-13 (operator checkpoint approved). v2.0 closed.
 
 **Phase 15 (Garment Type Verification) — SHIPPED 2026-05-11:**
 - 4/4 plans complete: verifier helper + in-pipeline integration + retro audit CLI + fixture-gated real-API test
