@@ -45,7 +45,7 @@
 import 'dotenv/config';
 import { google, drive_v3 } from 'googleapis';
 import sharp from 'sharp';
-import { mkdirSync, existsSync, writeFileSync, appendFileSync } from 'fs';
+import { mkdirSync, existsSync, writeFileSync, appendFileSync, readFileSync } from 'fs';
 import { parseArgs } from 'node:util';
 import { createSheetsClient } from '../src/sheets/client.js';
 import {
@@ -596,8 +596,23 @@ async function main() {
   const drive = createDriveClient();
   const rootCache = new Map<string, string | null>(); // supplierCode → folderId
 
+  // Checkpoint: persist completed pids so we can resume after a crash without
+  // redoing successful work. Only pids that finished cleanly (no per-pid throw)
+  // are recorded. Re-running with --apply will skip these.
+  const checkpointPath = `${TMP_DIR}/finalize-drive-checkpoint.txt`;
+  const completedPids = new Set<string>();
+  if (existsSync(checkpointPath)) {
+    const raw = readFileSync(checkpointPath, 'utf8');
+    for (const line of raw.split(/\r?\n/)) {
+      const p = line.trim();
+      if (p) completedPids.add(p);
+    }
+    console.log(`[finalize] checkpoint: ${completedPids.size} pids already completed (will skip in --apply)`);
+  }
+
   let pidsTouched = 0;
   let pidsFolderMissing = 0;
+  let pidsSkippedByCheckpoint = 0;
   let plansCount = 0;
   let collisionsCount = 0;
   let leaveAloneCount = 0;
@@ -608,6 +623,12 @@ async function main() {
     const row = processedPids[pidIdx];
     const label = `${pidIdx + 1}/${processedPids.length} ${row.pid}`;
 
+    if (apply && completedPids.has(row.pid)) {
+      pidsSkippedByCheckpoint++;
+      continue;
+    }
+
+    try {
     // Resolve supplier folder
     let supplierFolderId = rootCache.get(row.supplierCode);
     if (supplierFolderId === undefined) {
@@ -779,12 +800,26 @@ async function main() {
         logger.warn(`[finalize] ${row.pid} ${p.oldName} → ${p.newName}: ${(err as Error).message}`);
       }
     }
+
+    // Pid finished cleanly — record in checkpoint so re-runs skip it
+    if (apply) {
+      appendFileSync(checkpointPath, `${row.pid}\n`);
+      completedPids.add(row.pid);
+    }
+    } catch (pidErr) {
+      // Top-level per-pid failure (e.g. findFolder ENOTFOUND when network drops).
+      // Don't bail the whole run — log and move on.
+      appendFileSync(errPath, `${row.pid}\t-\tpid-level:${(pidErr as Error).message}\n`);
+      errorCount++;
+      logger.warn(`[finalize] ${label} pid-level error: ${(pidErr as Error).message}`);
+    }
   }
 
   console.log('\n── summary ─────────────────────────────────────');
   console.log(`pids in sheet:        ${allPids.length}`);
   console.log(`pids skipped:         ${allPids.length - processedPids.length - (onlyPid || limit ? 0 : 0)}`);
   console.log(`pids processed:       ${processedPids.length}`);
+  console.log(`pids skipped (ckpt):  ${pidsSkippedByCheckpoint}`);
   console.log(`pids touched:         ${pidsTouched}`);
   console.log(`pids folder missing:  ${pidsFolderMissing}`);
   console.log(`plan rows:            ${plansCount}`);

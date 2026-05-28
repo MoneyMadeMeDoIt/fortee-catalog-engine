@@ -87,9 +87,17 @@ function isTimeoutError(err: unknown): boolean {
     code === 'ECONNABORTED' ||
     code === 'ETIMEDOUT' ||
     code === 'ERR_CANCELED' ||
+    // Phase 18: transient network/DNS errors observed on long-running batch
+    // jobs (Wi-Fi blip, intermittent AV TLS interception, ISP DNS flakiness).
+    // Treat them like timeouts — safe to retry the same idempotent request.
+    code === 'ENOTFOUND' ||
+    code === 'ECONNRESET' ||
+    code === 'EAI_AGAIN' ||
     message.includes('aborted') ||
     message.includes('timeout') ||
-    message.includes('canceled')
+    message.includes('canceled') ||
+    message.includes('ENOTFOUND') ||
+    message.includes('ECONNRESET')
   );
 }
 
