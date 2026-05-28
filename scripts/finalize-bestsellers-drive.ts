@@ -709,19 +709,14 @@ async function main() {
       for (const it of planItems) {
         const newName = canonicalName(row.brand, row.pid, color, it.targetRole);
 
-        // Collision check: target name exists in the folder AND it's not our own old name
-        const collidingId = existingNames.get(newName);
-        if (collidingId && collidingId !== it.src.fileId) {
-          appendFileSync(
-            collisionPath,
-            `${row.pid}\t${color}\t${newName}\t${collidingId}\t${it.src.fileId}\n`,
-          );
-          collisionsCount++;
-          continue;
-        }
+        // Skip no-op: source file is ALREADY canonically named. uploadToDrive
+        // would update it in-place anyway, but we'd then race with a sibling
+        // legacy-named row that wants to claim the same target. Letting the
+        // legacy row win means it triggers the trash of the old name.
+        if (it.src.rawName === newName) continue;
 
-        // Same source can produce 2 outputs (left + right via flip) — that's fine
-        // but two DIFFERENT source files mapping to the same newName within this pid → collision
+        // Within-pid collision: two DIFFERENT non-canonical sources mapping to
+        // the same canonical name → keep the first, log the second.
         const prevSrc = targetNames.get(newName);
         if (prevSrc && prevSrc !== it.src.rawName) {
           appendFileSync(
@@ -732,6 +727,19 @@ async function main() {
           continue;
         }
         targetNames.set(newName, it.src.rawName);
+
+        // Folder-level: target name exists in folder under a different fileId.
+        // Always allowed — uploadToDrive will UPDATE in-place; this row then
+        // trashes p.fileId via newFileId-vs-p.fileId compare. Just log it so
+        // we can correlate which uploads were updates vs creates.
+        const collidingId = existingNames.get(newName);
+        if (collidingId && collidingId !== it.src.fileId) {
+          appendFileSync(
+            collisionPath,
+            `${row.pid}\t${color}\t${newName}\tin-folder-update:${collidingId}\t${it.src.fileId}\n`,
+          );
+          // intentionally no `continue` — fall through to plan and apply
+        }
 
         planRows.push({
           pid: row.pid,
@@ -764,34 +772,36 @@ async function main() {
 
     // ── APPLY ──────────────────────────────────────────────────────────────
     const category = inferCategory(row.productName);
-    // Track which source fileIds we've already trashed (don't trash twice when 1 src → 2 outputs)
+    // Track which source fileIds we've already trashed (don't trash twice when 1 src → 2 outputs).
+    // trashDriveFile is idempotent on the Drive side, so even a race losing this set is safe.
     const trashedIds = new Set<string>();
-    // Cache standardized buffer per source (avoid re-standardizing for left+right pair)
-    const stdCache = new Map<string, Buffer>();
+    // In-flight standardize promise dedupe: when one src produces both LeftSide
+    // and RightSide, both plan rows await the same standardize promise.
+    const stdInFlight = new Map<string, Promise<Buffer>>();
+    const standardizeOnce = (fileId: string): Promise<Buffer> => {
+      let p = stdInFlight.get(fileId);
+      if (p) return p;
+      p = (async () => {
+        const raw = await downloadFromDrive(drive, fileId);
+        const { buffer } = await standardizeImage(raw, category);
+        return buffer;
+      })();
+      stdInFlight.set(fileId, p);
+      return p;
+    };
 
-    for (const p of planRows) {
+    const APPLY_CONCURRENCY = 5;
+    const processOne = async (p: typeof planRows[number]) => {
       try {
-        let stdBuffer = stdCache.get(p.fileId);
-        if (!stdBuffer) {
-          const raw = await downloadFromDrive(drive, p.fileId);
-          const { buffer } = await standardizeImage(raw, category);
-          stdBuffer = buffer;
-          stdCache.set(p.fileId, stdBuffer);
-        }
-        let outBuf = stdBuffer;
-        if (p.flip) {
-          outBuf = await sharp(stdBuffer).flop().png().toBuffer();
-        }
-
+        const stdBuffer = await standardizeOnce(p.fileId);
+        const outBuf = p.flip
+          ? await sharp(stdBuffer).flop().png().toBuffer()
+          : stdBuffer;
         const url = await uploadToDrive(drive, outBuf, p.newName, row.supplierCode, row.pid);
         const newFileId = url.split('id=')[1];
-        // Trash original ONLY if the rename produced a new fileId (different name → different file).
-        // For an unchanged name (idempotent re-run), uploadToDrive UPDATES the same file in-place.
         if (newFileId && newFileId !== p.fileId && !trashedIds.has(p.fileId)) {
-          // Only trash if the original old name isn't itself referenced as a target by another plan row
-          // (defensive — within-pid collisions were already caught above).
+          trashedIds.add(p.fileId); // claim before await so a parallel sibling skips
           await trashDriveFile(drive, p.fileId);
-          trashedIds.add(p.fileId);
         }
         appliedCount++;
       } catch (err) {
@@ -799,7 +809,18 @@ async function main() {
         errorCount++;
         logger.warn(`[finalize] ${row.pid} ${p.oldName} → ${p.newName}: ${(err as Error).message}`);
       }
-    }
+    };
+
+    // Fixed-pool concurrency: keep up to APPLY_CONCURRENCY processOne() in flight.
+    let nextIdx = 0;
+    const workers = Array.from({ length: APPLY_CONCURRENCY }, async () => {
+      while (true) {
+        const idx = nextIdx++;
+        if (idx >= planRows.length) return;
+        await processOne(planRows[idx]);
+      }
+    });
+    await Promise.all(workers);
 
     // Pid finished cleanly — record in checkpoint so re-runs skip it
     if (apply) {
