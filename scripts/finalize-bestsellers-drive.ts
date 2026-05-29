@@ -790,7 +790,7 @@ async function main() {
       return p;
     };
 
-    const APPLY_CONCURRENCY = 5;
+    const APPLY_CONCURRENCY = 15;
     const processOne = async (p: typeof planRows[number]) => {
       try {
         const stdBuffer = await standardizeOnce(p.fileId);
