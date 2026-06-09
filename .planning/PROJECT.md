@@ -27,6 +27,9 @@ One command turns an enriched sheet row into a live Shopify product with correct
 - ✓ Per-product audit runner orchestrating scorer → source → generate → standardize → upload — v2.0 phase 12
 - ✓ CLI entry point `audit-images.ts` with --style-id, --all, --dry-run flags — v2.0 phase 13
 - ✓ Audit + reconciliation tooling for BR ↔ Drive ↔ Store imagery (resolveStoreProduct, cross-pollution classification, BAD-ALT triage) — v2.0 phase 14
+- ✓ Garment-type verification — post-generation classifier rejecting AI views that drift garment shape — v2.0 phase 15
+- ✓ Catalog image pollution audit + tiered fix toolchain (3-pass identity audit, supplier-fetch/AI-regen, operator checkpoint) — v2.0 phases 16–17
+- ✓ Complete-Bestsellers Drive imagery finalize — canonical `{Brand}-{pid}-{Color}-{Role}.png` across all pid folders (452/452, verified plan=0) — v2.0 (2026-06-09)
 
 ### Active
 
@@ -46,7 +49,7 @@ One command turns an enriched sheet row into a live Shopify product with correct
 Shipped v1.0 with ~12,137 LOC TypeScript across 6 completed phases in 7 days.
 Tech stack: TypeScript ESM, Shopify GraphQL Admin API (2025-01), Google Sheets API, sharp (image processing), Zod v4, cheerio (HTML parsing), p-queue (rate limiting).
 
-**Current state:** v2.0 Image Automation milestone complete (phases 08–13 + ad-hoc Phase 14 imagery cleanup). 460 bestseller products live on test store with full audit hygiene. Catalog curation in progress — 283 fully complete, 179 with data gaps being filled.
+**Current state:** v2.0 Image Automation milestone complete and archived 2026-06-09 (phases 08–17: scoring, sourcing, AI generation, standardization, audit runner, CLI, imagery cleanup, garment-type verification, pollution audit+fix). Complete-Bestsellers Drive imagery finalize done (452/452, plan=0). Next: v3.0 Catalog Data Completion — link standardized Drive images into Bestsellers-Ready + AI categories/keywords.
 
 **Phase 14 imagery cleanup (shipped 2026-05-08):** Reconciled BR ↔ Drive ↔ Store imagery state across 460 products. Audit dropped 973 → 25 issues; remaining 25 all documented or deferred. Reusable tooling shipped covering safe pid resolution, store cleanup, Drive dedupe, cross-pollution classification, and alt triage.
 
@@ -135,4 +138,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-05-08 — Phase 14 imagery cleanup shipped. Audit 973→25; reusable tooling for BR↔Drive↔Store reconciliation in place.*
+*Last updated: 2026-06-09 — v2.0 Image Automation milestone completed and archived (phases 08–17). Ready for v3.0.*

@@ -1,5 +1,23 @@
 # Milestones
 
+## v2.0 Image Automation (Shipped: 2026-06-09)
+
+**Phases completed:** 10 phase dirs (08–17). 7 roadmap-tracked (08–13, 15) + 14/16/17 added ad-hoc during the milestone.
+
+**Key accomplishments:**
+
+- **Image quality scorer (08)** — sharp-based blur/resolution/blank-garment detection; QUALITY_THRESHOLDS calibrated against 243 real supplier images, cutting the false-reject rate from 100% to near-zero.
+- **Image sourcing (09)** — parallel three-supplier sourcer (OMG OneSource, CSW Shopify storefront, S&S Canada REST) with quality-score winner selection and graceful credential degradation.
+- **AI image generation (10)** — `generateGarmentView()` / `enhanceFrontImage()` via OpenAI images.edit() with 3-candidate selection, 15° hue-drift rejection, best-of-6 fallback, and a $200 budget-capped CostTracker.
+- **Standardization & safe upload (11)** — fixed 85% garment-height on 2000×2000 canvas; writes standardized CDN URLs to Sheets without mutating store products.
+- **Audit runner + CLI (12–13)** — `auditProductImages(styleID)` orchestrates score→source→generate→standardize→write; `audit-images.ts` exposes `--style-id`/`--all`/`--dry-run`.
+- **Imagery cleanup & reconciliation (14)** — BR↔Drive↔Store reconciliation, `resolveStoreProduct` fail-loud helper, cross-pollution classification, BAD-ALT triage; audit dropped 973→25.
+- **Garment-type verification (15)** — post-generation classifier rejecting AI views that drift garment shape (catches shape drift, not identity pollution).
+- **Catalog image pollution audit + fix (16–17)** — 3-pass identity-pollution audit + tiered fix toolchain (supplier fetch / AI regen) with operator checkpoint; per-color + Model* handling.
+- **Complete-Bestsellers Drive finalize (2026-06-09)** — standardized every pid folder to `{Brand}-{pid}-{Color}-{Role}.png`; verified complete (452/452, plan=0).
+
+---
+
 ## v1.0 MVP (Shipped: 2026-03-26)
 
 **Phases completed:** 8 phases, 17 plans, 22 tasks
