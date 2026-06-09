@@ -1,17 +1,16 @@
 ---
 gsd_state_version: 1.0
-milestone: v2.0
-milestone_name: Image Automation
-status: Awaiting next milestone
-stopped_at: Complete-Bestsellers Drive-imagery finalize COMPLETE (452/452, verified plan=0); 7 unparseable-Has-Side pids parked in Missing-Info. Nothing blocking on this track.
-last_updated: "2026-06-09T18:09:35.137Z"
-last_activity: 2026-06-09 — Milestone v2.0 completed and archived
+milestone: v3.0
+milestone_name: Catalog Data Completion
+status: planning
+last_updated: "2026-06-09T18:18:50.562Z"
+last_activity: 2026-06-09
 progress:
-  total_phases: 7
-  completed_phases: 7
-  total_plans: 13
-  completed_plans: 14
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -25,10 +24,10 @@ See: .planning/PROJECT.md (updated 2026-04-01)
 
 ## Current Position
 
-Phase: Milestone v2.0 complete
+Phase: Not started (defining requirements)
 Plan: —
-Status: Awaiting next milestone
-Last activity: 2026-06-09 — Milestone v2.0 completed and archived
+Status: Defining requirements
+Last activity: 2026-06-09 — Milestone v3.0 started
 
 ## Accumulated Context
 

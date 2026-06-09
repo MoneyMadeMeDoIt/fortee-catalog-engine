@@ -88,18 +88,16 @@ Tech stack: TypeScript ESM, Shopify GraphQL Admin API (2025-01), Google Sheets A
 - **Scale**: Single-product push in v1.0; batch mode deferred
 - **Execution**: Manual script trigger, not automated sync
 
-## Current Milestone: v2.0 Image Automation
+## Current Milestone: v3.0 Catalog Data Completion
 
-**Goal:** Every product gets uniform, e-commerce-ready front/back/side images — audit existing for quality, replace bad ones, generate missing views, standardize all, and track status in Google Sheet.
+**Goal:** Complete every Bestsellers-Ready row with standardized Drive image links and consumer-style categories + keywords, so each product is fully data-ready for store push.
 
 **Target features:**
-- Audit & standardize existing images (uniform size, ratio, quality)
-- AI quality scoring — flag ugly/unusable images for replacement
-- Source front images from OrderMyGear API or scrape supplier sites
-- AI-generate missing AND replacement back/side views from front image
-- Verify generated image quality before accepting
-- Standardize all final images to uniform dimensions/ratio
-- Classify and update image status back into Google Sheet
+- Drive→BR image linker — overwrite all image cells with standardized `{Brand}-{pid}-{Color}-{Role}.png` URLs; add 5 new columns (LeftSide, RightSide, ModelFront, ModelSide, ModelBack)
+- AI category inference (consumer-friendly) — fill `categories` + refine generic `baseCategory` rows
+- AI keyword/tag generation — consumer-style search terms into `keywords`
+
+**Key context:** 24,175 BR rows / ~291 products. Images stream is deterministic (no AI, not blocked) → build first. Categories + keywords need the OpenAI usage cap raised. Customers are small businesses that shop like consumers — content must read like a consumer storefront, not a wholesale catalog.
 
 ## Key Decisions
 
