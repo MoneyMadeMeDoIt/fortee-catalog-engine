@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Image Automation
-status: Phase 17 6/8 plans + B-5 patch shipped 2026-05-14. Manual finish in progress via ai-gen-product-image.ts (2026-05-15).
-stopped_at: Phase 17 Wave 1+2+3 shipped (17-01, 17-02, 17-04, 17-06, 17-07, 17-08 + 17-03 Task 1). Verification proved Tier 1 yield jumped 1 → 59 fixed pids after 17-02 per-color + 17-04 prefix dispatcher widening. 17-03 Task 2 sample-test blocked at 9/24 pass rate (verifier doesn't catch view-mismatch in AI-generated models, per operator spot-check). Pivoted to operator-driven mixed manual + AI workflow: scripts/ai-gen-product-image.ts + per-pid batch wrappers in tmp/. Today's batches: 18000, 18500, 18600, 3323, 3601, 3945, 5000L, 5400, 5V00L (AI side gens). Duplicates: 18000→18000B, 18500→18500B, 5000→5000B (server-side copy filtered by BR colors). Also shipped: refresh-all-ss-images.ts (17,748 standardized copies), dedupe-ssanada-pid-folders.ts (consolidated 4 duplicate folders), ai-gen-product-image.ts, B-5 dry-run Drive-ops gating patch.
-last_updated: "2026-05-15T14:30:00.000Z"
+status: Complete-Bestsellers Drive-imagery finalize COMPLETE 2026-06-09 (452/452, verified plan=0). 7 unparseable-Has-Side pids parked in Missing-Info.
+stopped_at: scripts/finalize-bestsellers-drive.ts finished for Complete-Bestsellers. Clean verifying dry-run (re-plans all pids, ignores checkpoint) confirms done: 459 in sheet → 7 skipped → 452 processed, 0 plan rows / 0 collisions / 0 errors / 1194 leave-alone. The 7 SKIP pids (Has Side value not left/right/both/no-need) appended to the Missing-Info tab with SideImage=MISSING + per-pid note: 1386016 (whole CB row = 'DISCO'), 3323 (Has Side 'Y' + name missing), L00910 (Has Side 'Y'), L7260Y (Has Side 'N'), S600 (Has Side 'Y'), TT41 (freetext 'model left side and back'), S07241 (CB row incomplete). To clear: set canonical Has Side in Complete-Bestsellers, re-run finalize --apply. Prior: Phase 17 6/8 plans + B-5 patch shipped 2026-05-14; operator-driven mixed manual+AI side-gen workflow (ai-gen-product-image.ts) is the standing finish path; 17-03 Task 2 Model* rebuild abandoned (verifier misses view-mismatch).
+last_updated: "2026-06-09T00:00:00.000Z"
 progress:
   total_phases: 10
   completed_phases: 9
@@ -23,6 +23,8 @@ See: .planning/PROJECT.md (updated 2026-04-01)
 **Current focus:** Phase 17 manual finish — operator-driven AI side-image generation via scripts/ai-gen-product-image.ts, per-pid batches in tmp/.
 
 ## Current Position
+
+**Complete-Bestsellers Drive-imagery finalize — COMPLETE 2026-06-09.** `scripts/finalize-bestsellers-drive.ts` reorganized every pid folder under the canonical `{Brand}-{pid}-{Color}-{Role}.png` template. Verified done via a clean dry-run (re-plans all pids, ignores the checkpoint per the project rule): 459 in sheet → 7 skipped → **452 processed, 0 plan rows, 0 collisions, 0 errors**, 1194 leave-alone. 7 pids whose `Has Side` value isn't `left/right/both/no need` were parked in the **Missing-Info** tab (`SideImage=MISSING` + per-pid note): 1386016, 3323, L00910, L7260Y, S600, TT41, S07241. They auto-skip every finalize run; to clear, set a canonical `Has Side` in Complete-Bestsellers and re-run `finalize --apply`. (Park script: `tmp/park-7-in-mi.ts`, idempotent.)
 
 Phase 17 6/8 plans + B-5 patch shipped 2026-05-14. Phase 17 Task 2 (Model* AI rebuild) abandoned on 2026-05-15 — verifier doesn't catch view-mismatch (AI generates front-view images and labels them as side/back, verifier passes them anyway). Pivoted to operator-driven mixed workflow: operator inspects pids manually, sends reference front + product name, I generate AI side views via gpt-image-1, standardize via Phase 11, upload to Drive as `ai_<pid>_<color>_DirectSideImage.png` in SSCANADA/<pid>/.
 
@@ -152,8 +154,8 @@ Phase 14 follow-ups still deferred (6 DUPE-DRIVE, 7 MODEL-MISSING-ON-STORE, audi
 
 ## Session Continuity
 
-Last session: 2026-05-13 (active)
-Stopped at: Phase 16 SHIPPED + v2.0 milestone complete. 14 commits total (`b54b6e0` hook fix → phase-close docs). Operator checkpoint approved after live walkthrough on disposable pids. `16-PHASE-SUMMARY.md` written.
-Resume file: `.planning/phases/16-catalog-image-pollution-audit-fix/16-PHASE-SUMMARY.md` (start here for context on the just-shipped phase)
+Last session: 2026-06-09 (active)
+Stopped at: Complete-Bestsellers Drive-imagery finalize COMPLETE (452/452, verified plan=0); 7 unparseable-Has-Side pids parked in Missing-Info. Nothing blocking on this track.
+Resume file: `.planning/STATE.md` Current Position (finalize complete) — or `.planning/phases/16-catalog-image-pollution-audit-fix/16-PHASE-SUMMARY.md` for last shipped phase context.
 
 Project pushed to remote: https://github.com/MoneyMadeMeDoIt/fortee-catalog-engine (master branch)
