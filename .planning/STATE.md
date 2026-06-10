@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Catalog Data Completion
-status: executing
-stopped_at: "Phase 18 COMPLETE — link-br-images.ts applied: 90,139 cells written (25,413 new + 64,726 overwritten), 6,552 misses preserved, idempotent re-run = 0 changes, URL sample 12/12 image/*. Next: Phase 19 (AI category + keyword gen) — needs OpenAI usage cap raised."
-last_updated: "2026-06-10T13:00:00.000Z"
-last_activity: "2026-06-10 — Phase 18 shipped: live --apply linked Drive imagery into BR (90,139 cells, 4 new columns added, backup written, idempotency + URL render verified)"
+status: Phase 19 Plan 02 complete. gen-categories-keywords.ts built + tested (20 tests). Awaiting 19-03 human-verify checkpoint to run --apply.
+stopped_at: "19-02 complete (gen-categories-keywords.ts + unit tests). Next: execute 19-03 operator checkpoint."
+last_updated: "2026-06-10T00:00:00.000Z"
+last_activity: "2026-06-10 — Phase 19-02: gen-categories-keywords.ts built, 20 unit tests passing, @anthropic-ai/sdk installed"
 progress:
   total_phases: 2
   completed_phases: 1
-  total_plans: 3
-  completed_plans: 3
-  percent: 50
+  total_plans: 6
+  completed_plans: 6
+  percent: 83
 ---
 
 # Project State
@@ -112,15 +112,22 @@ Key decisions for v3.0 roadmap (2026-06-09):
 - 13 CSW products not in OneSource API — sizes must be entered manually
 - 3 products could not be resolved in S&S REST API (6501, LCB112, M858LW)
 
+Key decisions for Phase 19-02 (2026-06-10):
+
+- Entry-point guard: `import.meta.url` vs `process.argv[1]` check prevents main() from running during vitest imports
+- Quota detection: checks 'quota'/'credit'/'exceeded' in error message (case-insensitive) to distinguish monthly cap from transient 429
+- CONCURRENCY=8 hand-rolled worker pool (simple runNext promises); no external concurrency library needed
+
 ## Session Continuity
 
 Last session: 2026-06-10 (active)
-Stopped at: 18-01 complete (br-image-parser pure module + tests). Next: execute 18-02.
-Resume file: `.planning/phases/18-drive-to-br-image-linker/18-01-SUMMARY.md`
+Stopped at: 19-02 complete (gen-categories-keywords.ts + unit tests). Next: execute 19-03.
+Resume file: `.planning/phases/19-ai-category-keyword-generation/19-02-SUMMARY.md`
 
 Project pushed to remote: https://github.com/MoneyMadeMeDoIt/fortee-catalog-engine (master branch)
 
 ## Operator Next Steps
 
-- Execute Phase 18-02: `/gsd-execute-phase 18` (Drive→BR linker script)
-- Raise OpenAI usage cap before running Phase 19
+- Execute Phase 19-03: `/gsd-execute-phase 19` (human-verify checkpoint — dry-run review, then --apply)
+- ANTHROPIC_API_KEY must be in .env before running 19-03
+- All invocations require: NODE_OPTIONS=--use-system-ca npx tsx scripts/gen-categories-keywords.ts
