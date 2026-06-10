@@ -21,16 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-09)
 
 **Core value:** One command turns an enriched sheet row into a live Shopify product with correct decoration options, placements, pricing, standardized images, and all customer-facing content.
-**Current focus:** v3.0 Catalog Data Completion — Phase 18 (image linker) COMPLETE; Phase 19 (AI categories + keywords) next, blocked on raising the OpenAI usage cap.
+**Current focus:** v3.0 Catalog Data Completion — Phase 18 (image linker) COMPLETE; Phase 19 (AI categories + keywords) waves 1-2 built (Claude Haiku, NOT OpenAI). 19-03 live dry-run + apply blocked on operator adding ANTHROPIC_API_KEY to .env.
 
 ## Current Position
 
-Phase: 18 complete → 19 next
-Plan: 18-01/02/03 all complete
-Status: Phase 18 shipped (Drive→BR image linker applied to live sheet). Phase 19 awaits OpenAI cap raise.
-Last activity: 2026-06-10 — Phase 18 live --apply: 90,139 cells written, idempotent, URLs verified 12/12
-
-Progress: [███░░░░░░░] 33% (0/2 phases complete, 2/3 plans complete)
+Phase: 18 complete → 19 in progress (19-01/02 done, 19-03 awaiting key + checkpoint)
+Plan: 18 all complete; 19-01 + 19-02 complete; 19-03 pending
+Status: Phase 19 categorizer built + unit-tested (97 tests total). Uses claude-haiku-4-5 via @anthropic-ai/sdk (sidesteps the OpenAI cap entirely). Execution of 19-03 (live dry-run → operator checkpoint → --apply) needs ANTHROPIC_API_KEY in .env.
+Last activity: 2026-06-10 — Phase 19-02: gen-categories-keywords.ts built, 20 unit tests pass, @anthropic-ai/sdk installed
 
 ## Accumulated Context
 
