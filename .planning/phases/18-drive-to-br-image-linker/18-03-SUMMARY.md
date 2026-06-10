@@ -204,3 +204,14 @@ None — no new network endpoints, auth paths, file access patterns, or schema c
 - DirectSideImage mapping: non-inverted (existing cells hold uc?id= left-side URLs)
 - URL HEAD sample: 10/10 ok (all image/png)
 - Zero sheet mutations (dry-run only; --apply blocked pending checkpoint)
+
+## Checkpoint Approved + Live Apply (2026-06-10)
+
+Operator approved the live overwrite after reviewing the dry-run audit.
+
+- `--apply` ran: backup `tmp/br-image-backup-2026-06-10T12-49-07-476Z.tsv` (24,174 rows) written first; 4 new columns added (43→47 cols) with header re-read; **90,139 cells written** in 2 batches (25,413 new + 64,726 overwritten; 6,552 misses preserved; 1 no-pid skip).
+  - Note: total exceeded the pre-checkpoint dry-run estimate (65,417) because the 4 new columns did not exist during the dry-run, so their ~24.7k fills could not be previewed.
+- **Idempotency (OPS-02):** second `--apply` → 0 new, 0 overwritten, 90,139 already-current, **0 updates**.
+- **URL render (P7):** post-apply sample 12/12 returned `image/*`.
+
+Phase 18 success criteria 1–5 all satisfied. Phase COMPLETE.

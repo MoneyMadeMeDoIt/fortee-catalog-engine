@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Catalog Data Completion
 status: executing
-stopped_at: "18-02 complete (link-br-images.ts entry point + tests). Next: execute 18-03 (live --apply behind checkpoint)."
-last_updated: "2026-06-10T12:10:00.000Z"
-last_activity: "2026-06-10 — 18-02 shipped: link-br-images.ts + buildPlan core + 9 tests; dry-run confirmed on live sheet (24,175 rows, zero writes)"
+stopped_at: "Phase 18 COMPLETE — link-br-images.ts applied: 90,139 cells written (25,413 new + 64,726 overwritten), 6,552 misses preserved, idempotent re-run = 0 changes, URL sample 12/12 image/*. Next: Phase 19 (AI category + keyword gen) — needs OpenAI usage cap raised."
+last_updated: "2026-06-10T13:00:00.000Z"
+last_activity: "2026-06-10 — Phase 18 shipped: live --apply linked Drive imagery into BR (90,139 cells, 4 new columns added, backup written, idempotency + URL render verified)"
 progress:
   total_phases: 2
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 3
   completed_plans: 3
-  percent: 0
+  percent: 50
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-09)
 
 **Core value:** One command turns an enriched sheet row into a live Shopify product with correct decoration options, placements, pricing, standardized images, and all customer-facing content.
-**Current focus:** v3.0 Catalog Data Completion — roadmap defined (Phases 18-19), ready to plan Phase 18.
+**Current focus:** v3.0 Catalog Data Completion — Phase 18 (image linker) COMPLETE; Phase 19 (AI categories + keywords) next, blocked on raising the OpenAI usage cap.
 
 ## Current Position
 
-Phase: 18
-Plan: 02 complete / 03 next
-Status: Phase 18 in progress — Plans 18-01 and 18-02 complete
-Last activity: 2026-06-10 — 18-02 shipped: link-br-images.ts + buildPlan core + 9 tests; dry-run confirmed on live sheet
+Phase: 18 complete → 19 next
+Plan: 18-01/02/03 all complete
+Status: Phase 18 shipped (Drive→BR image linker applied to live sheet). Phase 19 awaits OpenAI cap raise.
+Last activity: 2026-06-10 — Phase 18 live --apply: 90,139 cells written, idempotent, URLs verified 12/12
 
 Progress: [███░░░░░░░] 33% (0/2 phases complete, 2/3 plans complete)
 

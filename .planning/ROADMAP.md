@@ -94,7 +94,7 @@ Plans:
 
 ## Phases
 
-- [ ] **Phase 18: Drive to BR Image Linker** - Overwrite the 7 BR image columns with canonical Drive URLs; add 4 new columns (Drive LeftSide→existing DirectSideImage); dry-run diff + backup before any apply
+- [x] **Phase 18: Drive to BR Image Linker** - Overwrite the 7 BR image columns with canonical Drive URLs; add 4 new columns (Drive LeftSide→existing DirectSideImage); dry-run diff + backup before any apply — completed 2026-06-10 (90,139 cells written, idempotent, URLs verified)
 - [ ] **Phase 19: AI Category & Keyword Generation** - One gpt-4o-mini structured-output call per product fills baseCategory (controlled vocab), categories (Shopify taxonomy path), and keywords (consumer tags); checkpointed for usage-cap resilience
 
 ## Phase Details

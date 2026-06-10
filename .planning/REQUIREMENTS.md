@@ -9,10 +9,10 @@ Requirements for the v3.0 milestone. Each maps to a roadmap phase.
 
 ### Image Linking (IMG)
 
-- [ ] **IMG-01**: Operator can populate every Bestsellers-Ready image cell from the standardized Drive library, overwriting existing values, joined by (productId, colorName)
-- [ ] **IMG-02**: The linker maps Drive LeftSide → the existing `DirectSideImage` column and adds 4 new BR columns — RightSide, ModelFront, ModelSide, ModelBack — filling each from its matching Drive role
-- [ ] **IMG-03**: Filenames are parsed pid-anchored (no hyphenated-brand color leak); a color with no matching Drive file is logged and left blank, never guessed
-- [ ] **IMG-04**: Operator gets a dry-run diff (old→new per changed cell) and a TSV backup of current image cells before any overwrite is applied
+- [x] **IMG-01**: Operator can populate every Bestsellers-Ready image cell from the standardized Drive library, overwriting existing values, joined by (productId, colorName) — Phase 18
+- [x] **IMG-02**: The linker maps Drive LeftSide → the existing `DirectSideImage` column and adds 4 new BR columns — RightSide, ModelFront, ModelSide, ModelBack — filling each from its matching Drive role — Phase 18
+- [x] **IMG-03**: Filenames are parsed pid-anchored (no hyphenated-brand color leak); a color with no matching Drive file is logged and the existing cell is left unchanged, never guessed — Phase 18
+- [x] **IMG-04**: Operator gets a dry-run diff (old→new per changed cell) and a TSV backup of current image cells before any overwrite is applied — Phase 18
 
 ### Categories (CAT)
 
@@ -30,7 +30,7 @@ Requirements for the v3.0 milestone. Each maps to a roadmap phase.
 
 - [ ] **OPS-01**: AI generation is checkpointed per product so an OpenAI usage-cap halt or crash resumes without re-spending on completed products
 - [ ] **OPS-02**: All v3.0 scripts are idempotent — re-running produces stable output and skips already-completed work
-- [ ] **OPS-03**: New BR columns are written by re-reading the header row immediately before the data write (no header-drift corruption on the shared 24k-row sheet)
+- [x] **OPS-03**: New BR columns are written by re-reading the header row immediately before the data write (no header-drift corruption on the shared 24k-row sheet) — Phase 18
 
 ## v2 Requirements
 
@@ -57,10 +57,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| IMG-01 | Phase 18 | Pending |
-| IMG-02 | Phase 18 | Pending |
-| IMG-03 | Phase 18 | Pending |
-| IMG-04 | Phase 18 | Pending |
+| IMG-01 | Phase 18 | Complete |
+| IMG-02 | Phase 18 | Complete |
+| IMG-03 | Phase 18 | Complete |
+| IMG-04 | Phase 18 | Complete |
 | CAT-01 | Phase 19 | Pending |
 | CAT-02 | Phase 19 | Pending |
 | CAT-03 | Phase 19 | Pending |
@@ -68,8 +68,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | KW-02 | Phase 19 | Pending |
 | KW-03 | Phase 19 | Pending |
 | OPS-01 | Phase 19 | Pending |
-| OPS-02 | Phase 18 + Phase 19 | Pending |
-| OPS-03 | Phase 18 | Pending |
+| OPS-02 | Phase 18 + Phase 19 | In Progress (Phase 18 done) |
+| OPS-03 | Phase 18 | Complete |
 
 **Coverage:**
 - v1 requirements: 13 total
