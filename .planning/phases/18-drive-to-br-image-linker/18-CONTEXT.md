@@ -15,8 +15,9 @@ image cells, joined by `(productId, colorName)`.
 In scope:
 - Enumerate Drive folders per product and parse standardized filenames (pid-anchored, role-anchored).
 - Join Drive files to BR rows on `(productId, colorName)`.
-- Overwrite existing image cells (FrontImage, BackImage, DirectSideImage) and ADD 5 new
-  image columns (LeftSide, RightSide, ModelFront, ModelSide, ModelBack).
+- Overwrite existing image cells (FrontImage, BackImage, DirectSideImage) and ADD 4 new
+  image columns (RightSide, ModelFront, ModelSide, ModelBack). Drive `LeftSide` role lands
+  in the existing `DirectSideImage` column (no separate LeftSide column).
 - Dry-run diff + TSV backup before any write.
 - Idempotent `--apply`.
 
@@ -40,7 +41,7 @@ Depends on: Nothing — v2.0 finalize confirmed 452/452 pid folders at plan=0.
 - **D-04** Map Drive `LeftSide` role → the existing BR `DirectSideImage` column.
 
 ### New columns to add
-- **D-05** ADD 4 new columns to BR: `RightSide`, `ModelFront`, `ModelSide`, `ModelBack`. (Note: the ROADMAP success criteria phrase this as "5 new columns" by also counting a dedicated `LeftSide` column — the planner must reconcile whether `LeftSide` is a new column or is the existing `DirectSideImage` per D-04. The locked decision here is: `LeftSide` Drive role lands in `DirectSideImage` (D-04); the four genuinely-new columns are RightSide, ModelFront, ModelSide, ModelBack. If a separate `LeftSide` column is also required for parity with the ModelSide naming, treat that as the 5th new column. Resolve during planning and reflect in must_haves.)
+- **D-05** ADD exactly 4 new columns to BR: `RightSide`, `ModelFront`, `ModelSide`, `ModelBack`. There is NO separate `LeftSide` column — the Drive `LeftSide` role lands in the existing `DirectSideImage` column (D-04). Final image-column set = FrontImage, BackImage, DirectSideImage, RightSide, ModelFront, ModelSide, ModelBack (7 total). (Operator-confirmed 2026-06-10, supersedes the ROADMAP's earlier "5 new columns" wording.)
 - **D-06** Re-read the BR header row immediately before writing any new column, so the column index is computed against the live sheet, not a stale snapshot (avoids clobbering the wrong column if headers shifted).
 
 ### Filename parsing (anti brand-leak)

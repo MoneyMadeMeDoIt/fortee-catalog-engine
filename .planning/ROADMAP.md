@@ -94,18 +94,18 @@ Plans:
 
 ## Phases
 
-- [ ] **Phase 18: Drive to BR Image Linker** - Overwrite all 8 BR image columns with canonical Drive URLs; add 5 new columns; dry-run diff + backup before any apply
+- [ ] **Phase 18: Drive to BR Image Linker** - Overwrite the 7 BR image columns with canonical Drive URLs; add 4 new columns (Drive LeftSide→existing DirectSideImage); dry-run diff + backup before any apply
 - [ ] **Phase 19: AI Category & Keyword Generation** - One gpt-4o-mini structured-output call per product fills baseCategory (controlled vocab), categories (Shopify taxonomy path), and keywords (consumer tags); checkpointed for usage-cap resilience
 
 ## Phase Details
 
 ### Phase 18: Drive to BR Image Linker
-**Goal**: Every Bestsellers-Ready row has its image cells overwritten with the correct canonical Drive URL for that (productId, colorName) pair, 5 new image columns are added safely, and no existing valid link is silently destroyed
+**Goal**: Every Bestsellers-Ready row has its image cells overwritten with the correct canonical Drive URL for that (productId, colorName) pair, 4 new image columns are added safely, and no existing valid link is silently destroyed
 **Depends on**: Nothing (unblocked — v2.0 finalize confirmed 452/452 pid folders at plan=0)
 **Requirements**: IMG-01, IMG-02, IMG-03, IMG-04, OPS-02, OPS-03
 **Success Criteria** (what must be TRUE):
   1. Running `scripts/link-br-images.ts --dry-run` produces a TSV showing old→new per changed cell with no changes applied to the sheet
-  2. Running `--apply` overwrites FrontImage, BackImage, DirectSideImage, and the 5 new columns (LeftSide, RightSide, ModelFront, ModelSide, ModelBack) with canonical `{Brand}-{pid}-{Color}-{Role}.png` Drive URLs for every matched (productId, colorName) pair
+  2. Running `--apply` overwrites FrontImage, BackImage, DirectSideImage (Drive LeftSide role), and the 4 new columns (RightSide, ModelFront, ModelSide, ModelBack) with canonical `{Brand}-{pid}-{Color}-{Role}.png` Drive URLs for every matched (productId, colorName) pair
   3. A (pid, colorName) pair with no matching Drive file leaves the existing cell value unchanged and appears in the miss log — no empty string is ever written to a previously-populated cell
   4. Hyphenated-brand pids (e.g. Q-Tees H08050) produce the correct color token without brand-name leaking into the color — all Drive filenames are parsed pid-anchored, role-anchored
   5. Re-running `--apply` a second time produces zero net changes (idempotent)
