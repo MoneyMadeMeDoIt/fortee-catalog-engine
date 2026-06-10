@@ -2,7 +2,7 @@
  * AI Category & Keyword Generator (Phase 19-02).
  *
  * For each unique productId in Bestsellers-Ready (~291), makes ONE structured-output
- * call to claude-haiku-4-5 returning { baseCategory, categoriesPath, keywords[] },
+ * call to OpenAI gpt-4o-mini returning { baseCategory, categoriesPath, keywords[] },
  * then fans the result out to ALL variant rows for that product.
  *
  * Default mode: dry-run  — emits a preview TSV, writes NOTHING to the sheet.
@@ -18,7 +18,7 @@
  *   --pid X          Process a single productId only.
  *
  * Requirements:
- *   - ANTHROPIC_API_KEY must be set in .env (P-2).
+ *   - OPENAI_API_KEY must be set in .env (operator chose OpenAI; existing key).
  *   - Prefix all invocations with NODE_OPTIONS=--use-system-ca (D-04, AV TLS interception).
  *
  * Safety invariants:
@@ -34,8 +34,7 @@
 import 'dotenv/config';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import Anthropic from '@anthropic-ai/sdk';
-import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
+import OpenAI from 'openai';
 import { google } from 'googleapis';
 import { createSheetsClient } from '../src/sheets/client.js';
 import { writeUpdates } from '../src/sheets/writer.js';
@@ -291,58 +290,74 @@ export function buildUpdatesForProduct(args: BuildUpdatesInput): BuildUpdatesRes
 // ─── classifyProduct ──────────────────────────────────────────────────────────
 
 /**
- * Calls Claude Haiku 4.5 with a single structured-output request for one product.
+ * Calls OpenAI gpt-4o-mini with a single structured-output request for one product.
  *
- * Per D-02: uses client.messages.parse() + zodOutputFormat(categorySchema).
- * Per D-02: NO effort param (Haiku errors on it). No thinking budget.
- * Per D-03: ONE call per product.
+ * Per D-02 (revised 2026-06-10, operator chose OpenAI — existing key, no setup):
+ * uses client.chat.completions.create() with response_format json_object, then
+ * validates the parsed JSON against the zod `categorySchema` (the schema enforces
+ * the decoration-safe baseCategory enum + shape). ONE call per product (D-03).
+ * Runtime: invoke with NODE_OPTIONS=--use-system-ca (AV TLS interception).
  *
  * Error handling (Pitfall 12):
- *   - 429 usage/quota error → save checkpoint + clean exit signal.
+ *   - 429 insufficient_quota / billing hard limit → save checkpoint + clean exit signal.
  *   - 429 rate-limit → retry with bounded backoff.
  *   - Other errors → rethrow.
  */
 export async function classifyProduct(
   input: Parameters<typeof buildPrompt>[0],
-  client: Anthropic,
+  client: OpenAI,
 ): Promise<CategoryOutput> {
   const MAX_RETRIES = 3;
   const BASE_DELAY_MS = 2000;
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
-      const result = await client.messages.parse({
-        model: 'claude-haiku-4-5',
+      const completion = await client.chat.completions.create({
+        model: 'gpt-4o-mini',
         max_tokens: MAX_TOKENS,
-        messages: [{ role: 'user', content: buildPrompt(input) }],
-        output_config: { format: zodOutputFormat(categorySchema, 'product_classification') },
+        response_format: { type: 'json_object' },
+        messages: [
+          {
+            role: 'system',
+            content:
+              'You are a product-classification assistant. Respond ONLY with a single valid JSON object matching the requested fields — no prose, no markdown fences.',
+          },
+          { role: 'user', content: buildPrompt(input) },
+        ],
       });
 
-      // messages.parse returns the parsed Zod output on `result.parsed`.
-      const parsed = (result as any).parsed as CategoryOutput;
-      if (!parsed) {
-        throw new Error('[gen-categories-keywords] classifyProduct: result.parsed is empty');
+      const raw = completion.choices[0]?.message?.content;
+      if (!raw) {
+        throw new Error('[gen-categories-keywords] classifyProduct: empty completion content');
       }
-
+      // Validate the model output against the zod schema (enforces the safe
+      // baseCategory enum, taxonomy-leaf shape, and keyword array).
+      const parsed = categorySchema.parse(JSON.parse(raw)) as CategoryOutput;
       return parsed;
     } catch (err: unknown) {
       const status = (err as { status?: number })?.status;
       const errMsg = (err as Error)?.message ?? '';
+      const code =
+        (err as { code?: string })?.code ??
+        (err as { error?: { code?: string } })?.error?.code ??
+        (err as { error?: { type?: string } })?.error?.type ??
+        '';
       const isRateLimit = status === 429;
 
       if (isRateLimit) {
-        // Distinguish quota (monthly cap) from transient rate-limit.
+        // Distinguish quota / billing hard limit (monthly cap) from transient rate-limit.
         const isQuotaError =
+          code === 'insufficient_quota' ||
+          code === 'billing_hard_limit_reached' ||
           errMsg.toLowerCase().includes('quota') ||
-          errMsg.toLowerCase().includes('credit') ||
-          errMsg.toLowerCase().includes('exceeded') ||
-          (err as { error?: { type?: string } })?.error?.type === 'invalid_request_error';
+          errMsg.toLowerCase().includes('billing') ||
+          errMsg.toLowerCase().includes('exceeded your current');
 
         if (isQuotaError) {
           // Pitfall 12: quota hit — signal clean exit to the caller.
           const quotaErr = new Error(
-            `[gen-categories-keywords] Anthropic usage cap reached. ` +
-            `Save checkpoint and re-run after the cap clears.\n` +
+            `[gen-categories-keywords] OpenAI usage cap / quota reached. ` +
+            `Checkpoint saved — re-run after raising the cap or topping up.\n` +
             `Original error: ${errMsg}`,
           );
           (quotaErr as any).isQuotaExhausted = true;
@@ -456,7 +471,7 @@ async function processProductsWithConcurrency(
   baseCatColIdx: number,
   catColIdx: number,
   keywordsColIdx: number,
-  client: Anthropic,
+  client: OpenAI,
   checkpoint: Checkpoint,
   checkpointPath: string,
   tab: string,
@@ -587,13 +602,13 @@ async function processProductsWithConcurrency(
 // ─── main ─────────────────────────────────────────────────────────────────────
 
 async function main(): Promise<void> {
-  // ── Startup: verify ANTHROPIC_API_KEY ──────────────────────────────────────
-  if (!process.env.ANTHROPIC_API_KEY) {
+  // ── Startup: verify OPENAI_API_KEY ─────────────────────────────────────────
+  if (!process.env.OPENAI_API_KEY) {
     console.error(
-      '[gen-categories-keywords] ERROR: ANTHROPIC_API_KEY is not set.\n' +
+      '[gen-categories-keywords] ERROR: OPENAI_API_KEY is not set.\n' +
       'Add it to your .env file:\n' +
-      '  ANTHROPIC_API_KEY=sk-ant-...\n' +
-      'Get a key from: https://console.anthropic.com/settings/api-keys',
+      '  OPENAI_API_KEY=sk-...\n' +
+      'Note: run this script with NODE_OPTIONS=--use-system-ca (AV TLS interception).',
     );
     process.exit(1);
   }
@@ -615,8 +630,8 @@ async function main(): Promise<void> {
   if (singlePid) console.log(`[SINGLE] Processing only pid=${singlePid}`);
   if (limitN > 0) console.log(`[LIMIT] Capped at ${limitN} products.`);
 
-  // ── Anthropic client ──────────────────────────────────────────────────────
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  // ── OpenAI client ─────────────────────────────────────────────────────────
+  const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
   // ── Sheets client ─────────────────────────────────────────────────────────
   const sheets = createSheetsClient();
@@ -760,7 +775,7 @@ async function main(): Promise<void> {
 
   if (quotaExhausted) {
     console.error(
-      '\n[gen-categories-keywords] QUOTA EXHAUSTED — Anthropic usage cap reached.\n' +
+      '\n[gen-categories-keywords] QUOTA EXHAUSTED — OpenAI usage cap / quota reached.\n' +
       `Checkpoint saved to ${checkpointPath}.\n` +
       'Re-run after the cap clears to continue from where processing stopped.',
     );

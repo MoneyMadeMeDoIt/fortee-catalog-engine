@@ -2,7 +2,7 @@
  * Unit tests for gen-categories-keywords.ts pure-core functions.
  *
  * These tests make NO network calls and do NOT require ANTHROPIC_API_KEY.
- * The Anthropic client is dependency-injected (DI'd) everywhere.
+ * The OpenAI client is dependency-injected (DI'd) everywhere.
  *
  * Coverage:
  *   - groupRowsByProductId: correct grouping, empty-pid skipping
@@ -382,7 +382,7 @@ describe('buildUpdatesForProduct', () => {
   });
 });
 
-// ─── classifyProduct (DI'd — no live API calls) ───────────────────────────────
+// ─── classifyProduct (DI'd OpenAI client — no live API calls) ─────────────────
 
 describe('classifyProduct', () => {
   const PROMPT_INPUT = {
@@ -395,74 +395,51 @@ describe('classifyProduct', () => {
     currentBaseCategory: 'Hoodies',
   };
 
-  it('returns the parsed result from a DI client (no network call)', async () => {
-    const mockResult = {
-      parsed: {
-        baseCategory: 'Hoodies',
-        categoriesPath: 'Apparel & Accessories > Clothing > Clothing Tops > Hoodies & Sweatshirts',
-        keywords: [
-          'pullover-hoodie',
-          'fleece-hoodie',
-          'heavyweight',
-          'cotton-poly',
-          'casual-wear',
-          'crew-neck',
-          'warm-hoodie',
-          'unisex-hoodie',
-        ],
-      },
-    };
-
-    const mockClient = {
-      messages: {
-        parse: vi.fn().mockResolvedValue(mockResult),
-      },
-    } as any;
-
-    const result = await classifyProduct(PROMPT_INPUT, mockClient);
-
-    expect(result.baseCategory).toBe('Hoodies');
-    expect(result.keywords.length).toBeGreaterThanOrEqual(8);
-    expect(mockClient.messages.parse).toHaveBeenCalledTimes(1);
-
-    // Verify the call used the correct model and no effort param.
-    const callArgs = mockClient.messages.parse.mock.calls[0][0];
-    expect(callArgs.model).toBe('claude-haiku-4-5');
-    expect(callArgs.effort).toBeUndefined();
-    expect(callArgs.output_config).toBeDefined();
-    expect(callArgs.output_config.format).toBeDefined();
+  // Build a mock OpenAI client whose chat.completions.create returns a JSON
+  // string body, mirroring the real `response_format: json_object` shape.
+  const okCompletion = (output: unknown) => ({
+    choices: [{ message: { content: JSON.stringify(output) } }],
   });
 
-  it('retries on transient rate-limit (429 non-quota) then succeeds', async () => {
-    const rateLimitError = Object.assign(new Error('rate limited'), { status: 429 });
-    const mockResult = { parsed: VALID_RESULT };
-
-    const mockClient = {
-      messages: {
-        parse: vi
-          .fn()
-          .mockRejectedValueOnce(rateLimitError)
-          .mockResolvedValue(mockResult),
-      },
-    } as any;
+  it('returns the validated result from a DI OpenAI client (no network call)', async () => {
+    const create = vi.fn().mockResolvedValue(okCompletion(VALID_RESULT));
+    const mockClient = { chat: { completions: { create } } } as any;
 
     const result = await classifyProduct(PROMPT_INPUT, mockClient);
 
     expect(result.baseCategory).toBe(VALID_RESULT.baseCategory);
-    expect(mockClient.messages.parse).toHaveBeenCalledTimes(2);
+    expect(result.keywords.length).toBeGreaterThanOrEqual(1);
+    expect(create).toHaveBeenCalledTimes(1);
+
+    // Verify the call used gpt-4o-mini, json_object format, and no effort param.
+    const callArgs = create.mock.calls[0][0];
+    expect(callArgs.model).toBe('gpt-4o-mini');
+    expect((callArgs as any).effort).toBeUndefined();
+    expect(callArgs.response_format).toEqual({ type: 'json_object' });
+  });
+
+  it('retries on transient rate-limit (429 non-quota) then succeeds', async () => {
+    const rateLimitError = Object.assign(new Error('rate limited'), { status: 429 });
+    const create = vi
+      .fn()
+      .mockRejectedValueOnce(rateLimitError)
+      .mockResolvedValue(okCompletion(VALID_RESULT));
+    const mockClient = { chat: { completions: { create } } } as any;
+
+    const result = await classifyProduct(PROMPT_INPUT, mockClient);
+
+    expect(result.baseCategory).toBe(VALID_RESULT.baseCategory);
+    expect(create).toHaveBeenCalledTimes(2);
   });
 
   it('throws quota error immediately (no retry) and sets isQuotaExhausted=true', async () => {
-    const quotaError = Object.assign(
-      new Error('You have exceeded your usage quota'),
-      { status: 429 },
-    );
-
-    const mockClient = {
-      messages: {
-        parse: vi.fn().mockRejectedValue(quotaError),
-      },
-    } as any;
+    // OpenAI signals an exhausted cap with status 429 + code insufficient_quota.
+    const quotaError = Object.assign(new Error('You exceeded your current quota'), {
+      status: 429,
+      code: 'insufficient_quota',
+    });
+    const create = vi.fn().mockRejectedValue(quotaError);
+    const mockClient = { chat: { completions: { create } } } as any;
 
     try {
       await classifyProduct(PROMPT_INPUT, mockClient);
@@ -470,35 +447,26 @@ describe('classifyProduct', () => {
     } catch (err: any) {
       expect(err.isQuotaExhausted).toBe(true);
       // Should not retry on quota error — only 1 call.
-      expect(mockClient.messages.parse).toHaveBeenCalledTimes(1);
+      expect(create).toHaveBeenCalledTimes(1);
     }
   });
 
   it('rethrows non-429 errors immediately', async () => {
     const networkError = new Error('ECONNRESET');
-
-    const mockClient = {
-      messages: {
-        parse: vi.fn().mockRejectedValue(networkError),
-      },
-    } as any;
+    const create = vi.fn().mockRejectedValue(networkError);
+    const mockClient = { chat: { completions: { create } } } as any;
 
     await expect(classifyProduct(PROMPT_INPUT, mockClient)).rejects.toThrow('ECONNRESET');
     // Non-rate-limit error: no retry.
-    expect(mockClient.messages.parse).toHaveBeenCalledTimes(1);
+    expect(create).toHaveBeenCalledTimes(1);
   });
 
-  it('throws if result.parsed is empty', async () => {
-    const mockResult = { parsed: null };
-
-    const mockClient = {
-      messages: {
-        parse: vi.fn().mockResolvedValue(mockResult),
-      },
-    } as any;
+  it('throws if the completion content is empty', async () => {
+    const create = vi.fn().mockResolvedValue({ choices: [{ message: { content: null } }] });
+    const mockClient = { chat: { completions: { create } } } as any;
 
     await expect(classifyProduct(PROMPT_INPUT, mockClient)).rejects.toThrow(
-      /result\.parsed is empty/,
+      /empty completion content/,
     );
   });
 });

@@ -25,8 +25,8 @@ Out of scope:
 ## Implementation Decisions
 
 ### Model + SDK
-- **D-01** Model: `claude-haiku-4-5` via `@anthropic-ai/sdk`. (NOT OpenAI — chosen to bypass the recurring OpenAI monthly usage-cap blocker; different provider/billing.)
-- **D-02** Structured output via `client.messages.parse()` with `output_config: { format: zodOutputFormat(schema) }` (Haiku 4.5 supports structured outputs). Do NOT set `effort` (Haiku errors on it). No thinking budget.
+- **D-01 (REVISED 2026-06-10)** Model: OpenAI `gpt-4o-mini` via the already-installed `openai` SDK. (Operator chose OpenAI — the key is already configured in `.env`, no setup. The earlier Claude-Haiku choice was to dodge the OpenAI cap, but this run is ~$0.12 so the cap is not a real constraint; the quota-exhausted path still exits cleanly + checkpoints.) Original Anthropic plan superseded.
+- **D-02 (REVISED)** Structured output via `client.chat.completions.create()` with `response_format: { type: 'json_object' }`, then validate the parsed JSON against the zod `categorySchema` (enforces the decoration-safe baseCategory enum + shape). Matches the existing codebase pattern (verify-same-product.ts). One call per product. Run with `NODE_OPTIONS=--use-system-ca`.
 - **D-03** One combined call per product returns `{ baseCategory, categoriesPath, keywords[] }`. ~291 calls. Synchronous with bounded concurrency is fine (cheap); Batches API NOT used (adds latency, negligible savings on ~291 calls).
 - **D-04** Prefix all SDK-invoking commands with `NODE_OPTIONS=--use-system-ca` (AV TLS interception on this machine).
 
