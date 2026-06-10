@@ -2,15 +2,16 @@
 gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Catalog Data Completion
-status: planning
-last_updated: "2026-06-09T00:00:00.000Z"
-last_activity: 2026-06-09
+status: Phase 18 in progress — Plan 18-01 complete
+stopped_at: 18-01 (br-image-parser pure module + tests) complete. Next: 18-02 (Drive→BR linker script).
+last_updated: "2026-06-10T08:00:00.000Z"
+last_activity: 2026-06-10 — Phase 18-01 shipped (pid/role-anchored parser, 29 tests green)
 progress:
   total_phases: 2
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 0
+  total_plans: 3
+  completed_plans: 1
+  percent: 17
 ---
 
 # Project State
@@ -24,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-06-09)
 
 ## Current Position
 
-Phase: 18 (not started)
-Plan: —
-Status: Roadmap created, awaiting /gsd-plan-phase 18
-Last activity: 2026-06-09 — v3.0 roadmap created (2 phases, 13 requirements mapped)
+Phase: 18
+Plan: 01 complete / 02 next
+Status: Phase 18 in progress — Plan 18-01 complete
+Last activity: 2026-06-10 — 18-01 shipped: pid/role-anchored br-image-parser + 29-test regression suite
 
-Progress: [░░░░░░░░░░] 0% (0/2 phases complete)
+Progress: [█░░░░░░░░░] 17% (0/2 phases complete, 1/3 plans complete)
 
 ## Accumulated Context
 
@@ -69,6 +70,12 @@ Key decisions for catalog curation (2026-04-01):
 - Catalog-Gaps tab is user-editable — NEVER delete+recreate, always read existing data first and merge
 - User enters actual data (descriptions, size charts, categories) into Catalog-Gaps "Has X" columns, not just Y/N flags
 
+Key decisions for Phase 18 (2026-06-10):
+
+- D-07: pid-anchored + role-anchored substring extraction in parseCanonicalFilename — never split on every `-`/`_`; color is strictly the text between `-{pid}-` and `-{Role}.png` boundaries
+- LeftSide maps to the existing DirectSideImage BR column (D-04); no new LeftSide column is added
+- normalizeColor keeps Grey≠Gray distinct — a spelling mismatch is a miss, never a wrong match
+
 Key decisions for v3.0 roadmap (2026-06-09):
 
 - Phases 18-19 (not 1-2): v3.0 continues phase numbering from v2.0; v2.0 ended at Phase 17
@@ -104,13 +111,13 @@ Key decisions for v3.0 roadmap (2026-06-09):
 
 ## Session Continuity
 
-Last session: 2026-06-09 (active)
-Stopped at: v3.0 roadmap written (ROADMAP.md + STATE.md + REQUIREMENTS.md traceability updated). Phase 18 ready to plan.
-Resume file: `.planning/STATE.md` Current Position — next action is `/gsd-plan-phase 18`
+Last session: 2026-06-10 (active)
+Stopped at: 18-01 complete (br-image-parser pure module + tests). Next: execute 18-02.
+Resume file: `.planning/phases/18-drive-to-br-image-linker/18-01-SUMMARY.md`
 
 Project pushed to remote: https://github.com/MoneyMadeMeDoIt/fortee-catalog-engine (master branch)
 
 ## Operator Next Steps
 
-- Plan Phase 18: `/gsd-plan-phase 18`
+- Execute Phase 18-02: `/gsd-execute-phase 18` (Drive→BR linker script)
 - Raise OpenAI usage cap before running Phase 19
