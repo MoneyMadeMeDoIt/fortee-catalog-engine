@@ -95,7 +95,7 @@ Plans:
 ## Phases
 
 - [x] **Phase 18: Drive to BR Image Linker** - Overwrite the 7 BR image columns with canonical Drive URLs; add 4 new columns (Drive LeftSide→existing DirectSideImage); dry-run diff + backup before any apply — completed 2026-06-10 (90,139 cells written, idempotent, URLs verified)
-- [ ] **Phase 19: AI Category & Keyword Generation** - One gpt-4o-mini structured-output call per product fills baseCategory (controlled vocab), categories (Shopify taxonomy path), and keywords (consumer tags); checkpointed for usage-cap resilience
+- [ ] **Phase 19: AI Category & Keyword Generation** - One Claude Haiku 4.5 structured-output call per product fills baseCategory (decoration-safe controlled vocab), categories (Shopify taxonomy leaf path), and keywords (consumer tags); checkpointed for usage-cap resilience
 
 ## Phase Details
 
@@ -117,16 +117,21 @@ Plans:
 - [ ] 18-03-PLAN.md — Live verification: dry-run brand-leak audit, URL-render HEAD sampler, --apply + idempotent second-run, blocking human-verify checkpoint (IMG-01..04, OPS-02, OPS-03)
 
 ### Phase 19: AI Category & Keyword Generation
-**Goal**: Every product in Bestsellers-Ready has its baseCategory normalized to a controlled vocabulary, its categories column filled with a Shopify Standard Taxonomy leaf path, and its keywords column filled with consumer-style tag tokens — all produced by one structured-output call per unique productId, checkpointed so a mid-batch OpenAI usage-cap halt can resume without re-spending
+**Goal**: Every product in Bestsellers-Ready has its baseCategory normalized to a controlled vocabulary, its categories column filled with a Shopify Standard Taxonomy leaf path, and its keywords column filled with consumer-style tag tokens — all produced by one structured-output call per unique productId, checkpointed so a mid-batch usage-cap halt can resume without re-spending
 **Depends on**: Phase 18 (categories column benefits from clean image state; baseCategory uses garment-type context from Drive filenames)
 **Requirements**: CAT-01, CAT-02, CAT-03, KW-01, KW-02, KW-03, OPS-01, OPS-02
 **Success Criteria** (what must be TRUE):
-  1. Every product's `baseCategory` resolves to one of the 15 allowed garment-type vocabulary values; no product retains a generic supplier value (e.g. "Tops", "Sport Shirts") after the run
-  2. Every product's `categories` column contains a valid Shopify Standard Taxonomy leaf-node path (e.g. "Apparel & Accessories > Clothing > Tops > T-Shirts"); no free-form or hallucinated paths are written
-  3. Every product's `keywords` column contains 10-15 lowercase-hyphenated consumer tag tokens with zero color names, size names, style numbers, GSM values, or wholesale jargon present
+  1. Every product's `baseCategory` resolves to a decoration-SAFE controlled-vocabulary value (getCategoryGroup() non-null); no product retains a generic supplier value (e.g. "Tops", "Sport Shirts") after the run
+  2. Every product's `categories` column contains a valid Shopify Standard Taxonomy leaf-node path (e.g. "Apparel & Accessories > Clothing > Clothing Tops > T-Shirts"); no free-form or hallucinated paths are written
+  3. Every product's `keywords` column contains 8-15 lowercase-hyphenated consumer tag tokens with zero color names, size names, style numbers, GSM values, or wholesale jargon present
   4. If the script is interrupted mid-batch (simulated by stopping after 50 products), re-running resumes from the checkpoint and completes the remaining ~241 products without duplicating any AI calls or overwriting already-written rows
-  5. All 24,175 BR rows for a given productId receive the same baseCategory, categories, and keywords values — no per-row variance for the same product
-**Plans**: TBD
+  5. All BR rows for a given productId receive the same baseCategory, categories, and keywords values — no per-row variance for the same product
+**Plans**: 3 plans (3 waves)
+
+Plans:
+- [ ] 19-01-PLAN.md — Pure category-schema.ts: decoration-safe baseCategory enum (every member getCategoryGroup-non-null, unit-proven) + zod combined schema (leaf-path enum + bounded clean keywords) + buildPrompt + sanitizeForPrompt (TDD) (CAT-01, CAT-03, KW-01, KW-02)
+- [ ] 19-02-PLAN.md — gen-categories-keywords.ts: @anthropic-ai/sdk Haiku 4.5 parse() per productId, productId join + fan-out, post-validation (D-07), checkpoint/resume + idempotent skip-if-filled, dry-run preview + backup + apply (CAT-01..03, KW-01..03, OPS-01, OPS-02)
+- [ ] 19-03-PLAN.md — Live verification + blocking human-verify checkpoints: package-legitimacy gate, full dry-run preview audit, --apply approval, interrupt-after-50 resume + idempotency + same-value-per-pid proof (CAT-01..03, KW-01..03, OPS-01, OPS-02)
 **UI hint**: no
 
 ## Progress
@@ -149,4 +154,4 @@ Plans:
 | 15. Garment Type Verification | v2.0 | 4/4 | Complete    | 2026-05-11 |
 | 16. Catalog Image Pollution Audit & Fix | v2.0 | 4/4 | Complete    | 2026-05-13 |
 | 18. Drive to BR Image Linker | v3.0 | 0/? | Not started | - |
-| 19. AI Category & Keyword Generation | v3.0 | 0/? | Not started | - |
+| 19. AI Category & Keyword Generation | v3.0 | 0/3 | Not started | - |
