@@ -109,7 +109,12 @@ Plans:
   3. A (pid, colorName) pair with no matching Drive file leaves the existing cell value unchanged and appears in the miss log — no empty string is ever written to a previously-populated cell
   4. Hyphenated-brand pids (e.g. Q-Tees H08050) produce the correct color token without brand-name leaking into the color — all Drive filenames are parsed pid-anchored, role-anchored
   5. Re-running `--apply` a second time produces zero net changes (idempotent)
-**Plans**: TBD
+**Plans**: 3 plans (3 waves)
+
+Plans:
+- [ ] 18-01-PLAN.md — Pid/role-anchored canonical-filename parser + color normalizer + role→column map (pure, TDD; Q-Tees H08050 brand-leak regression) (IMG-03)
+- [ ] 18-02-PLAN.md — link-br-images.ts: Drive scan + (pid,color) join, dry-run diff + miss + backup TSVs, 4-column add via live header re-read, never-blank + idempotent apply (IMG-01, IMG-02, IMG-04, OPS-02, OPS-03)
+- [ ] 18-03-PLAN.md — Live verification: dry-run brand-leak audit, URL-render HEAD sampler, --apply + idempotent second-run, blocking human-verify checkpoint (IMG-01..04, OPS-02, OPS-03)
 
 ### Phase 19: AI Category & Keyword Generation
 **Goal**: Every product in Bestsellers-Ready has its baseCategory normalized to a controlled vocabulary, its categories column filled with a Shopify Standard Taxonomy leaf path, and its keywords column filled with consumer-style tag tokens — all produced by one structured-output call per unique productId, checkpointed so a mid-batch OpenAI usage-cap halt can resume without re-spending
