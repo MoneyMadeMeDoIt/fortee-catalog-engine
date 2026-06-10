@@ -418,6 +418,22 @@ describe('classifyProduct', () => {
     expect(callArgs.response_format).toEqual({ type: 'json_object' });
   });
 
+  it('drops a stray dirty keyword instead of failing the whole product', async () => {
+    // Model returns 8 clean + 1 dirty ("navy" is a blocked color). The dirty one
+    // must be dropped (pre-clean) so the strict schema refine still passes.
+    const withDirty = {
+      ...VALID_RESULT,
+      keywords: [...VALID_RESULT.keywords.slice(0, 8), 'navy'],
+    };
+    const create = vi.fn().mockResolvedValue(okCompletion(withDirty));
+    const mockClient = { chat: { completions: { create } } } as any;
+
+    const result = await classifyProduct(PROMPT_INPUT, mockClient);
+
+    expect(result.keywords).not.toContain('navy');
+    expect(result.keywords.length).toBeGreaterThanOrEqual(8);
+  });
+
   it('retries on transient rate-limit (429 non-quota) then succeeds', async () => {
     const rateLimitError = Object.assign(new Error('rate limited'), { status: 429 });
     const create = vi

@@ -34,6 +34,7 @@
 import 'dotenv/config';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import OpenAI from 'openai';
 import { google } from 'googleapis';
 import { createSheetsClient } from '../src/sheets/client.js';
@@ -330,9 +331,20 @@ export async function classifyProduct(
       if (!raw) {
         throw new Error('[gen-categories-keywords] classifyProduct: empty completion content');
       }
+      const obj = JSON.parse(raw);
+      // Pre-clean keywords: drop any the model returned that fail isCleanKeyword
+      // (a single dirty tag would otherwise fail the strict all-or-nothing schema
+      // refine and lose the whole product). Cap at 15. The schema's min(8) still
+      // applies after cleaning, so products left with too few clean tags surface
+      // as failures (rare) rather than silently shipping junk.
+      if (obj && Array.isArray(obj.keywords)) {
+        obj.keywords = obj.keywords
+          .filter((k: unknown) => typeof k === 'string' && isCleanKeyword(k))
+          .slice(0, 15);
+      }
       // Validate the model output against the zod schema (enforces the safe
       // baseCategory enum, taxonomy-leaf shape, and keyword array).
-      const parsed = categorySchema.parse(JSON.parse(raw)) as CategoryOutput;
+      const parsed = categorySchema.parse(obj) as CategoryOutput;
       return parsed;
     } catch (err: unknown) {
       const status = (err as { status?: number })?.status;
@@ -833,8 +845,10 @@ function printStats(stats: {
 }
 
 // Only run main() when this script is the entry point — not when imported by tests.
+// Resolve both sides to real filesystem paths so spaces in the path (e.g.
+// "Claude code project") don't break the comparison (file:// URLs %20-encode them).
 const isEntryPoint = process.argv[1]
-  ? import.meta.url.endsWith(process.argv[1].replace(/\\/g, '/'))
+  ? path.resolve(fileURLToPath(import.meta.url)) === path.resolve(process.argv[1])
   : false;
 
 if (isEntryPoint) {
