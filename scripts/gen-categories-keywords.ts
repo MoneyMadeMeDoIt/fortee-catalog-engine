@@ -42,7 +42,6 @@ import { writeUpdates } from '../src/sheets/writer.js';
 import { columnToLetter } from '../src/sheets/column-map.js';
 import type { EnrichmentUpdate } from '../src/sheets/types.js';
 import {
-  categorySchema,
   buildPrompt,
   isCleanKeyword,
   SAFE_BASE_CATEGORIES,
@@ -246,9 +245,9 @@ export function buildUpdatesForProduct(args: BuildUpdatesInput): BuildUpdatesRes
       }
     }
 
-    // 2. categories column
+    // 2. categories column (never blank a populated cell with an empty value)
     const existingCat = (row[catColIdx] ?? '').trim();
-    if (existingCat === categoriesValue) {
+    if (categoriesValue === '' || existingCat === categoriesValue) {
       stats.skipped_already_current++;
     } else {
       const colLetter = columnToLetter(catColIdx);
@@ -260,9 +259,9 @@ export function buildUpdatesForProduct(args: BuildUpdatesInput): BuildUpdatesRes
       }
     }
 
-    // 3. keywords column
+    // 3. keywords column (never blank a populated cell with an empty value)
     const existingKw = (row[keywordsColIdx] ?? '').trim();
-    if (existingKw === keywordsValue) {
+    if (keywordsValue === '' || existingKw === keywordsValue) {
       stats.skipped_already_current++;
     } else {
       const colLetter = columnToLetter(keywordsColIdx);
@@ -295,9 +294,10 @@ export function buildUpdatesForProduct(args: BuildUpdatesInput): BuildUpdatesRes
  *
  * Per D-02 (revised 2026-06-10, operator chose OpenAI — existing key, no setup):
  * uses client.chat.completions.create() with response_format json_object, then
- * validates the parsed JSON against the zod `categorySchema` (the schema enforces
- * the decoration-safe baseCategory enum + shape). ONE call per product (D-03).
- * Runtime: invoke with NODE_OPTIONS=--use-system-ca (AV TLS interception).
+ * extracts the fields leniently (gpt-4o-mini json_object is not schema-guaranteed).
+ * Safety is enforced downstream in buildUpdatesForProduct: baseCategory via the
+ * getCategoryGroup() gate (D-07), keywords via isCleanKeyword (KW-02). ONE call per
+ * product (D-03). Runtime: invoke with NODE_OPTIONS=--use-system-ca (AV TLS).
  *
  * Error handling (Pitfall 12):
  *   - 429 insufficient_quota / billing hard limit → save checkpoint + clean exit signal.
@@ -331,21 +331,25 @@ export async function classifyProduct(
       if (!raw) {
         throw new Error('[gen-categories-keywords] classifyProduct: empty completion content');
       }
-      const obj = JSON.parse(raw);
-      // Pre-clean keywords: drop any the model returned that fail isCleanKeyword
-      // (a single dirty tag would otherwise fail the strict all-or-nothing schema
-      // refine and lose the whole product). Cap at 15. The schema's min(8) still
-      // applies after cleaning, so products left with too few clean tags surface
-      // as failures (rare) rather than silently shipping junk.
-      if (obj && Array.isArray(obj.keywords)) {
-        obj.keywords = obj.keywords
-          .filter((k: unknown) => typeof k === 'string' && isCleanKeyword(k))
-          .slice(0, 15);
-      }
-      // Validate the model output against the zod schema (enforces the safe
-      // baseCategory enum, taxonomy-leaf shape, and keyword array).
-      const parsed = categorySchema.parse(obj) as CategoryOutput;
-      return parsed;
+      const obj = JSON.parse(raw) as Record<string, unknown>;
+      // Lenient extraction. gpt-4o-mini's json_object output is NOT schema-
+      // guaranteed, and a strict z.enum on baseCategory hard-fails ~25% of products
+      // that return a sensible-but-non-verbatim garment label ("Hoodie" instead of
+      // "Fleece - Core - Hood"). Safety is enforced DOWNSTREAM, not here:
+      //  - baseCategory → getCategoryGroup() gate in buildUpdatesForProduct (D-07):
+      //    a value that resolves null is left unchanged + flagged, never written.
+      //  - keywords → cleaned against isCleanKeyword (KW-02/D-10), capped at 15.
+      //  - categoriesPath → display-only (D-08); written as-is when non-empty.
+      const keywords = Array.isArray(obj.keywords)
+        ? (obj.keywords as unknown[])
+            .filter((k): k is string => typeof k === 'string' && isCleanKeyword(k))
+            .slice(0, 15)
+        : [];
+      return {
+        baseCategory: String(obj.baseCategory ?? '').trim(),
+        categoriesPath: String(obj.categoriesPath ?? '').trim(),
+        keywords,
+      } as CategoryOutput;
     } catch (err: unknown) {
       const status = (err as { status?: number })?.status;
       const errMsg = (err as Error)?.message ?? '';

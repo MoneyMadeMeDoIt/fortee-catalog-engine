@@ -266,8 +266,11 @@ Analyze the product information below and return EXACTLY the following JSON fiel
 ## Allowed baseCategory values (pick exactly one):
 ${allowedBaseCategories}
 
+If the product is headwear (cap, hat, beanie, toque, visor), a bag, socks, or any
+non-printable accessory, set baseCategory to exactly "Accessory" — do NOT force it
+into a shirt/tee/fleece/hoodie value. (A fleece toque is an accessory, NOT a hoodie.)
 If the product does not clearly fit any of the above values, return the currentBaseCategory unchanged.
-Do NOT invent values outside this list — an out-of-enum value will break product push.
+Do NOT invent printable-garment values outside this list — an out-of-enum value will break product push.
 
 ## Allowed categoriesPath values (pick exactly one Apparel & Accessories leaf):
   ${allowedTaxonomyPaths}
