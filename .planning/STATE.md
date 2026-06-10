@@ -3,10 +3,10 @@ gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Catalog Data Completion
 status: planning
-last_updated: "2026-06-09T18:18:50.562Z"
+last_updated: "2026-06-09T00:00:00.000Z"
 last_activity: 2026-06-09
 progress:
-  total_phases: 0
+  total_phases: 2
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -17,17 +17,19 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-01)
+See: .planning/PROJECT.md (updated 2026-06-09)
 
 **Core value:** One command turns an enriched sheet row into a live Shopify product with correct decoration options, placements, pricing, standardized images, and all customer-facing content.
-**Current focus:** Phase 17 manual finish — operator-driven AI side-image generation via scripts/ai-gen-product-image.ts, per-pid batches in tmp/.
+**Current focus:** v3.0 Catalog Data Completion — roadmap defined (Phases 18-19), ready to plan Phase 18.
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: 18 (not started)
 Plan: —
-Status: Defining requirements
-Last activity: 2026-06-09 — Milestone v3.0 started
+Status: Roadmap created, awaiting /gsd-plan-phase 18
+Last activity: 2026-06-09 — v3.0 roadmap created (2 phases, 13 requirements mapped)
+
+Progress: [░░░░░░░░░░] 0% (0/2 phases complete)
 
 ## Accumulated Context
 
@@ -48,6 +50,8 @@ Last activity: 2026-06-09 — Milestone v3.0 started
   - **15-03** Read-only retro audit CLI (`scripts/audit-garment-types.ts`) mirroring `audit-images.ts` DI seam
   - **15-04** 13-pid fixture set + real-API test (gated on OPENAI_API_KEY); 100% recall on 6 good fixtures
   - Key finding: verifier catches GARMENT-SHAPE drift, not IDENTITY pollution (wrong-product images, shared URLs). A343 reference pid was a placeholder, not a real product. This finding triggered Phase 16.
+- v2.0 complete (2026-06-09): Complete-Bestsellers Drive finalize done (452/452, plan=0). All pid folders at canonical {Brand}-{pid}-{Color}-{Role}.png naming. v3.0 roadmap defined.
+- v3.0 roadmap (2026-06-09): 2 phases (18-19) covering 13 requirements. Phase 18 is unblocked (deterministic, no AI). Phase 19 requires OpenAI usage cap raised first.
 
 ### Decisions
 
@@ -65,6 +69,13 @@ Key decisions for catalog curation (2026-04-01):
 - Catalog-Gaps tab is user-editable — NEVER delete+recreate, always read existing data first and merge
 - User enters actual data (descriptions, size charts, categories) into Catalog-Gaps "Has X" columns, not just Y/N flags
 
+Key decisions for v3.0 roadmap (2026-06-09):
+
+- Phases 18-19 (not 1-2): v3.0 continues phase numbering from v2.0; v2.0 ended at Phase 17
+- CAT + KW combined into Phase 19: research confirmed one gpt-4o-mini structured-output call per product returns baseCategory + taxonomyPath + keywords[] — halves API calls from ~582 to ~291 vs. separate scripts
+- OPS-01 (checkpoint) → Phase 19 (AI phase); OPS-02 (idempotency) → both phases; OPS-03 (header-drift safety) → Phase 18 (image linker)
+- Phase 18 depends on nothing and is unblocked today; Phase 19 requires OpenAI usage cap raised (external gate)
+
 ### Pending Todos
 
 **Catalog curation (separate from phase work):**
@@ -79,40 +90,27 @@ Key decisions for catalog curation (2026-04-01):
 - 7 MODEL-MISSING-ON-STORE pids (L07260, L07261, L09270, L09271, S04600, S05650, S05652) — distinct push workflow, not audit-cleanup scope
 - Audit `--pids X` mode overwrites `tmp/imagery-audit.tsv` — DX bug; possible follow-up: write narrow audits to a separate path
 
-**Phase 15 shipped findings (carried into Phase 16):**
+**Phase 19 gate:**
 
-- Catalog has identity pollution: 8882=5200=CE520L=NE220 all share one Adidas hoodie fileId; 6110 FrontImage is a baby onesie
-- ~20% mismatch rate observed in 100-product retro audit sample
-- 1,494 CSW rows have generic baseCategory `T-shirts/Shorts/Polos` — sweeping fix deferred to its own phase
-- Headwear (H08*) doesn't fit any CategoryGroup in the verifier — separate phase needed
-
-**Next planned phase (Phase 17 — Catalog Image Pollution Fix):**
-
-Real production audit (2026-05-14) found 213 polluted pids / 453 detections. Tier 1/2 yield was 1 fully-fixed pid. Phase 17 scope addresses why (per `.planning/research/phase17-prep/PRODUCTION-AUDIT-FINDINGS.md`):
-
-- **17-01 Drive fetch timeout** — patch B-1 (no timeout on Drive HTTP). Prerequisite for any large audit run.
-- **17-02 Per-color supplier-canonical** — `supplier-canonical` returns style-level URLs; verifier rejects "wrong color" on real BR rows. Need `(pid, colorName)` resolver.
-- **17-03 Model image rebuild tool** — biggest yield: addresses 312 of 453 detections (69%). Tier 2 doesn't handle Model* columns.
-- **17-04 D-12 scraper expansion** — add Bella+Canvas, Gildan, Adidas, New Era, anvil scrapers. 714 "no canonical" trail rows show the gap.
-- **17-05 Shared_url cluster manual triage** — operator effort; tooling already exists.
-
-Plus minor cleanup: B-2 (`--dry-run` Drive-trash gap), B-3 (cleanup script blind spot), B-4 (Tier 2 billing-limit short-circuit).
-
-Phase 14 follow-ups still deferred (6 DUPE-DRIVE, 7 MODEL-MISSING-ON-STORE, audit `--pids` overwrite bug).
+- OpenAI monthly usage cap must be raised before Phase 19 can run (~291 calls, ~12 cents actual cost; set CostTracker cap to $5 for headroom)
+- DirectSideImage = LeftSide mapping assumption should be verified before Phase 18 --apply run (check that existing DirectSideImage cells contain left-side URLs, not right-side)
+- Drive public permission state: files moved via UI may lack reader/anyone permission; Phase 18 plan should include sample validation (10 random HTTP HEAD requests after link)
 
 ### Blockers/Concerns
 
+- Phase 19 blocked on OpenAI usage cap (external) — Phase 18 can ship independently
 - 13 CSW products not in OneSource API — sizes must be entered manually
 - 3 products could not be resolved in S&S REST API (6501, LCB112, M858LW)
 
 ## Session Continuity
 
 Last session: 2026-06-09 (active)
-Stopped at: Complete-Bestsellers Drive-imagery finalize COMPLETE (452/452, verified plan=0); 7 unparseable-Has-Side pids parked in Missing-Info. Nothing blocking on this track.
-Resume file: `.planning/STATE.md` Current Position (finalize complete) — or `.planning/phases/16-catalog-image-pollution-audit-fix/16-PHASE-SUMMARY.md` for last shipped phase context.
+Stopped at: v3.0 roadmap written (ROADMAP.md + STATE.md + REQUIREMENTS.md traceability updated). Phase 18 ready to plan.
+Resume file: `.planning/STATE.md` Current Position — next action is `/gsd-plan-phase 18`
 
 Project pushed to remote: https://github.com/MoneyMadeMeDoIt/fortee-catalog-engine (master branch)
 
 ## Operator Next Steps
 
-- Start the next milestone with /gsd-new-milestone
+- Plan Phase 18: `/gsd-plan-phase 18`
+- Raise OpenAI usage cap before running Phase 19

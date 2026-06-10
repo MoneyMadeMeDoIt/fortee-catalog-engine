@@ -57,25 +57,25 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| IMG-01 | TBD | Pending |
-| IMG-02 | TBD | Pending |
-| IMG-03 | TBD | Pending |
-| IMG-04 | TBD | Pending |
-| CAT-01 | TBD | Pending |
-| CAT-02 | TBD | Pending |
-| CAT-03 | TBD | Pending |
-| KW-01 | TBD | Pending |
-| KW-02 | TBD | Pending |
-| KW-03 | TBD | Pending |
-| OPS-01 | TBD | Pending |
-| OPS-02 | TBD | Pending |
-| OPS-03 | TBD | Pending |
+| IMG-01 | Phase 18 | Pending |
+| IMG-02 | Phase 18 | Pending |
+| IMG-03 | Phase 18 | Pending |
+| IMG-04 | Phase 18 | Pending |
+| CAT-01 | Phase 19 | Pending |
+| CAT-02 | Phase 19 | Pending |
+| CAT-03 | Phase 19 | Pending |
+| KW-01 | Phase 19 | Pending |
+| KW-02 | Phase 19 | Pending |
+| KW-03 | Phase 19 | Pending |
+| OPS-01 | Phase 19 | Pending |
+| OPS-02 | Phase 18 + Phase 19 | Pending |
+| OPS-03 | Phase 18 | Pending |
 
 **Coverage:**
 - v1 requirements: 13 total
-- Mapped to phases: 0 (set during roadmap)
-- Unmapped: 13 (roadmap pending)
+- Mapped to phases: 13
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-06-09*
-*Last updated: 2026-06-09 after initial definition*
+*Last updated: 2026-06-09 — traceability filled after roadmap creation*
