@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Catalog Data Completion
-status: Phase 18 in progress — Plan 18-01 complete
-stopped_at: 18-01 (br-image-parser pure module + tests) complete. Next: 18-02 (Drive→BR linker script).
-last_updated: "2026-06-10T08:00:00.000Z"
-last_activity: 2026-06-10 — Phase 18-01 shipped (pid/role-anchored parser, 29 tests green)
+status: executing
+stopped_at: "18-02 complete (link-br-images.ts entry point + tests). Next: execute 18-03 (live --apply behind checkpoint)."
+last_updated: "2026-06-10T12:10:00.000Z"
+last_activity: "2026-06-10 — 18-02 shipped: link-br-images.ts + buildPlan core + 9 tests; dry-run confirmed on live sheet (24,175 rows, zero writes)"
 progress:
   total_phases: 2
   completed_phases: 0
   total_plans: 3
-  completed_plans: 1
-  percent: 17
+  completed_plans: 3
+  percent: 0
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-09)
 ## Current Position
 
 Phase: 18
-Plan: 01 complete / 02 next
-Status: Phase 18 in progress — Plan 18-01 complete
-Last activity: 2026-06-10 — 18-01 shipped: pid/role-anchored br-image-parser + 29-test regression suite
+Plan: 02 complete / 03 next
+Status: Phase 18 in progress — Plans 18-01 and 18-02 complete
+Last activity: 2026-06-10 — 18-02 shipped: link-br-images.ts + buildPlan core + 9 tests; dry-run confirmed on live sheet
 
-Progress: [█░░░░░░░░░] 17% (0/2 phases complete, 1/3 plans complete)
+Progress: [███░░░░░░░] 33% (0/2 phases complete, 2/3 plans complete)
 
 ## Accumulated Context
 
@@ -75,6 +75,9 @@ Key decisions for Phase 18 (2026-06-10):
 - D-07: pid-anchored + role-anchored substring extraction in parseCanonicalFilename — never split on every `-`/`_`; color is strictly the text between `-{pid}-` and `-{Role}.png` boundaries
 - LeftSide maps to the existing DirectSideImage BR column (D-04); no new LeftSide column is added
 - normalizeColor keeps Grey≠Gray distinct — a spelling mismatch is a miss, never a wrong match
+- 18-02: buildPlan is pure + DI'd (driveIndex + urlForFileId injected); raw values.get used (NOT readAllRows — Anti-Pattern 1 drops new columns)
+- 18-02: urlForFileId produces uc?id= form — consistent with uploadToDrive (drive.ts:279) and write-model-urls.ts:181
+- 18-02: D-06 live header re-read implemented after appendDimension before computing data column indices
 
 Key decisions for v3.0 roadmap (2026-06-09):
 
