@@ -95,7 +95,7 @@ Plans:
 ## Phases
 
 - [x] **Phase 18: Drive to BR Image Linker** - Overwrite the 7 BR image columns with canonical Drive URLs; add 4 new columns (Drive LeftSide→existing DirectSideImage); dry-run diff + backup before any apply — completed 2026-06-10 (90,139 cells written, idempotent, URLs verified)
-- [ ] **Phase 19: AI Category & Keyword Generation** - One Claude Haiku 4.5 structured-output call per product fills baseCategory (decoration-safe controlled vocab), categories (Shopify taxonomy leaf path), and keywords (consumer tags); checkpointed for usage-cap resilience
+- [x] **Phase 19: AI Category & Keyword Generation** - One OpenAI gpt-4o-mini call per product fills baseCategory (getCategoryGroup-safe), categories (Shopify taxonomy leaf path), and keywords (consumer tags) — completed 2026-06-10 (461/461, 58,684 cells written, 95 accessories left unchanged, idempotent). NOTE: switched Claude Haiku → gpt-4o-mini per operator (existing key).
 
 ## Phase Details
 

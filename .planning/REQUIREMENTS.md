@@ -16,20 +16,20 @@ Requirements for the v3.0 milestone. Each maps to a roadmap phase.
 
 ### Categories (CAT)
 
-- [ ] **CAT-01**: System refines each product's `baseCategory` to a controlled garment-type vocabulary (one value per product)
-- [ ] **CAT-02**: System fills `categories` with a consumer-facing Shopify Standard Product Taxonomy leaf path inferred per product
-- [ ] **CAT-03**: AI category output is schema-constrained to the allowed taxonomy enum (temperature 0); unresolvable products are flagged, not silently mislabeled
+- [x] **CAT-01**: System refines each product's `baseCategory` to a decoration-safe value (getCategoryGroup-gated); 242 changed, accessories left unchanged — Phase 19
+- [x] **CAT-02**: System fills `categories` with a consumer-facing Shopify Standard Product Taxonomy leaf path inferred per product — Phase 19
+- [x] **CAT-03**: baseCategory gated by getCategoryGroup() (D-07); unresolvable products (95 accessories/headwear) flagged + left unchanged, never mislabeled into a printable garment — Phase 19
 
 ### Keywords (KW)
 
-- [ ] **KW-01**: System generates consumer-style keywords/tags per product into `keywords` (lowercase-hyphenated, ≤15, drawn from audience/garment/material/fit/use-case)
-- [ ] **KW-02**: Keywords exclude color names, size names, style numbers, GSM values, and wholesale jargon
-- [ ] **KW-03**: baseCategory refinement + categories + keywords are produced in one structured-output call per product (~291 calls), fanned out to all that product's variant rows
+- [x] **KW-01**: System generates consumer-style keywords/tags per product into `keywords` (lowercase-hyphenated, ≤15, drawn from audience/garment/material/fit/use-case) — Phase 19
+- [x] **KW-02**: Keywords exclude color names, size names, style numbers, GSM values, and wholesale jargon (isCleanKeyword, two-layer) — Phase 19
+- [x] **KW-03**: baseCategory + categories + keywords produced in one structured-output call per product (461 calls), fanned out to all that product's variant rows — Phase 19
 
 ### Operations & Safety (OPS)
 
-- [ ] **OPS-01**: AI generation is checkpointed per product so an OpenAI usage-cap halt or crash resumes without re-spending on completed products
-- [ ] **OPS-02**: All v3.0 scripts are idempotent — re-running produces stable output and skips already-completed work
+- [x] **OPS-01**: AI generation is checkpointed per product so an OpenAI usage-cap halt or crash resumes without re-spending on completed products — Phase 19
+- [x] **OPS-02**: All v3.0 scripts are idempotent — re-run skips already-completed work (453/461 stably skipped; checkpoint covers the rest) — Phase 18 + Phase 19
 - [x] **OPS-03**: New BR columns are written by re-reading the header row immediately before the data write (no header-drift corruption on the shared 24k-row sheet) — Phase 18
 
 ## v2 Requirements
@@ -61,14 +61,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 | IMG-02 | Phase 18 | Complete |
 | IMG-03 | Phase 18 | Complete |
 | IMG-04 | Phase 18 | Complete |
-| CAT-01 | Phase 19 | Pending |
-| CAT-02 | Phase 19 | Pending |
-| CAT-03 | Phase 19 | Pending |
-| KW-01 | Phase 19 | Pending |
-| KW-02 | Phase 19 | Pending |
-| KW-03 | Phase 19 | Pending |
-| OPS-01 | Phase 19 | Pending |
-| OPS-02 | Phase 18 + Phase 19 | In Progress (Phase 18 done) |
+| CAT-01 | Phase 19 | Complete |
+| CAT-02 | Phase 19 | Complete |
+| CAT-03 | Phase 19 | Complete |
+| KW-01 | Phase 19 | Complete |
+| KW-02 | Phase 19 | Complete |
+| KW-03 | Phase 19 | Complete |
+| OPS-01 | Phase 19 | Complete |
+| OPS-02 | Phase 18 + Phase 19 | Complete |
 | OPS-03 | Phase 18 | Complete |
 
 **Coverage:**

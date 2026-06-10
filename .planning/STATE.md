@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Catalog Data Completion
-status: Phase 19 Plan 02 complete. gen-categories-keywords.ts built + tested (20 tests). Awaiting 19-03 human-verify checkpoint to run --apply.
-stopped_at: "19-02 complete (gen-categories-keywords.ts + unit tests). Next: execute 19-03 operator checkpoint."
-last_updated: "2026-06-10T00:00:00.000Z"
-last_activity: "2026-06-10 — Phase 19-02: gen-categories-keywords.ts built, 20 unit tests passing, @anthropic-ai/sdk installed"
+status: v3.0 COMPLETE — Phase 18 (image linker) + Phase 19 (AI categories+keywords) both shipped. Bestsellers-Ready fully data-complete.
+stopped_at: "Phase 19 live --apply done: 461/461 products, 58,684 cells written via OpenAI gpt-4o-mini, idempotent, spot-checked. v3.0 ready for milestone close."
+last_updated: "2026-06-10T19:20:00.000Z"
+last_activity: "2026-06-10 — Phase 19 shipped: gen-categories-keywords.ts applied (baseCategory/categories/keywords on 24,175 rows; 95 accessories left unchanged)"
 progress:
   total_phases: 2
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 6
   completed_plans: 6
-  percent: 83
+  percent: 100
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-09)
 
 **Core value:** One command turns an enriched sheet row into a live Shopify product with correct decoration options, placements, pricing, standardized images, and all customer-facing content.
-**Current focus:** v3.0 Catalog Data Completion — Phase 18 (image linker) COMPLETE; Phase 19 (AI categories + keywords) waves 1-2 built (Claude Haiku, NOT OpenAI). 19-03 live dry-run + apply blocked on operator adding ANTHROPIC_API_KEY to .env.
+**Current focus:** v3.0 Catalog Data Completion is COMPLETE (Phase 18 image linker + Phase 19 AI categories/keywords both shipped). Bestsellers-Ready now has Drive-canonical image links + consumer categories/keywords. Ready to close the v3.0 milestone.
 
 ## Current Position
 
-Phase: 18 complete → 19 in progress (19-01/02 done, 19-03 awaiting key + checkpoint)
-Plan: 18 all complete; 19-01 + 19-02 complete; 19-03 pending
-Status: Phase 19 categorizer built + unit-tested (97 tests total). Uses claude-haiku-4-5 via @anthropic-ai/sdk (sidesteps the OpenAI cap entirely). Execution of 19-03 (live dry-run → operator checkpoint → --apply) needs ANTHROPIC_API_KEY in .env.
-Last activity: 2026-06-10 — Phase 19-02: gen-categories-keywords.ts built, 20 unit tests pass, @anthropic-ai/sdk installed
+Phase: v3.0 complete (18 + 19 both shipped)
+Plan: all 6 plans complete (18-01/02/03, 19-01/02/03)
+Status: Phase 19 applied via OpenAI gpt-4o-mini — 461/461 products, 58,684 cells (baseCategory/categories/keywords), 95 accessories left unchanged, idempotent, spot-checked. (Phase 19 switched Claude Haiku → gpt-4o-mini per operator's existing key; @anthropic-ai/sdk left installed but unused.)
+Last activity: 2026-06-10 — Phase 19 live --apply complete; v3.0 ready for /gsd-complete-milestone
 
 ## Accumulated Context
 
