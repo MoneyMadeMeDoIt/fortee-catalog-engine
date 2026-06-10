@@ -10,7 +10,7 @@ Requirements for the v3.0 milestone. Each maps to a roadmap phase.
 ### Image Linking (IMG)
 
 - [ ] **IMG-01**: Operator can populate every Bestsellers-Ready image cell from the standardized Drive library, overwriting existing values, joined by (productId, colorName)
-- [ ] **IMG-02**: The linker adds 5 new BR columns — LeftSide, RightSide, ModelFront, ModelSide, ModelBack — and fills them from the matching Drive roles
+- [ ] **IMG-02**: The linker maps Drive LeftSide → the existing `DirectSideImage` column and adds 4 new BR columns — RightSide, ModelFront, ModelSide, ModelBack — filling each from its matching Drive role
 - [ ] **IMG-03**: Filenames are parsed pid-anchored (no hyphenated-brand color leak); a color with no matching Drive file is logged and left blank, never guessed
 - [ ] **IMG-04**: Operator gets a dry-run diff (old→new per changed cell) and a TSV backup of current image cells before any overwrite is applied
 
